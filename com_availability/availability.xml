@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Show file availability from brams receiving stations</description>
 
@@ -43,8 +43,13 @@
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
 			<filename>availability.php</filename>
+            <filename>controller.php</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
+            <!-- models files section -->
+			<folder>models</folder>
+			<!-- views files section -->
+			<folder>views</folder>
 		</files>
 	</administration>
 
