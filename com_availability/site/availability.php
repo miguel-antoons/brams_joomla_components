@@ -1,14 +1,20 @@
 <?php
 /**
- * Availability Module Entry Point
- * 
  * @author      Antoons Miguel
+ * @package     Joomla.Administrator
+ * @subpackage  com_availability
  */
 
-// No direct access
-defined('_JEXEC') or die;
-// Include the syndicate functions only once
-require_once dirname(__FILE__) . '/helper.php';
 
-$stations = modAvailabilityHelper::getStations($params);
-require JModuleHelper::getLayoutPath('mod_helloworld');
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+// Get an instance of the controller prefixed by Availability
+$controller = JControllerLegacy::getInstance('Availability');
+
+// Perform the Request task
+$input = JFactory::getApplication()->input;
+$controller->execute($input->getCmd('task'));
+
+// Redirect if set by the controller
+$controller->redirect();
