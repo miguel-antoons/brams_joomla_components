@@ -14,8 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  0.0.1
  */
-class AvailabilityViewAvailability extends JViewLegacy
-{
+class AvailabilityViewAvailability extends JViewLegacy {
 	/**
 	 * Display the Availability view
 	 *
@@ -23,10 +22,17 @@ class AvailabilityViewAvailability extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
-	{
+	function display($tpl = null) {
 		// Assign data to the view
-		$this->msg = 'Hello World';
+		$this->msg = $this->get('Msg');
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+
+			return false;
+		}
 
 		// Display the view
 		parent::display($tpl);
