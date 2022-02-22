@@ -53,23 +53,19 @@ class BramsDataModelAvailability extends ItemModel {
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 
 		$db->setQuery($system_query);
-		$this->stations = $db->loadObjectList();
 
-		return $this->stations;
+		return $db->loadObjectList();
 	}
 
 	public function getToday() {
-		$this->today = date('Y-m-d');
-		return $this->today;
+		return date('Y-m-d');
 	}
 
 	public function getStartDate() {
-		$this->start_date = date('Y-m-d', strtotime("-5 days"));
-		return $this->start_date;
+		return date('Y-m-d', strtotime("-5 days"));
 	}
 
 	public function getYesterday() {
-		$this->start_date = date('Y-m-d', strtotime("-1 days"));
-		return $this->start_date;
+		return date('Y-m-d', strtotime("-1 days"));
 	}
 }

@@ -27,23 +27,15 @@ class BramsDataViewAvailability extends HtmlView {
 	function display($tpl = null) {
 		$document = JFactory::getDocument();
 		$document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
+		$document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
+		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
 
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
 
 		// process the submitted form
-		if (isset($_GET['submit'])) {
-			foreach ($_GET['station'] as $result) {
-				$this->stations[array_search($result, array_column($this->stations, 'id'))]->checked = 'checked';
-			}
-			if ($_GET['endDate'] > $_GET['startDate']) {
-				$this->start_date = $_GET['startDate'];
-				$this->end_date = $_GET['endDate'];
-			}
-			else {
-				$this->start_date = $this->get('Yesterday');
-				$this->end_date = $this->get('Today');
-			}
+		if (isset($_POST['submit'])) {
+			$this->processForm();
 		}
 		else {
 			$this->start_date = $this->get('StartDate');
@@ -60,5 +52,19 @@ class BramsDataViewAvailability extends HtmlView {
 
 		// Display the view
 		parent::display($tpl);
+	}
+
+	private function processForm() {
+		foreach ($_POST['station'] as $result) {
+			$this->stations[array_search($result, array_column($this->stations, 'id'))]->checked = 'checked';
+		}
+		if ($_POST['endDate'] > $_POST['startDate']) {
+			$this->start_date = $_POST['startDate'];
+			$this->end_date = $_POST['endDate'];
+		}
+		else {
+			$this->start_date = $this->get('Yesterday');
+			$this->end_date = $this->get('Today');
+		}
 	}
 }

@@ -92,3 +92,5 @@ function changeCheckBox() {
   changeRPIStatus();
   changeOldStatus();
 }
+
+document.body.addEventListener('onload', () => changeCheckBox());

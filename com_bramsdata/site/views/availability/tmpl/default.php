@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type='checkbox' onClick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
 <label for='checkFTP'>Check Old</label>
 
-<form action='' method='get'>
+<form action='' method='post'>
     <?php foreach ($this->stations as $station) : ?>
         <input 
             type='checkbox' 
@@ -26,6 +26,7 @@ defined('_JEXEC') or die('Restricted access');
             class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
             name='station[]'
             value='<?php echo $station->id ?>'
+            id='station<?php echo $station->id ?>'
             <?php echo $station->checked ?>
         />
         <label for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
@@ -39,3 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 
     <input name='submit' type='submit' />
 </form>
+<script>
+
+</script>
+<?php echo $_POST['startDate'] ?>
