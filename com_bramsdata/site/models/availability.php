@@ -25,13 +25,47 @@ class BramsDataModelAvailability extends ItemModel {
      *
 	 * @return  string  The message to be displayed to the user
 	 */
-	public function getMsg()
-	{
+	public function getMsg() {
 		if (!isset($this->message))
 		{
 			$this->message = 'Hello World!';
 		}
 
 		return $this->message;
+	}
+
+	public function getStations() {
+		$db = JFactory::getDbo();
+		$system_query = $db->getQuery(true);
+		$today = date('Y-m-d');
+		$start_date = date('Y-m-d', strtotime("-5 days"));
+		$end_date = $today;
+
+		// SQL query to get all inforamtions about the multiple systems
+		$system_query->select(
+			$db->quoteName('system.id') . ', '
+			. $db->quoteName('system.name') . ', '
+			. $db->quoteName('transfer_type') . ', '
+			. $db->quoteName('status')
+			);
+		$system_query->from($db->quoteName('system'));
+		$system_query->from($db->quoteName('location'));
+		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+
+		$db->setQuery($system_query);
+
+		return $db->loadObjectList();
+	}
+
+	public function getToday() {
+		return date('Y-m-d');
+	}
+
+	public function getStartDate() {
+		return date('Y-m-d', strtotime("-5 days"));
+	}
+
+	public function getYesterday() {
+		date('Y-m-d', strtotime("-1 days"));
 	}
 }
