@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
@@ -10,13 +10,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * General Controller of Availability component
+ * General Controller of BramsData component
  *
  * @package     Joomla.Administrator
- * @subpackage  com_available
+ * @subpackage  com_bramsdata
  * @since       0.0.5
  */
-class HelloWorldController extends JControllerLegacy {
+class BramsDataController extends BaseController {
 	/**
 	 * The default view for the display method.
 	 *

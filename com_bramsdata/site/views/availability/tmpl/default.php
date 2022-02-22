@@ -2,18 +2,11 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
-
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+?>
 
-/**
- * Availability Component Controller
- *
- * @since  0.0.1
- */
-class AvailabilityController extends JControllerLegacy {
-
-}
+<h1><?php echo $this->msg; ?></h1>

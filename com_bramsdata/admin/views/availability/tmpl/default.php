@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
@@ -10,7 +10,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_availability&view=availability" method="post" id="adminForm" name="adminForm">
+<!-- this part has to be revises since names have changed -->
+<form action="index.php?option=com_bramsdata&view=availability" method="post" id="adminForm" name="adminForm">
 	<table class="table table-striped table-hover">
 		<thead>
 		<tr>

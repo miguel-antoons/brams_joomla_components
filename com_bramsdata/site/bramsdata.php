@@ -2,18 +2,19 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// Get an instance of the controller prefixed by Availability
-$controller = JControllerLegacy::getInstance('Availability');
+// Get an instance of the controller prefixed by BramsData
+$controller = BaseController::getInstance('BramsData');
 
 // Perform the Request task
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$input = JFactory::getApplication()->input;
+$controller->execute($input->getCmd('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

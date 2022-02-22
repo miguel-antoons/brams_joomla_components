@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
@@ -14,8 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  0.0.1
  */
-class AvailabilityModelAvailability extends JModelList
-{
+class BramsDataModelAvailability extends ListModel {
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -28,6 +27,7 @@ class AvailabilityModelAvailability extends JModelList
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
+        // query below is only temporarly and won't work since there is no availability table
 		$query->select('*')
                 ->from($db->quoteName('#__availability'));
 

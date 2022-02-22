@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
@@ -14,8 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  0.0.1
  */
-class AvailabilityModelAvailability extends JModelItem
-{
+class BramsDataModelAvailability extends ItemModel {
 	/**
 	 * @var string message
 	 */

@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_availability
+ * @subpackage  com_bramsdata
  */
 
 
@@ -10,11 +10,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * HTML View class for the Availability Component
+ * Availability View
  *
  * @since  0.0.1
  */
-class AvailabilityViewAvailability extends JViewLegacy {
+class BramsDataViewAvailability extends HtmlView {
 	/**
 	 * Display the Availability view
 	 *
@@ -22,19 +22,21 @@ class AvailabilityViewAvailability extends JViewLegacy {
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null) {
-		// Assign data to the view
-		$this->msg = $this->get('Msg');
+	function display($tpl = null)
+	{
+		// Get data from the model
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+			JError::raiseError(500, implode('<br />', $errors));
 
 			return false;
 		}
 
-		// Display the view
+		// Display the template
 		parent::display($tpl);
 	}
 }
