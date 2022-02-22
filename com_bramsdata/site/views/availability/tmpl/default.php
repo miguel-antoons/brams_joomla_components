@@ -23,19 +23,19 @@ defined('_JEXEC') or die('Restricted access');
         <input 
             type='checkbox' 
             onClick='changeCheckBox()' 
-            class='custom_checkbox <?php $station->transfer_type ?> <?php $station->status ?>'
+            class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
             name='station[]'
-            value='<?php $station->id ?>'
-            <?php $station->checked ?>
+            value='<?php echo $station->id ?>'
+            <?php echo $station->checked ?>
         />
-        <label for='station<?php $station->id ?>'><?php $station->name ?></label>
+        <label for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
     <?php endforeach; ?>
 
     <label for='startDate'>From </label>
-    <input type='date' name='startDate' min='2011-01-01' max='<?php $this->today ?>' value='<?php $this->start_date ?>' required/>
+    <input type='date' name='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
 
     <label for='endDate'>To </label>
-    <input type='date' name='endDate' min='2011-01-01' max='<?php $this->today ?>' value='<?php $this->end_date ?>' required/>
+    <input type='date' name='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
 
     <input name='submit' type='submit' />
 </form>
