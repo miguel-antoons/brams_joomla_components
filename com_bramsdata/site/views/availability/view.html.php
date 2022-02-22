@@ -29,6 +29,7 @@ class BramsDataViewAvailability extends HtmlView {
 		$document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
 		$document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
 		$document->addScript('/components/com_bramsdata/views/availability/js/d3.min.js');
+		$document->addScript('/components/com_bramsdata/views/availability/js/moment-with-locales.min.js');
 		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
 
 		// Assign data to the view
