@@ -9,6 +9,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use \Joomla\CMS\MVC\View\HtmlView;
+
 /**
  * Availability View
  *
@@ -22,8 +24,7 @@ class BramsDataViewAvailability extends HtmlView {
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
-	{
+	function display($tpl = null) {
 		// Get data from the model
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
