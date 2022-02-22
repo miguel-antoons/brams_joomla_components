@@ -57,15 +57,33 @@ class BramsDataModelAvailability extends ItemModel {
 		return $db->loadObjectList();
 	}
 
+	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');
 	}
 
+	// get the date from 5 days ago in yyy-mm-dd format
 	public function getStartDate() {
 		return date('Y-m-d', strtotime("-5 days"));
 	}
 
+	// get yesterday's date in yyy-mm-dd format
 	public function getYesterday() {
 		return date('Y-m-d', strtotime("-1 days"));
+	}
+
+	// get all the file information between 2 dates
+	public function getAvailability() {
+		$db = JFactory::getDbo();
+		$availability_query = $db->getQuery(true);
+
+		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
+		$availability_query->from($db->quoteName('file'));
+		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db.quote($this->start_date) . ', DATETIME)');
+		$availability_query->where($db->quoteName('start') . ' < convert(' . $db.quote($this->end_date) . ', DATETIME)');
+
+		$db->setQuery($availability_query);
+
+		return $db->loadObjectList();
 	}
 }

@@ -93,4 +93,4 @@ function changeCheckBox() {
   changeOldStatus();
 }
 
-document.body.addEventListener('onload', () => changeCheckBox());
+document.getElementById('g-container-main').addEventListener('onload', () => changeCheckBox());

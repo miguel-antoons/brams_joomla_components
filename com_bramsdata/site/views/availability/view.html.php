@@ -54,6 +54,7 @@ class BramsDataViewAvailability extends HtmlView {
 		parent::display($tpl);
 	}
 
+	// entry-point of form processing
 	private function processForm() {
 		foreach ($_POST['station'] as $result) {
 			$this->stations[array_search($result, array_column($this->stations, 'id'))]->checked = 'checked';
@@ -66,5 +67,11 @@ class BramsDataViewAvailability extends HtmlView {
 			$this->start_date = $this->get('Yesterday');
 			$this->end_date = $this->get('Today');
 		}
+	}
+
+	// get and structure the file availability data
+	private function getFileAvailability() {
+		$this->selected_stations = array(2);
+		$this->availability = $this->get('Availability');
 	}
 }

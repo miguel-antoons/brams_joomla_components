@@ -41,6 +41,21 @@ defined('_JEXEC') or die('Restricted access');
     <input name='submit' type='submit' />
 </form>
 <script>
+    let dataset = [
+        <?php foreach ($this->selected_stations as $station) : ?>
+            {
+                "measure": "<?php echo $station ?>",
+                "interval_s": 300,
+                "data": [
+                    <?php foreach ($this->availability as $file) : ?>
+                        ["<?php echo $file->start ?>", 1],
+                    <?php endforeach; ?>
+                ]
+            },
+        <?php endforeach; ?>
+    ];
 
+    let options = {};
+
+    let chart = visavail.generate(options, dataset);
 </script>
-<?php echo $_POST['startDate'] ?>
