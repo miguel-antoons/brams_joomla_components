@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
                 "interval_s": 300,
                 "data": [
                     <?php foreach ($this->availability as $file) : ?>
-                        ["<?php echo $file->start ?>", 1],
+                        ["<?php echo $file->start ?>", 1, "<?php echo date('Y-M-d h:i:s', strtotime($file->start)->add(new DateInterval('PT5M'))) ?>"],
                     <?php endforeach; ?>
                 ]
             },
@@ -58,4 +58,5 @@ defined('_JEXEC') or die('Restricted access');
     let options = {};
 
     let chart = visavail.generate(options, dataset);
+    console.log(dataset);
 </script>
