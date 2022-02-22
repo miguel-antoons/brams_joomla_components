@@ -31,14 +31,6 @@ class BramsDataViewAvailability extends HtmlView {
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
-
-			return false;
-		}
-
 		// process the submitted form
 		if (isset($_GET['submit'])) {
 			foreach ($_GET['station'] as $result) {
@@ -56,6 +48,14 @@ class BramsDataViewAvailability extends HtmlView {
 		else {
 			$this->start_date = $this->get('StartDate');
 			$this->end_date = $this->get('Today');
+		}
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+
+			return false;
 		}
 
 		// Display the view

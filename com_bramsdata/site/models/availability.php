@@ -40,9 +40,6 @@ class BramsDataModelAvailability extends ItemModel {
 	public function getStations() {
 		$db = JFactory::getDbo();
 		$system_query = $db->getQuery(true);
-		$today = date('Y-m-d');
-		$start_date = date('Y-m-d', strtotime("-5 days"));
-		$end_date = $today;
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
@@ -56,19 +53,23 @@ class BramsDataModelAvailability extends ItemModel {
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 
 		$db->setQuery($system_query);
+		$this->stations = $db->loadObjectList();
 
-		return $db->loadObjectList();
+		return $this->stations;
 	}
 
 	public function getToday() {
-		return date('Y-m-d');
+		$this->today = date('Y-m-d');
+		return $this->today;
 	}
 
 	public function getStartDate() {
-		return date('Y-m-d', strtotime("-5 days"));
+		$this->start_date = date('Y-m-d', strtotime("-5 days"));
+		return $this->start_date;
 	}
 
 	public function getYesterday() {
-		date('Y-m-d', strtotime("-1 days"));
+		$this->start_date = date('Y-m-d', strtotime("-1 days"));
+		return $this->start_date;
 	}
 }
