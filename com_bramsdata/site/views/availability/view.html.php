@@ -52,6 +52,14 @@ class BramsDataViewAvailability extends HtmlView {
 		$this->setDocument();
 	}
 
+	public function getStartDate() {
+		return $this->start_date;
+	}
+
+	public function getEndDate() {
+		return $this->end_date;
+	}
+
 	// entry-point of form processing
 	private function processForm() {
 		$this->selected_stations = array();
@@ -68,7 +76,6 @@ class BramsDataViewAvailability extends HtmlView {
 			$this->end_date = $this->get('Today');
 		}
 
-		echo $this->start_date;
 		$this->getFileAvailability();
 	}
 
