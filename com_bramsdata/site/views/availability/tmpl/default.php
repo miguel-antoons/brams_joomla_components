@@ -41,7 +41,8 @@ defined('_JEXEC') or die('Restricted access');
     <input name='submit' type='submit' />
 </form>
 <p>
-<?php print_r($this->availability) ?>
+<?php echo $this->availability ?>
+<?php echo $this->debug_query ?>
 </p>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
