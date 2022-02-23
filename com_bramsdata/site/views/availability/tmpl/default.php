@@ -40,6 +40,14 @@ defined('_JEXEC') or die('Restricted access');
 
     <input name='submit' type='submit' />
 </form>
+<p>
+<?php echo $this->selected_stations ?>
+</p>
+<div style="overflow: hidden;" class="visavail" id="visavail_container">
+    <p id="visavail_graph">
+        <!-- Visavail.js chart will be placed here -->
+    </p>
+</div>
 <script>
     let dataset = [
         <?php foreach ($this->selected_stations as $station) : ?>
@@ -63,11 +71,3 @@ defined('_JEXEC') or die('Restricted access');
     let chart = visavail.generate(options, dataset);
     console.log(dataset);
 </script>
-<p>
-<?php echo $this->selected_stations ?>
-</p>
-<div style="overflow: hidden;" class="visavail" id="visavail_container">
-    <p id="visavail_graph">
-        <!-- Visavail.js chart will be placed here -->
-    </p>
-</div>
