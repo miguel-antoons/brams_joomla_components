@@ -55,7 +55,10 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
-    let options = {};
+    let options = {
+        id_div_container: "visavail_container",
+        id_div_graph: "visavail_graph"
+    };
 
     let chart = visavail.generate(options, dataset);
     console.log(dataset);
