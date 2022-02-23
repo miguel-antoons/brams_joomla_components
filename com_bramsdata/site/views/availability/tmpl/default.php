@@ -58,10 +58,11 @@ defined('_JEXEC') or die('Restricted access');
                 "interval_s": 300,
                 "data": [
                     <?php foreach ($this->availability as $file) : ?>
-                        ["<?php echo $file->start ?>", 1, "<?php 
+                        ["<?php echo $file->start ?>", 1, 
+                            "<?php 
                             $end_time = new DateTime($file->start);
                             $end_time->add(new DateInterval('PT5M'));
-                            echo $end_time->format('Y-m-d H:i');
+                            echo $end_time->format('Y-m-d H:i:s');
                             ?>"],
                     <?php endforeach; ?>
                 ]
