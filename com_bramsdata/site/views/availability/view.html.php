@@ -10,6 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use \Joomla\CMS\MVC\View\HtmlView;
+use \Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * HTML View class for the BramsData Component
@@ -74,7 +75,7 @@ class BramsDataViewAvailability extends HtmlView {
 	// get and structure the file availability data
 	private function getFileAvailability() {
 		//$this->selected_stations = array(2);
-		$model = jController::getModel('ModelAvailability', 'BramsData');
+		$model = BaseController::getModel('ModelAvailability', 'BramsData');
 		$this->availability = $model->getAvailability($this->start_date, $this->end_date);
 		//$this->availability = $this->get('Availability');
 	}
