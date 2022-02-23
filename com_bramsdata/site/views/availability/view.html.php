@@ -74,8 +74,9 @@ class BramsDataViewAvailability extends HtmlView {
 	// get and structure the file availability data
 	private function getFileAvailability() {
 		//$this->selected_stations = array(2);
-		$model = $this->getModel();
-		$this->availability = $model->getAvailability($this->start_date, $this->end_date);
+		//$model = $this->getModel();
+		//$this->availability = $model->getAvailability($this->start_date, $this->end_date);
+		$this->availability = $this->get('Availability');
 	}
 
 	// function adds needed javascript and css files to the view
