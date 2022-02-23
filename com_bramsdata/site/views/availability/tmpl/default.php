@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
                             <?php 
                             $end_time = new DateTime($file->start);
                             $end_time->add(new DateInterval('PT5M'));
-                            echo $time->format('Y-m-d H:i');
+                            echo $end_time->format('Y-m-d H:i');
                             ?>
                         "],
                     <?php endforeach; ?>
