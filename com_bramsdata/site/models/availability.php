@@ -74,8 +74,8 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date) {
-		$db = JFactory::getDbo();
-		$availability_query = $db->getQuery(true);
+		//$db = JFactory::getDbo();
+		//$availability_query = $db->getQuery(true);
 
 		// $availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
 		// $availability_query->from($db->quoteName('file'));
@@ -85,6 +85,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 		//$db->setQuery($availability_query);
 
-		return $db->loadObjectList();
+		//return $db->loadObjectList();
+		return null;
 	}
 }
