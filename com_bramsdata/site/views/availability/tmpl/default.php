@@ -76,5 +76,5 @@ defined('_JEXEC') or die('Restricted access');
     };
 
     let chart = visavail.generate(options, dataset);
-    console.log(dataset);
+    //console.log(dataset);
 </script>
