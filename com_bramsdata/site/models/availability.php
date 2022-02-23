@@ -77,13 +77,13 @@ class BramsDataModelAvailability extends ItemModel {
 		$db = JFactory::getDbo();
 		$availability_query = $db->getQuery(true);
 
-		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
-		$availability_query->from($db->quoteName('file'));
-		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
-		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
-		echo $availability_query;
+		// $availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
+		// $availability_query->from($db->quoteName('file'));
+		// $availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
+		// $availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
+		echo '$availability_query';
 
-		$db->setQuery($availability_query);
+		//$db->setQuery($availability_query);
 
 		return $db->loadObjectList();
 	}
