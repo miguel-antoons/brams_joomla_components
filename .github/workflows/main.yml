@@ -24,9 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          path: './com_bramsdata/'
-          filename: 'com_bramsdata.zip'
+      - name: Zip component and upload to github.
+        uses: actions/upload-artifact@v2
+        with: 
+          name: com_bramsdata
+          path: com_bramsdata
