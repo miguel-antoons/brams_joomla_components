@@ -83,9 +83,8 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
 		echo $availability_query;
 
-		//$db->setQuery($availability_query);
+		$db->setQuery($availability_query);
 
-		//return $db->loadObjectList();
-		return null;
+		return $db->loadObjectList();
 	}
 }
