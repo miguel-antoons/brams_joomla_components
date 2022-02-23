@@ -67,6 +67,8 @@ class BramsDataViewAvailability extends HtmlView {
 			$this->start_date = $this->get('Yesterday');
 			$this->end_date = $this->get('Today');
 		}
+
+		$this->getFileAvailability();
 	}
 
 	// get and structure the file availability data
