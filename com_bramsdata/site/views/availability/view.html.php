@@ -25,15 +25,6 @@ class BramsDataViewAvailability extends HtmlView {
 	 * @return  void
 	 */
 	function display($tpl = null) {
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/fontawesome.v5.0.12.css');
-		$document->addScript('/components/com_bramsdata/views/availability/js/d3.min.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/moment-with-locales.min.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
-
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
 
@@ -56,6 +47,9 @@ class BramsDataViewAvailability extends HtmlView {
 
 		// Display the view
 		parent::display($tpl);
+
+		// add javascript and css
+		$this->setDocument();
 	}
 
 	// entry-point of form processing
@@ -77,5 +71,17 @@ class BramsDataViewAvailability extends HtmlView {
 	private function getFileAvailability() {
 		$this->selected_stations = array(2);
 		$this->availability = $this->get('Availability');
+	}
+
+	// function adds needed javascript and css files to the view
+	private function setDocument() {
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
+		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
+		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/fontawesome.v5.0.12.css');
+		$document->addScript('/components/com_bramsdata/views/availability/js/d3.min.js');
+		$document->addScript('/components/com_bramsdata/views/availability/js/moment-with-locales.min.js');
+		$document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
+		$document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
 	}
 }
