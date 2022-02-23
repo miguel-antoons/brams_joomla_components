@@ -40,10 +40,11 @@ defined('_JEXEC') or die('Restricted access');
 
     <input name='submit' type='submit' />
 </form>
+<!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
-<?php echo $this->availability ?>
-<?php echo $this->debug_query ?>
+    <?php echo $this->availability ?>
 </p>
+
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
