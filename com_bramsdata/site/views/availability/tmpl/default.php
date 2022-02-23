@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
     <input name='submit' type='submit' />
 </form>
 <p>
-<?php echo $this->selected_stations ?>
+<?php print_r($this->availability) ?>
 </p>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
