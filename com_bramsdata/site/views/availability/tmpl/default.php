@@ -57,14 +57,12 @@ defined('_JEXEC') or die('Restricted access');
                 "measure": "<?php echo $station ?>",
                 "interval_s": 300,
                 "data": [
-                    <?php foreach ($this->availability as $file) : ?>
-                        ["<?php echo $file->start ?>", 1, 
+                    <?php for ($index = 0 ; $index < count($this->availability) - 1 ; $index++) : ?>
+                        ["<?php echo $availability[$index]->start ?>", 1, 
                             "<?php 
-                            $end_time = new DateTime($file->start);
-                            $end_time->add(new DateInterval('PT5M'));
-                            echo $end_time->format('Y-m-d H:i:s');
+                            echo new DateTime($availability[$index]->start);
                             ?>"],
-                    <?php endforeach; ?>
+                    <?php endfor; ?>
                 ]
             },
         <?php endforeach; ?>

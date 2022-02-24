@@ -93,6 +93,42 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date) {
+		$db_availability = $this->getAvailabilityDB($start_date, $end_date);
+		$expected_start = new DateTime($start_date);
+		$expected_start = $expected_start->format('Y-m-d H:i:s');
+
+		for ($index = 0 ; $index < count($db_availability) ; $index++) {
+			$db_availability[$index]->available = 1;
+			$end_time = new DateTime($db_availability[$index]->start);
+        	$end_time->add(new DateInterval('PT5M'));
+
+			if ($db_availability[$index]->start !== $expected_start) {
+				$temp_object->start = $expected_start;
+				$temp_object->available = 0;
+				array_splice($db_availability, $index, 0, $temp_object);
+
+				//$expected_start_dt = new DateTime($expected_start);
+				// $time_unavailable = $expected_start_dt->diff(new DateTime($db_availability[$index]->start));
+
+				// $n_5min_intervals = (
+				// 	$time_unavailable->days * 24 * 60 
+				// 	+ $time_unavailable->h * 60 
+				// 	+ $time_unavailable->i
+				// 	) / 5;
+			}
+
+			$expected_start = $end_time->format('Y-m-d H:i:s');
+		}
+
+		$end_datetime = new DateTime($end_date);
+		$last_object->start = $end_datetime->format('Y-m-d H:i:s');
+		array_push($db_availability, $last_object);
+
+		return $db_availability;
+	}
+
+	// get file availability from database
+	private function getAvailabilityDB($start_date, $end_date) {
 		$db = $this->connectToDatabase();
 		$availability_query = $db->getQuery(true);
 
