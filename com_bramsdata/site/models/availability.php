@@ -110,7 +110,7 @@ class BramsDataModelAvailability extends ItemModel {
 				$temp_object->start = $expected_start;
 				$temp_object->available = 0;
 
-				array_splice($db_availability, $index + $objects_added, 0, $temp_object);
+				array_splice($db_availability, $index + $objects_added, 0, clone $temp_object);
 
 				$objects_added++;
 			}
