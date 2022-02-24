@@ -50,8 +50,9 @@ class BramsDataModelAvailability extends ItemModel {
 		return $this->message;
 	}
 
+	// get all the stations from the external brams database
 	public function getStations() {
-		$db = connectToDatabase();
+		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
@@ -87,7 +88,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date) {
-		$db = connectToDatabase();
+		$db = $this->connectToDatabase();
 		$availability_query = $db->getQuery(true);
 
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
