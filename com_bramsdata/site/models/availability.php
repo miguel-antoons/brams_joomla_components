@@ -115,7 +115,7 @@ class BramsDataModelAvailability extends ItemModel {
 				$db_availability = array_merge(
 					array_slice($db_availability, 0, $index + $objects_added), 
 					$temp_object, 
-					array_slice($db_availability, $index)
+					array_slice($db_availability, $index + $objects_added)
 				);
 
 				$objects_added++;
