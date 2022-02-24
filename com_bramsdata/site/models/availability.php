@@ -94,7 +94,7 @@ class BramsDataModelAvailability extends ItemModel {
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date) {
 		$db_availability = $this->getAvailabilityDB($start_date, $end_date);
-		echo $db_availability;
+		print_r($db_availability);
 
 		$expected_start = new DateTime($start_date);
 		$expected_start = $expected_start->format('Y-m-d H:i:s');
