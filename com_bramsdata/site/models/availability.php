@@ -23,6 +23,19 @@ class BramsDataModelAvailability extends ItemModel {
 	 */
 	protected $message;
 
+	private function connectToDatabase() {
+		$database_options = array();
+
+		$database_options['driver'] = $_ENV['DB_DRIVER'];
+		$database_options['host'] = $_ENV['DB_HOST'];
+		$database_options['user'] = $_ENV['DB_USER'];
+		$database_options['password'] = $_ENV['DB_PASSWORD'];
+		$database_options['database'] = $_ENV['DB_NAME'];
+		$database_options['prefix'] = $_ENV['DB_PREFIX'];
+
+		return JDatabaseDriver::getInstance($database_options);
+	}
+
 	/**
 	 * Get the message
      *
@@ -38,7 +51,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	public function getStations() {
-		$db = JFactory::getDbo();
+		$db = connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
@@ -74,7 +87,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date) {
-		$db = JFactory::getDbo();
+		$db = connectToDatabase();
 		$availability_query = $db->getQuery(true);
 
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
