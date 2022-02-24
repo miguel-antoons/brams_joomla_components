@@ -60,7 +60,8 @@ defined('_JEXEC') or die('Restricted access');
                     <?php for ($index = 0 ; $index < count($this->availability) - 1 ; $index++) : ?>
                         ["<?php echo $availability[$index]->start ?>", 1, 
                             "<?php 
-                            echo new DateTime($availability[$index]->start);
+                            $end_time = new DateTime($availability[$index]->start);
+                            echo $end_time;
                             ?>"],
                     <?php endfor; ?>
                 ]
