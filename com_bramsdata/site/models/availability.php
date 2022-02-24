@@ -24,16 +24,20 @@ class BramsDataModelAvailability extends ItemModel {
 	protected $message;
 
 	private function connectToDatabase() {
-		$database_options = array();
+		/* Below lines are for connecting to production database later on */
+		// $database_options = array();
 
-		$database_options['driver'] = $_ENV['DB_DRIVER'];
-		$database_options['host'] = $_ENV['DB_HOST'];
-		$database_options['user'] = $_ENV['DB_USER'];
-		$database_options['password'] = $_ENV['DB_PASSWORD'];
-		$database_options['database'] = $_ENV['DB_NAME'];
-		$database_options['prefix'] = $_ENV['DB_PREFIX'];
+		// $database_options['driver'] = $_ENV['DB_DRIVER'];
+		// $database_options['host'] = $_ENV['DB_HOST'];
+		// $database_options['user'] = $_ENV['DB_USER'];
+		// $database_options['password'] = $_ENV['DB_PASSWORD'];
+		// $database_options['database'] = $_ENV['DB_NAME'];
+		// $database_options['prefix'] = $_ENV['DB_PREFIX'];
 
-		return JDatabaseDriver::getInstance($database_options);
+		// return JDatabaseDriver::getInstance($database_options);
+
+		// below line is for connecting to default joomla database
+		return JFactory::getDbo();
 	}
 
 	/**
@@ -53,6 +57,7 @@ class BramsDataModelAvailability extends ItemModel {
 	// get all the stations from the external brams database
 	public function getStations() {
 		$db = $this->connectToDatabase();
+		$db = JFactory::getDbo();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
