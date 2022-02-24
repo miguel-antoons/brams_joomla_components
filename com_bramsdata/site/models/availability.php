@@ -112,7 +112,11 @@ class BramsDataModelAvailability extends ItemModel {
 					'available' => 0
 				);
 
-				array_splice($db_availability, ($index + $objects_added), 0, $temp_object);
+				$db_availability = array_merge(
+					array_slice($db_availability, 0, $index + $objects_added), 
+					$temp_object, 
+					array_slice($db_availability, $index)
+				);
 
 				$objects_added++;
 			}
