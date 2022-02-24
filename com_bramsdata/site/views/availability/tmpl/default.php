@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 </form>
 <!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
-    <?php //print_r($this->availability) ?>
+    <?php print_r($this->availability) ?>
 </p>
 
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
