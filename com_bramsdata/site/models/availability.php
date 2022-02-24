@@ -97,16 +97,18 @@ class BramsDataModelAvailability extends ItemModel {
 		$expected_start = new DateTime($start_date);
 		$expected_start = $expected_start->format('Y-m-d H:i:s');
 		$availability_array_length = count($db_availability);
+		$objects_added = 0;
 
 		for ($index = 0 ; $index < $availability_array_length ; $index++) {
-			$db_availability[$index]->available = 1;
-			$end_time = new DateTime($db_availability[$index]->start);
+			$db_availability[$index + $objects_added]->available = 1;
+			$end_time = new DateTime($db_availability[$index + $objects_added]->start);
         	$end_time->add(new DateInterval('PT5M'));
 
-			if ($db_availability[$index]->start !== $expected_start) {
+			if ($db_availability[$index + $objects_added]->start !== $expected_start) {
 				$temp_object->start = $expected_start;
 				$temp_object->available = 0;
-				array_splice($db_availability, $index, 0, $temp_object);
+				array_splice($db_availability, $index + $objects_added, 0, $temp_object);
+				$objects_added++;
 
 				//$expected_start_dt = new DateTime($expected_start);
 				// $time_unavailable = $expected_start_dt->diff(new DateTime($db_availability[$index]->start));

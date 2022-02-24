@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
                 "interval_s": 300,
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability) - 1 ; $index++) : ?>
-                        ["<?php echo $availability[$index]->start ?>", 1, 
+                        ["<?php echo $availability[$index]->start ?>", <?php echo $availability[$index]->available ?>, 
                             "<?php 
                             $end_time = new DateTime($availability[$index]->start);
                             echo $end_time->format('Y-m-d H:i:s');
