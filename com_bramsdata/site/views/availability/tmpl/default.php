@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
                             "<?php echo $this->availability[$index]->start ?>", 
                             "<?php echo $this->availability[$index]->available ?>", 
                             "<?php 
-                                $end_time = new DateTime($this->availability[$index]->start);
+                                $end_time = new DateTime($this->availability[$index + 1]->start);
                                 echo $end_time->format('Y-m-d H:i:s');
                             ?>"
                         ],
