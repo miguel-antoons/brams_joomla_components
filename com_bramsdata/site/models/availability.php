@@ -107,11 +107,12 @@ class BramsDataModelAvailability extends ItemModel {
         	$end_time->add(new DateInterval('PT5M'));
 
 			if ($db_availability[$index + $objects_added]->start !== $expected_start) {
-				$temp_object = new stdClass();
-				$temp_object->start = $expected_start;
-				$temp_object->available = 0;
+				$temp_object = array(
+					'start' => $expected_start,
+					'available' => 0
+				);
 
-				array_splice($db_availability, ($index + $objects_added), 0, new stdClass($temp_object));
+				array_splice($db_availability, ($index + $objects_added), 0, (object) $temp_object);
 
 				$objects_added++;
 			}
