@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
                         ["<?php echo $availability[$index]->start ?>", 1, 
                             "<?php 
                             $end_time = new DateTime($availability[$index]->start);
-                            echo $end_time;
+                            echo $end_time->format('Y-m-d H:i:s');
                             ?>"],
                     <?php endfor; ?>
                 ]
