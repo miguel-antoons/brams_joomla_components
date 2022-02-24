@@ -76,9 +76,12 @@ defined('_JEXEC') or die('Restricted access');
         id_div_container: "visavail_container",
         id_div_graph: "visavail_graph",
         icon: {
-				class_has_data: 'fas fa-fw fa-check',
-				class_has_no_data: 'fas fa-fw fa-exclamation-circle'
-			},
+            class_has_data: 'fas fa-fw fa-check',
+            class_has_no_data: 'fas fa-fw fa-exclamation-circle'
+		},
+        responsive:{
+            enabled:true,
+        }
     };
 
     let chart = visavail.generate(options, dataset);
