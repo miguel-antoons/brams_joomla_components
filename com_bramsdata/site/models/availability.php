@@ -95,8 +95,11 @@ class BramsDataModelAvailability extends ItemModel {
 	public function getAvailability($start_date, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
 		$db_availability = $this->getAvailabilityDB($start_date, $end_date, $selected_stations);
-		$final_availability_array = array();								// array will contain all the final availability info
-		//print_r($db_availability);
+		$final_availability_array = array();			// array will contain all the final availability info
+
+		//debug
+		print_r($db_availability);
+		print_r($selected_stations);
 
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
@@ -183,7 +186,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->from($db->quoteName('file'));
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
-		$availability_query->where($db->quoteName('system_id') . ' in (' . $db->quote(implode(', ', $selected_stations)) . ')');
+		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
 
 		// debug
 		echo $availability_query;
