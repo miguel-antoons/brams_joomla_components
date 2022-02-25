@@ -101,6 +101,9 @@ class BramsDataModelAvailability extends ItemModel {
 
 		if ($time_difference->days > 14) {
 			echo 'debug';
+			$db_function_to_use = array($this, 'getAvailabilityRateDB');
+			$function_to_use = array($this, 'get_unprecise_file_availability');
+			$start_to_use = $start_date;
 		}
 		else {
 			$db_function_to_use = array($this, 'getAvailabilityDB');
@@ -183,6 +186,7 @@ class BramsDataModelAvailability extends ItemModel {
 				$temp_available = 7;
 			}
 
+			$temp_object = new stdClass();
 			$temp_object->start = $expected_start;
 			$temp_object->available = $temp_available;
 			$final_availability_array[$station][] = $temp_object;
@@ -205,6 +209,9 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// add that object to the final availability array
 		$array[$station][] = $temp_object;
+
+		// toogle the flag
+		$flag = !$flag;
 	}
 
 	private function string_to_datetime($string_to_convert) {
@@ -220,6 +227,25 @@ class BramsDataModelAvailability extends ItemModel {
 		// generate a database query
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
 		$availability_query->from($db->quoteName('file'));
+		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
+		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
+		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
+
+		// execute the previously generated query
+		$db->setQuery($availability_query);
+
+		// return the data received from the database
+		return $db->loadObjectList();
+	}
+
+	// get file availability rate from database
+	private function getAvailabilityRateDB($start_date, $end_date, $selected_stations) {
+		$db = $this->connectToDatabase();			// create a database connection
+		$availability_query = $db->getQuery(true);
+
+		// generate a database query
+		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('rate'));
+		$availability_query->from($db->quoteName('file_availability'));
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
