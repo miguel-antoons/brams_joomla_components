@@ -76,6 +76,16 @@ class BramsDataModelAvailability extends ItemModel {
 		return $db->loadObjectList();
 	}
 
+	public function getCategories() {
+		$javascript_string = "'categories': {
+			'1': {class: 'rect_has_no_data', tooltip_html: '<i class='fas fa-fw fa-exclamation-circle tooltip_has_no_data'></i>'},
+			'2': {class: 'rect_has_data', tooltip_html: '<i class='fas fa-fw fa_check tooltip_has_data'></i>'},
+			'7': {class: 'rect_purple', tooltip_html: '<i class='fas fa-fw fa_check tooltip_purple'></i>'},
+		},";
+
+		return $javascript_string;
+	}
+
 	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');
@@ -92,7 +102,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	// get all the file information between 2 dates
-	public function getAvailability($start_date, $end_date, $selected_stations) {
+	public function getAvailability($start_date, $end_date, $selected_stations, &$custom_categories) {
 		$start_datetime = $this->string_to_datetime($start_date);
 		$end_datetime = $this->string_to_datetime($end_date);
 
@@ -100,24 +110,22 @@ class BramsDataModelAvailability extends ItemModel {
 		$time_difference = $start->diff(new DateTime($end_datetime));
 
 		if ($time_difference->days > 14) {
-			echo 'debug';
-			$db_function_to_use = array($this, 'getAvailabilityRateDB');
-			$function_to_use = array($this, 'get_unprecise_file_availability');
-			$start_to_use = $start_date;
+			$custom_categories = true;
+			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date);
 		}
 		else {
-			$db_function_to_use = array($this, 'getAvailabilityDB');
-			$function_to_use = array($this, 'get_precise_file_availability');
-			$start_to_use = $start_datetime;
+			$custom_categories = false;
+			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_datetime);
 		}
+	}
 
+	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use) {
 		// contains all the raw availability information coming from the database
 		$db_availability = $db_function_to_use($start_date, $end_date, $selected_stations);
 		$final_availability_array = array();			// array will contain all the final availability info
 
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
-			$flag = -1;								// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
 			$expected_start = $start_to_use;		// set the initial expected start
 			
 			// filter the array coming from the database in order to keep the info
@@ -173,48 +181,36 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			if (intval($availability_info->rate) === 0 && $previous_available !== 1) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 1;
-				$previous_available = 1;
+				$temp_object = change_category($change, $previous_available, 1);
 			}
 			elseif (intval($availability_info->rate) === 1000 && $previous_available !== 2) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 2;
-				$previous_available = 2;
+				$temp_object = change_category($change, $previous_available, 2);
 			}
 			elseif (intval($availability_info->rate) <= 200 && $previous_available !== 3) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 3;
-				$previous_available = 3;
+				$temp_object = change_category($change, $previous_available, 3);
 			}
 			elseif (intval($availability_info->rate) <= 400 && $previous_available !== 4) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 4;
-				$previous_available = 4;
+				$temp_object = change_category($change, $previous_available, 4);
 			}
 			elseif (intval($availability_info->rate) <= 600 && $previous_available !== 5) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 5;
-				$previous_available = 5;
+				$temp_object = change_category($change, $previous_available, 5);
 			}
 			elseif (intval($availability_info->rate) <= 800 && $previous_available !== 6) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 6;
-				$previous_available = 6;
+				$temp_object = change_category($change, $previous_available, 6);
 			}
 			elseif (intval($availability_info->rate) < 1000 && $previous_available !== 7) {
-				$change = true;
-				$temp_object = new stdClass();
-				$temp_object->available = 7;
-				$previous_available = 7;
+				$temp_object = change_category($change, $previous_available, 7);
 			}
 		}
+	}
+
+	private function change_category(&$change, &$previous_available, $category) {
+		$change = true;
+		$previous_available = 4;
+		$temp_object = new stdClass();
+		$temp_object->available = $category;
+
+		return $temp_object;
 	}
 
 	// add availability info to the availability array

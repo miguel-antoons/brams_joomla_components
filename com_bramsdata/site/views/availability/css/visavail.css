@@ -203,3 +203,6 @@ div.y-tooltip.bottom::after {
     -moz-osx-font-smoothing: grayscale;
     fill: #777;
 }
+
+.rect_purple{fill: purple}
+.tooltip_purple{color: purple}
