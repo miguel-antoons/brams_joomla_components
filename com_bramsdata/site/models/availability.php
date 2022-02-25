@@ -178,37 +178,39 @@ class BramsDataModelAvailability extends ItemModel {
 				$change = false;
 			}
 
-			if (intval($availability_info->rate) === 0 && $previous_available !== 1) {
+			if (intval($availability_info->rate) === 0) {
 				$temp_object = $this->change_category($change, $previous_available, 1);
 			}
-			elseif (intval($availability_info->rate) === 1000 && $previous_available !== 2) {
+			elseif (intval($availability_info->rate) === 1000) {
 				$temp_object = $this->change_category($change, $previous_available, 2);
 			}
-			elseif (intval($availability_info->rate) <= 200 && $previous_available !== 3) {
+			elseif (intval($availability_info->rate) <= 200) {
 				$temp_object = $this->change_category($change, $previous_available, 3);
 			}
-			elseif (intval($availability_info->rate) <= 400 && $previous_available !== 4) {
+			elseif (intval($availability_info->rate) <= 400) {
 				$temp_object = $this->change_category($change, $previous_available, 4);
 			}
-			elseif (intval($availability_info->rate) <= 600 && $previous_available !== 5) {
+			elseif (intval($availability_info->rate) <= 600) {
 				$temp_object = $this->change_category($change, $previous_available, 5);
 			}
-			elseif (intval($availability_info->rate) <= 800 && $previous_available !== 6) {
+			elseif (intval($availability_info->rate) <= 800) {
 				$temp_object = $this->change_category($change, $previous_available, 6);
 			}
-			elseif (intval($availability_info->rate) < 1000 && $previous_available !== 7) {
+			elseif (intval($availability_info->rate) < 1000) {
 				$temp_object = $this->change_category($change, $previous_available, 7);
 			}
 		}
 	}
 
 	private function change_category(&$change, &$previous_available, $category) {
-		$change = true;
-		$previous_available = $category;
-		$temp_object = new stdClass();
-		$temp_object->available = $category;
+		if ($previous_available !== $category) {
+			$change = true;
+			$previous_available = $category;
+			$temp_object = new stdClass();
+			$temp_object->available = $category;
 
-		return $temp_object;
+			return $temp_object;
+		}
 	}
 
 	// add availability info to the availability array
