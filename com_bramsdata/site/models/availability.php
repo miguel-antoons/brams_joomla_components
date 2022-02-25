@@ -126,8 +126,7 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 			);
 
-			$temp_object = new stdClass();
-			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $temp_object, $station);
+			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $station);
 		}
 
 		$last_object = new stdClass();									// create a new object
@@ -137,7 +136,7 @@ class BramsDataModelAvailability extends ItemModel {
 		return $final_availability_array;
 	}
 
-	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, &$temp_object, $station) {
+	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
@@ -147,7 +146,7 @@ class BramsDataModelAvailability extends ItemModel {
 			// or if the effective start time and the expected start time match and the previous
 			// object added to the array has availability set to 0
 			if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
-				$this->add_availability_info($temp_object, $final_availability_array, $expected_start, $station);
+				$this->add_availability_info($final_availability_array, $expected_start, $station);
 			}
 
 			// update the expected start time with the next expected value
@@ -155,34 +154,35 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 	}
 
-	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, &$temp_object, $station) {
+	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$availability_info = &$specific_station_availability[$index];
+
+			if ($availability_info->rate === 0 && $temp_available !== 1) {
+				$temp_available = 1;
+			}
+			elseif ($availability_info->rate === 1000 && $temp_available !== 2){
+				$temp_available = 2;
+			}
+			elseif ($availability_info->rate <= 200 && $temp_available !== 3){
+				$temp_available = 3;
+			}
+			elseif ($availability_info->rate <= 400 && $temp_available !== 4){
+				$temp_available = 4;
+			}
+			elseif ($availability_info->rate <= 600 && $temp_available !== 5){
+				$temp_available = 5;
+			}
+			elseif ($availability_info->rate <= 800 && $temp_available !== 6){
+				$temp_available = 6;
+			}
+			elseif ($availability_info->rate <= 1000 && $temp_available !== 7){
+				$temp_available = 7;
+			}
+
 			$temp_object->start = $expected_start;
-
-			if ($availability_info->rate === 0 && $temp_object->available !== 1) {
-				$temp_object->available = 1;
-			}
-			elseif ($availability_info->rate === 1000 && $temp_object->available !== 2){
-				$temp_object->available = 2;
-			}
-			elseif ($availability_info->rate <= 200 && $temp_object->available !== 3){
-				$temp_object->available = 3;
-			}
-			elseif ($availability_info->rate <= 400 && $temp_object->available !== 4){
-				$temp_object->available = 4;
-			}
-			elseif ($availability_info->rate <= 600 && $temp_object->available !== 5){
-				$temp_object->available = 5;
-			}
-			elseif ($availability_info->rate <= 800 && $temp_object->available !== 6){
-				$temp_object->available = 6;
-			}
-			elseif ($availability_info->rate <= 1000 && $temp_object->available !== 7){
-				$temp_object->available = 7;
-			}
-
+			$temp_object->available = $temp_available;
 			$final_availability_array[$station][] = $temp_object;
 		}
 	}
@@ -194,9 +194,11 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// set availability according to the flag
 		if ($temp_object->available) {
+			$temp_object = new stdClass();
 			$temp_object->available = 0;
 		}
 		else {
+			$temp_object = new stdClass();
 			$temp_object->available = 1;
 		}
 
