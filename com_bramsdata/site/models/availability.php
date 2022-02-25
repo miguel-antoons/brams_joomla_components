@@ -254,6 +254,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
+		$availability_query->order($db->quoteName('start'));
 
 		// execute the previously generated query
 		$db->setQuery($availability_query);
@@ -273,6 +274,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date) . ', DATE)');
 		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date) . ', DATE)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
+		$availability_query->order($db->quoteName('date'));
 
 		// execute the previously generated query
 		$db->setQuery($availability_query);
