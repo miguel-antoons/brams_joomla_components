@@ -80,6 +80,13 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
+    if (<?php echo $this->custom_categories ?>) {
+        let customized_categories = true;
+    }
+    else {
+        let customized_categories = false;
+    }
+
     let options = {
         id_div_container: "visavail_container",
         id_div_graph: "visavail_graph",
@@ -90,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
         responsive:{
             enabled: true,
         },
-        custom_categories: <?php echo $this->custom_categories ?>
+        custom_categories: customized_categories,
     };
 
     let chart = visavail.generate(options, dataset);

@@ -77,13 +77,6 @@ class BramsDataViewAvailability extends HtmlView {
 		$this->custom_categories;
 		$model = $this->getModel();
 		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->custom_categories);
-		
-		if ($this->custom_categories) {
-			$this->custom_categories = 'true';
-		}
-		else {
-			$this->custom_categories = 'false';
-		}
 	}
 
 	// function adds needed javascript and css files to the view
