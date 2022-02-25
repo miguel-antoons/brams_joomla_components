@@ -167,26 +167,33 @@ class BramsDataModelAvailability extends ItemModel {
 			$temp_object = new stdClass();
 			$temp_object->start = $expected_start;
 
-			if ($availability_info->rate === 0 && $temp_available !== 1) {
+			if (intval($availability_info->rate) === 0 && $temp_available !== 1) {
 				$temp_object->available = 1;
+				$temp_available = 1;
 			}
-			elseif ($availability_info->rate === 1000 && $temp_available !== 2){
+			elseif (intval($availability_info->rate) === 1000 && $temp_available !== 2){
 				$temp_object->available = 2;
+				$temp_available = 2;
 			}
-			elseif ($availability_info->rate <= 200 && $temp_available !== 3){
+			elseif (intval($availability_info->rate) <= 200 && $temp_available !== 3){
 				$temp_object->available = 3;
+				$temp_available = 3;
 			}
-			elseif ($availability_info->rate <= 400 && $temp_available !== 4){
+			elseif (intval($availability_info->rate) <= 400 && $temp_available !== 4){
 				$temp_object->available = 4;
+				$temp_available = 4;
 			}
-			elseif ($availability_info->rate <= 600 && $temp_available !== 5){
+			elseif (intval($availability_info->rate) <= 600 && $temp_available !== 5){
 				$temp_object->available = 5;
+				$temp_available = 5;
 			}
-			elseif ($availability_info->rate <= 800 && $temp_available !== 6){
+			elseif (intval($availability_info->rate) <= 800 && $temp_available !== 6){
 				$temp_object->available = 6;
+				$temp_available = 6;
 			}
-			elseif ($availability_info->rate <= 1000 && $temp_available !== 7){
+			elseif (intval($availability_info->rate) <= 1000 && $temp_available !== 7){
 				$temp_object->available = 7;
+				$temp_available = 7;
 			}
 
 			$final_availability_array[$station][] = $temp_object;
