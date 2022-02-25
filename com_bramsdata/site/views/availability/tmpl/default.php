@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 </form>
 <!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
-    <?php print_r($this->availability) ?>
+    <?php //print_r($this->availability) ?>
 </p>
 
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
@@ -59,10 +59,10 @@ defined('_JEXEC') or die('Restricted access');
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
                         [
-                            "<?php echo $this->availability[$index]->start ?>", 
-                            <?php echo $this->availability[$index]->available ?>, 
+                            "<?php echo $this->availability[$station][$index]->start ?>", 
+                            <?php echo $this->availability[$station][$index]->available ?>, 
                             "<?php 
-                                $end_time = new DateTime($this->availability[$index + 1]->start);
+                                $end_time = new DateTime($this->availability[$station][$index + 1]->start);
                                 echo $end_time->format('Y-m-d H:i:s');
                             ?>"
                         ],
@@ -85,5 +85,5 @@ defined('_JEXEC') or die('Restricted access');
     };
 
     let chart = visavail.generate(options, dataset);
-    console.log(dataset);
+    //console.log(dataset);
 </script>

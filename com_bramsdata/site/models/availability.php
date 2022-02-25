@@ -97,38 +97,25 @@ class BramsDataModelAvailability extends ItemModel {
 		$db_availability = $this->getAvailabilityDB($start_date, $end_date, $selected_stations);
 		$final_availability_array = array();			// array will contain all the final availability info
 
-		//debug
-		//print_r($db_availability);
-		//print_r($selected_stations);
-
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
 			$flag = true;													// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
 			$expected_start = new DateTime($start_date);					// convert the start date to a DateTime object
 			$expected_start = $expected_start->format('Y-m-d H:i:s');		// convert the sart date DateTime object to a string date
-			// $objects_added = 0;											// counts the number of elements added to the availability array
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
 			$specific_station_availability = array_filter(
 				$db_availability,
 				function($availability_info) use ($station) {
-					echo 'station : ' . $station;
-					print_r($availability_info);
-					echo $availability_info->system_id === $station;
-					echo '<br>';
 					return $availability_info->system_id === $station;
 				}
 			);
-
-			// debug
-			print_r($specific_station_availability);
 
 			$availability_length = count($specific_station_availability);
 
 			// iterate over the array containing all the availability info of one specific station
 			for ($index = 0 ; $index < $availability_length ; $index++) {
-				// $db_availability[$index + $objects_added]->available = 1;
 				$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
 				$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
 	
@@ -144,14 +131,6 @@ class BramsDataModelAvailability extends ItemModel {
 
 					// set the flag to true indicating that the last element added to the array has availability set to zero
 					$flag = true;
-	
-					// $db_availability = array_merge(
-					// 	array_slice($db_availability, 0, ($index + $objects_added)), 
-					// 	array($temp_object), 
-					// 	array_slice($db_availability, ($index + $objects_added))
-					// );
-	
-					// $objects_added++;
 				}
 				// if the effective start time and the expected start time match and the previous
 				// object added to the array has availability set to 0
@@ -192,9 +171,6 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
-
-		// debug
-		echo $availability_query;
 
 		// execute the previously generated query
 		$db->setQuery($availability_query);
