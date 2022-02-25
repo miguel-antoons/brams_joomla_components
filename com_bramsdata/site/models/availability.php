@@ -204,7 +204,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 	private function change_category(&$change, &$previous_available, $category) {
 		$change = true;
-		$previous_available = 4;
+		$previous_available = $category;
 		$temp_object = new stdClass();
 		$temp_object->available = $category;
 
