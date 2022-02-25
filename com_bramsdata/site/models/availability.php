@@ -137,6 +137,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
+		$temp_object = new stdClass();
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
@@ -146,7 +147,7 @@ class BramsDataModelAvailability extends ItemModel {
 			// or if the effective start time and the expected start time match and the previous
 			// object added to the array has availability set to 0
 			if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
-				$this->add_availability_info($final_availability_array, $expected_start, $station);
+				$this->add_availability_info($final_availability_array, $expected_start, $station, $temp_object);
 			}
 
 			// update the expected start time with the next expected value
@@ -155,6 +156,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
+		$temp_available = -1;
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$availability_info = &$specific_station_availability[$index];
@@ -188,7 +190,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	// add availability info to the availability array
-	private function add_availability_info(&$array, $expected_start, $station) {
+	private function add_availability_info(&$array, $expected_start, $station, &$temp_object) {
 		// set availability according to the flag
 		if ($temp_object->available) {
 			$temp_object = new stdClass();
