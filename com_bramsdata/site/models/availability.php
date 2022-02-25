@@ -128,13 +128,12 @@ class BramsDataModelAvailability extends ItemModel {
 				// if the effective start time and the expected start time do not match
 				if ($specific_station_availability[$index]->start !== $expected_start) {
 					// create an object stating that the files following the expected start date are missing
-					$temp_object = (object) array(
-						'start' => $expected_start,
-						'available' => 0
-					);
+					$temp_object = new stdClass();
+					$temp_object->start = $expected_start;
+					$temp_object->available = 0;
 
 					// add that object to the final availability array
-					$final_availability_array[$station][] = $temp_object;
+					$final_availability_array[$station][] = clone $temp_object;
 
 					// set the flag to true indicating that the last element added to the array has availability set to zero
 					$flag = true;
@@ -151,13 +150,12 @@ class BramsDataModelAvailability extends ItemModel {
 				// object added to the array has availability set to 0
 				elseif ($flag) {
 					// create an object stating that the files following the expected start date are available
-					$temp_object = (object) array(
-						'start' => $expected_start,
-						'available' => 1
-					);
+					$temp_object = new stdClass();
+					$temp_object->start = $expected_start;
+					$temp_object->available = 1;
 
 					// add that object to the final availability array
-					$final_availability_array[$station][] = $temp_object;
+					$final_availability_array[$station][] = clone $temp_object;
 
 					// set the flag to false indicating that the last element added to the array has availability set to one
 					$flag = false;
