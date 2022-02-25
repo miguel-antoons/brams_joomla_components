@@ -112,7 +112,7 @@ class BramsDataModelAvailability extends ItemModel {
 			// from the station stored in the '$station' variable
 			$specific_station_availability = array_filter(
 				$db_availability,
-				function($availability_info, $station) {
+				function($availability_info) use ($station) {
 					echo 'station : ' . $station;
 					print_r($availability_info);
 					echo $availability_info->system_id === $station;
