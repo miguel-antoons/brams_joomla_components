@@ -28,6 +28,7 @@ class BramsDataViewAvailability extends HtmlView {
 	function display($tpl = null) {
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
+		$this->custom_categories = false;
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
@@ -74,7 +75,7 @@ class BramsDataViewAvailability extends HtmlView {
 
 	// get and structure the file availability data
 	private function getFileAvailability() {
-		$this->custom_categories;
+		$this->custom_categories = false;
 		$model = $this->getModel();
 		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->custom_categories);
 	}

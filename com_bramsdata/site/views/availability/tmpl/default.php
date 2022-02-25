@@ -94,10 +94,10 @@ defined('_JEXEC') or die('Restricted access');
             class_has_data: 'fas fa-fw fa-check',
             class_has_no_data: 'fas fa-fw fa-exclamation-circle'
 		},
-        responsive:{
+        responsive: {
             enabled: true,
         },
-        custom_categories: customized_categories,
+        custom_categories: customized_categories
     };
 
     let chart = visavail.generate(options, dataset);
