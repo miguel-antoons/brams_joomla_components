@@ -160,6 +160,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$temp_available = -1;
+		print_r($specific_station_availability);
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$availability_info = &$specific_station_availability[$index];
