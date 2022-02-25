@@ -160,43 +160,59 @@ class BramsDataModelAvailability extends ItemModel {
 
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$temp_available = -1;
+		$change = false;
 		print_r($specific_station_availability);
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$availability_info = &$specific_station_availability[$index];
-			$temp_object = new stdClass();
-			$temp_object->start = $expected_start;
 
-			if (intval($availability_info->rate) === 0 && $temp_available !== 1) {
+			if ($change) {
+				$temp_object->start = $specific_station_availability[$index - 1]->date;
+				$final_availability_array[$station][] = $temp_object;
+			}
+
+			if ($availability_info->rate === 0 && $temp_available !== 1) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 1;
 				$temp_available = 1;
 			}
-			elseif (intval($availability_info->rate) === 1000 && $temp_available !== 2){
+			elseif ($availability_info->rate === 1000 && $temp_available !== 2) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 2;
 				$temp_available = 2;
 			}
-			elseif (intval($availability_info->rate) <= 200 && $temp_available !== 3){
+			elseif ($availability_info->rate <= 200 && $temp_available !== 3) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 3;
 				$temp_available = 3;
 			}
-			elseif (intval($availability_info->rate) <= 400 && $temp_available !== 4){
+			elseif ($availability_info->rate <= 400 && $temp_available !== 4) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 4;
 				$temp_available = 4;
 			}
-			elseif (intval($availability_info->rate) <= 600 && $temp_available !== 5){
+			elseif ($availability_info->rate <= 600 && $temp_available !== 5) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 5;
 				$temp_available = 5;
 			}
-			elseif (intval($availability_info->rate) <= 800 && $temp_available !== 6){
+			elseif ($availability_info->rate <= 800 && $temp_available !== 6) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 6;
 				$temp_available = 6;
 			}
-			elseif (intval($availability_info->rate) <= 1000 && $temp_available !== 7){
+			elseif ($availability_info->rate <= 1000 && $temp_available !== 7) {
+				$change = true;
+				$temp_object = new stdClass();
 				$temp_object->available = 7;
 				$temp_available = 7;
 			}
-
-			$final_availability_array[$station][] = $temp_object;
 		}
 	}
 
@@ -251,7 +267,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query = $db->getQuery(true);
 
 		// generate a database query
-		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('rate'));
+		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('rate') . ', ' . $db->quoteName('date'));
 		$availability_query->from($db->quoteName('file_availability'));
 		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date) . ', DATE)');
 		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date) . ', DATE)');
