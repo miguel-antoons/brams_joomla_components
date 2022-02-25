@@ -114,7 +114,7 @@ class BramsDataModelAvailability extends ItemModel {
 				$db_availability,
 				function($availability_info) {
 					echo 'station : ' . $station;
-					echo $availability_info->system_id;
+					print_r($availability_info);
 					echo $availability_info->system_id === $station;
 					echo '<br>';
 					return $availability_info->system_id === $station;
