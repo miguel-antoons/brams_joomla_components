@@ -168,7 +168,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$temp_object->start = $expected_start;
 
 		// set availability according to the flag
-		if (flag) {
+		if ($flag) {
 			$temp_object->available = 1;
 		}
 		else {
@@ -177,8 +177,6 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// add that object to the final availability array
 		$array[$station][] = $temp_object;
-		// toggle the flag value
-		$flag = !$flag;
 	}
 
 	// get file availability from database
