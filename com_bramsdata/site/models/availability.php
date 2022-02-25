@@ -188,7 +188,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	// add availability info to the availability array
-	private function add_availability_info(&$temp_object, &$array, $expected_start, $station) {
+	private function add_availability_info(&$array, $expected_start, $station) {
 		// create an object stating that the files following the expected start date are available
 		$temp_object->start = $expected_start;
 
