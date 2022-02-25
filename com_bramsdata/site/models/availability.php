@@ -103,26 +103,24 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date, $selected_stations, &$custom_categories) {
-		$start_datetime = $this->string_to_datetime($start_date);
-		$end_datetime = $this->string_to_datetime($end_date);
-
 		$start = new DateTime($start_datetime);
 		$time_difference = $start->diff(new DateTime($end_datetime));
 
 		if ($time_difference->days > 14) {
 			$custom_categories = true;
-			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $start_date, $end_date, $selected_stations);
+			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 		else {
 			$custom_categories = false;
-			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_datetime, $start_date, $end_date, $selected_stations);
+			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 	}
 
-	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use, $start_date, $end_date, $selected_stations) {
+	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
-		$db_availability = $db_function_to_use($start_date, $end_date, $selected_stations);
+		$db_availability = $db_function_to_use($start_to_use, $end_date, $selected_stations);
 		$final_availability_array = array();			// array will contain all the final availability info
+		$end_datetime = $this->string_to_datetime($end_date);
 
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
