@@ -98,8 +98,8 @@ class BramsDataModelAvailability extends ItemModel {
 		$final_availability_array = array();			// array will contain all the final availability info
 
 		//debug
-		print_r($db_availability);
-		print_r($selected_stations);
+		//print_r($db_availability);
+		//print_r($selected_stations);
 
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
@@ -116,6 +116,9 @@ class BramsDataModelAvailability extends ItemModel {
 					return $availability_info->system_id === $station;
 				}
 			);
+
+			// debug
+			print_r($specific_station_availability);
 
 			$availability_length = count($specific_station_availability);
 
