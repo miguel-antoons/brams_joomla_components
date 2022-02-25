@@ -55,7 +55,11 @@ defined('_JEXEC') or die('Restricted access');
             {
                 "measure": "<?php echo $station ?>",
                 "interval_s": 300,
-                <?php echo $this->javascript_categories ?>
+                "categories": {
+                    "0": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data"></i>' },
+                    "1": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data"></i>'},
+                    "7": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
+                },
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
                         [
@@ -82,6 +86,7 @@ defined('_JEXEC') or die('Restricted access');
         responsive:{
             enabled: true,
         },
+        custom_categories: <?php echo $this->custom_categories ?>
     };
 
     let chart = visavail.generate(options, dataset);
