@@ -176,7 +176,7 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 
 		// add that object to the final availability array
-		$final_availability_array[$station][] = $temp_object;
+		$array[$station][] = $temp_object;
 		// toggle the flag value
 		$flag = !$flag;
 	}
