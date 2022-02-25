@@ -97,11 +97,11 @@ class BramsDataModelAvailability extends ItemModel {
 		$time_difference = $start->diff(new DateTime($end_date));
 
 		if ($time_difference->days > 14) {
-			$custom_categories = true;
+			$custom_categories = 1;
 			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 		else {
-			$custom_categories = false;
+			$custom_categories = 0;
 			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 	}
