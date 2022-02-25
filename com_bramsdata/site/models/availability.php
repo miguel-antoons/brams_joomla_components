@@ -93,14 +93,29 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date, $selected_stations) {
+		$start_datetime = $this->string_to_datetime($start_date);
+		$end_datetime = $this->string_to_datetime($end_date);
+
+		$start = new DateTime($start_datetime);
+		$time_difference = $start->diff(new DateTime($end_datetime));
+
+		if ($time_difference->days > 14) {
+			echo 'debug';
+		}
+		else {
+			$db_function_to_use = $this->getAvailabilityDB;
+			$function_to_use = $this->get_precise_file_availability;
+			$start_to_use = $start_datetime;
+		}
+
 		// contains all the raw availability information coming from the database
-		$db_availability = $this->getAvailabilityDB($start_date, $end_date, $selected_stations);
+		$db_availability = $db_function_to_use($start_date, $end_date, $selected_stations);
 		$final_availability_array = array();			// array will contain all the final availability info
 
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
-			$flag = true;													// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
-			$expected_start = $this->string_to_datetime($start_date);		// convert the start string date to a DateTime string
+			$flag = -1;								// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
+			$expected_start = $start_to_use;		// set the initial expected start
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
@@ -111,51 +126,82 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 			);
 
-			$availability_length = count($specific_station_availability);
-
-			// iterate over the array containing all the availability info of one specific station
-			for ($index = 0 ; $index < $availability_length ; $index++) {
-				$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
-				$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
-	
-				// if the effective start time and the expected start time do not match
-				// or if the effective start time and the expected start time match and the previous
-				// object added to the array has availability set to 0
-				if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
-					$this->add_availability_info($flag, $final_availability_array, $expected_start, $station);
-				}
-	
-				// update the expected start time with the next expected value
-				$expected_start = $end_time->format('Y-m-d H:i:s');
-			}
-	
-			$last_object = new stdClass();									// create a new object
-			$last_object->start = $this->string_to_datetime($end_date);		// add the end date as DateTime object to the newly created object
-			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
+			$temp_object = new stdClass();
+			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $temp_object, $station);
 		}
+
+		$last_object = new stdClass();									// create a new object
+		$last_object->start = $end_datetime;							// add the end date as DateTime object to the newly created object
+		array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 
 		return $final_availability_array;
 	}
 
+	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, &$temp_object, $station) {
+		// iterate over the array containing all the availability info of one specific station
+		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
+			$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
+			$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
+
+			// if the effective start time and the expected start time do not match
+			// or if the effective start time and the expected start time match and the previous
+			// object added to the array has availability set to 0
+			if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
+				$this->add_availability_info($temp_object, $final_availability_array, $expected_start, $station);
+			}
+
+			// update the expected start time with the next expected value
+			$expected_start = $end_time->format('Y-m-d H:i:s');
+		}
+	}
+
+	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, &$temp_object, $station) {
+		// iterate over the array containing all the availability info of one specific station
+		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
+			$availability_info = &$specific_station_availability[$index];
+			$temp_object->start = $expected_start;
+
+			if ($availability_info->rate === 0 && $temp_object->available !== 1) {
+				$temp_object->available = 1;
+			}
+			elseif ($availability_info->rate === 1000 && $temp_object->available !== 2){
+				$temp_object->available = 2;
+			}
+			elseif ($availability_info->rate <= 200 && $temp_object->available !== 3){
+				$temp_object->available = 3;
+			}
+			elseif ($availability_info->rate <= 400 && $temp_object->available !== 4){
+				$temp_object->available = 4;
+			}
+			elseif ($availability_info->rate <= 600 && $temp_object->available !== 5){
+				$temp_object->available = 5;
+			}
+			elseif ($availability_info->rate <= 800 && $temp_object->available !== 6){
+				$temp_object->available = 6;
+			}
+			elseif ($availability_info->rate <= 1000 && $temp_object->available !== 7){
+				$temp_object->available = 7;
+			}
+
+			$final_availability_array[$station][] = $temp_object;
+		}
+	}
+
 	// add availability info to the availability array
-	private function add_availability_info(&$flag, &$array, $expected_start, $station) {
+	private function add_availability_info(&$temp_object, &$array, $expected_start, $station) {
 		// create an object stating that the files following the expected start date are available
-		$temp_object = new stdClass();
 		$temp_object->start = $expected_start;
 
 		// set availability according to the flag
-		if ($flag) {
-			$temp_object->available = 1;
+		if ($temp_object->available) {
+			$temp_object->available = 0;
 		}
 		else {
-			$temp_object->available = 0;
+			$temp_object->available = 1;
 		}
 
 		// add that object to the final availability array
 		$array[$station][] = $temp_object;
-
-		// toggle the flag value
-		$flag = !$flag;
 	}
 
 	private function string_to_datetime($string_to_convert) {
