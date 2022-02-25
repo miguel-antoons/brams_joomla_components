@@ -179,25 +179,25 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			if (intval($availability_info->rate) === 0 && $previous_available !== 1) {
-				$temp_object = change_category($change, $previous_available, 1);
+				$temp_object = $this->change_category($change, $previous_available, 1);
 			}
 			elseif (intval($availability_info->rate) === 1000 && $previous_available !== 2) {
-				$temp_object = change_category($change, $previous_available, 2);
+				$temp_object = $this->change_category($change, $previous_available, 2);
 			}
 			elseif (intval($availability_info->rate) <= 200 && $previous_available !== 3) {
-				$temp_object = change_category($change, $previous_available, 3);
+				$temp_object = $this->change_category($change, $previous_available, 3);
 			}
 			elseif (intval($availability_info->rate) <= 400 && $previous_available !== 4) {
-				$temp_object = change_category($change, $previous_available, 4);
+				$temp_object = $this->change_category($change, $previous_available, 4);
 			}
 			elseif (intval($availability_info->rate) <= 600 && $previous_available !== 5) {
-				$temp_object = change_category($change, $previous_available, 5);
+				$temp_object = $this->change_category($change, $previous_available, 5);
 			}
 			elseif (intval($availability_info->rate) <= 800 && $previous_available !== 6) {
-				$temp_object = change_category($change, $previous_available, 6);
+				$temp_object = $this->change_category($change, $previous_available, 6);
 			}
 			elseif (intval($availability_info->rate) < 1000 && $previous_available !== 7) {
-				$temp_object = change_category($change, $previous_available, 7);
+				$temp_object = $this->change_category($change, $previous_available, 7);
 			}
 		}
 	}
