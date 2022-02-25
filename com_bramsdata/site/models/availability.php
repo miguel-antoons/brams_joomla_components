@@ -169,6 +169,7 @@ class BramsDataModelAvailability extends ItemModel {
 			if ($change) {
 				$temp_object->start = $specific_station_availability[$index - 1]->date;
 				$final_availability_array[$station][] = $temp_object;
+				$change = false;
 			}
 
 			if ($availability_info->rate === 0 && $temp_available !== 1) {
