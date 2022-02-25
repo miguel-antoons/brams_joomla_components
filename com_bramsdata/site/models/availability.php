@@ -100,8 +100,7 @@ class BramsDataModelAvailability extends ItemModel {
 		// create a new array that contains the data grouped per station
 		foreach ($selected_stations as $station) {
 			$flag = true;													// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
-			$expected_start = new DateTime($start_date);					// convert the start date to a DateTime object
-			$expected_start = $expected_start->format('Y-m-d H:i:s');		// convert the sart date DateTime object to a string date
+			$expected_start = $this->string_to_datetime($start_date);		// convert the start string date to a DateTime string
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
@@ -120,48 +119,25 @@ class BramsDataModelAvailability extends ItemModel {
 				$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
 	
 				// if the effective start time and the expected start time do not match
-				if ($specific_station_availability[$index]->start !== $expected_start) {
-					$this->add_availability_info($flag, $final_availability_array, $expected_start, $station);
-					// // create an object stating that the files following the expected start date are missing
-					// $temp_object = new stdClass();
-					// $temp_object->start = $expected_start;
-					// $temp_object->available = 0;
-
-					// // add that object to the final availability array
-					// $final_availability_array[$station][] = $temp_object;
-
-					// // set the flag to true indicating that the last element added to the array has availability set to zero
-					// $flag = true;
-				}
-				// if the effective start time and the expected start time match and the previous
+				// or if the effective start time and the expected start time match and the previous
 				// object added to the array has availability set to 0
-				elseif ($flag) {
+				if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
 					$this->add_availability_info($flag, $final_availability_array, $expected_start, $station);
-					// // create an object stating that the files following the expected start date are available
-					// $temp_object = new stdClass();
-					// $temp_object->start = $expected_start;
-					// $temp_object->available = 1;
-
-					// // add that object to the final availability array
-					// $final_availability_array[$station][] = $temp_object;
-
-					// // set the flag to false indicating that the last element added to the array has availability set to one
-					// $flag = false;
 				}
 	
 				// update the expected start time with the next expected value
 				$expected_start = $end_time->format('Y-m-d H:i:s');
 			}
 	
-			$end_datetime = new DateTime($end_date);						// convert the end date to a DateTime object
 			$last_object = new stdClass();									// create a new object
-			$last_object->start = $end_datetime->format('Y-m-d H:i:s');		// add the end date DateTime object to the newly created object
+			$last_object->start = $this->string_to_datetime($end_date);		// add the end date as DateTime object to the newly created object
 			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 		}
 
 		return $final_availability_array;
 	}
 
+	// add availability info to the availability array
 	private function add_availability_info(&$flag, &$array, $expected_start, $station) {
 		// create an object stating that the files following the expected start date are available
 		$temp_object = new stdClass();
@@ -180,6 +156,11 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// toggle the flag value
 		$flag = !$flag;
+	}
+
+	private function string_to_datetime($string_to_convert) {
+		$temp_datetime = new DateTime($string_to_convert);
+		return $temp_datetime->format('Y-m-d H:i:s');
 	}
 
 	// get file availability from database
