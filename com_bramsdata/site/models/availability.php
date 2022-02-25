@@ -137,7 +137,7 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
-		$temp_object = new stdClass();
+		$flag = true;
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
@@ -147,7 +147,7 @@ class BramsDataModelAvailability extends ItemModel {
 			// or if the effective start time and the expected start time match and the previous
 			// object added to the array has availability set to 0
 			if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
-				$this->add_availability_info($final_availability_array, $expected_start, $station, $temp_object);
+				$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
 			}
 
 			// update the expected start time with the next expected value
@@ -190,19 +190,19 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	// add availability info to the availability array
-	private function add_availability_info(&$array, $expected_start, $station, &$temp_object) {
-		// set availability according to the flag
-		if ($temp_object->available) {
-			$temp_object = new stdClass();
-			$temp_object->available = 0;
-		}
-		else {
-			$temp_object = new stdClass();
-			$temp_object->available = 1;
-		}
-
+	private function add_availability_info(&$array, $expected_start, $station, &$flag) {
+		$temp_object = new stdClass();
 		// create an object stating that the files following the expected start date are available
 		$temp_object->start = $expected_start;
+
+		// set availability according to the flag
+		if ($flag) {
+			$temp_object->available = 1;
+		}
+		else {
+			$temp_object->available = 0;
+		}
+
 		// add that object to the final availability array
 		$array[$station][] = $temp_object;
 	}
