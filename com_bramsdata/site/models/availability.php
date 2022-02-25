@@ -172,43 +172,43 @@ class BramsDataModelAvailability extends ItemModel {
 				$change = false;
 			}
 
-			if ($availability_info->rate === 0 && $previous_available !== 1) {
+			if (intval($availability_info->rate) === 0 && $previous_available !== 1) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 1;
 				$previous_available = 1;
 			}
-			elseif ($availability_info->rate === 1000 && $previous_available !== 2) {
+			elseif (intval($availability_info->rate) === 1000 && $previous_available !== 2) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 2;
 				$previous_available = 2;
 			}
-			elseif ($availability_info->rate <= 200 && $previous_available !== 3) {
+			elseif (intval($availability_info->rate) <= 200 && $previous_available !== 3) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 3;
 				$previous_available = 3;
 			}
-			elseif ($availability_info->rate <= 400 && $previous_available !== 4) {
+			elseif (intval($availability_info->rate) <= 400 && $previous_available !== 4) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 4;
 				$previous_available = 4;
 			}
-			elseif ($availability_info->rate <= 600 && $previous_available !== 5) {
+			elseif (intval($availability_info->rate) <= 600 && $previous_available !== 5) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 5;
 				$previous_available = 5;
 			}
-			elseif ($availability_info->rate <= 800 && $previous_available !== 6) {
+			elseif (intval($availability_info->rate) <= 800 && $previous_available !== 6) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 6;
 				$previous_available = 6;
 			}
-			elseif ($availability_info->rate < 1000 && $previous_available !== 7) {
+			elseif (intval($availability_info->rate) < 1000 && $previous_available !== 7) {
 				$change = true;
 				$temp_object = new stdClass();
 				$temp_object->available = 7;
