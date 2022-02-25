@@ -111,15 +111,15 @@ class BramsDataModelAvailability extends ItemModel {
 
 		if ($time_difference->days > 14) {
 			$custom_categories = true;
-			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date);
+			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $start_date, $end_date, $selected_stations);
 		}
 		else {
 			$custom_categories = false;
-			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_datetime);
+			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_datetime, $start_date, $end_date, $selected_stations);
 		}
 	}
 
-	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use) {
+	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use, $start_date, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
 		$db_availability = $db_function_to_use($start_date, $end_date, $selected_stations);
 		$final_availability_array = array();			// array will contain all the final availability info
