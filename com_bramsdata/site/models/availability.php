@@ -76,16 +76,6 @@ class BramsDataModelAvailability extends ItemModel {
 		return $db->loadObjectList();
 	}
 
-	public function getCategories() {
-		$javascript_string = "'categories': {
-			'1': {class: 'rect_has_no_data', tooltip_html: '<i class='fas fa-fw fa-exclamation-circle tooltip_has_no_data'></i>'},
-			'2': {class: 'rect_has_data', tooltip_html: '<i class='fas fa-fw fa_check tooltip_has_data'></i>'},
-			'7': {class: 'rect_purple', tooltip_html: '<i class='fas fa-fw fa_check tooltip_purple'></i>'},
-		},";
-
-		return $javascript_string;
-	}
-
 	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');
