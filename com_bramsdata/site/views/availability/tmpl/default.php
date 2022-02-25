@@ -56,8 +56,12 @@ defined('_JEXEC') or die('Restricted access');
                 "measure": "<?php echo $station ?>",
                 "interval_s": 300,
                 "categories": {
-                    "0": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data"></i>' },
-                    "1": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data"></i>'},
+                    "1": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data"></i>' },
+                    "2": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data"></i>'},
+                    "3": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
+                    "4": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
+                    "5": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
+                    "6": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
                     "7": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
                 },
                 "data": [
