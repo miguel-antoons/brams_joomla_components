@@ -44,7 +44,6 @@ defined('_JEXEC') or die('Restricted access');
 <p>
     <?php //print_r($this->availability) ?>
 </p>
-<?php echo $this->javascript_categories ?>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
@@ -56,6 +55,7 @@ defined('_JEXEC') or die('Restricted access');
             {
                 "measure": "<?php echo $station ?>",
                 "interval_s": 300,
+                <?php echo $this->javascript_categories ?>
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
                         [
