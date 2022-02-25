@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 <p>
     <?php //print_r($this->availability) ?>
 </p>
-
+<?php echo $this->javascript_categories ?>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
