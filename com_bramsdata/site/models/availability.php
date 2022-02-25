@@ -103,8 +103,8 @@ class BramsDataModelAvailability extends ItemModel {
 			echo 'debug';
 		}
 		else {
-			$db_function_to_use = $this->getAvailabilityDB;
-			$function_to_use = $this->get_precise_file_availability;
+			$db_function_to_use = array($this, 'getAvailabilityDB');
+			$function_to_use = array($this, 'get_precise_file_availability');
 			$start_to_use = $start_datetime;
 		}
 
