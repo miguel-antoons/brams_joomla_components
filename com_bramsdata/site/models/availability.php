@@ -183,7 +183,7 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->from($db->quoteName('file'));
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
-		$availability_query->where($db->quoteName('system_id') . ' in ' . $db->quote($selected_stations));
+		$availability_query->where($db->quoteName('system_id') . ' in (' . $db->quote(implode(', ', $selected_stations)) . ')');
 
 		// debug
 		echo $availability_query;
