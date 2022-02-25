@@ -104,7 +104,7 @@ class BramsDataModelAvailability extends ItemModel {
 	// get all the file information between 2 dates
 	public function getAvailability($start_date, $end_date, $selected_stations, &$custom_categories) {
 		$start_datetime = $this->string_to_datetime($start_date);
-		$time_difference = $start->diff(new DateTime($end_date));
+		$time_difference = $start_datetime->diff(new DateTime($end_date));
 
 		if ($time_difference->days > 14) {
 			$custom_categories = true;
