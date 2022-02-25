@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 </form>
 <!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
-    <?php //print_r($this->availability) ?>
+    <?php print_r($this->availability) ?>
 </p>
 
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
                 "measure": "<?php echo $station ?>",
                 "interval_s": 300,
                 "data": [
-                    <?php for ($index = 0 ; $index < count($this->availability) - 1 ; $index++) : ?>
+                    <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
                         [
                             "<?php echo $this->availability[$index]->start ?>", 
                             <?php echo $this->availability[$index]->available ?>, 
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
             class_has_no_data: 'fas fa-fw fa-exclamation-circle'
 		},
         responsive:{
-            enabled:true,
+            enabled: true,
         }
     };
 

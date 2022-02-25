@@ -92,58 +92,106 @@ class BramsDataModelAvailability extends ItemModel {
 	}
 
 	// get all the file information between 2 dates
-	public function getAvailability($start_date, $end_date) {
-		$db_availability = $this->getAvailabilityDB($start_date, $end_date);
+	public function getAvailability($start_date, $end_date, $selected_stations) {
+		// contains all the raw availability information coming from the database
+		$db_availability = $this->getAvailabilityDB($start_date, $end_date, $selected_stations);
+		$final_availability_array = array();								// array will contain all the final availability info
 		//print_r($db_availability);
 
-		$expected_start = new DateTime($start_date);
-		$expected_start = $expected_start->format('Y-m-d H:i:s');
-		$availability_array_length = count($db_availability);
-		$objects_added = 0;
+		// create a new array that contains the data grouped per station
+		foreach ($selected_stations as $station) {
+			$flag = true;													// flag indicates if last addition to '$final_availability_array' was available (flag = 0) or unavailable (flag = 1)
+			$expected_start = new DateTime($start_date);					// convert the start date to a DateTime object
+			$expected_start = $expected_start->format('Y-m-d H:i:s');		// convert the sart date DateTime object to a string date
+			// $objects_added = 0;											// counts the number of elements added to the availability array
 
-		for ($index = 0 ; $index < $availability_array_length ; $index++) {
-			$db_availability[$index + $objects_added]->available = 1;
-			$end_time = new DateTime($db_availability[$index + $objects_added]->start);
-        	$end_time->add(new DateInterval('PT5M'));
+			// filter the array coming from the database in order to keep the info
+			// from the station stored in the '$station' variable
+			$specific_station_availability = array_filter(
+				$db_availability,
+				function($availability_info) {
+					return $availability_info->system_id === $station;
+				}
+			);
 
-			if ($db_availability[$index + $objects_added]->start !== $expected_start) {
-				$temp_object = (object) array(
-					'start' => $expected_start,
-					'available' => 0
-				);
+			$availability_length = count($specific_station_availability);
 
-				$db_availability = array_merge(
-					array_slice($db_availability, 0, ($index + $objects_added)), 
-					array($temp_object), 
-					array_slice($db_availability, ($index + $objects_added))
-				);
+			// iterate over the array containing all the availability info of one specific station
+			for ($index = 0 ; $index < $availability_length ; $index++) {
+				// $db_availability[$index + $objects_added]->available = 1;
+				$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
+				$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
+	
+				// if the effective start time and the expected start time do not match
+				if ($specific_station_availability[$index]->start !== $expected_start) {
+					// create an object stating that the files following the expected start date are missing
+					$temp_object = (object) array(
+						'start' => $expected_start,
+						'available' => 0
+					);
 
-				$objects_added++;
+					// add that object to the final availability array
+					$final_availability_array[$station][] = $temp_object;
+
+					// set the flag to true indicating that the last element added to the array has availability set to zero
+					$flag = true;
+	
+					// $db_availability = array_merge(
+					// 	array_slice($db_availability, 0, ($index + $objects_added)), 
+					// 	array($temp_object), 
+					// 	array_slice($db_availability, ($index + $objects_added))
+					// );
+	
+					// $objects_added++;
+				}
+				// if the effective start time and the expected start time match and the previous
+				// object added to the array has availability set to 0
+				elseif ($flag) {
+					// create an object stating that the files following the expected start date are available
+					$temp_object = (object) array(
+						'start' => $expected_start,
+						'available' => 1
+					);
+
+					// add that object to the final availability array
+					$final_availability_array[$station][] = $temp_object;
+
+					// set the flag to false indicating that the last element added to the array has availability set to one
+					$flag = false;
+				}
+	
+				// update the expected start time with the next expected value
+				$expected_start = $end_time->format('Y-m-d H:i:s');
 			}
-
-			$expected_start = $end_time->format('Y-m-d H:i:s');
+	
+			$end_datetime = new DateTime($end_date);						// convert the end date to a DateTime object
+			$last_object = new stdClass();									// create a new object
+			$last_object->start = $end_datetime->format('Y-m-d H:i:s');		// add the end date DateTime object to the newly created object
+			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 		}
 
-		$end_datetime = new DateTime($end_date);
-		$last_object = new stdClass();
-		$last_object->start = $end_datetime->format('Y-m-d H:i:s');
-		array_push($db_availability, $last_object);
-
-		return $db_availability;
+		return $final_availability_array;
 	}
 
 	// get file availability from database
-	private function getAvailabilityDB($start_date, $end_date) {
-		$db = $this->connectToDatabase();
+	private function getAvailabilityDB($start_date, $end_date, $selected_stations) {
+		$db = $this->connectToDatabase();			// create a database connection
 		$availability_query = $db->getQuery(true);
 
+		// generate a database query
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
 		$availability_query->from($db->quoteName('file'));
 		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
 		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
+		$availability_query->where($db->quoteName('system_id') . ' in ' . $db->quote($selected_stations));
 
+		// debug
+		echo $availability_query;
+
+		// execute the previously generated query
 		$db->setQuery($availability_query);
 
+		// return the data received from the database
 		return $db->loadObjectList();
 	}
 }
