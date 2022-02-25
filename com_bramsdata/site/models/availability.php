@@ -108,6 +108,7 @@ class BramsDataModelAvailability extends ItemModel {
 			$expected_start = $expected_start->format('Y-m-d H:i:s');		// convert the sart date DateTime object to a string date
 			// $objects_added = 0;											// counts the number of elements added to the availability array
 
+			print_r($selected_stations);
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
 			$specific_station_availability = array_filter(
