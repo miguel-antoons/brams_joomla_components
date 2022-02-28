@@ -174,7 +174,7 @@ class BramsDataModelAvailability extends ItemModel {
 			$flag = true;
 		}
 
-		$this->add_availability_info($final_availability_array, $expected_start, $station, 0);
+		$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
 
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 1 ; $index < count($specific_station_availability) ; $index++) {
