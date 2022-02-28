@@ -197,7 +197,7 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 	}
 
-	private function change_category(&$change, &$previous_available, $category, $custom_categories) {
+	private function change_category(&$change, &$previous_available, $category) {
 		if ($previous_available !== $category) {
 			$change = true;
 			$previous_available = $category;
