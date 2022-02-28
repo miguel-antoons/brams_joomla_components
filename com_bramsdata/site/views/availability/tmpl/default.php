@@ -89,10 +89,6 @@ defined('_JEXEC') or die('Restricted access');
     let options = {
         id_div_container: "visavail_container",
         id_div_graph: "visavail_graph",
-        icon: {
-            class_has_data: 'fas fa-fw fa-check',
-            class_has_no_data: 'fas fa-fw fa-exclamation-circle'
-		},
         responsive: {
             enabled: true,
         },

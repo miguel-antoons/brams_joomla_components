@@ -159,7 +159,7 @@ class BramsDataModelAvailability extends ItemModel {
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$previous_available = -1;
 		$change = false;
-		$custom_categories = array('0%', '100%', '0.1 - 20%', '20.1 - 40%', '40.1 - 60%', '60.1 - 80%', '80.1 - 99.9%');
+		$custom_categories_array = array('0%', '100%', '0.1 - 20%', '20.1 - 40%', '40.1 - 60%', '60.1 - 80%', '80.1 - 99.9%');
 
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
@@ -172,25 +172,25 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			if (intval($availability_info->rate) === 0) {
-				$temp_object = $this->change_category($change, $previous_available, 1, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 1, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) === 1000) {
-				$temp_object = $this->change_category($change, $previous_available, 2, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 2, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) <= 200) {
-				$temp_object = $this->change_category($change, $previous_available, 3, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 3, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) <= 400) {
-				$temp_object = $this->change_category($change, $previous_available, 4, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 4, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) <= 600) {
-				$temp_object = $this->change_category($change, $previous_available, 5, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 5, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) <= 800) {
-				$temp_object = $this->change_category($change, $previous_available, 6, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 6, $custom_categories_array);
 			}
 			elseif (intval($availability_info->rate) < 1000) {
-				$temp_object = $this->change_category($change, $previous_available, 7, $custom_categories);
+				$temp_object = $this->change_category($change, $previous_available, 7, $custom_categories_array);
 			}
 		}
 	}
