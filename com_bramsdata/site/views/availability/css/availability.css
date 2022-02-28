@@ -68,3 +68,8 @@
 .checkbox_label {
     display: inline-block !important;
 }
+
+.master_checkbox {
+    display: inline-block;
+    font-weight: bold;
+}
