@@ -294,8 +294,8 @@ class BramsDataModelAvailability extends ItemModel {
 		// generate a database query
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('start'));
 		$availability_query->from($db->quoteName('file'));
-		//$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date) . ', DATETIME)');
-		//$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date) . ', DATETIME)');
+		$availability_query->where($db->quoteName('start') . ' >= convert(' . $db->quote($start_date->format('Y-m-d H:i:s')) . ', DATETIME)');
+		$availability_query->where($db->quoteName('start') . ' < convert(' . $db->quote($end_date->format('Y-m-d H:i:s')) . ', DATETIME)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
 		$availability_query->order($db->quoteName('start'));
 
@@ -314,8 +314,8 @@ class BramsDataModelAvailability extends ItemModel {
 		// generate a database query
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('rate') . ', ' . $db->quoteName('date'));
 		$availability_query->from($db->quoteName('file_availability'));
-		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date) . ', DATE)');
-		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date) . ', DATE)');
+		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date->format('Y-m-d H:i:s')) . ', DATE)');
+		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date->format('Y-m-d H:i:s')) . ', DATE)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
 		$availability_query->order($db->quoteName('date'));
 		
