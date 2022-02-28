@@ -53,6 +53,7 @@ defined('_JEXEC') or die('Restricted access');
         </ul>
     </p>
 </div>
+<br><br>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
