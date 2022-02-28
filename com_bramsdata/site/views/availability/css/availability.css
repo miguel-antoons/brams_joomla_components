@@ -58,3 +58,7 @@
 .legend .c { background-color: #3cbfc8; }
 .legend .b { background-color: #3cc877; }
 .legend .a { background-color: #6dc83c; }
+
+.legend_container {
+    width: 100%;
+}

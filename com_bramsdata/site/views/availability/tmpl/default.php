@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 
     <input name='submit' type='submit' id='submit' />
 </form>
-<p>
+<div class="legend_container">
     <ul class="legend">
         <li><span class="a"></span>  100%</li>
         <li><span class="b"></span>  80.1 - 99.9%</li>
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
         <li><span class="f"></span>  0.1 - 20%</li>
         <li><span class="g"></span>  0%</li>
     </ul>
-</p>
+</div>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
