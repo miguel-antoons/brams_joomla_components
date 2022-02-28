@@ -4,7 +4,7 @@
 
 .tooltip_green1{
     color: #3cc877;
-    width: 70px;
+    width: 100px !important;
 }
 
 .rect_red2{
@@ -13,7 +13,7 @@
 
 .tooltip_red2{
     color: #c83c8a;
-    width: 70px;
+    width: 100px !important;
 }
 
 .rect_blue{
@@ -22,7 +22,7 @@
 
 .tooltip_blue{
     color: #3c53c8;
-    width: 70px;
+    width: 100px !important;
 }
 
 .rect_green2{
@@ -31,7 +31,7 @@
 
 .tooltip_green2{
     color: #3cbfc8;
-    width: 70px;
+    width: 100px !important;
 }
 
 .rect_red1{
@@ -40,5 +40,5 @@
 
 .tooltip_red1{
     color: #953cc8;
-    width: 70px;
+    width: 100px !important;
 }
