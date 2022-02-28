@@ -14,16 +14,17 @@ use \Joomla\CMS\MVC\Model\ItemModel;
 
 /**
  * Availability Model
+ * 
+ * Gets data from the database linked to the file availability of the 
+ * BRAMS receiving stations.
  *
  * @since  0.0.1
  */
 class BramsDataModelAvailability extends ItemModel {
-	/**
-	 * @var string message
-	 */
-	protected $message;
+	// below contains all the availability categories
 	protected $custom_categories_array = array('0%', '100%', '0.1 - 20%', '20.1 - 40%', '40.1 - 60%', '60.1 - 80%', '80.1 - 99.9%');
 
+	// fucntion connects to the database and returns the database object
 	private function connectToDatabase() {
 		/* Below lines are for connecting to production database later on */
 		// $database_options = array();
@@ -41,24 +42,9 @@ class BramsDataModelAvailability extends ItemModel {
 		return JFactory::getDbo();
 	}
 
-	/**
-	 * Get the message
-     *
-	 * @return  string  The message to be displayed to the user
-	 */
-	public function getMsg() {
-		if (!isset($this->message))
-		{
-			$this->message = 'Hello World!';
-		}
-
-		return $this->message;
-	}
-
-	// get all the stations from the external brams database
+	// get all the stations and their name from the database
 	public function getStations() {
 		$db = $this->connectToDatabase();
-		$db = JFactory::getDbo();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
@@ -92,32 +78,59 @@ class BramsDataModelAvailability extends ItemModel {
 		return date('Y-m-d', strtotime("-1 days"));
 	}
 
-	// get all the file information between 2 dates
-	public function getAvailability($start_date, $end_date, $selected_stations, &$custom_categories, &$time_interval) {
-		$start = new DateTime($start_date);
-		$time_difference = $start->diff(new DateTime($end_date));
+	/**
+	 * Entry-point of the availability feature. This function checks how much time
+	 * there is in between the $start_date and the $end_date and calls the according
+	 * functions.
+	 * 
+	 * @param string 	$start_date 		Start date of the availability to be seen
+	 * @param string 	$end_date			End date of the availability to be seen
+	 * @param array		$selected_stations	Array with the selected stations
+	 * @param int		$time_interval		Time interval of the availability chart
+	 * 
+	 * @return	array with all the availability information of $selected_stations from $start_date to $end_date
+	 */
+	public function getAvailability($start_date, $end_date, $selected_stations, &$time_interval) {
+		$start_date = $this->string_to_datetime($start_date);		// convert the string date to a DateTime object
+		$time_difference = $start->diff(new DateTime($end_date));	// get the time difference between $start_date and $end_date
 
+		// if the time difference is greater than 14 days
 		if ($time_difference->days > 14) {
-			$custom_categories = 1;
+			// set the $time_interval to 1 day (86400 seconds)
 			$time_interval = 86400;
+			// go get and return the availability information
 			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 		else {
-			$custom_categories = 0;
+			// set the $time_interval to 5 minutes (300 seconds)
 			$time_interval = 300;
+			// go get and return the availability information
 			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_date, $end_date, $selected_stations);
 		}
 	}
 
-	private function get_availability_general($db_function_to_use, $function_to_use, $start_to_use, $end_date, $selected_stations) {
+	/**
+	 * Function gets all the data from the database and iterates over the selected
+	 * stations. On each iteration, it launches the function it received as argument
+	 * to structure the data and remove unnecessary data.
+	 * 
+	 * @param function 	$db_function_to_use  	Database query that will be used for data retrieval
+	 * @param function 	$function_to_use 		Function to use in order to structure the final array
+	 * @param string 	$start_date				Start date of the availability to be seen
+	 * @param string 	$end_date				End date of the availability to be seen
+	 * @param array		$selected_stations	Array with the selected stations
+	 * 
+	 * @return	array with all the availability information of $selected_stations from $start_date to $end_date
+	 */
+	private function get_availability_general($db_function_to_use, $function_to_use, $start_date, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
 		$db_availability = $db_function_to_use($start_to_use, $end_date, $selected_stations);
-		$final_availability_array = array();			// array will contain all the final availability info
-		$end_datetime = $this->string_to_datetime($end_date);
+		$final_availability_array = array();					// array will contain all the final availability info
+		$end_datetime = $this->string_to_datetime($end_date);	// convert the string date to a string datetime object
 
-		// create a new array that contains the data grouped per station
+		// create a new array that contains the data grouped per selected station
 		foreach ($selected_stations as $station) {
-			$expected_start = $start_to_use;		// set the initial expected start
+			$expected_start = new DateTime($start_date);		// set the initial expected start
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
@@ -128,6 +141,7 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 			);
 
+			// launch the structure function
 			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $station);
 		}
 
@@ -138,12 +152,22 @@ class BramsDataModelAvailability extends ItemModel {
 		return $final_availability_array;
 	}
 
+	/**
+	 * Get file availability per file. This is the precise method as we know for
+	 * each file if it is there or not.
+	 * 
+	 * @param array $specific_station_availability	availability info of a specific station
+	 * @param array $final_availability_array		final array to perform the changes on
+	 * @param date	$expected_start					first expected start 
+	 * @param int 	$station						id of the currently treated station
+	 */
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
-		$flag = true;
+		$flag = true;	// flag indicates if the previous added time was available (flag = false) or not (flag = true)
+
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
-			$end_time = new DateTime($specific_station_availability[$index]->start);	// convert the start time to a DateTime object
-			$end_time->add(new DateInterval('PT5M'));									// add 5 min to the start time -> becomes the end time
+			$end_time = $specific_station_availability[$index]->start;
+			$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
 
 			// if the effective start time and the expected start time do not match
 			// or if the effective start time and the expected start time match and the previous
@@ -157,20 +181,64 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 	}
 
+	/**
+	 * Function add a new availability object to the array. This function works together with 
+	 * the get_unprecise_file_availability function.
+	 * 
+	 * @param array		$array				contains the final availability array 
+	 * @param datetime 	$expected_start		contains the expected start, this is the date that will be added to the object 
+	 * @param int 		$station 			contains the current station id 
+	 * @param boolean	$flag				contains the flag value saying if the data is available or not
+	 */
+	private function add_availability_info(&$array, $expected_start, $station, &$flag) {
+		$temp_object = new stdClass();
+		// create an object stating that the files following the expected start date are available
+		$temp_object->start = $expected_start;
+
+		// set availability according to the flag
+		if ($flag) {
+			$temp_object->available = $this->custom_categories_array[1];
+		}
+		else {
+			$temp_object->available = $this->custom_categories_array[0];
+		}
+
+		// add that object to the final availability array
+		$array[$station][] = $temp_object;
+
+		// toogle the flag
+		$flag = !$flag;
+	}
+
+	/**
+	 * Get file availability rate per day. This is less precise as it is per day 
+	 * and not per file. It indicates a rate in percentage instead of indicating the file
+	 * exists or not.
+	 * 
+	 * @param array $specific_station_availability	availability info of a specific station
+	 * @param array $final_availability_array		final array to perform the changes on
+	 * @param date	$expected_start					first expected start 
+	 * @param int 	$station						id of the currently treated station
+	 */
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
-		$previous_available = -1;
+		$previous_available = -1;	// indicates what was the last category inserted into the array
 		$change = false;
 
 		// iterate over the array containing all the availability info of one specific station
 		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
 			$availability_info = &$specific_station_availability[$index];
 
+			// if a change has been performed
 			if ($change) {
+				// add the date from the previous iteration to the object
 				$temp_object->start = $specific_station_availability[$index - 1]->date;
+				// add the object to the final array
 				$final_availability_array[$station][] = $temp_object;
+				// set the $change flag to false
 				$change = false;
 			}
 
+			// add an element ot the array according to the availability rate
 			if (intval($availability_info->rate) === 0) {
 				$temp_object = $this->change_category($change, $previous_available, 1);
 			}
@@ -195,10 +263,21 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 	}
 
+	/**
+	 * Prepares an object to be added to the final array
+	 * 
+	 * @param boolean 	$change	 				indicates if a change has to be performed or not 
+	 * @param int		$previous_available		contains the previously added category
+	 * @param int 		$category				contains the current category to add
+	 */
 	private function change_category(&$change, &$previous_available, $category) {
+		// if the prviously added category and the current category are different
 		if ($previous_available !== $category) {
+			// set the $change flag to true since later changes have to be performed
 			$change = true;
 			$previous_available = $category;
+
+			// prepare and return a new object for the final array
 			$temp_object = new stdClass();
 			$temp_object->available = $this->custom_categories_array[$category - 1];
 
@@ -206,27 +285,10 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 	}
 
-	// add availability info to the availability array
-	private function add_availability_info(&$array, $expected_start, $station, &$flag) {
-		$temp_object = new stdClass();
-		// create an object stating that the files following the expected start date are available
-		$temp_object->start = $expected_start;
-
-		// set availability according to the flag
-		if ($flag) {
-			$temp_object->available = $this->custom_categories_array[1];
-		}
-		else {
-			$temp_object->available = $this->custom_categories_array[0];
-		}
-
-		// add that object to the final availability array
-		$array[$station][] = $temp_object;
-
-		// toogle the flag
-		$flag = !$flag;
-	}
-
+	/**
+	 * Function gets a string date and converts that string into a 
+	 * datetime object
+	 */
 	private function string_to_datetime($string_to_convert) {
 		$temp_datetime = new DateTime($string_to_convert);
 		return $temp_datetime->format('Y-m-d H:i:s');

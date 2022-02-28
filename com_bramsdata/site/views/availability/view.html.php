@@ -28,7 +28,6 @@ class BramsDataViewAvailability extends HtmlView {
 	function display($tpl = null) {
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
-		$this->custom_categories = 0;
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
@@ -56,29 +55,39 @@ class BramsDataViewAvailability extends HtmlView {
 
 	// entry-point of form processing
 	private function processForm() {
-		$this->selected_stations = array();
+		$this->selected_stations = array();	// initialize the $selected_stations array
+
+		// iterate over the checkboxes
 		foreach ($_POST['station'] as $result) {
+			// prepare the values to return
 			$this->stations[array_search($result, array_column($this->stations, 'id'))]->checked = 'checked';
 			$this->selected_stations[] = $result;
 		}
+
+		// if the end date is smaller than the start date
 		if ($_POST['endDate'] > $_POST['startDate']) {
+			// store the correct dates
 			$this->start_date = $_POST['startDate'];
 			$this->end_date = $_POST['endDate'];
 		}
 		else {
+			// error handling
+			// set default dates
 			$this->start_date = $this->get('Yesterday');
 			$this->end_date = $this->get('Today');
 		}
 
+		// get the availability
 		$this->getFileAvailability();
 	}
 
 	// get and structure the file availability data
 	private function getFileAvailability() {
-		$this->custom_categories = 0;
 		$this->interval = 300;
+
+		// get the model and call the appropriate method
 		$model = $this->getModel();
-		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->custom_categories, $this->interval);
+		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->interval);
 	}
 
 	// function adds needed javascript and css files to the view

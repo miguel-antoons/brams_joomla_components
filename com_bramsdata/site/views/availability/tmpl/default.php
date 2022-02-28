@@ -40,25 +40,24 @@ defined('_JEXEC') or die('Restricted access');
 
     <input name='submit' type='submit' id='submit' />
 </form>
-<!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
-    <?php //print_r($this->availability) ?>
+    <ul class="legend">
+        <li><span class="a"></span>  100%</li>
+        <li><span class="b"></span>  80.1 - 99.9%</li>
+        <li><span class="c"></span>  60.1 - 80%</li>
+        <li><span class="d"></span>  40.1 - 60%</li>
+        <li><span class="e"></span>  20.1 - 40%</li>
+        <li><span class="f"></span>  0.1 - 20%</li>
+        <li><span class="g"></span>  0%</li>
+    </ul>
 </p>
-<ul class="legend">
-    <li><span class="a"></span>  100%</li>
-    <li><span class="b"></span>  80.1 - 99.9%</li>
-    <li><span class="c"></span>  60.1 - 80%</li>
-    <li><span class="d"></span>  40.1 - 60%</li>
-    <li><span class="e"></span>  20.1 - 40%</li>
-    <li><span class="f"></span>  0.1 - 20%</li>
-    <li><span class="g"></span>  0%</li>
-</ul>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->
     </p>
 </div>
 <script>
+    // check that at least one checkbox is checked on submit
     $(document).ready(function () {
         $('#submit').click(function() {
             checked = $("input[type=checkbox]:checked").length;
@@ -71,8 +70,10 @@ defined('_JEXEC') or die('Restricted access');
         });
     });
 
+    // check needed checkboxes on page reload
     changeCheckBox();
 
+    // data to enter into the graph
     let dataset = [
         <?php foreach ($this->selected_stations as $station) : ?>
             {
@@ -103,12 +104,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
-    let customized_categories = false;
-
-    if (<?php echo $this->custom_categories ?>) {
-        customized_categories = true;
-    }
-
+    // graph options
     let options = {
         id_div_container: "visavail_container",
         id_div_graph: "visavail_graph",
@@ -120,5 +116,4 @@ defined('_JEXEC') or die('Restricted access');
     };
 
     let chart = visavail.generate(options, dataset);
-    //console.log(dataset);
 </script>

@@ -49,7 +49,7 @@
     margin-right: 5%; 
     vertical-align: middle;
 }
-.legend span { border: 0; float: left; width: 12px; height: 12px; margin: 10px, 4px, 2px, 2px; }
+.legend span { border: 0; float: left; width: 12px; height: 12px; margin: 10px 4px 2px 2px; }
 /* your colors */
 .legend .g { background-color: #e20000; }
 .legend .f { background-color: #c83c8a; }
