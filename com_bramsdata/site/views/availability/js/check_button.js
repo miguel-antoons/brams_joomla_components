@@ -107,5 +107,5 @@ function yyyymmdd(date) {
 function zoomGraph(d, i) {
   document.getElementById('startDate').value = yyyymmdd(d[0]);
   document.getElementById('endDate').value = yyyymmdd(d[2]);
-  document.getElementById('availabilityForm').onsubmit();
+  document.getElementById('availabilityForm').submit();
 }
