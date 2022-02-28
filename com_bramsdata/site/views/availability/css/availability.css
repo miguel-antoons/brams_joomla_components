@@ -1,55 +1,39 @@
 .rect_green{
-    fill: #00FF00;
+    fill: #3cc877;
 }
 
 .tooltip_green{
-    color: #00FF00;
+    color: #3cc877;
 }
 
 .rect_red{
-    fill: #FF0000;
+    fill: #c83c8a;
 }
 
 .tooltip_red{
-    color: #FF0000;
+    color: #c83c8a;
 }
 
 .rect_yellow{
-    fill: #FFFF00;
+    fill: #3c53c8;
 }
 
 .tooltip_yellow{
-    color: #FFFF00;
+    color: #3c53c8;
 }
 
 .rect_green1{
-    fill: #55FF00;
+    fill: #3cbfc8;
 }
 
 .tooltip_green1{
-    color: #55FF00;
+    color: #3cbfc8;
 }
 
 .rect_green2{
-    fill: #AAFF00;
+    fill: #953cc8;
 }
 
 .tooltip_green2{
-    color: #AAFF00;
-}
-
-.rect_red1{
-    fill: #FF5500;
-}
-
-.tooltip_red1{
-    color: #FF5500;
-}
-
-.rect_red2{
-    fill: #FFAA00;
-}
-
-.tooltip_red2{
-    color: #FFAA00;
+    color: #953cc8;
 }

@@ -82,30 +82,30 @@ div.y-tooltip.bottom::after {
 
 .visavail-tooltip .tooltip_has_data {
     /* color of symbol in tooltip if there is data */
-    color: #00FF00;
+    color: #6dc83c;
 }
 
 .visavail-tooltip .tooltip_has_no_data {
     /* color of symbol in tooltip if there is no data */
-    color: #FF0000;
+    color: #c83c3c;
 }
 
 .visavail .rect_has_data {
     /* blocks that have data */
-    fill: #00FF00;
+    fill: #6dc83c;
 }
 
 .visavail .rect_has_data:hover {
-    fill: #00CC00
+    fill: #6dc83c
 }
 
 .visavail .rect_has_no_data {
     /* blocks without data */
-    fill: #FF0000;
+    fill: #c83c3c;
 }
 
 .visavail .rect_has_no_data:hover {
-    fill: #CC0000;
+    fill: #c83c3c;
 }
 
 
