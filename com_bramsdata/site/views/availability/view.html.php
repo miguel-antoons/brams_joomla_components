@@ -84,6 +84,7 @@ class BramsDataViewAvailability extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = JFactory::getDocument();
+		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/availability.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
 		$document->addStyleSheet('https://use.fontawesome.com/releases/v5.0.12/css/all.css');
