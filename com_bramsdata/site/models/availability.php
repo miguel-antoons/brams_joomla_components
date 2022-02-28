@@ -264,10 +264,9 @@ class BramsDataModelAvailability extends ItemModel {
 		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date) . ', DATE)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
 		$availability_query->order($db->quoteName('date'));
-		echo $availability_query;
-
+		
 		// execute the previously generated query
-		//$db->setQuery($availability_query);
+		$db->setQuery($availability_query);
 
 		// return the data received from the database
 		return $db->loadObjectList();
