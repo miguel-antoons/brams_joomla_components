@@ -92,7 +92,8 @@ class BramsDataModelAvailability extends ItemModel {
 	 */
 	public function getAvailability($start_date, $end_date, $selected_stations, &$time_interval) {
 		$start_date = new DateTime($start_date);						// convert the string date to a DateTime object
-		$time_difference = $start_date->diff(new DateTime($end_date));	// get the time difference between $start_date and $end_date
+		$end_date = new DateTime($end_date);
+		$time_difference = $start_date->diff($end_date);				// get the time difference between $start_date and $end_date
 
 		// if the time difference is greater than 14 days
 		if ($time_difference->days > 14) {
@@ -130,7 +131,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// create a new array that contains the data grouped per selected station
 		foreach ($selected_stations as $station) {
-			$expected_start = new DateTime($start_date);		// set the initial expected start
+			$expected_start = $start_date;		// set the initial expected start
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
