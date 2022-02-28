@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
     <label for='endDate'>To </label>
     <input type='date' name='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
 
-    <input name='submit' type='submit' />
+    <input name='submit' type='submit' id='submit' />
 </form>
 <!-- debug paragraph, please remove or comment the below html tags once the product is finished -->
 <p>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 <script>
     $(document).ready(function () {
-        $('#checkBtn').click(function() {
+        $('#submit').click(function() {
             checked = $("input[type=checkbox]:checked").length;
 
             if(!checked) {
