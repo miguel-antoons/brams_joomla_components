@@ -125,9 +125,8 @@ class BramsDataModelAvailability extends ItemModel {
 	 */
 	private function get_availability_general($db_function_to_use, $function_to_use, $start_date, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
-		$db_availability = $db_function_to_use($start_to_use, $end_date, $selected_stations);
+		$db_availability = $db_function_to_use($start_date, $end_date, $selected_stations);
 		$final_availability_array = array();					// array will contain all the final availability info
-		$end_datetime = $end_date;				// convert the string date to a string datetime object
 
 		// create a new array that contains the data grouped per selected station
 		foreach ($selected_stations as $station) {
@@ -147,7 +146,7 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 
 		$last_object = new stdClass();									// create a new object
-		$last_object->start = $end_datetime;							// add the end date as DateTime object to the newly created object
+		$last_object->start = $end_date;								// add the end date as DateTime object to the newly created object
 		array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 
 		return $final_availability_array;
@@ -314,8 +313,8 @@ class BramsDataModelAvailability extends ItemModel {
 		// generate a database query
 		$availability_query->select($db->quoteName('system_id') . ', ' . $db->quoteName('rate') . ', ' . $db->quoteName('date'));
 		$availability_query->from($db->quoteName('file_availability'));
-		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date->format('Y-m-d H:i:s')) . ', DATE)');
-		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date->format('Y-m-d H:i:s')) . ', DATE)');
+		$availability_query->where($db->quoteName('date') . ' >= convert(' . $db->quote($start_date->format('Y-m-d')) . ', DATE)');
+		$availability_query->where($db->quoteName('date') . ' < convert(' . $db->quote($end_date->format('Y-m-d')) . ', DATE)');
 		$availability_query->where($db->quoteName('system_id') . ' in (' . implode(', ', $selected_stations) . ')');
 		$availability_query->order($db->quoteName('date'));
 		
