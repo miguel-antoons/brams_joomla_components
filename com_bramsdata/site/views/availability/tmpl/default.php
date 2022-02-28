@@ -56,13 +56,13 @@ defined('_JEXEC') or die('Restricted access');
                 "measure": "<?php echo $station ?>",
                 "interval_s": <?php echo $this->interval ?>,
                 "categories": {
-                    "0%": {color: '#FF0000'},
-                    "100%": {color: '#00FF00'},
-                    "0.1 - 20%": {color: '#FF5500'},
-                    "20.1 - 40%": {color: '#FFAA00'},
-                    "40.1 - 60%": {color: '#FFFF00'},
-                    "60.1 - 80%": {color: '#AAFF00'},
-                    "80.1 - 99.9%": {color: '#55FF00'},
+                    "0%": {class: "rect_red", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_red"></i>' },
+                    "100%": {class: "rect_green", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_green"></i>' },
+                    "0.1 - 20%": {class: "rect_red1", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_red1"></i>' },
+                    "20.1 - 40%": {class: "rect_red2", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_red2"></i>' },
+                    "40.1 - 60%": {class: "rect_yellow", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_yellow"></i>' },
+                    "60.1 - 80%": {class: "rect_green2", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_green2"></i>' },
+                    "80.1 - 99.9%": {class: "rect_green1", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_green1"></i>' },
                 },
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
