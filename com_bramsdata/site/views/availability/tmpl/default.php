@@ -56,13 +56,13 @@ defined('_JEXEC') or die('Restricted access');
                 "measure": "<?php echo $station ?>",
                 "interval_s": <?php echo $this->interval ?>,
                 "categories": {
-                    "0%": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data">0%</i>' },
-                    "100%": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data">100%</i>' },
-                    "0.1 - 20%": {class: "rect_red1", tooltip_html: '<i class="fas fa-fw tooltip_red1">0.1 - 20%</i>' },
-                    "20.1 - 40%": {class: "rect_red2", tooltip_html: '<i class="fas fa-fw tooltip_red2">20.1 - 40%</i>' },
-                    "40.1 - 60%": {class: "rect_blue", tooltip_html: '<i class="fas fa-fw tooltip_blue">40.1 - 60%</i>' },
-                    "60.1 - 80%": {class: "rect_green2", tooltip_html: '<i class="fas fa-fw tooltip_green2">60.1 - 80%</i>' },
-                    "80.1 - 99.9%": {class: "rect_green1", tooltip_html: '<i class="fas fa-fw tooltip_green1">80.1 - 99.9%</i>' },
+                    "0%": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data">0%<br></i>' },
+                    "100%": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data">100%<br></i>' },
+                    "0.1 - 20%": {class: "rect_red1", tooltip_html: '<i class="fas fa-fw tooltip_red1">0.1 - 20%<br></i>' },
+                    "20.1 - 40%": {class: "rect_red2", tooltip_html: '<i class="fas fa-fw tooltip_red2">20.1 - 40%<br></i>' },
+                    "40.1 - 60%": {class: "rect_blue", tooltip_html: '<i class="fas fa-fw tooltip_blue">40.1 - 60%<br></i>' },
+                    "60.1 - 80%": {class: "rect_green2", tooltip_html: '<i class="fas fa-fw tooltip_green2">60.1 - 80%<br></i>' },
+                    "80.1 - 99.9%": {class: "rect_green1", tooltip_html: '<i class="fas fa-fw tooltip_green1">80.1 - 99.9%<br></i>' },
                 },
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
