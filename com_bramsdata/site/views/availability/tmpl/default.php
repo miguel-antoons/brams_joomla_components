@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
         responsive: {
             enabled: true,
         },
-        custom_categories: customized_categories
+        custom_categories: true
     };
 
     let chart = visavail.generate(options, dataset);
