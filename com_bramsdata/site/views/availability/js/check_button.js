@@ -92,5 +92,3 @@ function changeCheckBox() {
   changeRPIStatus();
   changeOldStatus();
 }
-
-document.getElementById('g-container-main').addEventListener('onload', () => changeCheckBox());

@@ -50,6 +50,20 @@ defined('_JEXEC') or die('Restricted access');
     </p>
 </div>
 <script>
+    $(document).ready(function () {
+        $('#checkBtn').click(function() {
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+            alert("You must check at least one checkbox.");
+            return false;
+            }
+
+        });
+    });
+
+    changeCheckBox();
+
     let dataset = [
         <?php foreach ($this->selected_stations as $station) : ?>
             {
