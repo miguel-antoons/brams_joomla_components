@@ -126,7 +126,7 @@ class BramsDataModelAvailability extends ItemModel {
 		// contains all the raw availability information coming from the database
 		$db_availability = $db_function_to_use($start_to_use, $end_date, $selected_stations);
 		$final_availability_array = array();					// array will contain all the final availability info
-		$end_datetime = new DateTime($end_date);				// convert the string date to a string datetime object
+		$end_datetime = $end_date;				// convert the string date to a string datetime object
 
 		// create a new array that contains the data grouped per selected station
 		foreach ($selected_stations as $station) {
