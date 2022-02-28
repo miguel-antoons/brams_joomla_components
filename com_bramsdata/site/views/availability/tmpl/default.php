@@ -68,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
                         [
                             "<?php echo $this->availability[$station][$index]->start ?>", 
-                            <?php echo $this->availability[$station][$index]->available ?>, 
+                            "<?php echo $this->availability[$station][$index]->available ?>", 
                             "<?php 
                                 $end_time = new DateTime($this->availability[$station][$index + 1]->start);
                                 echo $end_time->format('Y-m-d H:i:s');
