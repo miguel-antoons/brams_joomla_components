@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type='checkbox' onClick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
 <label for='checkFTP'>Check Old</label>
 
-<form action='' method='post'>
+<form action='' method='post' id='availabilityForm>
     <?php foreach ($this->stations as $station) : ?>
         <input 
             type='checkbox' 
@@ -33,10 +33,10 @@ defined('_JEXEC') or die('Restricted access');
     <?php endforeach; ?>
 
     <label for='startDate'>From </label>
-    <input type='date' name='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
+    <input type='date' name='startDate' id='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
 
     <label for='endDate'>To </label>
-    <input type='date' name='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
+    <input type='date' name='endDate' id='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
 
     <input name='submit' type='submit' id='submit' />
 </form>

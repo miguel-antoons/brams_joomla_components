@@ -93,6 +93,19 @@ function changeCheckBox() {
   changeOldStatus();
 }
 
+function yyyymmdd(date) {
+  const mm = date.getMonth() + 1;
+  const dd = date.getDate();
+
+  return [
+    date.getFullYear(),
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd,
+  ].join('-');
+}
+
 function zoomGraph(d, i) {
-  console.log(d, i);
+  document.getElementById('startDate').value = yyyymmdd(d[0]);
+  document.getElementById('endDate').value = yyyymmdd(d[2]);
+  document.getElementById('availabilityForm').onsubmit();
 }
