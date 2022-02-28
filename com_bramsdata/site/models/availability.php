@@ -168,10 +168,10 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// check a first time to set the correct flag value
 		if ($specific_station_availability[0]->start !== $expected_start) {
-			$flag = false;
+			$flag = true;
 		}
 		else {
-			$flag = true;
+			$flag = false;
 		}
 
 		$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
