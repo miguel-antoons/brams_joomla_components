@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type='checkbox' onClick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
 <label for='checkFTP'>Check Old</label>
 
-<form action='' method='post' id='availabilityForm'>
+<form action='' method='post' name='availabilityForm'>
     <?php foreach ($this->stations as $station) : ?>
         <input 
             type='checkbox' 
