@@ -106,7 +106,8 @@ defined('_JEXEC') or die('Restricted access');
         responsive: {
             enabled: true,
         },
-        custom_categories: true
+        custom_categories: true,
+        onClickBlock: zoomGraph,
     };
 
     let chart = visavail.generate(options, dataset);

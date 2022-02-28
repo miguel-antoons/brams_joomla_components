@@ -92,3 +92,7 @@ function changeCheckBox() {
   changeRPIStatus();
   changeOldStatus();
 }
+
+function zoomGraph(d, i) {
+  console.log(d, i);
+}
