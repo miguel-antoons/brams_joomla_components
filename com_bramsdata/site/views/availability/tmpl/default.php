@@ -44,6 +44,15 @@ defined('_JEXEC') or die('Restricted access');
 <p>
     <?php //print_r($this->availability) ?>
 </p>
+<ul class="legend">
+    <li><span class="a"></span>  100%</li>
+    <li><span class="b"></span>  80.1 - 99.9%</li>
+    <li><span class="c"></span>  60.1 - 80%</li>
+    <li><span class="d"></span>  40.1 - 60%</li>
+    <li><span class="e"></span>  20.1 - 40%</li>
+    <li><span class="f"></span>  0.1 - 20%</li>
+    <li><span class="g"></span>  0%</li>
+</ul>
 <div style="overflow: hidden;" class="visavail" id="visavail_container">
     <p id="visavail_graph">
         <!-- Visavail.js chart will be placed here -->

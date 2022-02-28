@@ -7,11 +7,11 @@
     width: 100px !important;
 }
 
-.rect_red2{
+.rect_red1{
     fill: #c83c8a;
 }
 
-.tooltip_red2{
+.tooltip_red1{
     color: #c83c8a;
     width: 100px !important;
 }
@@ -34,11 +34,23 @@
     width: 100px !important;
 }
 
-.rect_red1{
+.rect_red2{
     fill: #953cc8;
 }
 
-.tooltip_red1{
+.tooltip_red2{
     color: #953cc8;
     width: 100px !important;
 }
+
+.legend { list-style: none; }
+.legend li { float: right; margin-right: 5%; color: #777; }
+.legend span { border: 1px solid black; float: left; width: 12px; height: 12px; margin: 2px; }
+/* your colors */
+.legend .g { background-color: #e20000; }
+.legend .f { background-color: #c83c8a; }
+.legend .e { background-color: #953cc8; }
+.legend .d { background-color: #3c53c8; }
+.legend .c { background-color: #3cbfc8; }
+.legend .b { background-color: #3cc877; }
+.legend .a { background-color: #6dc83c; }

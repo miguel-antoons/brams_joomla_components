@@ -87,7 +87,7 @@ div.y-tooltip.bottom::after {
 
 .visavail-tooltip .tooltip_has_no_data {
     /* color of symbol in tooltip if there is no data */
-    color: #c83c3c;
+    color: #e20000;
 }
 
 .visavail .rect_has_data {
@@ -101,11 +101,11 @@ div.y-tooltip.bottom::after {
 
 .visavail .rect_has_no_data {
     /* blocks without data */
-    fill: #c83c3c;
+    fill: #e20000;
 }
 
 .visavail .rect_has_no_data:hover {
-    fill: #c83c3c;
+    fill: #e20000;
 }
 
 
