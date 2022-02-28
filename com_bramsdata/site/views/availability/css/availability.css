@@ -44,8 +44,12 @@
 }
 
 .legend { list-style: none; }
-.legend li { float: right; margin-right: 5%; color: #777; }
-.legend span { border: 1px solid black; float: left; width: 12px; height: 12px; margin: 2px; }
+.legend li { 
+    float: right; 
+    margin-right: 5%; 
+    vertical-align: middle;
+}
+.legend span { border: 0; float: left; width: 12px; height: 12px; margin: 2px; }
 /* your colors */
 .legend .g { background-color: #e20000; }
 .legend .f { background-color: #c83c8a; }
