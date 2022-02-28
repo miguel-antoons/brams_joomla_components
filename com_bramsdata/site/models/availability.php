@@ -130,7 +130,7 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// create a new array that contains the data grouped per selected station
 		foreach ($selected_stations as $station) {
-			$expected_start = $start_date;		// set the initial expected start
+			$expected_start = new DateTime($start_date);		// set the initial expected start
 			
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
@@ -177,7 +177,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			// update the expected start time with the next expected value
-			$expected_start = $end_time->format('Y-m-d H:i:s');
+			$expected_start = $end_time;
 		}
 	}
 
