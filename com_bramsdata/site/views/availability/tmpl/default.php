@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
             id='station<?php echo $station->id ?>'
             <?php echo $station->checked ?>
         />
-        <label for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
+        <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
     <?php endforeach; ?>
 
     <label for='startDate'>From </label>

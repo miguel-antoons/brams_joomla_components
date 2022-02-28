@@ -64,3 +64,7 @@
     margin-bottom: 20px;
     display: block;
 }
+
+.checkbox_label {
+    display: inline-block !important;
+}
