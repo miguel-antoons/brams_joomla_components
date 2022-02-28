@@ -1,39 +1,39 @@
-.rect_green{
+.rect_green1{
     fill: #3cc877;
 }
 
-.tooltip_green{
+.tooltip_green1{
     color: #3cc877;
 }
 
-.rect_red{
+.rect_red2{
     fill: #c83c8a;
 }
 
-.tooltip_red{
+.tooltip_red2{
     color: #c83c8a;
 }
 
-.rect_yellow{
+.rect_blue{
     fill: #3c53c8;
 }
 
-.tooltip_yellow{
+.tooltip_blue{
     color: #3c53c8;
 }
 
-.rect_green1{
+.rect_green2{
     fill: #3cbfc8;
 }
 
-.tooltip_green1{
+.tooltip_green2{
     color: #3cbfc8;
 }
 
-.rect_green2{
+.rect_red1{
     fill: #953cc8;
 }
 
-.tooltip_green2{
+.tooltip_red1{
     color: #953cc8;
 }
