@@ -54,15 +54,15 @@ defined('_JEXEC') or die('Restricted access');
         <?php foreach ($this->selected_stations as $station) : ?>
             {
                 "measure": "<?php echo $station ?>",
-                "interval_s": 300,
+                "interval_s": <?php echo $this->interval ?>,
                 "categories": {
-                    "1": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data"></i>' },
-                    "2": {class: "rect_has_data", tooltip_html: '<i class="fas fa-fw fa-check tooltip_has_data"></i>'},
-                    "3": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
-                    "4": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
-                    "5": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
-                    "6": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
-                    "7": {class: "rect_purple" , tooltip_html: '<i class="fas fa-fw fa-trophy tooltip_purple"></i>'},
+                    "0%": {color: '#FF0000'},
+                    "100%": {color: '#00FF00'},
+                    "0.1 - 20%": {color: '#FF5500'},
+                    "20.1 - 40%": {color: '#FFAA00'},
+                    "40.1 - 60%": {color: '#FFFF00'},
+                    "60.1 - 80%": {color: '#AAFF00'},
+                    "80.1 - 99.9%": {color: '#55FF00'},
                 },
                 "data": [
                     <?php for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) : ?>
