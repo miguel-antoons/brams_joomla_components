@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div class="container custom_container">
+<div class="container custom_container container_margin">
     <div class='row'>
         <div class='col custom_col'>
             <input type='checkbox' onClick='checkAllBoxes(this)' id='checkAll' name='checkAll' />
@@ -52,15 +52,18 @@ defined('_JEXEC') or die('Restricted access');
             <?php endforeach; ?>
             <?php echo "</div>" ?>
         </div>
+        <div class='row'>
+            <div class='col custom_col'>
+                <label for='startDate'>From </label>
+                <input type='date' name='startDate' id='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
+            </div>
+            <div class='col custom_col'>
+                <label for='endDate'>To </label>
+                <input type='date' name='endDate' id='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
+            </div>
+        </div>
+        <button type='submit' id='submit' class='btn btn-dark'>Load Data</button>
     </div>
-
-    <label for='startDate'>From </label>
-    <input type='date' name='startDate' id='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
-
-    <label for='endDate'>To </label>
-    <input type='date' name='endDate' id='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
-
-    <input name='submit' type='submit' id='submit' />
 </form>
 <div class="legend_container">
         <ul class="legend">
