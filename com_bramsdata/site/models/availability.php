@@ -150,6 +150,8 @@ class BramsDataModelAvailability extends ItemModel {
 			$last_object->start = $end_date;								// add the end date as DateTime object to the newly created object
 			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 		}
+		//debug 
+		print_r($final_availability_array);
 
 		return $final_availability_array;
 	}
@@ -166,7 +168,6 @@ class BramsDataModelAvailability extends ItemModel {
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$flag;	// flag indicates if the previous added time was available (flag = false) or not (flag = true)
 		$station_availability_length = count($specific_station_availability);
-		echo $station_availability_length;
 
 		if($station_availability_length) {
 			// check a first time to set the correct flag value
