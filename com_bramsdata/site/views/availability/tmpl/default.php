@@ -19,26 +19,28 @@ defined('_JEXEC') or die('Restricted access');
 <label class='master_checkbox' for='checkFTP'>Check Old</label>
 
 <form action='' method='post' name='availabilityForm'>
-    <div class='row'>
-        <?php $index = 0 ?>
-        <?php foreach ($this->stations as $station) : ?>
-            <?php 
-                $index++;
-                if(!($index % $this->column_length)) { echo "</div><div class='col'>"; }
-            ?>
-            <input 
-                type='checkbox' 
-                onClick='changeCheckBox()' 
-                class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
-                name='station[]'
-                value='<?php echo $station->id ?>'
-                id='station<?php echo $station->id ?>'
-                <?php echo $station->checked ?>
-            />
-            <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
-            <br>
-        <?php endforeach; ?>
-        <?php echo "</div>" ?>
+    <div class="container">
+        <div class='row'>
+            <?php $index = 0 ?>
+            <?php foreach ($this->stations as $station) : ?>
+                <?php 
+                    $index++;
+                    if(!($index % $this->column_length)) { echo "</div><div class='col'>"; }
+                ?>
+                <input 
+                    type='checkbox' 
+                    onClick='changeCheckBox()' 
+                    class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
+                    name='station[]'
+                    value='<?php echo $station->id ?>'
+                    id='station<?php echo $station->id ?>'
+                    <?php echo $station->checked ?>
+                />
+                <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
+                <br>
+            <?php endforeach; ?>
+            <?php echo "</div>" ?>
+        </div>
     </div>
 
     <label for='startDate'>From </label>
