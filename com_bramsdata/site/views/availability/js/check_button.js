@@ -126,12 +126,14 @@ function yyyymmdd(date) {
 
 // zoom in on the graph onclick
 function zoomGraph(d, i) {
-  let diffDays = Math.abs(d[2] - d[0]);
+  const startDateElement = document.getElementById('startDate');
+  const endDateElement = document.getElementById('startDate');
+  let diffDays = Math.abs(Date.parse(endDateElement.value) - Date.parse(startDateElement.value));
   diffDays = Math.ceil(diffDays / (1000 * 60 * 60 * 24));
 
   if (diffDays > 14) {
-    document.getElementById('startDate').value = yyyymmdd(d[0]);
-    document.getElementById('endDate').value = yyyymmdd(d[2]);
+    startDateElement.value = yyyymmdd(d[0]);
+    endDateElement.value = yyyymmdd(d[2]);
     document.availabilityForm.submit.click();
   }
 }
