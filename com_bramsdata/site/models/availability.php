@@ -201,7 +201,7 @@ class BramsDataModelAvailability extends ItemModel {
 			$minutes_to_subtract = new DateInterval('PT5M');
 			$minutes_to_subtract->invert = 1;
 			$expected_start->add($minutes_to_subtract);
-			$expected_start->format('Y-m-d H:i:s');
+			$expected_start = $expected_start->format('Y-m-d H:i:s');
 
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[-1]->start !== $expected_start) {
@@ -321,7 +321,7 @@ class BramsDataModelAvailability extends ItemModel {
 			$minutes_to_subtract = new DateInterval('P1D');
 			$minutes_to_subtract->invert = 1;
 			$expected_start->add($minutes_to_subtract);
-			$expected_start->format('Y-m-d');
+			$expected_start = $expected_start->format('Y-m-d');
 
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[count($array) - 1]->date !== $expected_start) {
