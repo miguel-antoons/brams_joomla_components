@@ -266,13 +266,15 @@ class BramsDataModelAvailability extends ItemModel {
 				$temp_object = $this->change_category($change, $previous_available, 1);
 				$temp_object->start = $expected_start;
 				$final_availability_array[$station][] = $temp_object;
+				$change = false;
 				$index = 1;
 			}
 			else {
 				$index = 0;
 			}
+
 			// iterate over the array containing all the availability info of one specific station
-			for (; $index < $station_availability_length ; $index++) {
+			for ($index ; $index < $station_availability_length ; $index++) {
 				$availability_info = &$specific_station_availability[$index];
 
 				// if a change has been performed
