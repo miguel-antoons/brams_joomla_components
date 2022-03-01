@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 <form action='' method='post' name='availabilityForm'>
     <div class="container">
         <div class='row'>
+            <?php echo "<div class='col'>"; ?>
             <?php $index = 0 ?>
             <?php foreach ($this->stations as $station) : ?>
                 <?php 
