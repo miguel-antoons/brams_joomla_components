@@ -204,10 +204,10 @@ class BramsDataModelAvailability extends ItemModel {
 			$expected_start = $expected_start->format('Y-m-d H:i:s');
 
 			// if the last date found in the database data is not the expected date
-			if ($specific_station_availability[-1]->start !== $expected_start) {
+			if ($specific_station_availability[count($specific_station_availability)-1]->start !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
 				$flag = false;
-				$end_time = new DateTime($final_availability_array[$station][count($array)-1]->start);
+				$end_time = new DateTime($final_availability_array[$station][count($specific_station_availability)-1]->start);
 				$end_time->add(new DateInterval('PT5M'));
 
 				$this->add_availability_info($final_availability_array, $end_time->format('Y-m-d H:i:s'), $station, $flag);
@@ -324,9 +324,9 @@ class BramsDataModelAvailability extends ItemModel {
 			$expected_start = $expected_start->format('Y-m-d');
 
 			// if the last date found in the database data is not the expected date
-			if ($specific_station_availability[count($array) - 1]->date !== $expected_start) {
+			if ($specific_station_availability[count($specific_station_availability) - 1]->date !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
-				$end_time = new DateTime($final_availability_array[$station][count($array) - 1]->start);
+				$end_time = new DateTime($final_availability_array[$station][count($specific_station_availability) - 1]->start);
 				$end_time->add(new DateInterval('P1D'));
 
 				$temp_object = $this->change_category($final_availability_array, $previous_available, 1);
@@ -335,7 +335,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 			print_r($final_availability_array);
 			echo '<br>';
-			print_r($specific_station_availability[count($array) - 1]);
+			print_r($specific_station_availability[count($specific_station_availability) - 1]);
 			echo '<br>';
 			echo $expected_start;
 		}
