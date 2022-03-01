@@ -9,14 +9,24 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<input type='checkbox' onClick='checkAllBoxes(this)' id='checkAll' name='checkAll' />
-<label class='master_checkbox' for='checkAll'>Check All</label>
-
-<input type='checkbox' onClick='checkRPIBoxes(this)' id='checkRPI' name='checkRPI' />
-<label class='master_checkbox' for='checkRPI'>Check New</label>
-
-<input type='checkbox' onClick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
-<label class='master_checkbox' for='checkFTP'>Check Old</label>
+<div class="container custom_container">
+    <div class='row'>
+        <div class='col custom_col'>
+            <input type='checkbox' onClick='checkAllBoxes(this)' id='checkAll' name='checkAll' />
+            <label class='master_checkbox' for='checkAll'>Check All</label>
+        </div>
+        <div class='col custom_col'>
+            <input type='checkbox' onClick='checkRPIBoxes(this)' id='checkRPI' name='checkRPI' />
+            <label class='master_checkbox' for='checkRPI'>Check New</label>
+        </div>
+        <div class='col custom_col'>
+            <input type='checkbox' onClick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
+            <label class='master_checkbox' for='checkFTP'>Check Old</label>
+        </div>
+        <div class='col custom_col'></div>
+        <div class='col custom_col'></div>
+    </div>
+</div>
 
 <form action='' method='post' name='availabilityForm'>
     <div class="container custom_container">
