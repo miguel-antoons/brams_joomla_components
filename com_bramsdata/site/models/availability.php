@@ -397,7 +397,7 @@ class BramsDataModelAvailability extends ItemModel {
 		return $db->loadObjectList();
 	}
 
-	private function add_time_to_sring($string_date, $format='Y-m-d H:i:s', $string_interval='PT5M', invert: 0) {
+	private function add_time_to_sring($string_date, $format='Y-m-d H:i:s', $string_interval='PT5M', $invert=0) {
 		$final_date = new DateTime($string_date);
 		$interval_to_add = new DateInterval($string_interval);
 		$interval_to_add->invert = $invert;
