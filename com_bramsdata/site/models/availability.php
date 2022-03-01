@@ -198,7 +198,6 @@ class BramsDataModelAvailability extends ItemModel {
 			// following code is in case files were missing at the end
 			$expected_start = $this->add_time_to_sring($end_date, 'Y-m-d H:i:s', 'PT5M', 1);
 
-			print_r($final_availability_array);
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[$station_availability_length - 1]->start !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
@@ -210,8 +209,6 @@ class BramsDataModelAvailability extends ItemModel {
 					$flag
 				);
 			}
-			echo '<br><br>';
-			print_r($final_availability_array);
 		}
 		else {
 			$flag = false;
@@ -235,7 +232,7 @@ class BramsDataModelAvailability extends ItemModel {
 		// set availability according to the flag
 		if ($flag) {
 			$temp_object->available = $this->custom_categories_array[1];
-			$expected_start = $this->add_time_to_sring($end_date, 'Y-m-d H:i:s', 'PT5M', 1);
+			$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d H:i:s', 'PT5M', 1);
 		}
 		else {
 			$temp_object->available = $this->custom_categories_array[0];
