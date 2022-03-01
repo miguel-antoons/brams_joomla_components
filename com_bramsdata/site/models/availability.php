@@ -194,7 +194,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			// following code is in case files were missing at the end
-			$expected_start = $end_date;
+			$expected_start = new DateTime($end_date);
 			$minutes_to_subtract = new DateInterval('PT5M');
 			$minutes_to_subtract->invert = 1;
 			$expected_start->add($minutes_to_subtract);
@@ -310,7 +310,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			// following code is in case files were missing at the end
-			$expected_start = $end_date;
+			$expected_start = new DateTime($end_date);
 			$minutes_to_subtract = new DateInterval('P1D');
 			$minutes_to_subtract->invert = 1;
 			$expected_start->add($minutes_to_subtract);
