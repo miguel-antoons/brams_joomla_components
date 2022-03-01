@@ -91,9 +91,19 @@ label {
 }
 
 .custom_btn {
-    width: 70px !important;
-    height: 30px !important;
-    background-color: black !important;
-    color: white !important;
+    width: 100px !important;
+    height: 40px !important;
+    background-color: rgb(31, 29, 29) !important;
+    color: rgb(218, 218, 218) !important;
     border-radius: 5px !important;
+    font-weight: bolder;
+}
+
+.custom_btn:hover {
+    background-color: rgb(218, 218, 218);
+    color: black;
+}
+
+.custom_btn::selection {
+    border: 2px solid lightblue;
 }
