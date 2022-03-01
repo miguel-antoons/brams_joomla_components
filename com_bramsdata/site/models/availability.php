@@ -196,7 +196,7 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 		else {
 			$flag = false;
-			$this->add_availability_info($final_availability_array, $expected_start, $flag);
+			$this->add_availability_info($final_availability_array, $station, $expected_start, $flag);
 		}
 		
 	}
