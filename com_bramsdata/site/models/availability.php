@@ -173,8 +173,6 @@ class BramsDataModelAvailability extends ItemModel {
 		if($station_availability_length) {
 			// check a first time to set the correct flag value
 			if ($specific_station_availability[0]->start !== $expected_start) {
-				echo $specific_station_availability[0]->start;
-				echo $expected_start;
 				$flag = false;
 			}
 			else {
@@ -185,17 +183,17 @@ class BramsDataModelAvailability extends ItemModel {
 
 			// iterate over the array containing all the availability info of one specific station
 			for ($index = 1 ; $index < $station_availability_length ; $index++) {
+				$end_time = new DateTime($specific_station_availability[$index - 1]->start);
+				$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
+				// update the expected start time with the next expected value
+				$expected_start = $end_time->format('Y-m-d H:i:s');
+
 				// if the effective start time and the expected start time do not match
 				// or if the effective start time and the expected start time match and the previous
 				// object added to the array has availability set to 0
 				if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
 					$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
 				}
-
-				$end_time = new DateTime($specific_station_availability[$index]->start);
-				$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
-				// update the expected start time with the next expected value
-				$expected_start = $end_time->format('Y-m-d H:i:s');
 			}
 
 			// following code is in case files were missing at the end
