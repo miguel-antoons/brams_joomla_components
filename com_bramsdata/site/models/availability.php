@@ -263,8 +263,6 @@ class BramsDataModelAvailability extends ItemModel {
 		$previous_available = -1;	// indicates what was the last category inserted into the array
 		$change = false;
 		$station_availability_length = count($specific_station_availability);
-		// $expected_start = new DateTime($expected_start);
-		// $expected_start = $expected_start->format('Y-m-d');
 
 		if($station_availability_length) {
 			if ($specific_station_availability[0]->date !== $expected_start) {
@@ -277,10 +275,6 @@ class BramsDataModelAvailability extends ItemModel {
 			else {
 				$index = 0;
 			}
-
-			print_r($final_availability_array);
-			echo $$specific_station_availability[0]->date;
-			echo $expected_start;
 
 			// iterate over the array containing all the availability info of one specific station
 			for ($index = $index ; $index < $station_availability_length ; $index++) {
@@ -319,6 +313,8 @@ class BramsDataModelAvailability extends ItemModel {
 					$temp_object = $this->change_category($change, $previous_available, 7);
 				}
 			}
+
+			print_r($final_availability_array);
 
 			// following code is in case files were missing at the end
 			$expected_start = new DateTime($end_date);
