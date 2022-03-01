@@ -92,7 +92,7 @@ class BramsDataViewAvailability extends HtmlView {
 	}
 
 	private function set_columns_length() {
-		$this->column_length = ceil(count($this->selected_stations) / 5);
+		$this->column_length = ceil(count($this->stations) / 5);
 	}
 
 	// function adds needed javascript and css files to the view
