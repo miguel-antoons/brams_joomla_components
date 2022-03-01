@@ -145,11 +145,11 @@ class BramsDataModelAvailability extends ItemModel {
 
 			// launch the structure function
 			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $station);
-		}
 
-		$last_object = new stdClass();									// create a new object
-		$last_object->start = $end_date;								// add the end date as DateTime object to the newly created object
-		array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
+			$last_object = new stdClass();									// create a new object
+			$last_object->start = $end_date;								// add the end date as DateTime object to the newly created object
+			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
+		}
 
 		return $final_availability_array;
 	}

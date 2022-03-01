@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
     let dataset = [
         <?php foreach ($this->selected_stations as $station) : ?>
             {
-                "measure": "<?php echo $station ?>",
+                "measure": "<?php echo $this->stations[array_search($station, array_column($this->stations, 'id'))]->name ?>",
                 "interval_s": <?php echo $this->interval ?>,
                 "categories": {
                     "0%": {class: "rect_has_no_data", tooltip_html: '<i class="fas fa-fw fa-exclamation-circle tooltip_has_no_data">0%</i><br>' },

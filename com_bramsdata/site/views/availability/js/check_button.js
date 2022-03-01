@@ -75,6 +75,8 @@ function changeRPIStatus() {
   } else {
     checkRPIBox.checked = false;
   }
+
+  changeAllStatus();
 }
 
 // verify if the 'check new' checkbox has to be checked
@@ -99,6 +101,8 @@ function changeOldStatus() {
   } else {
     checkOldBox.checked = false;
   }
+
+  changeAllStatus();
 }
 
 // checkbox entrypoint function
