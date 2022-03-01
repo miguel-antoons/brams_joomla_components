@@ -150,8 +150,6 @@ class BramsDataModelAvailability extends ItemModel {
 			$last_object->start = $end_date;								// add the end date as DateTime object to the newly created object
 			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 		}
-		//debug 
-		print_r($final_availability_array);
 
 		return $final_availability_array;
 	}
@@ -198,7 +196,7 @@ class BramsDataModelAvailability extends ItemModel {
 		}
 		else {
 			$flag = false;
-			$this->add_availability_info($final_availability_array, $station, $expected_start, $flag);
+			$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
 		}
 		
 	}
