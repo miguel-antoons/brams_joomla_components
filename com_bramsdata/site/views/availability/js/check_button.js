@@ -1,41 +1,3 @@
-// Check all Raspberry PI boxes
-function checkRPIBoxes(source) {
-  // get all Raspberry PI boxes and all active boxes
-  const RPICheckBoxes = [].slice.call(document.getElementsByClassName('SSH'));
-  const activeSystems = [].slice.call(document.getElementsByClassName('A'));
-
-  // check/uncheck all active Raspberry boxes
-  for (let i = 0; i < RPICheckBoxes.length; i += 1) {
-    if (activeSystems.includes(RPICheckBoxes[i])) {
-      RPICheckBoxes[i].checked = source.checked;
-    }
-  }
-}
-
-// check/uncheck all older station checkboxes
-function checkFTPBoxes(source) {
-  // get FTP, USB and active stations
-  const FTPCheckBoxes = [].slice.call(document.getElementsByClassName('FTP'));
-  const USBCheckBoxes = [].slice.call(document.getElementsByClassName('USB'));
-  const oldSystems = FTPCheckBoxes.concat(USBCheckBoxes);
-  const activeSystems = [].slice.call(document.getElementsByClassName('A'));
-
-  // check/uncheck all older station checkboxes
-  for (let i = 0; i < oldSystems.length; i += 1) {
-    if (activeSystems.includes(oldSystems[i])) {
-      oldSystems[i].checked = source.checked;
-    }
-  }
-}
-
-// check/uncheck all checkboxes
-function checkAllBoxes(source) {
-  const allCheckboxes = document.querySelectorAll('input[type=\'checkbox\']');
-  for (let i = 0; i < allCheckboxes.length; i += 1) {
-    allCheckboxes[i].checked = source.checked;
-  }
-}
-
 // verify if the 'check all' checkbox has to be checked
 function changeAllStatus() {
   const checkAllBox = document.getElementById('checkAll');
@@ -57,6 +19,48 @@ function changeAllStatus() {
   }
 }
 
+// Check all Raspberry PI boxes
+function checkRPIBoxes(source) {
+  // get all Raspberry PI boxes and all active boxes
+  const RPICheckBoxes = [].slice.call(document.getElementsByClassName('SSH'));
+  const activeSystems = [].slice.call(document.getElementsByClassName('A'));
+
+  // check/uncheck all active Raspberry boxes
+  for (let i = 0; i < RPICheckBoxes.length; i += 1) {
+    if (activeSystems.includes(RPICheckBoxes[i])) {
+      RPICheckBoxes[i].checked = source.checked;
+    }
+  }
+
+  changeAllStatus();
+}
+
+// check/uncheck all older station checkboxes
+function checkFTPBoxes(source) {
+  // get FTP, USB and active stations
+  const FTPCheckBoxes = [].slice.call(document.getElementsByClassName('FTP'));
+  const USBCheckBoxes = [].slice.call(document.getElementsByClassName('USB'));
+  const oldSystems = FTPCheckBoxes.concat(USBCheckBoxes);
+  const activeSystems = [].slice.call(document.getElementsByClassName('A'));
+
+  // check/uncheck all older station checkboxes
+  for (let i = 0; i < oldSystems.length; i += 1) {
+    if (activeSystems.includes(oldSystems[i])) {
+      oldSystems[i].checked = source.checked;
+    }
+  }
+
+  changeAllStatus();
+}
+
+// check/uncheck all checkboxes
+function checkAllBoxes(source) {
+  const allCheckboxes = document.querySelectorAll('input[type=\'checkbox\']');
+  for (let i = 0; i < allCheckboxes.length; i += 1) {
+    allCheckboxes[i].checked = source.checked;
+  }
+}
+
 // verify if the 'check old' checkbox has to be checked
 function changeRPIStatus() {
   const checkRPIBox = document.getElementById('checkRPI');
@@ -75,8 +79,6 @@ function changeRPIStatus() {
   } else {
     checkRPIBox.checked = false;
   }
-
-  changeAllStatus();
 }
 
 // verify if the 'check new' checkbox has to be checked
@@ -101,15 +103,13 @@ function changeOldStatus() {
   } else {
     checkOldBox.checked = false;
   }
-
-  changeAllStatus();
 }
 
 // checkbox entrypoint function
 function changeCheckBox() {
-  changeAllStatus();
   changeRPIStatus();
   changeOldStatus();
+  changeAllStatus();
 }
 
 // convert datetime object to string yyyymmdd date
