@@ -177,14 +177,12 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
-			$expected_start = new DateTime($expected_start);
-			$expected_start->add(new DateInterval('PT5M'));
-			$expected_start = $expected_start->format('Y-m-d H:i:s');
+			$expected_start = $this->add_time_to_sring($expected_start);
 
 			// iterate over the array containing all the availability info of one specific station
 			for ($index = 1 ; $index < $station_availability_length ; $index++) {
-				$end_time = new DateTime($specific_station_availability[$index]->start);
-				$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
+				// add 5 min to the start time -> becomes the end time
+				$end_time = $this->add_time_to_sring($specific_station_availability[$index]->start);			
 
 				// if the effective start time and the expected start time do not match
 				// or if the effective start time and the expected start time match and the previous
@@ -194,24 +192,22 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 
 				// update the expected start time with the next expected value
-				$expected_start = $end_time->format('Y-m-d H:i:s');
+				$expected_start = $end_time;
 			}
 
 			// following code is in case files were missing at the end
-			$expected_start = new DateTime($end_date);
-			$minutes_to_subtract = new DateInterval('PT5M');
-			$minutes_to_subtract->invert = 1;
-			$expected_start->add($minutes_to_subtract);
-			$expected_start = $expected_start->format('Y-m-d H:i:s');
+			$expected_start = $this->add_time_to_sring($end_date, $invert=1);
 
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[$station_availability_length - 1]->start !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
 				$flag = false;
-				$end_time = new DateTime($specific_station_availability[$station_availability_length - 1]->start);
-				$end_time->add(new DateInterval('PT5M'));
-
-				$this->add_availability_info($final_availability_array, $end_time->format('Y-m-d H:i:s'), $station, $flag);
+				$this->add_availability_info(
+					$final_availability_array,
+					$this->add_time_to_sring($specific_station_availability[$station_availability_length - 1]->start),
+					$station,
+					$flag
+				);
 			}
 		}
 		else {
@@ -236,11 +232,7 @@ class BramsDataModelAvailability extends ItemModel {
 		// set availability according to the flag
 		if ($flag) {
 			$temp_object->available = $this->custom_categories_array[1];
-			$expected_start = new DateTime($expected_start);
-			$minutes_to_subtract = new DateInterval('PT5M');
-			$minutes_to_subtract->invert = 1;
-			$expected_start->add($minutes_to_subtract);
-			$expected_start = $expected_start->format('Y-m-d H:i:s');
+			$expected_start = $this->add_time_to_sring($end_date, $invert=1);
 		}
 		else {
 			$temp_object->available = $this->custom_categories_array[0];
@@ -320,26 +312,19 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 
 				// update expected start
-				$expected_start = new DateTime($expected_start);
-				$expected_start->add(new DateInterval('P1D'));
-				$expected_start = $expected_start->format('Y-m-d');
+				$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d', 'P1D');
 			}
 
 			// following code is in case files were missing at the end
-			$expected_start = new DateTime($end_date);
-			$minutes_to_subtract = new DateInterval('P1D');
-			$minutes_to_subtract->invert = 1;
-			$expected_start->add($minutes_to_subtract);
-			$expected_start = $expected_start->format('Y-m-d');
+			$expected_start = $this->add_time_to_sring($end_date, 'Y-m-d', 'P1D', 1);
 
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[$station_availability_length - 1]->date !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
-				$end_time = new DateTime($specific_station_availability[$station_availability_length - 1]->date);
-				$end_time->add(new DateInterval('P1D'));
-
 				$temp_object = $this->change_category($change, $previous_available, 1);
-				$temp_object->start = $end_time->format('Y-m-d');
+				$temp_object->start = $this->add_time_to_sring(
+					$specific_station_availability[$station_availability_length - 1]->date, 'Y-m-d', 'P1D'
+				);
 				$final_availability_array[$station][] = $temp_object;
 			}
 		}
@@ -410,5 +395,13 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// return the data received from the database
 		return $db->loadObjectList();
+	}
+
+	private function add_time_to_sring($string_date, $format='Y-m-d H:i:s', $string_interval='PT5M', $invert=0) {
+		$final_date = new DateTime($string_date);
+		$interval_to_add = new DateInterval($string_interval);
+		$interval_to_add->invert = $invert;
+		$final_date->add($interval_to_add);
+		return $final_date->format($format);
 	}
 }
