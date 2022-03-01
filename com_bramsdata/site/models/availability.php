@@ -201,10 +201,10 @@ class BramsDataModelAvailability extends ItemModel {
 			$expected_start = $expected_start->format('Y-m-d H:i:s');
 
 			// if the last date found in the database data is not the expected date
-			if ($specific_station_availability[count($specific_station_availability)-1]->start !== $expected_start) {
+			if ($specific_station_availability[$station_availability_length - 1]->start !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
 				$flag = false;
-				$end_time = new DateTime($final_availability_array[$station][count($specific_station_availability)-1]->start);
+				$end_time = new DateTime($specific_station_availability[$station][$station_availability_length - 1]->start);
 				$end_time->add(new DateInterval('PT5M'));
 
 				$this->add_availability_info($final_availability_array, $end_time->format('Y-m-d H:i:s'), $station, $flag);
