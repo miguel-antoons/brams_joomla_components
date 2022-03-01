@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php foreach ($this->stations as $station) : ?>
             <?php 
                 $index++; 
-                $col_condition = !$index % $this->column_length; 
+                $col_condition = !($index % $this->column_length); 
                 if($col_condition) { echo "<div class='col'>"; }
             ?>
             <input 

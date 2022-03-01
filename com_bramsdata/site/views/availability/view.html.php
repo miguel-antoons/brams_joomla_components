@@ -28,11 +28,11 @@ class BramsDataViewAvailability extends HtmlView {
 	function display($tpl = null) {
 		// Assign data to the view
 		$this->stations = $this->get('Stations');
+		$this->set_columns_length();
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
 			$this->processForm();
-			$this->set_columns_length();
 		}
 		else {
 			$this->start_date = $this->get('StartDate');
