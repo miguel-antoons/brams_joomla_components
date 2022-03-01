@@ -312,7 +312,7 @@ class BramsDataModelAvailability extends ItemModel {
 				}
 
 				// update expected start
-				$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d', 'P1D');
+				$expected_start = $this->add_time_to_sring($availability_info->date, 'Y-m-d', 'P1D');
 			}
 
 			// following code is in case files were missing at the end
