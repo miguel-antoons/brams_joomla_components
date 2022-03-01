@@ -151,6 +151,9 @@ class BramsDataModelAvailability extends ItemModel {
 			array_push($final_availability_array[$station], $last_object);	// add the newly created object to the final array
 		}
 
+		//debug 
+		print_r($final_availability_array);
+
 		return $final_availability_array;
 	}
 
