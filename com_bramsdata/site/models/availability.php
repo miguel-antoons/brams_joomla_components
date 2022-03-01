@@ -328,16 +328,17 @@ class BramsDataModelAvailability extends ItemModel {
 				// add an object to the final array indicating that files are missing at the end
 				$end_time = new DateTime($final_availability_array[$station][count($specific_station_availability) - 1]->start);
 				$end_time->add(new DateInterval('P1D'));
+				echo '<br>' . $end_time->format('Y-m-d') . '<br>';
 
 				$temp_object = $this->change_category($change, $previous_available, 1);
 				$temp_object->start = $end_time->format('Y-m-d');
 				$final_availability_array[$station][] = $temp_object;
 			}
-			print_r($final_availability_array);
 			echo '<br>';
 			print_r($specific_station_availability[count($specific_station_availability) - 1]);
 			echo '<br>';
 			echo $expected_start;
+			echo '<br>';
 		}
 		else {
 			$temp_object = $this->change_category($change, $previous_available, 1);
