@@ -279,7 +279,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 
 			// iterate over the array containing all the availability info of one specific station
-			for ( ; $index < $station_availability_length ; $index++) {
+			for ($index = $index ; $index < $station_availability_length ; $index++) {
 				$availability_info = &$specific_station_availability[$index];
 
 				// if a change has been performed
