@@ -232,7 +232,9 @@ class BramsDataModelAvailability extends ItemModel {
 		// set availability according to the flag
 		if ($flag) {
 			$temp_object->available = $this->custom_categories_array[1];
-			$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d H:i:s', 'PT5M', 1);
+			if (count($array[$station])) {
+				$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d H:i:s', 'PT5M', 1);
+			}
 		}
 		else {
 			$temp_object->available = $this->custom_categories_array[0];
