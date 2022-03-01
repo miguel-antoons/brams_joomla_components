@@ -91,17 +91,17 @@ label {
 }
 
 .custom_btn {
-    width: 100px !important;
-    height: 40px !important;
+    width: 120px !important;
+    height: 35px !important;
     background-color: rgb(31, 29, 29) !important;
-    color: rgb(218, 218, 218) !important;
-    border-radius: 5px !important;
+    color: rgb(233, 231, 224) !important;
+    border-radius: 15px !important;
     font-weight: bolder;
 }
 
 .custom_btn:hover {
-    background-color: rgb(218, 218, 218);
-    color: black;
+    background-color: rgb(233, 231, 224) !important;
+    color: black !important;
 }
 
 .custom_btn::selection {
