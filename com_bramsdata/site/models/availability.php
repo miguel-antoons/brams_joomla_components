@@ -335,7 +335,7 @@ class BramsDataModelAvailability extends ItemModel {
 			}
 			print_r($final_availability_array);
 			echo '<br>';
-			echo $specific_station_availability[count($array) - 1]->date;
+			print_r($specific_station_availability[count($array) - 1]);
 			echo '<br>';
 			echo $expected_start;
 		}
