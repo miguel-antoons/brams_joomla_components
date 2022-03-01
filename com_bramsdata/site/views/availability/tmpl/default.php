@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
                 <input type='date' name='endDate' id='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
             </div>
         </div>
-        <input name='submit' type='submit' id='submit' class='btn btn-dark'/>
+        <input name='submit' type='submit' id='submit' class='custom_btn'/>
     </div>
 </form>
 <div class="legend_container">

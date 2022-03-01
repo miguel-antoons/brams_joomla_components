@@ -89,3 +89,11 @@ label {
 .container_margin {
     margin-bottom: 1%;
 }
+
+.custom_btn {
+    border: 1px solid transparent;
+    width: 120px;
+    height: 35px;
+    border-radius: 30px;
+    font-weight: bolder;
+}
