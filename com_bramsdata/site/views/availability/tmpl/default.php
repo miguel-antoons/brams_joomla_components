@@ -23,9 +23,8 @@ defined('_JEXEC') or die('Restricted access');
         <?php $index = 0 ?>
         <?php foreach ($this->stations as $station) : ?>
             <?php 
-                $index++; 
-                $col_condition = !($index % $this->column_length); 
-                if($col_condition) { echo "<div class='col'>"; }
+                $index++;
+                if(!($index % $this->column_length)) { echo "</div><div class='col'>"; }
             ?>
             <input 
                 type='checkbox' 
@@ -37,8 +36,8 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo $station->checked ?>
             />
             <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
-            <?php if($col_condition) { echo "</div>"; } ?>
         <?php endforeach; ?>
+        <?php echo "</div>" ?>
     </div>
 
     <label for='startDate'>From </label>
