@@ -19,14 +19,14 @@ defined('_JEXEC') or die('Restricted access');
 <label class='master_checkbox' for='checkFTP'>Check Old</label>
 
 <form action='' method='post' name='availabilityForm'>
-    <div class="container">
+    <div class="container custom_container">
         <div class='row'>
-            <?php echo "<div class='col'>"; ?>
+            <?php echo "<div class='col custom_col'>"; ?>
             <?php $index = 0 ?>
             <?php foreach ($this->stations as $station) : ?>
                 <?php 
+                    if(!($index % $this->column_length)) { echo "</div><div class='col custom_col'>"; }
                     $index++;
-                    if(!($index % $this->column_length)) { echo "</div><div class='col'>"; }
                 ?>
                 <input 
                     type='checkbox' 
