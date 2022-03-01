@@ -166,6 +166,7 @@ class BramsDataModelAvailability extends ItemModel {
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$flag;	// flag indicates if the previous added time was available (flag = false) or not (flag = true)
 		$station_availability_length = count($specific_station_availability);
+		echo $station_availability_length;
 
 		if($station_availability_length) {
 			// check a first time to set the correct flag value
