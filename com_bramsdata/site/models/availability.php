@@ -275,16 +275,6 @@ class BramsDataModelAvailability extends ItemModel {
 			for ($index = 0 ; $index < $station_availability_length ; $index++) {
 				$availability_info = &$specific_station_availability[$index];
 
-				// if a change has been performed
-				if ($change) {
-					// add the date from the previous iteration to the object
-					$temp_object->start = $specific_station_availability[$index - 1]->date;
-					// add the object to the final array
-					$final_availability_array[$station][] = $temp_object;
-					// set the $change flag to false
-					$change = false;
-				}
-
 				// add an element ot the array according to the availability rate
 				if (intval($availability_info->rate) === 0) {
 					$temp_object = $this->change_category($change, $previous_available, 1);
@@ -307,6 +297,16 @@ class BramsDataModelAvailability extends ItemModel {
 				elseif (intval($availability_info->rate) < 1000) {
 					$temp_object = $this->change_category($change, $previous_available, 7);
 				}
+
+				// if a change has been performed
+				if ($change) {
+					// add the date from the previous iteration to the object
+					$temp_object->start = $availability_info->date;
+					// add the object to the final array
+					$final_availability_array[$station][] = $temp_object;
+					// set the $change flag to false
+					$change = false;
+				}
 			}
 
 			// following code is in case files were missing at the end
@@ -317,9 +317,9 @@ class BramsDataModelAvailability extends ItemModel {
 			$expected_start = $expected_start->format('Y-m-d');
 
 			// if the last date found in the database data is not the expected date
-			if ($specific_station_availability[count($specific_station_availability) - 1]->date !== $expected_start) {
+			if ($specific_station_availability[$station_availability_length - 1]->date !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
-				$end_time = new DateTime($specific_station_availability[count($specific_station_availability) - 1]->date);
+				$end_time = new DateTime($specific_station_availability[$station_availability_length - 1]->date);
 				$end_time->add(new DateInterval('P1D'));
 
 				$temp_object = $this->change_category($change, $previous_available, 1);
