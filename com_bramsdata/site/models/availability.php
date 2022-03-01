@@ -232,16 +232,22 @@ class BramsDataModelAvailability extends ItemModel {
 	 */
 	private function add_availability_info(&$array, $expected_start, $station, &$flag) {
 		$temp_object = new stdClass();
-		// create an object stating that the files following the expected start date are available
-		$temp_object->start = $expected_start;
 
 		// set availability according to the flag
 		if ($flag) {
 			$temp_object->available = $this->custom_categories_array[1];
+			$expected_start = new DateTime($expected_start);
+			$minutes_to_subtract = new DateInterval('PT5M');
+			$minutes_to_subtract->invert = 1;
+			$expected_start->add($minutes_to_subtract);
+			$expected_start = $expected_start->format('Y-m-d H:i:s');
 		}
 		else {
 			$temp_object->available = $this->custom_categories_array[0];
 		}
+
+		// create an object stating that the files following the expected start date are available
+		$temp_object->start = $expected_start;
 
 		// add that object to the final availability array
 		$array[$station][] = $temp_object;
