@@ -165,32 +165,40 @@ class BramsDataModelAvailability extends ItemModel {
 	 */
 	private function get_precise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$flag;	// flag indicates if the previous added time was available (flag = false) or not (flag = true)
+		$station_availability_length = count($specific_station_availability);
 
-		// check a first time to set the correct flag value
-		if ($specific_station_availability[0]->start !== $expected_start) {
-			$flag = true;
+		if($station_availability_length) {
+			// check a first time to set the correct flag value
+			if ($specific_station_availability[0]->start !== $expected_start) {
+				$flag = true;
+			}
+			else {
+				$flag = false;
+			}
+
+			$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
+
+			// iterate over the array containing all the availability info of one specific station
+			for ($index = 1 ; $index < $station_availability_length ; $index++) {
+				$end_time = new DateTime($specific_station_availability[$index]->start);
+				$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
+
+				// if the effective start time and the expected start time do not match
+				// or if the effective start time and the expected start time match and the previous
+				// object added to the array has availability set to 0
+				if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
+					$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
+				}
+
+				// update the expected start time with the next expected value
+				$expected_start = $end_time->format('Y-m-d H:i:s');
+			}
 		}
 		else {
 			$flag = false;
+			$this->add_availability_info($final_availability_array, $expected_start, $flag);
 		}
-
-		$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
-
-		// iterate over the array containing all the availability info of one specific station
-		for ($index = 1 ; $index < count($specific_station_availability) ; $index++) {
-			$end_time = new DateTime($specific_station_availability[$index]->start);
-			$end_time->add(new DateInterval('PT5M'));					// add 5 min to the start time -> becomes the end time
-
-			// if the effective start time and the expected start time do not match
-			// or if the effective start time and the expected start time match and the previous
-			// object added to the array has availability set to 0
-			if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
-				$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
-			}
-
-			// update the expected start time with the next expected value
-			$expected_start = $end_time->format('Y-m-d H:i:s');
-		}
+		
 	}
 
 	/**
@@ -235,43 +243,60 @@ class BramsDataModelAvailability extends ItemModel {
 	private function get_unprecise_file_availability($specific_station_availability, &$final_availability_array, $expected_start, $station) {
 		$previous_available = -1;	// indicates what was the last category inserted into the array
 		$change = false;
+		$station_availability_length = count($specific_station_availability);
 
-		// iterate over the array containing all the availability info of one specific station
-		for ($index = 0 ; $index < count($specific_station_availability) ; $index++) {
-			$availability_info = &$specific_station_availability[$index];
-
-			// if a change has been performed
-			if ($change) {
-				// add the date from the previous iteration to the object
-				$temp_object->start = $specific_station_availability[$index - 1]->date;
-				// add the object to the final array
-				$final_availability_array[$station][] = $temp_object;
-				// set the $change flag to false
-				$change = false;
-			}
-
-			// add an element ot the array according to the availability rate
-			if (intval($availability_info->rate) === 0) {
+		if($station_availability_length) {
+			if ($specific_station_availability[0]->date !== $expected_start) {
 				$temp_object = $this->change_category($change, $previous_available, 1);
+				$temp_object->start = $expected_start;
+				$final_availability_array[$station][] = $temp_object;
+				$index = 1;
 			}
-			elseif (intval($availability_info->rate) === 1000) {
-				$temp_object = $this->change_category($change, $previous_available, 2);
+			else {
+				$index = 0;
 			}
-			elseif (intval($availability_info->rate) <= 200) {
-				$temp_object = $this->change_category($change, $previous_available, 3);
+			// iterate over the array containing all the availability info of one specific station
+			for (; $index < $station_availability_length ; $index++) {
+				$availability_info = &$specific_station_availability[$index];
+
+				// if a change has been performed
+				if ($change) {
+					// add the date from the previous iteration to the object
+					$temp_object->start = $specific_station_availability[$index - 1]->date;
+					// add the object to the final array
+					$final_availability_array[$station][] = $temp_object;
+					// set the $change flag to false
+					$change = false;
+				}
+
+				// add an element ot the array according to the availability rate
+				if (intval($availability_info->rate) === 0) {
+					$temp_object = $this->change_category($change, $previous_available, 1);
+				}
+				elseif (intval($availability_info->rate) === 1000) {
+					$temp_object = $this->change_category($change, $previous_available, 2);
+				}
+				elseif (intval($availability_info->rate) <= 200) {
+					$temp_object = $this->change_category($change, $previous_available, 3);
+				}
+				elseif (intval($availability_info->rate) <= 400) {
+					$temp_object = $this->change_category($change, $previous_available, 4);
+				}
+				elseif (intval($availability_info->rate) <= 600) {
+					$temp_object = $this->change_category($change, $previous_available, 5);
+				}
+				elseif (intval($availability_info->rate) <= 800) {
+					$temp_object = $this->change_category($change, $previous_available, 6);
+				}
+				elseif (intval($availability_info->rate) < 1000) {
+					$temp_object = $this->change_category($change, $previous_available, 7);
+				}
 			}
-			elseif (intval($availability_info->rate) <= 400) {
-				$temp_object = $this->change_category($change, $previous_available, 4);
-			}
-			elseif (intval($availability_info->rate) <= 600) {
-				$temp_object = $this->change_category($change, $previous_available, 5);
-			}
-			elseif (intval($availability_info->rate) <= 800) {
-				$temp_object = $this->change_category($change, $previous_available, 6);
-			}
-			elseif (intval($availability_info->rate) < 1000) {
-				$temp_object = $this->change_category($change, $previous_available, 7);
-			}
+		}
+		else {
+			$temp_object = $this->change_category($change, $previous_available, 1);
+			$temp_object->start = $expected_start;
+			$final_availability_array[$station][] = $temp_object;
 		}
 	}
 
