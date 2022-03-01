@@ -189,6 +189,10 @@ class BramsDataModelAvailability extends ItemModel {
 				// object added to the array has availability set to 0
 				if ($specific_station_availability[$index]->start !== $expected_start || $flag) {
 					$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
+
+					if ($specific_station_availability[$index]->start !== $expected_start && !$flag) {
+						$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
+					}
 				}
 
 				// update the expected start time with the next expected value
