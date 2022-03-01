@@ -126,7 +126,8 @@ function yyyymmdd(date) {
 
 // zoom in on the graph onclick
 function zoomGraph(d, i) {
-  const diffDays = Math.abs(d[2] - d[0]);
+  let diffDays = Math.abs(d[2] - d[0]);
+  diffDays = Math.ceil(diffDays / (1000 * 60 * 60 * 24));
 
   if (diffDays > 14) {
     document.getElementById('startDate').value = yyyymmdd(d[0]);
