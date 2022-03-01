@@ -89,21 +89,3 @@ label {
 .container_margin {
     margin-bottom: 1%;
 }
-
-.custom_btn {
-    width: 120px !important;
-    height: 35px !important;
-    background-color: rgb(31, 29, 29) !important;
-    color: rgb(233, 231, 224) !important;
-    border-radius: 15px !important;
-    font-weight: bolder;
-}
-
-.custom_btn:hover {
-    background-color: rgb(233, 231, 224) !important;
-    color: black !important;
-}
-
-.custom_btn::selection {
-    border: 2px solid lightblue;
-}
