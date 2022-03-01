@@ -32,6 +32,7 @@ class BramsDataViewAvailability extends HtmlView {
 		// process the submitted form
 		if (isset($_POST['submit'])) {
 			$this->processForm();
+			$this->set_columns_length();
 		}
 		else {
 			$this->start_date = $this->get('StartDate');
@@ -88,6 +89,10 @@ class BramsDataViewAvailability extends HtmlView {
 		// get the model and call the appropriate method
 		$model = $this->getModel();
 		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->interval);
+	}
+
+	private function set_columns_length() {
+		$this->column_length = ceil(count($this->selected_stations) / 5);
 	}
 
 	// function adds needed javascript and css files to the view

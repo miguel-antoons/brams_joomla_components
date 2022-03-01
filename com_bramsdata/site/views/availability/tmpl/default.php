@@ -19,18 +19,27 @@ defined('_JEXEC') or die('Restricted access');
 <label class='master_checkbox' for='checkFTP'>Check Old</label>
 
 <form action='' method='post' name='availabilityForm'>
-    <?php foreach ($this->stations as $station) : ?>
-        <input 
-            type='checkbox' 
-            onClick='changeCheckBox()' 
-            class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
-            name='station[]'
-            value='<?php echo $station->id ?>'
-            id='station<?php echo $station->id ?>'
-            <?php echo $station->checked ?>
-        />
-        <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
-    <?php endforeach; ?>
+    <div class='row'>
+        <?php $index = 0 ?>
+        <?php foreach ($this->stations as $station) : ?>
+            <?php 
+                $index++; 
+                $col_condition = !$index % $this->column_length; 
+                if($col_condition) { echo "<div class='col'>"; }
+            ?>
+            <input 
+                type='checkbox' 
+                onClick='changeCheckBox()' 
+                class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
+                name='station[]'
+                value='<?php echo $station->id ?>'
+                id='station<?php echo $station->id ?>'
+                <?php echo $station->checked ?>
+            />
+            <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
+            <?php if($col_condition) { echo "</div>"; } ?>
+        <?php endforeach; ?>
+    </div>
 
     <label for='startDate'>From </label>
     <input type='date' name='startDate' id='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
