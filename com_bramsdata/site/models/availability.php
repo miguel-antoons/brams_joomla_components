@@ -264,16 +264,17 @@ class BramsDataModelAvailability extends ItemModel {
 		$expected_start = $expected_start->format('Y-m-d');
 
 		if($station_availability_length) {
-			if ($specific_station_availability[0]->date !== $expected_start) {
-				$temp_object = $this->change_category($change, $previous_available, 1);
-				$temp_object->start = $expected_start;
-				$final_availability_array[$station][] = $temp_object;
-				$change = false;
-			}
-
 			// iterate over the array containing all the availability info of one specific station
 			for ($index = 0 ; $index < $station_availability_length ; $index++) {
 				$availability_info = &$specific_station_availability[$index];
+
+				// if files are missing, set defailt value for that time (default value = no data found)
+				if ($availability_info->date !== $expected_start) {
+					$temp_object = $this->change_category($change, $previous_available, 1);
+					$temp_object->start = $expected_start;
+					$final_availability_array[$station][] = $temp_object;
+					$change = false;
+				}
 
 				// add an element ot the array according to the availability rate
 				if (intval($availability_info->rate) === 0) {
@@ -307,6 +308,11 @@ class BramsDataModelAvailability extends ItemModel {
 					// set the $change flag to false
 					$change = false;
 				}
+
+				// update expected start
+				$expected_start = new DateTime($expected_start);
+				$expected_start->add(new DateInterval('P1D'));
+				$expected_start = $expected_start->format('Y-m-d');
 			}
 
 			// following code is in case files were missing at the end
