@@ -68,12 +68,12 @@ defined('_JEXEC') or die('Restricted access');
 <div class="container custom_container">
     <div class="row">
         <div class='col legend'><span class="a"></span>  100%</div>
-        <div class='col'><span class="b"></span>  80.1 - 99.9%</div>
-        <div class='col'><span class="c"></span>  60.1 - 80%</div>
-        <div class='col'><span class="d"></span>  40.1 - 60%</div>
-        <div class='col'><span class="e"></span>  20.1 - 40%</div>
-        <div class='col'><span class="f"></span>  0.1 - 20%</div>
-        <div class='col'><span class="g"></span>  0%</div>
+        <div class='col legend'><span class="b"></span>  80.1 - 99.9%</div>
+        <div class='col legend'><span class="c"></span>  60.1 - 80%</div>
+        <div class='col legend'><span class="d"></span>  40.1 - 60%</div>
+        <div class='col legend'><span class="e"></span>  20.1 - 40%</div>
+        <div class='col legend'><span class="f"></span>  0.1 - 20%</div>
+        <div class='col legend'><span class="g"></span>  0%</div>
     </div>
     <div class='row'>
         <div class='col'>
