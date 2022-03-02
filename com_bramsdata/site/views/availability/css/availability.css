@@ -43,12 +43,6 @@
     width: 100px !important;
 }
 
-.legend { list-style: none; }
-.legend li { 
-    float: right; 
-    margin-right: 5%; 
-    vertical-align: middle;
-}
 .legend span { border: 0; float: left; width: 12px; height: 12px; margin: 10px 4px 2px 2px; }
 /* your colors */
 .legend .g { background-color: #e20000; }
@@ -58,12 +52,6 @@
 .legend .c { background-color: #3cbfc8; }
 .legend .b { background-color: #3cc877; }
 .legend .a { background-color: #6dc83c; }
-
-.legend_container {
-    width: 100%;
-    margin-bottom: 20px;
-    display: block;
-}
 
 .checkbox_label {
     display: inline-block !important;
