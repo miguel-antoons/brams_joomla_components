@@ -65,22 +65,21 @@ defined('_JEXEC') or die('Restricted access');
         <input name='submit' type='submit' id='submit' class='custom_btn'/>
     </div>
 </form>
-<div class="legend_container">
-        <ul class="legend">
-            <li><span class="a"></span>  100%</li>
-            <li><span class="b"></span>  80.1 - 99.9%</li>
-            <li><span class="c"></span>  60.1 - 80%</li>
-            <li><span class="d"></span>  40.1 - 60%</li>
-            <li><span class="e"></span>  20.1 - 40%</li>
-            <li><span class="f"></span>  0.1 - 20%</li>
-            <li><span class="g"></span>  0%</li>
-        </ul>
-</div>
-<br>
-<div style="overflow: hidden;" class="visavail" id="visavail_container">
-    <p id="visavail_graph">
-        <!-- Visavail.js chart will be placed here -->
-    </p>
+<div class="container custom_container">
+    <div class="row">
+        <div class='col'><span class="a"></span>  100%</div>
+        <div class='col'><span class="b"></span>  80.1 - 99.9%</div>
+        <div class='col'><span class="c"></span>  60.1 - 80%</div>
+        <div class='col'><span class="d"></span>  40.1 - 60%</div>
+        <div class='col'><span class="e"></span>  20.1 - 40%</div>
+        <div class='col'><span class="f"></span>  0.1 - 20%</div>
+        <div class='col'><span class="g"></span>  0%</div>
+    </div>
+    <div style="overflow: hidden;" class="row visavail" id="visavail_container">
+        <p id="visavail_graph">
+            <!-- Visavail.js chart will be placed here -->
+        </p>
+    </div>
 </div>
 <script>
     // check that at least one checkbox is checked on submit
