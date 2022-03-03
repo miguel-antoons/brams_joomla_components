@@ -57,9 +57,9 @@ defined('_JEXEC') or die('Restricted access');
                 "<?php echo $inactive->name; ?>",
                 "<?php echo $inactive->country_code; ?>",
                 "<?php echo $inactive->transfer_type; ?>",
-                <?php echo $inactive->longitude; ?>,
-                <?php echo $inactive->latitude; ?>,
-                <?php echo $inactive->rate; ?>
+                "<?php echo $inactive->longitude; ?>",
+                "<?php echo $inactive->latitude; ?>",
+                "<?php echo $inactive->rate; ?>"
             ],
         <?php endforeach; ?>
 

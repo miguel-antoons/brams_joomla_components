@@ -49,7 +49,7 @@ class BramsNetworkModelMap extends ItemModel {
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db->quoteName('location.name') . ', '
+			$db->quoteName('distinct location.name') . ', '
 			. $db->quoteName('country_code') . ', '
 			. $db->quoteName('transfer_type') . ', '
 			. $db->quoteName('longitude') . ', '
@@ -78,7 +78,7 @@ class BramsNetworkModelMap extends ItemModel {
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db->quoteName('location.name') . ', '
+			$db->quoteName('distinct location.name') . ', '
 			. $db->quoteName('country_code') . ', '
 			. $db->quoteName('transfer_type') . ', '
 			. $db->quoteName('longitude') . ', '
