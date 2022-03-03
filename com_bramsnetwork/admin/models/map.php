@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_bramsdata
+ * @subpackage  com_bramsnetwork
  */
 
 
@@ -13,11 +13,11 @@ use \Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use \Joomla\CMS\MVC\Model\ListModel;
 
 /**
- * AvailabilityList Model
+ * MapList Model
  *
  * @since  0.0.1
  */
-class BramsDataModelAvailability extends ListModel {
+class BramsNetworkModelMap extends ListModel {
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -30,9 +30,9 @@ class BramsDataModelAvailability extends ListModel {
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-        // query below is only temporarly and won't work since there is no availability table
+        // query below is only temporarly and won't work since there is no map table
 		// $query->select('*')
-        //         ->from($db->quoteName('#__availability'));
+        //         ->from($db->quoteName('#__map'));
 
 		return $query;
 	}
