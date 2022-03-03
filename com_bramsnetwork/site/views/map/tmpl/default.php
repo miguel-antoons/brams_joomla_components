@@ -40,9 +40,9 @@ defined('_JEXEC') or die('Restricted access');
     <!-- TODO : add date filed and 2 checkboxes (select active, select inactive) -->
 </form>
 <script>
-    <!-- function to dynamically set the stations on the image can 
-    be called either here or ont the image onload property -->
-    
+    // function to dynamically set the stations on the image can 
+    // be called either here or ont the image onload property
+
     let all_stations = [
         <?php foreach ($this->active_stations as $active) : ?>
             [
