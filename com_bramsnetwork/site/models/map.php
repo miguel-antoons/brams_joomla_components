@@ -87,7 +87,6 @@ class BramsNetworkModelMap extends ItemModel {
 			. $db->quoteName('latitude') . ', 0 as rate'
 			);
 		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('file_availability'));
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
@@ -95,9 +94,8 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->where(
 			$db->quoteName('system.id') . ' not in (
 				select system.id 
-				from file_availability, system
-				where system.id = system_id 
-					and date = ' . $db->quote('2022-02-18') . ')'
+				from file_availability 
+				where date = ' . $db->quote('2022-02-18') . ')'
 		);
 
 		$db->setQuery($system_query);
