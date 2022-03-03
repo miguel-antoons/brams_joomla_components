@@ -26,13 +26,11 @@ defined('_JEXEC') or die('Restricted access');
     </div>
     <div class='row'>
         <div class='col'>
-            <canvas>
-                <img 
-                    src='/ProjectDir/img/belgian_map.gif'
-                    id='belgian_map'
-                    alt='Belgian map with receiving stations' 
-                />
-            </canvas>
+            <img 
+                src='/ProjectDir/img/belgian_map.gif'
+                id='belgian_map'
+                alt='Belgian map with receiving stations' 
+            />
         </div>
     </div>
 </div>
