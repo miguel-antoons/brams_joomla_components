@@ -62,9 +62,9 @@ class BramsNetworkViewMap extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/map.css');
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
-		$document->addScript('/components/com_bramsdata/views/availability/js/map.js');
+		$document->addStyleSheet('/components/com_bramsnetwork/views/map/css/map.css');
+		$document->addStyleSheet('/components/com_bramsnetwork/views/map/css/bootstrap.min.css');
+		$document->addScript('/components/com_bramsnetwork/views/map/js/map.js');
 		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
 	}
 }
