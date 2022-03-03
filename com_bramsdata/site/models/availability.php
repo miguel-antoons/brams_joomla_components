@@ -102,13 +102,25 @@ class BramsDataModelAvailability extends ItemModel {
 			// set the $time_interval to 1 day (86400 seconds)
 			$time_interval = 86400;
 			// go get and return the availability information
-			return $this->get_availability_general(array($this, 'getAvailabilityRateDB'), array($this, 'get_unprecise_file_availability'), $start_date, $end_date, $selected_stations);
+			return $this->get_availability_general(
+				array($this, 'getAvailabilityRateDB'),
+				array($this, 'get_unprecise_file_availability'),
+				$start_date,
+				$end_date,
+				$selected_stations
+			);
 		}
 		else {
 			// set the $time_interval to 5 minutes (300 seconds)
 			$time_interval = 300;
 			// go get and return the availability information
-			return $this->get_availability_general(array($this, 'getAvailabilityDB'), array($this, 'get_precise_file_availability'), $start_date, $end_date, $selected_stations);
+			return $this->get_availability_general(
+				array($this, 'getAvailabilityDB'),
+				array($this, 'get_precise_file_availability'),
+				$start_date,
+				$end_date,
+				$selected_stations
+			);
 		}
 	}
 

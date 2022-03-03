@@ -43,20 +43,59 @@ class BramsNetworkModelMap extends ItemModel {
     /* WARNING : Below function and database query were directly copied from another
     component and must be modified in order to work with this component */
 	// get all the stations and their name from the database
-	public function getStations() {
+	public function getActiveStationInfo() {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') . ', '
-			. $db->quoteName('system.name') . ', '
+			$db->quoteName('location.name') . ', '
+			. $db->quoteName('country_code') . ', '
 			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('status')
+			. $db->quoteName('longitude') . ', '
+			. $db->quoteName('latitude') . ', '
+			. $db->quoteName('rate')
 			);
 		$system_query->from($db->quoteName('system'));
+		$system_query->from($db->quoteName('file_availability'));
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
+		$system_query->where($db->quoteName('date') . ' = ' . $db->quote('2022-02-18'));
+		$system_query->where($db->quoteName('time_created') . ' < ' . $db->quote('2022-02-18'));
+
+		$db->setQuery($system_query);
+
+		return $db->loadObjectList();
+	}
+
+	/* WARNING : Below function and database query were directly copied from another
+    component and must be modified in order to work with this component */
+	// get all the stations and their name from the database
+	public function getinActiveStationInfo() {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		// SQL query to get all inforamtions about the multiple systems
+		$system_query->select(
+			$db->quoteName('location.name') . ', '
+			. $db->quoteName('country_code') . ', '
+			. $db->quoteName('transfer_type') . ', '
+			. $db->quoteName('longitude') . ', '
+			. $db->quoteName('latitude') . ', 0 as rate'
+			);
+		$system_query->from($db->quoteName('system'));
+		$system_query->from($db->quoteName('file_availability'));
+		$system_query->from($db->quoteName('location'));
+		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
+		$system_query->where($db->quoteName('time_created') . ' < ' . $db->quote('2022-02-18'));
+		$system_query->where(
+			$db->quoteName('system.system_id') . ' not in (
+				select ' .  $db->quoteName('system.id')
+				. ' from file_availability 
+				where date = ' . $db->quote('2022-02-18') . ')'
+		);
 
 		$db->setQuery($system_query);
 

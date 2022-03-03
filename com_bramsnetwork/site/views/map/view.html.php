@@ -27,7 +27,8 @@ class BramsNetworkViewMap extends HtmlView {
 	 */
 	function display($tpl = null) {
 		// Assign data to the view
-		$this->stations = $this->get('Stations');
+		$this->active_stations = $this->get('ActiveStationInfo');
+		$this->inactive_stations = $this->get('InactiveStationInfo');
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
@@ -64,6 +65,6 @@ class BramsNetworkViewMap extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/map.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
 		$document->addScript('/components/com_bramsdata/views/availability/js/map.js');
-		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
+		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
 	}
 }
