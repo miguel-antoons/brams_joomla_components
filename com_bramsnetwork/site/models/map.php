@@ -62,7 +62,7 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
 		$system_query->where($db->quoteName('date') . ' = ' . $db->quote('2022-02-18'));
-		$system_query->where($db->quoteName('time_created') . ' < ' . $db->quote('2022-02-18'));
+		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote('2022-02-18'));
 
 		$db->setQuery($system_query);
 
@@ -89,7 +89,7 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
-		$system_query->where($db->quoteName('time_created') . ' < ' . $db->quote('2022-02-18'));
+		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote('2022-02-18'));
 		$system_query->where(
 			$db->quoteName('system.system_id') . ' not in (
 				select ' .  $db->quoteName('system.id')
