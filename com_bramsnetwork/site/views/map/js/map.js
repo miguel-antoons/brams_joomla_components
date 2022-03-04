@@ -24,7 +24,7 @@ function onMapLoad(allStations) {
             yPosition = Math.round(
                 imageYmin
                 + ((station[4] - minLatitude)
-                / (maxLatitude - minLatitude))
+                / (minLatitude - maxLatitude))
                 * (imageYmax - imageYmin),
             );
 
@@ -47,5 +47,4 @@ function onMapLoad(allStations) {
     );
 
     document.getElementById('station_map').innerHTML = areaString;
-    console.log(areaString);
 }

@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
                 src='/ProjectDir/img/belgian_map.gif'
                 id='belgian_map'
                 alt='Belgian map with receiving stations' 
+                usemap='#station_map'
             />
             <map name='station_map' id='station_map'>
 
