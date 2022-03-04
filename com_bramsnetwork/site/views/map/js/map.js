@@ -14,7 +14,7 @@ function onMapLoad(allStations) {
 
     allStations.forEach(
         (station) => {
-            let statusOptions = '';
+            let mapOptions;
             xPosition = Math.round(
                 imageXmin
                 + ((station[3] - minLongitude)
@@ -29,9 +29,15 @@ function onMapLoad(allStations) {
             );
 
             if (station[-1]) {
-                statusOptions = "{'fillColor': '00ff00', 'fillOpacity': 1, 'strokeColor': '00ff00'}";
+                mapOptions = {
+                    fillColor: '00ff00',
+                    strokeColor: '00ff00'
+                };
             } else {
-                statusOptions = "{'fillColor': 'ff0000', 'fillOpacity': 1, 'strokeColor': 'ff0000'}";
+                mapOptions = {
+                    fillColor: 'ff0000',
+                    strokeColor: '00ff00'
+                };
             }
 
             areaString += `
@@ -41,7 +47,7 @@ function onMapLoad(allStations) {
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    data-maphilight="${statusOptions}"
+                    data-maphilight="${JSON.stringify(mapOptions)}"
                 />
             `;
         },
