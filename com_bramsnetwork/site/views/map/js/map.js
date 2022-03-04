@@ -14,7 +14,7 @@ function onMapLoad(allStations) {
 
     allStations.forEach(
         (station) => {
-            let statusClass = '';
+            let statusOptions = '';
             xPosition = Math.round(
                 imageXmin
                 + ((station[3] - minLongitude)
@@ -29,19 +29,19 @@ function onMapLoad(allStations) {
             );
 
             if (station[-1]) {
-                statusClass = 'active';
+                statusOptions = '{"fillColor": "00FF00", "fillOpacity": 1, strokeColor": "00FF00"}';
             } else {
-                statusClass = 'inactive';
+                statusOptions = '{"fillColor": "FF0000", "fillOpacity": 1, strokeColor": "FF0000"}';
             }
 
             areaString += `
                 <area 
-                    class='network_area ${station[2]} ${statusClass}'
+                    class='network_area ${station[2]}'
                     shape='circle'
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    maphilight=""
+                    data-maphilight="${statusOptions}"
                 />
             `;
         },
