@@ -36,7 +36,7 @@ function onMapLoad(allStations) {
 
             areaString += `
                 <area 
-                    class='${station[2]} ${statusClass}'
+                    class='network_area ${station[2]} ${statusClass}'
                     shape='circle'
                     alt='${station[0]}'
                     title='${station[0]}'
