@@ -23,7 +23,7 @@ function onMapLoad(allStations) {
             );
             yPosition = Math.round(
                 imageYmin
-                + ((station[4] - minLatitude)
+                + ((station[4] - maxLatitude)
                 / (minLatitude - maxLatitude))
                 * (imageYmax - imageYmin),
             );
