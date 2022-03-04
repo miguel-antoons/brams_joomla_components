@@ -29,9 +29,9 @@ function onMapLoad(allStations) {
             );
 
             if (station[-1]) {
-                statusOptions = "{'fillColor': '00FF00', 'fillOpacity': 1, 'strokeColor': '00FF00'}";
+                statusOptions = '{"fillColor": "00FF00", "fillOpacity": 1, "strokeColor": "00FF00"}';
             } else {
-                statusOptions = "{'fillColor': 'FF0000', 'fillOpacity': 1, 'strokeColor': 'FF0000'}";
+                statusOptions = '{"fillColor": "FF0000", "fillOpacity": 1, "strokeColor": "FF0000"}';
             }
 
             areaString += `
