@@ -31,6 +31,9 @@ defined('_JEXEC') or die('Restricted access');
                 id='belgian_map'
                 alt='Belgian map with receiving stations' 
             />
+            <map name='station_map' id='station_map'>
+
+            </map>
         </div>
     </div>
 </div>
@@ -57,13 +60,13 @@ defined('_JEXEC') or die('Restricted access');
                 "<?php echo $inactive->name; ?>",
                 "<?php echo $inactive->country_code; ?>",
                 "<?php echo $inactive->transfer_type; ?>",
-                "<?php echo $inactive->longitude; ?>",
-                "<?php echo $inactive->latitude; ?>",
-                "<?php echo $inactive->rate; ?>"
+                <?php echo $inactive->longitude; ?>,
+                <?php echo $inactive->latitude; ?>,
+                <?php echo $inactive->rate; ?>
             ],
         <?php endforeach; ?>
 
     ]
 
-    printStations(all_stations);
+    onMapLoad(all_stations);
 </script>
