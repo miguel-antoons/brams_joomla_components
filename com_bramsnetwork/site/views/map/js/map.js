@@ -36,12 +36,11 @@ function onMapLoad(allStations) {
 
             areaString += `
                 <area 
-                    class='network_area ${station[2]}'
+                    class="${statusOptions}"
                     shape='circle'
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    data-maphilight="${statusOptions}"
                 />
             `;
         },
