@@ -17,18 +17,18 @@ function onMapLoad(allStations) {
             let statusClass = '';
             xPosition = Math.round(
                 imageXmin
-                + ((Number(station[3]) - minLongitude)
+                + ((station[3] - minLongitude)
                 / (maxLongitude - minLongitude))
                 * (imageXmax - imageYmin),
             );
             yPosition = Math.round(
                 imageYmin
-                + ((Number(station[4]) - minLatitude)
+                + (station[4] - minLatitude)
                 / (maxLatitude - minLatitude))
                 * (imageYmax - imageYmin),
             );
 
-            if (Number(station[-1])) {
+            if (station[-1]) {
                 statusClass = 'active';
             } else {
                 statusClass = 'inactive';
