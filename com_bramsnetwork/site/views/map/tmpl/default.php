@@ -47,9 +47,9 @@ defined('_JEXEC') or die('Restricted access');
     let all_stations = [
         <?php foreach ($this->active_stations as $active) : ?>
             [
-                "<?php echo $active->name; ?>",
-                "<?php echo $active->country_code; ?>",
-                "<?php echo $active->transfer_type; ?>",
+                <?php echo $active->name; ?>,
+                <?php echo $active->country_code; ?>,
+                <?php echo $active->transfer_type; ?>,
                 <?php echo $active->longitude; ?>,
                 <?php echo $active->latitude; ?>,
                 <?php echo $active->rate; ?>
@@ -57,9 +57,9 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
         <?php foreach ($this->inactive_stations as $inactive) : ?>
             [
-                "<?php echo $inactive->name; ?>",
-                "<?php echo $inactive->country_code; ?>",
-                "<?php echo $inactive->transfer_type; ?>",
+                <?php echo $inactive->name; ?>,
+                <?php echo $inactive->country_code; ?>,
+                <?php echo $inactive->transfer_type; ?>,
                 <?php echo $inactive->longitude; ?>,
                 <?php echo $inactive->latitude; ?>,
                 <?php echo $inactive->rate; ?>

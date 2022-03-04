@@ -8,7 +8,6 @@ const imageYmin = 0;
 const imageYmax = 516;
 
 function onMapLoad(allStations) {
-    const stationMap = document.getElementById('station_map');
     let areaString = '';
     let xPosition;
     let yPosition;
@@ -18,18 +17,18 @@ function onMapLoad(allStations) {
             let statusClass = '';
             xPosition = Math.round(
                 imageXmin
-                + ((station[3] - minLongitude)
+                + ((Number(station[3]) - minLongitude)
                 / (maxLongitude - minLongitude))
                 * (imageXmax - imageYmin),
             );
             yPosition = Math.round(
                 imageYmin
-                + ((station[4] - minLatitude)
+                + ((Number(station[4]) - minLatitude)
                 / (maxLatitude - minLatitude))
                 * (imageYmax - imageYmin),
             );
 
-            if (station[-1]) {
+            if (Number(station[-1])) {
                 statusClass = 'active';
             } else {
                 statusClass = 'inactive';
@@ -47,5 +46,6 @@ function onMapLoad(allStations) {
         },
     );
 
-    stationMap.innerHTML = areaString;
+    document.getElementById('station_map').innerHTML = areaString;
+    console.log(areaString);
 }
