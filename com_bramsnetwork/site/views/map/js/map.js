@@ -49,6 +49,7 @@ function onMapLoad(allStations) {
                         coords='${xPosition},${yPosition},4'
                         data-maphilight="{"fillColor": "FF0000", "fillOpacity": 1, "strokeColor": "FF0000"}"
                     />
+                `;
             }
         },
     );
