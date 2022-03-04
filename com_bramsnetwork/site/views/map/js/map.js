@@ -41,7 +41,7 @@ function onMapLoad(allStations) {
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    maphilight="{'fillcolot': '00FF00', 'alwaysOn': true}"
+                    maphilight="{'fillcolor': '00FF00', 'alwaysOn': true}"
                 />
             `;
         },

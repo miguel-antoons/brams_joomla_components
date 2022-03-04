@@ -26,12 +26,14 @@ defined('_JEXEC') or die('Restricted access');
     </div>
     <div class='row'>
         <div class='col'>
-            <img 
-                src='/ProjectDir/img/belgian_map.gif'
-                id='belgian_map'
-                alt='Belgian map with receiving stations' 
-                usemap='#station_map'
-            />
+            <div class='map'>
+                <img 
+                    src='/ProjectDir/img/belgian_map.gif'
+                    id='belgian_map'
+                    alt='Belgian map with receiving stations' 
+                    usemap='#station_map'
+                />
+            </div>
             <map name='station_map' id='station_map'>
 
             </map>
