@@ -31,12 +31,12 @@ function onMapLoad(allStations) {
             if (station[-1]) {
                 mapOptions = {
                     fillColor: '00ff00',
-                    strokeColor: '00ff00'
+                    strokeColor: '00ff00',
                 };
             } else {
                 mapOptions = {
                     fillColor: 'ff0000',
-                    strokeColor: '00ff00'
+                    strokeColor: '00ff00',
                 };
             }
 
