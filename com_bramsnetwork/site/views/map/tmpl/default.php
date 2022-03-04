@@ -72,4 +72,5 @@ defined('_JEXEC') or die('Restricted access');
     ]
 
     onMapLoad(all_stations);
+    $('.map').maphilight({fillcolor: '008800'});
 </script>
