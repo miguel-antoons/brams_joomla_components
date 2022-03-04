@@ -65,6 +65,7 @@ class BramsNetworkViewMap extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsnetwork/views/map/css/map.css');
 		$document->addStyleSheet('/components/com_bramsnetwork/views/map/css/bootstrap.min.css');
 		$document->addScript('/components/com_bramsnetwork/views/map/js/map.js');
-		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
+		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+		$document->addScript('/components/com_bramsnetwork/views/map/js/jquery.maphilight.js');
 	}
 }
