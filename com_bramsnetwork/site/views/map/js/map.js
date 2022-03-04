@@ -29,28 +29,21 @@ function onMapLoad(allStations) {
             );
 
             if (station[-1]) {
-                areaString += `
-                    <area 
-                        class='network_area ${station[2]}'
-                        shape='circle'
-                        alt='${station[0]}'
-                        title='${station[0]}'
-                        coords='${xPosition},${yPosition},4'
-                        data-maphilight="{\"fillColor\": \"00FF00\",\"strokeColor\": \"fillOpacity\": 1, \"strokeColor\": \"00FF00\"}"
-                    />
-            `;
+                statusOptions = '{fillColor: \'00ff00\', fillOpacity: 1, strokeColor: \'00ff00\'}';
             } else {
-                areaString += `
-                    <area 
-                        class='network_area ${station[2]}'
-                        shape='circle'
-                        alt='${station[0]}'
-                        title='${station[0]}'
-                        coords='${xPosition},${yPosition},4'
-                        data-maphilight="{\"fillColor\": \"FF0000\", \"strokeColor\": fillOpacity\": 1, \"strokeColor\": \"FF0000\"}"
-                    />
-                `;
+                statusOptions = '{fillColor: \'ff0000\', fillOpacity: 1, strokeColor: \'ff0000\'}';
             }
+
+            areaString += `
+                <area 
+                    class='network_area ${station[2]}'
+                    shape='circle'
+                    alt='${station[0]}'
+                    title='${station[0]}'
+                    coords='${xPosition},${yPosition},4'
+                    data-maphilight="${statusOptions}"
+                />
+            `;
         },
     );
 
