@@ -36,7 +36,7 @@ function onMapLoad(allStations) {
                         alt='${station[0]}'
                         title='${station[0]}'
                         coords='${xPosition},${yPosition},4'
-                        data-maphilight="{"fillColor": "00FF00", "fillOpacity": 1, "strokeColor": "00FF00"}"
+                        data-maphilight="{\"fillColor\": \"00FF00\",\"strokeColor\": \"fillOpacity\": 1, \"strokeColor\": \"00FF00\"}"
                     />
             `;
             } else {
@@ -47,7 +47,7 @@ function onMapLoad(allStations) {
                         alt='${station[0]}'
                         title='${station[0]}'
                         coords='${xPosition},${yPosition},4'
-                        data-maphilight="{"fillColor": "FF0000", "fillOpacity": 1, "strokeColor": "FF0000"}"
+                        data-maphilight="{\"fillColor\": \"FF0000\", \"strokeColor\": fillOpacity\": 1, \"strokeColor\": \"FF0000\"}"
                     />
                 `;
             }
