@@ -47,7 +47,7 @@ function onMapLoad(allStations) {
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    data-maphilight="${JSON.stringify(mapOptions)}"
+                    data-maphilight=${JSON.stringify(mapOptions)}
                 />
             `;
         },
