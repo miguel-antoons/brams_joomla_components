@@ -36,12 +36,12 @@ function onMapLoad(allStations) {
 
             areaString += `
                 <area 
-                    class='network_area ${station[2]} ${statusClass}'
+                    class='network_area ${station[2]} ${statusClass} {'fillcolor': '00FF00', 'alwaysOn': true}'
                     shape='circle'
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
-                    maphilight="{'fillcolor': '00FF00', 'alwaysOn': true}"
+                    maphilight=""
                 />
             `;
         },
