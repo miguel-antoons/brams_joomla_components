@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
                     name='checkbox'[]'
                     value='<?php echo $this->active_checkbox_value ?>'
                     id='showActive'
-                    checked
+                    <?php echo $this->checkbox[$this->active_checkbox_value] ?>
                 />
                 <label class='checkbox_label' for='showActive'>
                     Show Active
@@ -61,6 +61,7 @@ defined('_JEXEC') or die('Restricted access');
                     name='checkbox[]'
                     value='<?php echo $this->inactive_checkbox_value ?>'
                     id='showInactive'
+                    <?php echo $this->checkbox[$this->inactive_checkbox_value] ?>
                 />
                 <label class='checkbox_label' for='showInactive'>
                     Show Inactive
@@ -74,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
                     name='checkbox[]'
                     value='<?php echo $this->new_checkbox_value ?>'
                     id='showNew'
-                    checked
+                    <?php echo $this->checkbox[$this->new_checkbox_value] ?>
                 />
                 <label class='checkbox_label' for='showNew'>
                     Show New
@@ -87,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
                     name='checkbox[]'
                     value='<?php echo $this->old_checkbox_value ?>'
                     id='showOld'
-                    checked
+                    <?php echo $this->checkbox[$this->old_checkbox_value] ?>
                 />
                 <label class='checkbox_label' for='showOld'>
                     Show Old

@@ -70,16 +70,20 @@ function showStationsEntry() {
         stationsToShow = allStations;
     } else if (activeCheckbox) {
         stationsToShow = activeStations;
-    } else {
+    } else if (inactiveCheckbox) {
         stationsToShow = inactiveStations;
+    } else {
+        stationsToShow = [];
     }
 
     if (newCheckbox && oldCheckbox) {
         showStations(stationsToShow);
     } else if (newCheckbox) {
         showStations(stationsToShow.filter((station) => station[2] === 'SSH'));
-    } else {
+    } else if (oldCheckbox) {
         showStations(stationsToShow.filter((station) => station[2] !== 'SSH'));
+    } else {
+        showStations([]);
     }
 }
 
