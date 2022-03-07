@@ -97,7 +97,7 @@ class BramsNetworkModelMap extends ItemModel {
 				where date = ' . $db->quote($selected_date) . ')'
 		);
 
-		print_r($system_query);
+		echo $system_query;
 
 		$db->setQuery($system_query);
 
