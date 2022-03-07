@@ -24,6 +24,78 @@ defined('_JEXEC') or die('Restricted access');
             </p>
         </div>
     </div>
+    
+    <div class='row'>
+        <form action='' method='post' name='networkMapForm'>
+            <div class='col'>
+                <label for='startDate'>Date </label>
+                <input
+                    type='date'
+                    name='startDate'
+                    id='startDate'
+                    min='2010-01-01'
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->today ?>'
+                    required
+                />
+                <input name='submit' type='submit' id='submit' class='custom_btn'/>
+            </div>
+            <div class='col'>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='checkbox'[]'
+                    value='<?php echo $this->active_checkbox_value ?>'
+                    id='showActive'
+                    checked
+                />
+                <label class='checkbox_label' for='showActive'>
+                    Show Active
+                </label>
+                <br>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='checkbox[]'
+                    value='<?php echo $this->inactive_checkbox_value ?>'
+                    id='showInactive'
+                />
+                <label class='checkbox_label' for='showInactive'>
+                    Show Inactive
+                </label>
+            </div>
+            <div class='col'>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='checkbox[]'
+                    value='<?php echo $this->new_checkbox_value ?>'
+                    id='showNew'
+                    checked
+                />
+                <label class='checkbox_label' for='showNew'>
+                    Show New
+                </label>
+                <br>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='checkbox[]'
+                    value='<?php echo $this->old_checkbox_value ?>'
+                    id='showOld'
+                    checked
+                />
+                <label class='checkbox_label' for='showOld'>
+                    Show Old
+                </label>
+            </div>
+        </form>
+    </div>
+
     <div class='row'>
         <div class='col'>
             <img 
@@ -39,74 +111,6 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 </div>
-<form action='' method='post' name='networkMapForm'>
-    <!-- TODO : add date field and 2 checkboxes (select active, select inactive) -->
-    <div class='container'>
-        <div class='row'>
-            <div class='col'>
-                <label for='startDate'>Date </label>
-                <input
-                    type='date'
-                    name='startDate'
-                    id='startDate'
-                    min='2011-01-01'
-                    max='<?php echo $this->today ?>'
-                    value='<?php echo $this->today ?>'
-                    required
-                />
-            </div>
-            <div class='col'>
-                <input 
-                    type='checkbox' 
-                    onClick='showStationsEntry()' 
-                    class='custom_checkbox'
-                    name='activeInactive[]'
-                    id='showActive'
-                    checked
-                />
-                <label class='checkbox_label' for='showActive'>
-                    Show Active
-                </label>
-                <br>
-                <input 
-                    type='checkbox' 
-                    onClick='showStationsEntry()' 
-                    class='custom_checkbox'
-                    name='activeInactive[]'
-                    id='showInactive'
-                />
-                <label class='checkbox_label' for='showInactive'>
-                    Show Inactive
-                </label>
-            </div>
-            <div class='col'>
-                <input 
-                    type='checkbox' 
-                    onClick='showStationsEntry()' 
-                    class='custom_checkbox'
-                    name='oldNew[]'
-                    id='showNew'
-                    checked
-                />
-                <label class='checkbox_label' for='showNew'>
-                    Show New
-                </label>
-                <br>
-                <input 
-                    type='checkbox' 
-                    onClick='showStationsEntry()' 
-                    class='custom_checkbox'
-                    name='oldNew[]'
-                    id='showOld'
-                    checked
-                />
-                <label class='checkbox_label' for='showOld'>
-                    Show Old
-                </label>
-            </div>
-        </div>
-    </div>
-</form>
 <script>
     // function to dynamically set the stations on the image can 
     // be called either here or ont the image onload property

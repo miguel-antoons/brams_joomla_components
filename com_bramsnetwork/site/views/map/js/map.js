@@ -30,7 +30,7 @@ function showStations(stationsToShow) {
                 * (imageYmax - imageYmin),
             );
 
-            if (station[-1]) {
+            if (station[station.length - 1]) {
                 mapOptions = {
                     fillColor: '00ff00',
                     strokeColor: '00ff00',
@@ -83,8 +83,8 @@ function showStationsEntry() {
 }
 
 function onMapLoad() {
-    activeStations = allStations.filter((station) => station[-1] > 0);
-    inactiveStations = allStations.filter((station) => station[-1] === 0);
+    activeStations = allStations.filter((station) => station[station.length - 1] > 0);
+    inactiveStations = allStations.filter((station) => station[station.length - 1] === 0);
 
     showStationsEntry();
 }

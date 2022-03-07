@@ -26,17 +26,23 @@ class BramsNetworkViewMap extends HtmlView {
 	 * @return  void
 	 */
 	function display($tpl = null) {
+		$this->active_checkbox_value = 'active';
+		$this->inactive_checkbox_value = 'inactive';
+		$this->new_checkbox_value = 'new';
+		$this->old_checkbox_value = 'old';
 		// Assign data to the view
-		$this->active_stations = $this->get('ActiveStationInfo');
-		$this->inactive_stations = $this->get('InactiveStationInfo');
+		$this->today = $this->get('Today');
+		$this->checkbox[$this->active_checkbox_value] = '';
+		$this->checkbox[$this->inactive_checkbox_value] = '';
+		$this->checkbox[$this->new_checkbox_value] = '';
+		$this->checkbox[$this->old_checkbox_value] = '';
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
 			$this->processForm();
 		}
 		else {
-			$this->start_date = $this->get('StartDate');
-			$this->end_date = $this->get('Today');
+			$this->defaultAction();
 		}
 
 		// Check for errors.
@@ -56,7 +62,23 @@ class BramsNetworkViewMap extends HtmlView {
 
 	// entry-point of form processing
 	private function processForm() {
-		// TODO: process form
+		$model = $this->getModel();
+		$this->active_stations = $model->getActiveStationInfo($_POST['startDate']);
+		$this->inactive_stations = $model->getInactiveStationInfo($_POST['startDate']);
+
+		foreach ($_POST['checkbox'] as $checkbox_value) {
+			$this->checkbox[$checkbox_id] = 'checked';
+		}
+	}
+
+	private function defaultAction() {
+		$model = $this->getModel();
+		$this->active_stations = $model->getActiveStationInfo($this->today);
+		$this->inactive_stations = $model->getInactiveStationInfo($this->today);
+
+		$this->checkbox[$this->active_checkbox_value] = 'checked';
+		$this->checkbox[$this->new_checkbox_value] = 'checked';
+		$this->checkbox[$this->old_checkbox_value] = 'checked';
 	}
 
 	// function adds needed javascript and css files to the view

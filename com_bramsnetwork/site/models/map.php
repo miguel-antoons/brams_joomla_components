@@ -43,7 +43,7 @@ class BramsNetworkModelMap extends ItemModel {
     /* WARNING : Below function and database query were directly copied from another
     component and must be modified in order to work with this component */
 	// get all the stations and their name from the database
-	public function getActiveStationInfo() {
+	public function getActiveStationInfo($selected_date) {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
@@ -56,14 +56,14 @@ class BramsNetworkModelMap extends ItemModel {
 			. $db->quoteName('longitude') . ', '
 			. $db->quoteName('latitude') . ', '
 			. $db->quoteName('rate')
-			);
+		);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('file_availability'));
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
-		$system_query->where($db->quoteName('date') . ' = ' . $db->quote('2022-02-18'));
-		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote('2022-02-18'));
+		$system_query->where($db->quoteName('date') . ' = ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
 
 		$db->setQuery($system_query);
 
@@ -73,7 +73,7 @@ class BramsNetworkModelMap extends ItemModel {
 	/* WARNING : Below function and database query were directly copied from another
     component and must be modified in order to work with this component */
 	// get all the stations and their name from the database
-	public function getinActiveStationInfo() {
+	public function getinActiveStationInfo($selected_date) {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
@@ -85,16 +85,16 @@ class BramsNetworkModelMap extends ItemModel {
 			. $db->quoteName('transfer_type') . ', '
 			. $db->quoteName('longitude') . ', '
 			. $db->quoteName('latitude') . ', 0 as rate'
-			);
+		);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote('2022-02-18'));
+		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
 		$system_query->where(
 			$db->quoteName('system.id') . ' not in (
 				select system.id 
 				from file_availability 
-				where date = ' . $db->quote('2022-02-18') . ')'
+				where date = ' . $db->quote($selected_date) . ')'
 		);
 
 		$db->setQuery($system_query);
@@ -105,15 +105,5 @@ class BramsNetworkModelMap extends ItemModel {
 	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');
-	}
-
-	// get the date from 5 days ago in yyy-mm-dd format
-	public function getStartDate() {
-		return date('Y-m-d', strtotime("-5 days"));
-	}
-
-	// get yesterday's date in yyy-mm-dd format
-	public function getYesterday() {
-		return date('Y-m-d', strtotime("-1 days"));
 	}
 }
