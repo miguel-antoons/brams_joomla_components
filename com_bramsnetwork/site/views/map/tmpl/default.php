@@ -40,13 +40,78 @@ defined('_JEXEC') or die('Restricted access');
     </div>
 </div>
 <form action='' method='post' name='networkMapForm'>
-    <!-- TODO : add date filed and 2 checkboxes (select active, select inactive) -->
+    <!-- TODO : add date field and 2 checkboxes (select active, select inactive) -->
+    <div class='container'>
+        <div class='row'>
+            <div class='col'>
+                <label for='startDate'>Date </label>
+                <input
+                    type='date'
+                    name='startDate'
+                    id='startDate'
+                    min='2011-01-01'
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->today ?>'
+                    required
+                />
+            </div>
+            <div class='col'>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='activeInactive[]'
+                    id='showActive'
+                    checked
+                />
+                <label class='checkbox_label' for='showActive'>
+                    Show Active
+                </label>
+                <br>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='activeInactive[]'
+                    id='showInactive'
+                />
+                <label class='checkbox_label' for='showInactive'>
+                    Show Inactive
+                </label>
+            </div>
+            <div class='col'>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='oldNew[]'
+                    id='showNew'
+                    checked
+                />
+                <label class='checkbox_label' for='showNew'>
+                    Show New
+                </label>
+                <br>
+                <input 
+                    type='checkbox' 
+                    onClick='showStationsEntry()' 
+                    class='custom_checkbox'
+                    name='oldNew[]'
+                    id='showOld'
+                    checked
+                />
+                <label class='checkbox_label' for='showOld'>
+                    Show Old
+                </label>
+            </div>
+        </div>
+    </div>
 </form>
 <script>
     // function to dynamically set the stations on the image can 
     // be called either here or ont the image onload property
 
-    let all_stations = [
+    let allStations = [
         <?php foreach ($this->active_stations as $active) : ?>
             [
                 "<?php echo $active->name; ?>",
@@ -70,6 +135,6 @@ defined('_JEXEC') or die('Restricted access');
 
     ]
 
-    onMapLoad(all_stations);
+    onMapLoad();
     $('.map').maphilight();
 </script>

@@ -31,35 +31,53 @@ defined('_JEXEC') or die('Restricted access');
 <form action='' method='post' name='availabilityForm'>
     <div class="container custom_container">
         <div class='row'>
-            <?php echo "<div class='col custom_col'>"; ?>
-            <?php $index = 0 ?>
-            <?php foreach ($this->stations as $station) : ?>
-                <?php 
-                    if(!($index % $this->column_length) && $index) { echo "</div><div class='col custom_col'>"; }
-                    $index++;
-                ?>
-                <input 
-                    type='checkbox' 
-                    onClick='changeCheckBox()' 
-                    class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
-                    name='station[]'
-                    value='<?php echo $station->id ?>'
-                    id='station<?php echo $station->id ?>'
-                    <?php echo $station->checked ?>
-                />
-                <label class='checkbox_label' for='station<?php echo $station->id ?>'><?php echo $station->name ?></label>
-                <br>
-            <?php endforeach; ?>
-            <?php echo "</div>" ?>
+            <div class='col custom_col'>
+                <?php $index = 0 ?>
+                <?php foreach ($this->stations as $station) : ?>
+                    <?php 
+                        if(!($index % $this->column_length) && $index) { echo "</div><div class='col custom_col'>"; }
+                        $index++;
+                    ?>
+                    <input 
+                        type='checkbox' 
+                        onClick='changeCheckBox()' 
+                        class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
+                        name='station[]'
+                        value='<?php echo $station->id ?>'
+                        id='station<?php echo $station->id ?>'
+                        <?php echo $station->checked ?>
+                    />
+                    <label class='checkbox_label' for='station<?php echo $station->id ?>'>
+                        <?php echo $station->name ?>
+                    </label>
+                    <br>
+                <?php endforeach; ?>
+            </div>
         </div>
         <div class='row'>
             <div class='col custom_col'>
                 <label for='startDate'>From </label>
-                <input type='date' name='startDate' id='startDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->start_date ?>' required/>
+                <input
+                    type='date'
+                    name='startDate'
+                    id='startDate'
+                    min='2011-01-01'
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->start_date ?>'
+                    required
+                />
             </div>
             <div class='col custom_col'>
                 <label for='endDate'>To </label>
-                <input type='date' name='endDate' id='endDate' min='2011-01-01' max='<?php echo $this->today ?>' value='<?php echo $this->end_date ?>' required/>
+                <input
+                    type='date'
+                    name='endDate'
+                    id='endDate'
+                    min='2011-01-01'
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->end_date ?>'
+                    required
+                />
             </div>
         </div>
         <input name='submit' type='submit' id='submit' class='custom_btn'/>

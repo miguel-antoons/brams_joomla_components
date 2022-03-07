@@ -6,15 +6,17 @@ const imageXmin = 0;
 const imageXmax = 593;
 const imageYmin = 0;
 const imageYmax = 516;
+let activeStations = [];
+let inactiveStations = [];
 
-function onMapLoad(allStations) {
+function showStations(stationsToShow) {
     let areaString = '';
     let xPosition;
     let yPosition;
+    let mapOptions;
 
-    allStations.forEach(
+    stationsToShow.forEach(
         (station) => {
-            let mapOptions;
             xPosition = Math.round(
                 imageXmin
                 + ((station[3] - minLongitude)
@@ -36,7 +38,7 @@ function onMapLoad(allStations) {
             } else {
                 mapOptions = {
                     fillColor: 'ff0000',
-                    strokeColor: '00ff00',
+                    strokeColor: 'ff0000',
                 };
             }
 
@@ -54,4 +56,35 @@ function onMapLoad(allStations) {
     );
 
     document.getElementById('station_map').innerHTML = areaString;
+}
+
+function showStationsEntry() {
+    const activeCheckbox = document.getElementById('showActive').checked;
+    const inactiveCheckbox = document.getElementById('showInactive').checked;
+    const newCheckbox = document.getElementById('showNew').checked;
+    const oldCheckbox = document.getElementById('showOld').checked;
+    let stationsToShow;
+
+    if (activeCheckbox && inactiveCheckbox) {
+        stationsToShow = allStations;
+    } else if (activeCheckbox) {
+        stationsToShow = activeStations;
+    } else {
+        stationsToShow = inactiveStations;
+    }
+
+    if (newCheckbox && oldCheckbox) {
+        showStations(stationsToShow);
+    } else if (newCheckbox) {
+        showStations(stationsToShow.filter((station) => station[2] === 'SSH'));
+    } else {
+        showStations(stationsToShow.filter((station) => station[2] !== 'SSH'));
+    }
+}
+
+function onMapLoad() {
+    activeStations = allStations.filter((station) => station[-1] > 0);
+    inactiveStations = allStations.filter((station) => station[-1] === 0);
+
+    showStationsEntry();
 }
