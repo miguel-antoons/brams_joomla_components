@@ -91,13 +91,11 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
 		$system_query->where(
-			$db->quoteName('system_id') . ' not in (
-				select system.id 
+			$db->quoteName('system.id') . ' not in (
+				select system_id 
 				from file_availability 
 				where date = ' . $db->quote($selected_date) . ')'
 		);
-
-		echo $system_query;
 
 		$db->setQuery($system_query);
 
