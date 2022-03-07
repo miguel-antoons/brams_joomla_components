@@ -56,6 +56,7 @@ function showStations(stationsToShow) {
     );
 
     document.getElementById('station_map').innerHTML = areaString;
+    $('.map').maphilight();
 }
 
 function showStationsEntry() {

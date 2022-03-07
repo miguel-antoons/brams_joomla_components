@@ -25,8 +25,8 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
     
-    <div class='row'>
-        <form action='' method='post' name='networkMapForm'>
+    <form action='' method='post' name='networkMapForm'>
+        <div class='row'>
             <div class='col'>
                 <label for='startDate'>Date </label>
                 <input
@@ -93,8 +93,8 @@ defined('_JEXEC') or die('Restricted access');
                     Show Old
                 </label>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <div class='row'>
         <div class='col'>
@@ -140,5 +140,4 @@ defined('_JEXEC') or die('Restricted access');
     ]
 
     onMapLoad();
-    $('.map').maphilight();
 </script>
