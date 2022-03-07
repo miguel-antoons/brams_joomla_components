@@ -26,9 +26,10 @@ defined('_JEXEC') or die('Restricted access');
     </div>
     
     <form action='' method='post' name='networkMapForm'>
+        <h2>Network Map</h2>
         <div class='row'>
             <div class='col'>
-                <label for='startDate'>Date </label>
+                <label class='dateLabel for='startDate'>Date </label>
                 <input
                     type='date'
                     name='startDate'

@@ -13,3 +13,7 @@
 label {
     margin-bottom: 0 !important;
 }
+
+.dateLabel {
+    font-weight: bolder;
+}
