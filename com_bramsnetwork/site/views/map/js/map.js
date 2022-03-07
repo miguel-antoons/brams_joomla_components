@@ -46,7 +46,7 @@ function showStations(stationsToShow) {
                 <area 
                     class="${station[2]}"
                     shape='circle'
-                    onmouseover='showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})'
+                    onmouseover=´showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})´
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
