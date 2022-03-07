@@ -46,7 +46,7 @@ function showStations(stationsToShow) {
                 <area 
                     class="${station[2]}"
                     shape='circle'
-                    onmouseover='showStationInfo(${station[0]}, ${station[1]}, ${station[2]}, ${station[5] / 10})'
+                    onmouseover='showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})'
                     alt='${station[0]}'
                     title='${station[0]}'
                     coords='${xPosition},${yPosition},4'
@@ -92,13 +92,13 @@ function showStationInfo(stationName, stationCountry, stationTransfer, stationRa
     document.getElementById('stationName').innerHTML = stationName;
     document.getElementById('stationCountry').innerHTML = stationCountry;
     document.getElementById('stationTransfer').innerHTML = stationTransfer;
-    document.getElementById('selectedDate').innerHTML = document.getElementById('startDate').value;
     document.getElementById('stationRate').innerHTML = `${stationRate} %`;
 }
 
 function onMapLoad() {
     activeStations = allStations.filter((station) => station[station.length - 1] > 0);
     inactiveStations = allStations.filter((station) => station[station.length - 1] === 0);
+    document.getElementById('selectedDate').innerHTML = document.getElementById('startDate').value;
 
     showStationsEntry();
 }
