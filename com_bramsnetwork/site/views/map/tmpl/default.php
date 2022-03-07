@@ -25,8 +25,13 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
     
+    <div class='row'>
+        <div class='col'>
+            <h2>Network Map</h2>
+        </div>
+    </div>
+
     <form action='' method='post' name='networkMapForm'>
-        <h2>Network Map</h2>
         <div class='row'>
             <div class='col'>
                 <label class='dateLabel for='startDate'>Date </label>
@@ -110,6 +115,15 @@ defined('_JEXEC') or die('Restricted access');
             <map name='station_map' id='station_map'>
 
             </map>
+        </div>
+        <div class='col'>
+            <h4>Station Info</h4>
+            <p>
+                Station Name : <span class='stationInfo' id='stationName'></span><br>
+                Station Country Code : <span class='stationInfo' id='stationCountry'></span><br>
+                Station Transfer Type : <span class='stationInfo' id='stationTransfer'></span><br>
+                File Availability on <span id='selectedDate'></span> : <span class='stationInfo' id='stationRate'></span><br>
+            </p>
         </div>
     </div>
 </div>
