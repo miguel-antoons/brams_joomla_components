@@ -65,10 +65,10 @@ class BramsNetworkViewMap extends HtmlView {
 		$model = $this->getModel();
 		$this->active_stations = $model->getActiveStationInfo($_POST['startDate']);
 		$this->inactive_stations = $model->getInactiveStationInfo($_POST['startDate']);
-		print_r(inactive_stations);
+		print_r($this->inactive_stations);
 
 		foreach ($_POST['checkbox'] as $checkbox_value) {
-			$this->checkbox[$checkbox_id] = 'checked';
+			$this->checkbox[$checkbox_value] = 'checked';
 		}
 	}
 

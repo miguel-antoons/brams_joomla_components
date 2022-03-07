@@ -1,3 +1,15 @@
-.network_area {
-    background-color: black;
+.custom_btn {
+    border: 1px solid transparent;
+    width: 130px !important;
+    height: 35px;
+    border-radius: 30px;
+    font-weight: bolder;
+}
+
+.checkbox_label {
+    display: inline-block !important;
+}
+
+label {
+    margin-bottom: 0 !important;
 }

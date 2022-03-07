@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
                     type='checkbox' 
                     onClick='showStationsEntry()' 
                     class='custom_checkbox'
-                    name='checkbox'[]'
+                    name='checkbox[]'
                     value='<?php echo $this->active_checkbox_value ?>'
                     id='showActive'
                     <?php echo $this->checkbox[$this->active_checkbox_value] ?>
