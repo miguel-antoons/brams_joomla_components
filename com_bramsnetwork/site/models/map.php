@@ -118,7 +118,7 @@ class BramsNetworkModelMap extends ItemModel {
 		);
 		$system_query->from($db->quoteName('beacon'));
 		// remove following line if Ieper beacon has to be shown on the map
-		$system_query->where($db->quoteName('name') . ' not like ' . $db.quote('Ieper Beacon'));
+		$system_query->where($db->quoteName('name') . ' not like ' . $db->quote('Ieper Beacon'));
 
 		$db->setQuery($system_query);
 

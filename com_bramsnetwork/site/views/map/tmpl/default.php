@@ -156,7 +156,7 @@ defined('_JEXEC') or die('Restricted access');
                 false
             ],
         <?php endforeach; ?>
-        /*<?php /*foreach ($this->beacons as $beacon) : ?>
+        <?php foreach ($this->beacons as $beacon) : ?>
             [
                 "<?php echo $beacon->name; ?>",
                 "<?php echo $beacon->country_code; ?>",
@@ -166,8 +166,8 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo $beacon->rate; ?>,
                 true
             ],
-        <?php endforeach; */ ?>
-    ]*/
+        <?php endforeach; ?>
+    ]
 
     onMapLoad();
 </script>
