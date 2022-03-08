@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 
             </map>
         </div>
-        <div class='col'>
+        <div class='col-md-auto'>
             <h4>Station Info</h4>
             <p>
                 Station Name : <span class='stationInfo' id='stationName'></span><br>
