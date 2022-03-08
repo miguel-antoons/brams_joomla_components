@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
     </form>
 
     <div class='row'>
-        <div class='col-md-auto'>
+        <div class='col-8'>
             <img 
                 src='/ProjectDir/img/belgian_map.gif'
                 id='belgian_map'
@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 
             </map>
         </div>
-        <div class='col'>
+        <div class='col-4'>
             <h4>Station Info</h4>
             <p>
                 Station Name : <span class='stationInfo' id='stationName'></span><br>
