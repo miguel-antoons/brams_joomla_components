@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
     </form>
 
     <div class='row'>
-        <div class='col'>
+        <div class='col-md-auto'>
             <img 
                 src='/ProjectDir/img/belgian_map.gif'
                 id='belgian_map'
