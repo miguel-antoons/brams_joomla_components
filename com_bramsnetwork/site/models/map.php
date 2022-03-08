@@ -102,6 +102,29 @@ class BramsNetworkModelMap extends ItemModel {
 		return $db->loadObjectList();
 	}
 
+	// get beacons from database
+	private function getBeacons() {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		// SQL query to get all inforamtions about the multiple systems
+		$system_query->select(
+			$db.quoteName('name')
+			. ', left(' . $db->quoteName('beacon_code') . ', 2) as country_code, '
+			. $db.quote('None') . ' as transfer_type, '
+			. $db->quoteName('longitude') . ', '
+			. $db->quoteName('latitude') . ', '
+			. $db->quote('None') . ' as rate'
+		);
+		$system_query->from($db->quoteName('beacon'));
+		// remove following line if Ieper beacon has to be shown on the map
+		$system_query->where($db->quoteName('name') . ' not like ' . $db.quote('Ieper Beacon'));
+
+		$db->setQuery($system_query);
+
+		return $db->loadObjectList();
+	}
+
 	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');

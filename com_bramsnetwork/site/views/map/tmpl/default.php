@@ -141,7 +141,8 @@ defined('_JEXEC') or die('Restricted access');
                 "<?php echo $active->transfer_type; ?>",
                 <?php echo $active->longitude; ?>,
                 <?php echo $active->latitude; ?>,
-                <?php echo $active->rate; ?>
+                <?php echo $active->rate; ?>,
+                false
             ],
         <?php endforeach; ?>
         <?php foreach ($this->inactive_stations as $inactive) : ?>
@@ -151,10 +152,21 @@ defined('_JEXEC') or die('Restricted access');
                 "<?php echo $inactive->transfer_type; ?>",
                 <?php echo $inactive->longitude; ?>,
                 <?php echo $inactive->latitude; ?>,
-                <?php echo $inactive->rate; ?>
+                <?php echo $inactive->rate; ?>,
+                false
             ],
         <?php endforeach; ?>
-
+        <?php foreach ($this->beacons as $beacon) : ?>
+            [
+                "<?php echo $beacon->name; ?>",
+                "<?php echo $beacon->country_code; ?>",
+                "<?php echo $beacon->transfer_type; ?>",
+                <?php echo $beacon->longitude; ?>,
+                <?php echo $beacon->latitude; ?>,
+                <?php echo $beacon->rate; ?>,
+                true
+            ],
+        <?php endforeach; ?>
     ]
 
     onMapLoad();

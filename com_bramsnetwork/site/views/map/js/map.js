@@ -8,6 +8,89 @@ const imageYmin = 0;                // start y point of the shown map
 const imageYmax = 516;              // end y point of the shown map
 let activeStations = [];            // array contains all active stations
 let inactiveStations = [];          // array contains all inactive stations
+let beacons = [];                   // array contains all beacons
+
+function addStationString(station) {
+    // calculate the x position of the station
+    const xPosition = Math.round(
+        imageXmin
+        + ((station[3] - minLongitude)
+        / (maxLongitude - minLongitude))
+        * (imageXmax - imageYmin),
+    );
+    // calculate the y position of the station
+    const yPosition = Math.round(
+        imageYmin
+        + ((station[4] - maxLatitude)
+        / (minLatitude - maxLatitude))
+        * (imageYmax - imageYmin),
+    );
+    let mapOptions = '';    // colors of 1 station on the map
+
+    // if the station has a non null data availability rate on
+    // the given date
+    if (station[station.length - 1]) {
+        // set the station color to green
+        mapOptions = {
+            fillColor: '00ff00',
+            strokeColor: '00ff00',
+        };
+    } else {
+        // set the station color to red
+        mapOptions = {
+            fillColor: 'ff0000',
+            strokeColor: 'ff0000',
+        };
+    }
+
+    // return new area element
+    return `
+        <area 
+            class="${station[2]}"
+            shape='circle'
+            onmouseover="showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})"
+            alt='${station[0]}'
+            title='${station[0]}'
+            coords='${xPosition},${yPosition},4'
+            data-maphilight=${JSON.stringify(mapOptions)}
+        />
+    `;
+}
+
+function addBeaconString(beacon) {
+    // calculate the x position of the beacon
+    const xPosition = Math.round(
+        imageXmin
+        + ((beacon[3] - minLongitude)
+        / (maxLongitude - minLongitude))
+        * (imageXmax - imageYmin),
+    );
+    // calculate the y position of the beacon
+    const yPosition = Math.round(
+        imageYmin
+        + ((beacon[4] - maxLatitude)
+        / (minLatitude - maxLatitude))
+        * (imageYmax - imageYmin),
+    );
+    // set blue color for beacon
+    const mapOptions = {
+        fillColor: '0000ff',
+        strokeColor: '0000ff',
+    };
+
+    // return new area element
+    return `
+        <area 
+            class="${beacon[2]}"
+            shape='poly'
+            onmouseover="showStationInfo('${beacon[0]}', '${beacon[1]}', '${beacon[2]}', '${beacon[5]}')"
+            alt='${beacon[0]}'
+            title='${beacon[0]}'
+            coords='${xPosition},${yPosition - 2},${xPosition - 1},${yPosition + 1},${xPosition + 1},${yPosition + 1}'
+            data-maphilight=${JSON.stringify(mapOptions)}
+        />
+    `;
+}
 
 /**
  * Function calculates the position of each station on the map
@@ -19,56 +102,18 @@ let inactiveStations = [];          // array contains all inactive stations
  */
 function showStations(stationsToShow) {
     let areaString = '';    // final innerHTML of the map tag
-    let xPosition;          // x position of 1 station on the map
-    let yPosition;          // y position of 1 station on the map
-    let mapOptions;         // colors of 1 station on the map
 
     // generate a 'area' element for each station
     stationsToShow.forEach(
         (station) => {
-            // calculate the x position of the station
-            xPosition = Math.round(
-                imageXmin
-                + ((station[3] - minLongitude)
-                / (maxLongitude - minLongitude))
-                * (imageXmax - imageYmin),
-            );
-            // calculate the y position of the station
-            yPosition = Math.round(
-                imageYmin
-                + ((station[4] - maxLatitude)
-                / (minLatitude - maxLatitude))
-                * (imageYmax - imageYmin),
-            );
+            areaString += addStationString(station);
+        },
+    );
 
-            // if the station has a non null data availability rate on
-            // the given date
-            if (station[station.length - 1]) {
-                // set the station color to green
-                mapOptions = {
-                    fillColor: '00ff00',
-                    strokeColor: '00ff00',
-                };
-            } else {
-                // set the station color to red
-                mapOptions = {
-                    fillColor: 'ff0000',
-                    strokeColor: 'ff0000',
-                };
-            }
-
-            // add new area element to the area string
-            areaString += `
-                <area 
-                    class="${station[2]}"
-                    shape='circle'
-                    onmouseover="showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})"
-                    alt='${station[0]}'
-                    title='${station[0]}'
-                    coords='${xPosition},${yPosition},4'
-                    data-maphilight=${JSON.stringify(mapOptions)}
-                />
-            `;
+    // generate an 'area' element for each beacon
+    beacons.forEach(
+        (beacon) => {
+            areaString += addBeaconString(beacon);
         },
     );
 
@@ -126,7 +171,11 @@ function showStationInfo(stationName, stationCountry, stationTransfer, stationRa
     document.getElementById('stationName').innerHTML = stationName;
     document.getElementById('stationCountry').innerHTML = stationCountry;
     document.getElementById('stationTransfer').innerHTML = stationTransfer;
-    document.getElementById('stationRate').innerHTML = `${stationRate} %`;
+    if (typeof stationRate === 'number') {
+        document.getElementById('stationRate').innerHTML = `${stationRate} %`;
+    } else {
+        document.getElementById('stationRate').innerHTML = stationRate;
+    }
 }
 
 /**
@@ -136,8 +185,10 @@ function showStationInfo(stationName, stationCountry, stationTransfer, stationRa
  */
 function onMapLoad() {
     // separate active and inactive stations in 2 arrays
-    activeStations = allStations.filter((station) => station[station.length - 1] > 0);
-    inactiveStations = allStations.filter((station) => station[station.length - 1] === 0);
+    beacons = allStations.filter((station) => station[station.length - 1]);
+    allStations = allStations.filter((station) => !station[station.length - 1]);
+    activeStations = allStations.filter((station) => station[station.length - 2] > 0);
+    inactiveStations = allStations.filter((station) => station[station.length - 2] === 0);
 
     // show current selected date on screen
     document.getElementById('selectedDate').innerHTML = document.getElementById('startDate').value;
