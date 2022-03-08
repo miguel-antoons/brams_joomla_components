@@ -109,9 +109,9 @@ class BramsNetworkModelMap extends ItemModel {
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db.quoteName('name')
+			$db->quoteName('name')
 			. ', left(' . $db->quoteName('beacon_code') . ', 2) as country_code, '
-			. $db.quote('None') . ' as transfer_type, '
+			. $db->quote('None') . ' as transfer_type, '
 			. $db->quoteName('longitude') . ', '
 			. $db->quoteName('latitude') . ', '
 			. $db->quote('None') . ' as rate'
