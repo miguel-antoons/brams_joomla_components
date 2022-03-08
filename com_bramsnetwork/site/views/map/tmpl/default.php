@@ -111,8 +111,6 @@ defined('_JEXEC') or die('Restricted access');
                 alt='Belgian map with receiving stations' 
                 usemap='#station_map'
                 class='map'
-                height='516'
-                width='593'
             />
             <map name='station_map' id='station_map'>
 

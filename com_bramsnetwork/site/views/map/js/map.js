@@ -9,8 +9,8 @@ let inactiveStations = [];          // array contains all inactive stations
 let beacons = [];                   // array contains all beacons
 
 function calculateXY(longitude, latitude) {
-    const imageXmax = document.getElementById('belgian-map').width; // end x point of the shown map
-    const imageYmax = document.getElementById('belgian-map').width; // end y point of the shown map
+    const imageXmax = document.getElementById('belgian_map').width; // end x point of the shown map
+    const imageYmax = document.getElementById('belgian_map').width; // end y point of the shown map
 
     // calculate the x position of the station
     const xPosition = Math.round(
