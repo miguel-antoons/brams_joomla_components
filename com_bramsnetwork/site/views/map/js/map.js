@@ -3,28 +3,35 @@ const maxLatitude = 51.802354;      // maximum latitude possible on the shown be
 const minLongitude = 2.158350;      // minimum longitude possible on the shown belgian map
 const maxLongitude = 6.883813;      // maximum longitude possible on the shown belgian map
 const imageXmin = 0;                // start x point of the shown map
-const imageXmax = 593;              // end x point of the shown map
 const imageYmin = 0;                // start y point of the shown map
-const imageYmax = 516;              // end y point of the shown map
 let activeStations = [];            // array contains all active stations
 let inactiveStations = [];          // array contains all inactive stations
 let beacons = [];                   // array contains all beacons
 
-function addStationString(station) {
+function calculateXY(longitude, latitude) {
+    const imageXmax = document.getElementById('belgian-map').width; // end x point of the shown map
+    const imageYmax = document.getElementById('belgian-map').width; // end y point of the shown map
+
     // calculate the x position of the station
     const xPosition = Math.round(
         imageXmin
-        + ((station[3] - minLongitude)
+        + ((longitude - minLongitude)
         / (maxLongitude - minLongitude))
         * (imageXmax - imageYmin),
     );
     // calculate the y position of the station
     const yPosition = Math.round(
         imageYmin
-        + ((station[4] - maxLatitude)
+        + ((latitude - maxLatitude)
         / (minLatitude - maxLatitude))
         * (imageYmax - imageYmin),
     );
+
+    return [xPosition, yPosition];
+}
+
+function addStationString(station) {
+    const [xPosition, yPosition] = calculateXY(station[3], station[4]);
     let mapOptions = '';    // colors of 1 station on the map
 
     // if the station has a non null data availability rate on
@@ -58,20 +65,7 @@ function addStationString(station) {
 }
 
 function addBeaconString(beacon) {
-    // calculate the x position of the beacon
-    const xPosition = Math.round(
-        imageXmin
-        + ((beacon[3] - minLongitude)
-        / (maxLongitude - minLongitude))
-        * (imageXmax - imageYmin),
-    );
-    // calculate the y position of the beacon
-    const yPosition = Math.round(
-        imageYmin
-        + ((beacon[4] - maxLatitude)
-        / (minLatitude - maxLatitude))
-        * (imageYmax - imageYmin),
-    );
+    const [xPosition, yPosition] = calculateXY(beacon[3], beacon[4]);
     // set blue color for beacon
     const mapOptions = {
         fillColor: '0000ff',
@@ -86,7 +80,7 @@ function addBeaconString(beacon) {
             onmouseover="showStationInfo('${beacon[0]}', '${beacon[1]}', '${beacon[2]}', '${beacon[5]}')"
             alt='${beacon[0]}'
             title='${beacon[0]}'
-            coords='${xPosition},${yPosition - 2},${xPosition - 1},${yPosition + 1},${xPosition + 1},${yPosition + 1}'
+            coords='${xPosition},${yPosition - 3},${xPosition - 2},${yPosition + 2},${xPosition + 2},${yPosition + 2}'
             data-maphilight=${JSON.stringify(mapOptions)}
         />
     `;
