@@ -8,6 +8,13 @@ let activeStations = [];            // array contains all active stations
 let inactiveStations = [];          // array contains all inactive stations
 let beacons = [];                   // array contains all beacons
 
+/**
+ * Calculates the x and y coordinates for a specific station on the
+ * network map.
+ * @param {number} longitude 
+ * @param {number} latitude 
+ * @returns {array} x & y coordinates of the station on the map image
+ */
 function calculateXY(longitude, latitude) {
     const imageXmax = 593;  // end x point of the shown map
     const imageYmax = 516;  // end y point of the shown map
@@ -30,6 +37,11 @@ function calculateXY(longitude, latitude) {
     return [xPosition, yPosition];
 }
 
+/**
+ * Generates and 'area' element from station information.
+ * @param {array} station information of the station
+ * @returns {string} area tag with station info
+ */
 function addStationString(station) {
     const [xPosition, yPosition] = calculateXY(station[3], station[4]);
     let mapOptions = '';    // colors of 1 station on the map
@@ -64,6 +76,11 @@ function addStationString(station) {
     `;
 }
 
+/**
+ * Generates an area element from the beacon information.
+ * @param {array} beacon beacon to show
+ * @returns {string} area tag of the beacon
+ */
 function addBeaconString(beacon) {
     const [xPosition, yPosition] = calculateXY(beacon[3], beacon[4]);
     // set blue color for beacon

@@ -69,7 +69,6 @@ class BramsNetworkViewMap extends HtmlView {
 		$this->active_stations = $model->getActiveStationInfo($_POST['startDate']);
 		$this->inactive_stations = $model->getInactiveStationInfo($_POST['startDate']);
 		$this->beacons = $model->getBeacons();
-		print_r($this->beacons);
 
 		// set the checkboxes checked status
 		foreach ($_POST['checkbox'] as $checkbox_value) {
