@@ -104,13 +104,15 @@ defined('_JEXEC') or die('Restricted access');
     </form>
 
     <div class='row'>
-        <div class='col'>
+        <div class='col-8'>
             <img 
                 src='/ProjectDir/img/belgian_map.gif'
                 id='belgian_map'
                 alt='Belgian map with receiving stations' 
                 usemap='#station_map'
                 class='map'
+                width='593'
+                height='516'
             />
             <map name='station_map' id='station_map'>
 
