@@ -163,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
                 "<?php echo $beacon->transfer_type; ?>",
                 <?php echo $beacon->longitude; ?>,
                 <?php echo $beacon->latitude; ?>,
-                <?php echo $beacon->rate; ?>,
+                <?php echo "'" . $beacon->rate . "'"; ?>,
                 true
             ],
         <?php endforeach; ?>
