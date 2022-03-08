@@ -42,6 +42,7 @@ class BramsNetworkViewMap extends HtmlView {
 			$this->processForm();
 		}
 		else {
+			// if there is no submitted form, perform default actions
 			$this->defaultAction();
 		}
 
@@ -63,9 +64,12 @@ class BramsNetworkViewMap extends HtmlView {
 	// entry-point of form processing
 	private function processForm() {
 		$model = $this->getModel();
+
+		// get all existing stations for a given date
 		$this->active_stations = $model->getActiveStationInfo($_POST['startDate']);
 		$this->inactive_stations = $model->getInactiveStationInfo($_POST['startDate']);
 
+		// set the checkboxes checked status
 		foreach ($_POST['checkbox'] as $checkbox_value) {
 			$this->checkbox[$checkbox_value] = 'checked';
 		}
@@ -73,9 +77,12 @@ class BramsNetworkViewMap extends HtmlView {
 
 	private function defaultAction() {
 		$model = $this->getModel();
+
+		// get all existing stations for current date (today)
 		$this->active_stations = $model->getActiveStationInfo($this->today);
 		$this->inactive_stations = $model->getInactiveStationInfo($this->today);
 
+		// set default values for the checkboxes checked status
 		$this->checkbox[$this->active_checkbox_value] = 'checked';
 		$this->checkbox[$this->new_checkbox_value] = 'checked';
 		$this->checkbox[$this->old_checkbox_value] = 'checked';

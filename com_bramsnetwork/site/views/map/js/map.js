@@ -1,28 +1,39 @@
-const minLatitude = 49.191557;
-const maxLatitude = 51.802354;
-const minLongitude = 2.158350;
-const maxLongitude = 6.883813;
-const imageXmin = 0;
-const imageXmax = 593;
-const imageYmin = 0;
-const imageYmax = 516;
-let activeStations = [];
-let inactiveStations = [];
+const minLatitude = 49.191557;      // minimum latitude possible on the shown belgian map
+const maxLatitude = 51.802354;      // maximum latitude possible on the shown belgian map
+const minLongitude = 2.158350;      // minimum longitude possible on the shown belgian map
+const maxLongitude = 6.883813;      // maximum longitude possible on the shown belgian map
+const imageXmin = 0;                // start x point of the shown map
+const imageXmax = 593;              // end x point of the shown map
+const imageYmin = 0;                // start y point of the shown map
+const imageYmax = 516;              // end y point of the shown map
+let activeStations = [];            // array contains all active stations
+let inactiveStations = [];          // array contains all inactive stations
 
+/**
+ * Function calculates the position of each station on the map
+ * and generates the area tags for showing all the stations on
+ * the map.
+ * Finally, it replaces the inner html of the #station_map
+ * element.
+ * @param {array} stationsToShow Stations the user wants to see
+ */
 function showStations(stationsToShow) {
-    let areaString = '';
-    let xPosition;
-    let yPosition;
-    let mapOptions;
+    let areaString = '';    // final innerHTML of the map tag
+    let xPosition;          // x position of 1 station on the map
+    let yPosition;          // y position of 1 station on the map
+    let mapOptions;         // colors of 1 station on the map
 
+    // generate a 'area' element for each station
     stationsToShow.forEach(
         (station) => {
+            // calculate the x position of the station
             xPosition = Math.round(
                 imageXmin
                 + ((station[3] - minLongitude)
                 / (maxLongitude - minLongitude))
                 * (imageXmax - imageYmin),
             );
+            // calculate the y position of the station
             yPosition = Math.round(
                 imageYmin
                 + ((station[4] - maxLatitude)
@@ -30,18 +41,23 @@ function showStations(stationsToShow) {
                 * (imageYmax - imageYmin),
             );
 
+            // if the station has a non null data availability rate on
+            // the given date
             if (station[station.length - 1]) {
+                // set the station color to green
                 mapOptions = {
                     fillColor: '00ff00',
                     strokeColor: '00ff00',
                 };
             } else {
+                // set the station color to red
                 mapOptions = {
                     fillColor: 'ff0000',
                     strokeColor: 'ff0000',
                 };
             }
 
+            // add new area element to the area string
             areaString += `
                 <area 
                     class="${station[2]}"
@@ -56,17 +72,26 @@ function showStations(stationsToShow) {
         },
     );
 
+    // set the map inner html to newly generated area tags
     document.getElementById('station_map').innerHTML = areaString;
+    // update the image
     $('.map').maphilight();
 }
 
+/**
+ * Entry point to show the stations on the map. The functions verifies
+ * wich checkboxes are checked and passes the correct array with the
+ * stations to show to the function that will update the page.
+ */
 function showStationsEntry() {
+    // get booleans for each checkbox
     const activeCheckbox = document.getElementById('showActive').checked;
     const inactiveCheckbox = document.getElementById('showInactive').checked;
     const newCheckbox = document.getElementById('showNew').checked;
     const oldCheckbox = document.getElementById('showOld').checked;
-    let stationsToShow;
+    let stationsToShow;     // array will contain the stations that have to be shown
 
+    // set stations to show according to the active/inactive checkboxes
     if (activeCheckbox && inactiveCheckbox) {
         stationsToShow = allStations;
     } else if (activeCheckbox) {
@@ -77,6 +102,7 @@ function showStationsEntry() {
         stationsToShow = [];
     }
 
+    // set stations to show and call the render function according to old/new checkboxes
     if (newCheckbox && oldCheckbox) {
         showStations(stationsToShow);
     } else if (newCheckbox) {
@@ -88,6 +114,14 @@ function showStationsEntry() {
     }
 }
 
+/**
+ * Function shows station information on the page when a specific station
+ * is hovered.
+ * @param {string} stationName name of the station
+ * @param {string} stationCountry country code of the station (i.e. 'BE')
+ * @param {string} stationTransfer station tranfer type (i.e. 'SSH')
+ * @param {int} stationRate station file availability rate for a given date
+ */
 function showStationInfo(stationName, stationCountry, stationTransfer, stationRate) {
     document.getElementById('stationName').innerHTML = stationName;
     document.getElementById('stationCountry').innerHTML = stationCountry;
@@ -95,10 +129,19 @@ function showStationInfo(stationName, stationCountry, stationTransfer, stationRa
     document.getElementById('stationRate').innerHTML = `${stationRate} %`;
 }
 
+/**
+ * Function is called when the page is loading. It spearates the active
+ * and inactive stations in separate arrays and calls shows the stations
+ * on screen for the first time.
+ */
 function onMapLoad() {
+    // separate active and inactive stations in 2 arrays
     activeStations = allStations.filter((station) => station[station.length - 1] > 0);
     inactiveStations = allStations.filter((station) => station[station.length - 1] === 0);
+
+    // show current selected date on screen
     document.getElementById('selectedDate').innerHTML = document.getElementById('startDate').value;
 
+    // show the station on the shown map
     showStationsEntry();
 }

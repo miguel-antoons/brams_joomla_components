@@ -40,9 +40,9 @@ class BramsNetworkModelMap extends ItemModel {
 		return JFactory::getDbo();
 	}
 
-    /* WARNING : Below function and database query were directly copied from another
-    component and must be modified in order to work with this component */
-	// get all the stations and their name from the database
+	// get all active stations and their name from the database
+	// for a given input date ($selected_date)
+	// Function returns an array of active stations
 	public function getActiveStationInfo($selected_date) {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
@@ -70,9 +70,9 @@ class BramsNetworkModelMap extends ItemModel {
 		return $db->loadObjectList();
 	}
 
-	/* WARNING : Below function and database query were directly copied from another
-    component and must be modified in order to work with this component */
-	// get all the stations and their name from the database
+	// get all inactive stations and their name from the database
+	// for a given input date ($selected_date)
+	// Function returns an array of inactive stations
 	public function getinActiveStationInfo($selected_date) {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
