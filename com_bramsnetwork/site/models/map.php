@@ -103,7 +103,7 @@ class BramsNetworkModelMap extends ItemModel {
 	}
 
 	// get beacons from database
-	private function getBeacons() {
+	public function getBeacons() {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
