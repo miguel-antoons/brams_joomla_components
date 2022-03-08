@@ -10,7 +10,7 @@ let beacons = [];                   // array contains all beacons
 
 function calculateXY(longitude, latitude) {
     const imageXmax = document.getElementById('belgian_map').width; // end x point of the shown map
-    const imageYmax = document.getElementById('belgian_map').width; // end y point of the shown map
+    const imageYmax = document.getElementById('belgian_map').height; // end y point of the shown map
 
     // calculate the x position of the station
     const xPosition = Math.round(
@@ -80,7 +80,7 @@ function addBeaconString(beacon) {
             onmouseover="showStationInfo('${beacon[0]}', '${beacon[1]}', '${beacon[2]}', '${beacon[5]}')"
             alt='${beacon[0]}'
             title='${beacon[0]}'
-            coords='${xPosition},${yPosition - 3},${xPosition - 2},${yPosition + 2},${xPosition + 2},${yPosition + 2}'
+            coords='${xPosition},${yPosition - 5},${xPosition - 4},${yPosition + 4},${xPosition + 4},${yPosition + 4}'
             data-maphilight=${JSON.stringify(mapOptions)}
         />
     `;
