@@ -26,3 +26,13 @@ label {
     min-width: 593px !important;
     min-height: 516px !important;
 }
+
+#belgian_map {
+    min-width: 593px !important;
+    min-height: 516px !important;
+}
+
+.map {
+    min-width: 593px !important;
+    min-height: 516px !important;
+}
