@@ -24,4 +24,5 @@ label {
 
 .col-8 {
     min-width: 600px !important;
+    min-height: 550px !important;
 }
