@@ -58,7 +58,7 @@ function sortFirstName(headerElement, desc) {
 function sortLastName(headerElement, desc) {
     let sortFirstName = document.getElementById('sortFirstName');
     let sortLocations = document.getElementById('sortLocations');
-    sortFirstName.onclick = function sort() { sortLastName(sortFirstName, 0); };
+    sortFirstName.onclick = function sort() { sortFirstName(sortFirstName, 0); };
     sortLocations.onclick = function sort() { sortLocations(sortLocations, 0); };
 
     if (desc) {
@@ -79,7 +79,7 @@ function sortLocations(headerElement, desc) {
     let sortLastName = document.getElementById('sortLastName');
     let sortFirstName = document.getElementById('sortFirstName');
     sortLastName.onclick = function sort() { sortLastName(sortLastName, 0); };
-    sortFirstName.onclick = function sort() { sortLastName(sortFirstName, 0); };
+    sortFirstName.onclick = function sort() { sortFirstName(sortFirstName, 0); };
 
     if (desc) {
         headerElement.onclick = function sort() { sortLocations(headerElement, 0); };
