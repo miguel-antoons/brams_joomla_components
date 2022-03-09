@@ -47,10 +47,10 @@ class BramsNetworkViewObservers extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('/components/com_bramsnetwork/observers/map/css/observers.css');
-		$document->addStyleSheet('/components/com_bramsnetwork/observers/map/css/bootstrap.min.css');
+		$document->addStyleSheet('/components/com_bramsnetwork/views/observers/css/observers.css');
+		$document->addStyleSheet('/components/com_bramsnetwork/views/observers/css/bootstrap.min.css');
+		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 		$document->addScript('/components/com_bramsnetwork/views/observers/js/observers.js');
-		$document->addScript('https://kit.fontawesome.com/yourcode.js');
 		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
 	}
 }

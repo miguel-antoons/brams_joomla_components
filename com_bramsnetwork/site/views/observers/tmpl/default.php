@@ -8,7 +8,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
-
+<?php print_r($this->observer_info); ?>
 <div class='container'>
     <div class='row'>
         <div class='col'>
