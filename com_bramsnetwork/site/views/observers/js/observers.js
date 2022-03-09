@@ -45,7 +45,7 @@ function sortFirstName(headerElement, desc) {
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
+    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
 
     showTable();
 }
@@ -60,7 +60,7 @@ function sortLastName(headerElement, desc) {
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
+    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
 
     showTable();
 }
@@ -75,7 +75,7 @@ function sortLocations(headerElement, desc) {
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
+    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
 
     showTable();
 }

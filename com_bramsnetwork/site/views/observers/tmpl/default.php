@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
                 <thead>
                     <tr>
                         <th onClick='sortFirstName(this, 1)' scope='col'>
-                            First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>
+                            First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
                         <th onClick='sortLastName(this, 0)' scope='col'>Last name </th>
                         <th onClick='sortLocations(this, 0)' scope='col'>Stations </th>
