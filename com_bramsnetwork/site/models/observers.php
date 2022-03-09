@@ -21,7 +21,7 @@ use \Joomla\CMS\MVC\Model\ItemModel;
  *
  * @since  0.2.1
  */
-class BramsNetworkModelMap extends ItemModel {
+class BramsNetworkModelObservers extends ItemModel {
 	// fucntion connects to the database and returns the database object
 	private function connectToDatabase() {
 		/* Below lines are for connecting to production database later on */
@@ -57,18 +57,12 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->where($db->quoteName('observer.id') . ' = ' . $db->quoteName('observer_id'));
 
 		$db->setQuery($system_query);
-		$results = $db->loadObjectList();
-		print_r($results);
-		echo '<br><br>';
 
-		return $this->structureObserverInfo($results);
+		return $this->structureObserverInfo($db->loadObjectList());
 	}
 
 	private function structureObserverInfo($observer_info) {
 		$new_observer_array = array();
-		print_r($observer_info);
-		echo '<br><br>';
-		echo 'hello?';
 
 		foreach ($observer_info as $observer) {
 			if ($new_observer_array[$observer->id]) {
@@ -79,7 +73,7 @@ class BramsNetworkModelMap extends ItemModel {
 				$new_observer_array[$observer->id]->locations = $observer->location_name;
 			}
 		}
-		print_r($new_observer_array);
+
 		return $new_observer_array;
 	}
 }
