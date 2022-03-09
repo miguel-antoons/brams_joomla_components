@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access');
                 height='516'
             />
             <map name='station_map' id='station_map'>
-
+                <!-- station points on map comes here after page load -->
             </map>
         </div>
         <div class='col-md-auto'>

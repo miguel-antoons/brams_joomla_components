@@ -41,30 +41,39 @@ class BramsNetworkModelMap extends ItemModel {
 	}
 
 	// TODO : change below function according to model needs
-	public function getActiveStationInfo($selected_date) {
+	public function getObserverInfo() {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			'distinct '
-			. $db->quoteName('location.name') . ', '
-			. $db->quoteName('country_code') . ', '
-			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('longitude') . ', '
-			. $db->quoteName('latitude') . ', '
-			. $db->quoteName('rate')
+			$db->quoteName('observer.id') . ' as id, '
+			. $db->quoteName('first_name') . ', '
+			. $db->quoteName('last_name') . ', '
+			. $db->quoteName('name') . ' as location_name'
 		);
-		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('file_availability'));
+		$system_query->from($db->quoteName('observer'));
 		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
-		$system_query->where($db->quoteName('date') . ' = ' . $db->quote($selected_date));
-		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('observer.id') . ' = ' . $db->quoteName('observer_id'));
 
 		$db->setQuery($system_query);
 
-		return $db->loadObjectList();
+		return $this->structureObserverInfo($db->loadObjectList());
+	}
+
+	private function structureObserverInfo($observer_info) {
+		$new_observer_array = array();
+
+		foreach ($observer_info as $observer) {
+			if ($new_observer_array[$observer->id]) {
+				$new_observer_array[$observer->id]->locations .= ', ' . $observer->location_name;
+			} else {
+				$new_observer_array[$observer->id]->first_name = $observer->first_name;
+				$new_observer_array[$observer->id]->last_name = $observer->last_name;
+				$new_observer_array[$observer->id]->locations = $observer->location_name;
+			}
+		}
+
+		return $new_observer_array;
 	}
 }

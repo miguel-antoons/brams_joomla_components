@@ -26,6 +26,9 @@ class BramsNetworkViewObservers extends HtmlView {
 	 * @return  void
 	 */
 	function display($tpl = null) {
+		// get all the observer information
+		$this->observer_info = $this->get('ObserverInfo');
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -47,6 +50,7 @@ class BramsNetworkViewObservers extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsnetwork/observers/map/css/observers.css');
 		$document->addStyleSheet('/components/com_bramsnetwork/observers/map/css/bootstrap.min.css');
 		$document->addScript('/components/com_bramsnetwork/views/observers/js/observers.js');
+		$document->addScript('https://kit.fontawesome.com/yourcode.js');
 		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
 	}
 }
