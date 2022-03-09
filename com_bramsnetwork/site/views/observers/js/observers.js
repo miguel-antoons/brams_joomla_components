@@ -9,10 +9,10 @@ function showTable() {
     if (nRows >= observers.length) {
         nRows = observers.length;
         tempObservers = observers.slice();
-        lastRow = "<tr><td onClick='showMore()' class='lastRow' colspan='3'>Load More</td></tr>";
+        lastRow = "<tr><td onClick='showLess()' class='lastRow' colspan='3'>Load Less</td></tr>";
     } else {
         tempObservers = observers.slice(0, nRows);
-        lastRow = "<tr><td onClick='showLess()' class='lastRow' colspan='3'>Load Less</td></tr>";
+        lastRow = "<tr><td onClick='showMore()' class='lastRow' colspan='3'>Load More</td></tr>";
     }
 
     tempObservers.forEach((observer) => {
@@ -68,10 +68,10 @@ function sortLastName(headerElement, desc) {
 function sortLocations(headerElement, desc) {
     if (desc) {
         headerElement.onclick = function sort() { sortLocations(headerElement, 0); };
-        observers.sort((first, second) => first[3] > second[3]);
+        observers.sort((first, second) => first[2] < second[2]);
     } else {
         headerElement.onclick = function sort() { sortLocations(headerElement, 1); };
-        observers.sort((first, second) => first[3] < second[3]);
+        observers.sort((first, second) => first[2] > second[2]);
     }
 
     document.getElementById('sortIcon').remove();
