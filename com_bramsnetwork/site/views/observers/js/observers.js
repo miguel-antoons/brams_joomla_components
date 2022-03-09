@@ -36,6 +36,11 @@ function onPageLoad() {
 }
 
 function sortFirstName(headerElement, desc) {
+    let sortLastName = document.getElementById('sortLastName');
+    let sortLocations = document.getElementById('sortLocations');
+    sortLastName.onclick = function sort() { sortLastName(sortLastName, 0); };
+    sortLocations.onclick = function sort() { sortLocations(sortLocations, 0); };
+
     if (desc) {
         headerElement.onclick = function sort() { sortFirstName(headerElement, 0); };
         observers.sort((first, second) => first[0] < second[0]);
@@ -51,6 +56,11 @@ function sortFirstName(headerElement, desc) {
 }
 
 function sortLastName(headerElement, desc) {
+    let sortFirstName = document.getElementById('sortFirstName');
+    let sortLocations = document.getElementById('sortLocations');
+    sortFirstName.onclick = function sort() { sortLastName(sortFirstName, 0); };
+    sortLocations.onclick = function sort() { sortLocations(sortLocations, 0); };
+
     if (desc) {
         headerElement.onclick = function sort() { sortLastName(headerElement, 0); };
         observers.sort((first, second) => first[1] < second[1]);
@@ -66,6 +76,11 @@ function sortLastName(headerElement, desc) {
 }
 
 function sortLocations(headerElement, desc) {
+    let sortLastName = document.getElementById('sortLastName');
+    let sortFirstName = document.getElementById('sortFirstName');
+    sortLastName.onclick = function sort() { sortLastName(sortLastName, 0); };
+    sortFirstName.onclick = function sort() { sortLastName(sortFirstName, 0); };
+
     if (desc) {
         headerElement.onclick = function sort() { sortLocations(headerElement, 0); };
         observers.sort((first, second) => first[2] < second[2]);
