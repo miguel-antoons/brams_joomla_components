@@ -1,3 +1,4 @@
+/* global observers */
 let nRows = 17;
 const step = 17;
 
@@ -36,10 +37,10 @@ function onPageLoad() {
 }
 
 function sortFirstName(headerElement, desc) {
-    let sortLastName = document.getElementById('sortLastName');
-    let sortLocations = document.getElementById('sortLocations');
-    sortLastName.onclick = function sort() { sortLastName(sortLastName, 0); };
-    sortLocations.onclick = function sort() { sortLocations(sortLocations, 0); };
+    const sortLastNameEl = document.getElementById('sortLastName');
+    const sortLocationsEl = document.getElementById('sortLocations');
+    sortLastNameEl.onclick = function sort() { sortLastName(sortLastNameEl, 0); };
+    sortLocationsEl.onclick = function sort() { sortLocations(sortLocationsEl, 0); };
 
     if (desc) {
         headerElement.onclick = function sort() { sortFirstName(headerElement, 0); };
@@ -56,10 +57,10 @@ function sortFirstName(headerElement, desc) {
 }
 
 function sortLastName(headerElement, desc) {
-    let sortFirstName = document.getElementById('sortFirstName');
-    let sortLocations = document.getElementById('sortLocations');
-    sortFirstName.onclick = function sort() { sortFirstName(sortFirstName, 0); };
-    sortLocations.onclick = function sort() { sortLocations(sortLocations, 0); };
+    const sortFirstNameEl = document.getElementById('sortFirstName');
+    const sortLocationsEl = document.getElementById('sortLocations');
+    sortFirstNameEl.onclick = function sort() { sortFirstName(sortFirstNameEl, 0); };
+    sortLocationsEl.onclick = function sort() { sortLocations(sortLocationsEl, 0); };
 
     if (desc) {
         headerElement.onclick = function sort() { sortLastName(headerElement, 0); };
@@ -76,10 +77,10 @@ function sortLastName(headerElement, desc) {
 }
 
 function sortLocations(headerElement, desc) {
-    let sortLastName = document.getElementById('sortLastName');
-    let sortFirstName = document.getElementById('sortFirstName');
-    sortLastName.onclick = function sort() { sortLastName(sortLastName, 0); };
-    sortFirstName.onclick = function sort() { sortFirstName(sortFirstName, 0); };
+    const sortLastNameEl = document.getElementById('sortLastName');
+    const sortFirstNameEl = document.getElementById('sortFirstName');
+    sortLastNameEl.onclick = function sort() { sortLastName(sortLastNameEl, 0); };
+    sortFirstNameEl.onclick = function sort() { sortFirstName(sortFirstNameEl, 0); };
 
     if (desc) {
         headerElement.onclick = function sort() { sortLocations(headerElement, 0); };
