@@ -65,6 +65,7 @@ class BramsNetworkModelMap extends ItemModel {
 		$new_observer_array = array();
 		print_r($observer_info);
 		echo '<br><br>';
+		echo 'hello?';
 
 		foreach ($observer_info as $observer) {
 			if ($new_observer_array[$observer->id]) {
