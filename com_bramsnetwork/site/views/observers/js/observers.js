@@ -38,14 +38,14 @@ function onPageLoad() {
 function sortFirstName(headerElement, desc) {
     if (desc) {
         headerElement.onclick = function sort() { sortFirstName(headerElement, 0); };
-        observers.sort((first, second) => first[0] > second[0]);
+        observers.sort((first, second) => first[0] < second[0]);
     } else {
         headerElement.onclick = function sort() { sortFirstName(headerElement, 1); };
-        observers.sort((first, second) => first[0] < second[0]);
+        observers.sort((first, second) => first[0] > second[0]);
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += '<i id="sortIcon" class="fa-solid fa-sort"></i>';
+    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
 
     showTable();
 }
@@ -53,14 +53,14 @@ function sortFirstName(headerElement, desc) {
 function sortLastName(headerElement, desc) {
     if (desc) {
         headerElement.onclick = function sort() { sortLastName(headerElement, 0); };
-        observers.sort((first, second) => first[1] > second[1]);
+        observers.sort((first, second) => first[1] < second[1]);
     } else {
         headerElement.onclick = function sort() { sortLastName(headerElement, 1); };
-        observers.sort((first, second) => first[1] < second[1]);
+        observers.sort((first, second) => first[1] > second[1]);
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += '<i id="sortIcon" class="fa-solid fa-sort"></i>';
+    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
 
     showTable();
 }
@@ -75,7 +75,7 @@ function sortLocations(headerElement, desc) {
     }
 
     document.getElementById('sortIcon').remove();
-    headerElement.innerHTML += '<i id="sortIcon" class="fa-solid fa-sort"></i>';
+    headerElement.innerHTML += "<i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i></i>";
 
     showTable();
 }
