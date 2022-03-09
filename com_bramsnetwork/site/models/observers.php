@@ -63,6 +63,8 @@ class BramsNetworkModelMap extends ItemModel {
 
 	private function structureObserverInfo($observer_info) {
 		$new_observer_array = array();
+		print_r($observer_info);
+		echo '<br><br>';
 
 		foreach ($observer_info as $observer) {
 			if ($new_observer_array[$observer->id]) {
@@ -73,7 +75,7 @@ class BramsNetworkModelMap extends ItemModel {
 				$new_observer_array[$observer->id]->locations = $observer->location_name;
 			}
 		}
-
+		print_r($new_observer_array);
 		return $new_observer_array;
 	}
 }

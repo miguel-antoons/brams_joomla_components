@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
                 <tbody id='observers'>
                     <!-- observer information comes here after page load -->
                 </tbody>
+            </table>
         </div>
     </div>
 </div>
