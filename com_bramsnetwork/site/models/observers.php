@@ -57,8 +57,11 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->where($db->quoteName('observer.id') . ' = ' . $db->quoteName('observer_id'));
 
 		$db->setQuery($system_query);
+		$results = $db->loadObjectList();
+		print_r($results);
+		echo '<br><br>';
 
-		return $this->structureObserverInfo($db->loadObjectList());
+		return $this->structureObserverInfo($results);
 	}
 
 	private function structureObserverInfo($observer_info) {
