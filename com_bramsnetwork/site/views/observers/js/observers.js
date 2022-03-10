@@ -29,10 +29,10 @@ function showTable() {
     // generate a row for each observer to be shown on page
     tempObservers.forEach((observer) => {
         tbodyString += `
-            <tr class='d-flex'>
-                <td class='col-3'>${observer[0]}</td>
-                <td class='col-3'>${observer[1]}</td>
-                <td class='col-6'>${observer[2]}</td>
+            <tr>
+                <td>${observer[0]}</td>
+                <td>${observer[1]}</td>
+                <td>${observer[2]}</td>
             </tr>
         `;
     });
