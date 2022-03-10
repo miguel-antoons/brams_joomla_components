@@ -1,9 +1,10 @@
 .headerCol {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .lastRow {
-    font-weight: bolder;
-    text-align: center;
-    color: #00f7ff
+    font-weight: bolder !important;
+    text-align: center !important;
+    color: #00f7ff !important;
+    cursor: pointer !important;
 }
