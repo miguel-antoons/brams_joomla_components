@@ -2,7 +2,7 @@
     cursor: pointer !important;
 }
 
-.table tr:last-child {
+.lastRow {
     font-weight: bolder !important;
     text-align: center !important;
     color: #00f7ff !important;
