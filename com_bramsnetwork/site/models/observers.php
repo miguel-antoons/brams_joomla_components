@@ -40,7 +40,7 @@ class BramsNetworkModelObservers extends ItemModel {
 		return JFactory::getDbo();
 	}
 
-	// TODO : change below function according to model needs
+	// get all station locations and their owners from the database
 	public function getObserverInfo() {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
@@ -61,13 +61,21 @@ class BramsNetworkModelObservers extends ItemModel {
 		return $this->structureObserverInfo($db->loadObjectList());
 	}
 
+	/**	
+	 * Function structures the data received from the database.
+	 * It groups all the locations by owner and returns the newly
+	 * created and structured array.
+	 */
 	private function structureObserverInfo($observer_info) {
 		$new_observer_array = array();
 
 		foreach ($observer_info as $observer) {
+			// if the owner object already exists
 			if ($new_observer_array[$observer->id]) {
+				// just add the location string to the rest
 				$new_observer_array[$observer->id]->locations .= ', ' . $observer->location_name;
 			} else {
+				// create a new object and set first_name, last_name and temporar locations attributes
 				$new_observer_array[$observer->id]->first_name = $observer->first_name;
 				$new_observer_array[$observer->id]->last_name = $observer->last_name;
 				$new_observer_array[$observer->id]->locations = $observer->location_name;

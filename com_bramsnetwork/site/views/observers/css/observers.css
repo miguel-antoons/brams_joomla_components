@@ -1,0 +1,9 @@
+.headerCol {
+    cursor: pointer;
+}
+
+.lastRow {
+    font-weight: bolder;
+    text-align: center;
+    color: #00f7ff
+}

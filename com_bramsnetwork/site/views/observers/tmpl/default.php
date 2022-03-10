@@ -22,12 +22,14 @@ defined('_JEXEC') or die('Restricted access');
         <div class='col'>
             <table class='table'>
                 <thead>
-                    <tr>
-                        <th id='sortFirstName' onClick='sortFirstName(this, 1)' scope='col'>
+                    <tr class='d-flex'>
+                        <th class='col-3 headerCol' id='sortFirstName' onClick='sortFirstName(this, 1)' scope='col'>
                             First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th id='sortLastName' onClick='sortLastName(this, 0)' scope='col'>Last name </th>
-                        <th id='sortLocations' onClick='sortLocations(this, 0)' scope='col'>Stations </th>
+                        <th class='col-3 headerCol' id='sortLastName' onClick='sortLastName(this, 0)' scope='col'>
+                            Last name </th>
+                        <th class='col-6 headerCol' id='sortLocations' onClick='sortLocations(this, 0)' scope='col'>
+                            Stations </th>
                     </tr>
                 </thead>
                 <tbody id='observers'>
