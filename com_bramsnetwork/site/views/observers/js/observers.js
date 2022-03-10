@@ -30,9 +30,9 @@ function showTable() {
     tempObservers.forEach((observer) => {
         tbodyString += `
             <tr>
-                <td>${observer[0]}</td>
-                <td>${observer[1]}</td>
-                <td>${observer[2]}</td>
+                <td width="25%">${observer[0]}</td>
+                <td width="25%">${observer[1]}</td>
+                <td width="50%">${observer[2]}</td>
             </tr>
         `;
     });
