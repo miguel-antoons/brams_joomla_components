@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class='col'>
             <table class='table'>
                 <thead>
-                    <tr class='d-flex'>
+                    <tr>
                         <th class='headerCol' id='sortFirstName' onClick='sortFirstName(this, 1)' width="25%">
                             First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
