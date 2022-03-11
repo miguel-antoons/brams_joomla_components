@@ -1,3 +1,4 @@
+/* global allStations */
 const minLatitude = 49.191557;      // minimum latitude possible on the shown belgian map
 const maxLatitude = 51.802354;      // maximum latitude possible on the shown belgian map
 const minLongitude = 2.158350;      // minimum longitude possible on the shown belgian map
@@ -11,8 +12,8 @@ let beacons = [];                   // array contains all beacons
 /**
  * Calculates the x and y coordinates for a specific station on the
  * network map.
- * @param {number} longitude 
- * @param {number} latitude 
+ * @param {number} longitude longtitude of the station
+ * @param {number} latitude latitude of the station
  * @returns {array} x & y coordinates of the station on the map image
  */
 function calculateXY(longitude, latitude) {
