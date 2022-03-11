@@ -48,7 +48,7 @@ function addStationString(station) {
 
     // if the station has a non null data availability rate on
     // the given date
-    if (station[station.length - 1]) {
+    if (station[station.length - 2]) {
         // set the station color to green
         mapOptions = {
             fillColor: '00ff00',

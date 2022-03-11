@@ -31,17 +31,16 @@ class BramsNetworkViewMap extends HtmlView {
 		$this->new_checkbox_value = 'new';
 		$this->old_checkbox_value = 'old';
 		// Assign data to the view
-		$this->today = $this->get('Today');
 		$this->checkbox[$this->active_checkbox_value] = '';
 		$this->checkbox[$this->inactive_checkbox_value] = '';
 		$this->checkbox[$this->new_checkbox_value] = '';
 		$this->checkbox[$this->old_checkbox_value] = '';
+		$this->today = $this->get('Today');
 
 		// process the submitted form
 		if (isset($_POST['submit'])) {
 			$this->processForm();
-		}
-		else {
+		} else {
 			// if there is no submitted form, perform default actions
 			$this->defaultAction();
 		}
@@ -68,6 +67,7 @@ class BramsNetworkViewMap extends HtmlView {
 		// get all existing stations for a given date
 		$this->active_stations = $model->getActiveStationInfo($_POST['startDate']);
 		$this->inactive_stations = $model->getInactiveStationInfo($_POST['startDate']);
+		$this->selected_date = $_POST['startDate'];
 		$this->beacons = $model->getBeacons();
 
 		// set the checkboxes checked status
@@ -77,6 +77,7 @@ class BramsNetworkViewMap extends HtmlView {
 	}
 
 	private function defaultAction() {
+		$this->selected_date = $this->get('Today');
 		$model = $this->getModel();
 
 		// get all existing stations for current date (today)

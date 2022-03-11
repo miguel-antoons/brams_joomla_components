@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
                     id='startDate'
                     min='2010-01-01'
                     max='<?php echo $this->today ?>'
-                    value='<?php echo $this->today ?>'
+                    value='<?php echo $this->selected_date ?>'
                     required
                 />
                 <input name='submit' type='submit' id='submit' class='custom_btn'/>
