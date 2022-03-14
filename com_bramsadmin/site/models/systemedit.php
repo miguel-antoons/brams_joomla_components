@@ -13,14 +13,14 @@ use \Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use \Joomla\CMS\MVC\Model\ItemModel;
 
 /**
- * Systems Model
+ * SystemEdit Model
  * 
  * Edits, inserts and deletes data concerning the BRAMS
  * receiving stations.
  *
  * @since  0.0.2
  */
-class BramsAdminModelSystems extends ItemModel {
+class BramsAdminModelSystemEdit extends ItemModel {
 	// fucntion connects to the database and returns the database object
 	private function connectToDatabase() {
 		/* Below lines are for connecting to production database later on */
@@ -39,25 +39,45 @@ class BramsAdminModelSystems extends ItemModel {
 		return JFactory::getDbo();
 	}
 
-	// TODO : change this function according to the needs
-	public function getSystems() {
+	// TODO : change this function
+	public function getSystemInfo($id) {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') . 'as id, '
-			. $db->quoteName('system.name') . 'as name, '
-			. $db->quoteName('location_code') . 'as code, '
+			$db->quoteName('id') . ', '
+			. $db->quoteName('name') . ', '
+			. $db->quoteName('location_id') . ', '
 			. $db->quoteName('start') . ', '
-			. $db->quoteName('end')
+			. $db->quoteName('antenna') . ', '
+			. $db->quoteName('comments')
 		);
 		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+		$system_query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 		$db->setQuery($system_query);
 
 		return $db->loadObjectList();
+	}
+
+	public function getLocations() {
+		$db = $this->connectToDatabase();
+		$locations_query = $db->getQuery(true);
+
+		$locations_query->select(
+			$db->quoteName('id') . ', '
+			. $db->quoteName('name')
+		);
+		$locations_query->from($db->quoteName('location'));
+
+		$db->setQuery($locations_query);
+
+		return $db->loadObjectList();
+	}
+
+	// get today's date in yyyy-mm-dd hh:mm:ss format
+	public function getNow() {
+		return date('Y-m-d H:i:s');
 	}
 }
