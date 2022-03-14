@@ -2,7 +2,7 @@
 function onPageLoad() {
     let HTMLString = '';
 
-    systems.foreach(
+    systems.forEach(
         (system) => {
             HTMLString += `
                 <tr>
