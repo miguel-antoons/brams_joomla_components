@@ -21,7 +21,7 @@ function onPageLoad() {
                     <td>
                         <button
                             type='button'
-                            onclick="window.lcation='index.php?option=com_bramsadmin&view=system_edit&id=${system[0]}"
+                            onclick="window.lcation='index.php?option=com_bramsadmin&view=system_edit&id=${system[0]}';"
                         >
                             Edit
                         </button>

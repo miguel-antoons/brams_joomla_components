@@ -60,4 +60,46 @@ class BramsAdminModelSystems extends ItemModel {
 
 		return $db->loadObjectList();
 	}
+
+	// TODO : change this function
+	public function getSystemInfo($id) {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		// SQL query to get all inforamtions about the multiple systems
+		$system_query->select(
+			$db->quoteName('id') . ', '
+			. $db->quoteName('name') . ', '
+			. $db->quoteName('location_id') . ', '
+			. $db->quoteName('start') . ', '
+			. $db->quoteName('antenna') . ', '
+			. $db->quoteName('comments')
+		);
+		$system_query->from($db->quoteName('system'));
+		$system_query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+
+		$db->setQuery($system_query);
+
+		return $db->loadObjectList();
+	}
+
+	public function getLocations() {
+		$db = $this->connectToDatabase();
+		$locations_query = $db->getQuery(true);
+
+		$locations_query->select(
+			$db->quoteName('id') . ', '
+			. $db->quoteName('name')
+		);
+		$locations_query->from($db->quoteName('location'));
+
+		$db->setQuery($locations_query);
+
+		return $db->loadObjectList();
+	}
+
+	// get today's date in yyyy-mm-dd hh:mm:ss format
+	public function getNow() {
+		return date('Y-m-d H:i:s');
+	}
 }
