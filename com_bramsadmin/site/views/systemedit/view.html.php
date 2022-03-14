@@ -27,10 +27,15 @@ class BramsAdminViewSystemEdit extends HtmlView {
 	 */
 	function display($tpl = null) {
         $this->id = JRequest::getVar('id');
-		$this->now = $this->get('Now');
 		$model = $this->getModel();
 		$this->system_info = $model->getSystemInfo($this->id);
 		$this->locations = $model->getLocations();
+
+		if ($this->id) {
+			$this->date_to_show = $this->system_info[0]->start;
+		} else {
+			$this->date_to_show = $this->get('Now');
+		}
 
 		$this->locations[array_search($this->id, array_column($this->locations, 'id'))]->selected = 'selected';
 

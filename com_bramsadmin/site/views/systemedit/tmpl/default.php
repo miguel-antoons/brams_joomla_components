@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="container custom_container container_margin">
     <div class='row'>
         <div class='col custom_col'>
-            <h1>Hello World !</h1>
+            <h1>Edit System <?php echo $this->locations[0]->name; ?></h1>
 
             <form onsubmit='updateSystem()' method='put' name='updateSystem'>
                 <label for='systemName'>Name</label>
@@ -30,18 +30,17 @@ defined('_JEXEC') or die('Restricted access');
                     <?php endforeach; ?>
                 </select>
 
-                <label for='systemAntenna'>Name</label>
+                <label for='systemAntenna'>Antenna</label>
                 <input type='number' value='<?php echo $this->system_info[0]->antenna; ?>' id='systemAntenna'>
 
                 <label for='systemStart'>Start</label>
-                <input type='datetime-local' value='<?php echo $this->now ?>' id='systemStart'>
+                <input type='datetime-local' value='<?php echo $this->date_to_show ?>' id='systemStart'>
 
-                <label for='systemComments'>Name</label>
+                <label for='systemComments'>Comments</label>
                 <input type='text' value='<?php echo $this->system_info[0]->comments; ?>' id='systemComments'>
 
                 <input name='submit' type='submit' id='submit'/>
             </form>
-            <p><?php echo $this->id ?></p>
         </div>
     </div>
 </div>
