@@ -28,7 +28,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 	function display($tpl = null) {
         $this->id = JRequest::getVar('id');
 		$this->now = $this->get('Now');
-		$model = $this->getModel();
+		$model = $this->getModel('systems');
 		$this->system_info = $model->getSystemInfo($this->id);
 		$this->locations = $model->getLocations();
 

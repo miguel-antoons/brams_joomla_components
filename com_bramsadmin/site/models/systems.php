@@ -18,7 +18,7 @@ use \Joomla\CMS\MVC\Model\ItemModel;
  * Edits, inserts and deletes data concerning the BRAMS
  * receiving stations.
  *
- * @since  0.0.1
+ * @since  0.0.2
  */
 class BramsAdminModelSystems extends ItemModel {
 	// fucntion connects to the database and returns the database object
