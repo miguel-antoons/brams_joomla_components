@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
                     </tr>
                 </thead>
                 <tbody id='systems'>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -55,8 +55,8 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo $system->id; ?>,
                 <?php echo $system->code; ?>,
                 <?php echo $system->name; ?>,
-                <?php echo $system->start; ?>,
-                <?php echo $system->end; ?>
+                '<?php echo $system->start; ?>',
+                '<?php echo $system->end; ?>'
             ],
         <?php endforeach; ?>
     ];
