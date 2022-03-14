@@ -53,8 +53,8 @@ defined('_JEXEC') or die('Restricted access');
         <?php foreach($this->systems as $system) : ?>
             [
                 <?php echo $system->id; ?>,
-                <?php echo $system->code; ?>,
-                <?php echo $system->name; ?>,
+                '<?php echo $system->code; ?>',
+                '<?php echo $system->name; ?>',
                 '<?php echo $system->start; ?>',
                 '<?php echo $system->end; ?>'
             ],
