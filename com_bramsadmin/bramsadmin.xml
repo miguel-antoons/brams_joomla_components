@@ -28,7 +28,7 @@
 		in this section are copied from /site/ in the package -->
 	<files folder="site">
 		<filename>index.html</filename>
-		<filename>bramsdata.php</filename>
+		<filename>bramsadmin.php</filename>
         <filename>controller.php</filename>
 		<folder>views</folder>
         <folder>models</folder>
@@ -36,7 +36,7 @@
 
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu link='index.php?option=com_bramsdata'>BRAMS Admin</menu>
+		<menu link='index.php?option=com_bramsadmin'>BRAMS Admin</menu>
 		<!-- Administration Main File Copy Section -->
 		<!-- Note the folder attribute: This attribute describes the folder
 			to copy FROM in the package to install therefore files copied
@@ -44,7 +44,7 @@
 		<files folder="admin">
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
-			<filename>bramsdata.php</filename>
+			<filename>bramsadmin.php</filename>
             <filename>controller.php</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
