@@ -23,12 +23,12 @@ defined('_JEXEC') or die('Restricted access');
             <table class='table'>
                 <thead>
                     <tr>
-                        <th class='headerCol' id='sortFirstName' onClick='sortFirstName(this, 1)' width="25%">
+                        <th class='headerCol' id='sortFirstName' onClick='sortFirstName(this)' width="25%">
                             First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class='headerCol' id='sortLastName' onClick='sortLastName(this, 0)' width="25%">
+                        <th class='headerCol' id='sortLastName' onClick='sortLastName(this)' width="25%">
                             Last name </th>
-                        <th class='headerCol' id='sortLocations' onClick='sortLocations(this, 0)' width="50%">
+                        <th class='headerCol' id='sortLocations' onClick='sortLocations(this)' width="50%">
                             Stations </th>
                     </tr>
                 </thead>

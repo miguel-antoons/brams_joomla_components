@@ -1,6 +1,9 @@
 /* global observers */
-let nRows = 17;     // number of rows shown when the page is first loaded
-const step = 17;    // number of rows to add when clicking on the 'show more' button
+let nRows = 17;                 // number of rows shown when the page is first loaded
+let sortFirstNameDesc = true;   // set the next sorting method on first name to desc
+let sortLastNameDesc = false;   // set the next sorting method on last name to asc
+let sortLocationDesc = false;   // set the next sorting method on location to asc
+const step = 17;                // number of rows to add when clicking on the 'show more' button
 
 /**
  * Function generates the html string to add inside the tables tbody.
@@ -56,24 +59,19 @@ function onPageLoad() {
  * icon position if needed and updates the function to be called when clicking
  * on 'headerElement'.
  * @param {html} headerElement html element that performed the call to this function
- * @param {boolean} desc indicates if the table must be sorted desc (1) or asc (0)
  */
-function sortFirstName(headerElement, desc) {
-    const sortLastNameEl = document.getElementById('sortLastName');
-    const sortLocationsEl = document.getElementById('sortLocations');
-
-    // set other headerElements onclick to default value
-    sortLastNameEl.onclick = function sort() { sortLastName(sortLastNameEl, 0); };
-    sortLocationsEl.onclick = function sort() { sortLocations(sortLocationsEl, 0); };
+function sortFirstName(headerElement) {
+    sortLastNameDesc = false;   // set the next sorting method on last name to asc
+    sortLocationDesc = false;   // set the next sorting method on location to asc
 
     // sort asc or desc and change the onclick prperty of 'headerElement'
-    if (desc) {
-        headerElement.onclick = function sort() { sortFirstName(headerElement, 0); };
+    if (sortFirstNameDesc) {
         observers.sort((first, second) => first[0] < second[0]);
     } else {
-        headerElement.onclick = function sort() { sortFirstName(headerElement, 1); };
         observers.sort((first, second) => first[0] > second[0]);
     }
+
+    sortFirstNameDesc = !sortFirstNameDesc;
 
     // remove the sort icon from the page
     document.getElementById('sortIcon').remove();
@@ -88,24 +86,19 @@ function sortFirstName(headerElement, desc) {
  * icon position if needed and updates the function to be called when clicking
  * on 'headerElement'.
  * @param {html} headerElement html element that performed the call to this function
- * @param {boolean} desc indicates if the table must be sorted desc (1) or asc (0)
  */
-function sortLastName(headerElement, desc) {
-    const sortFirstNameEl = document.getElementById('sortFirstName');
-    const sortLocationsEl = document.getElementById('sortLocations');
-
-    // set other headerElements onclick to default value
-    sortFirstNameEl.onclick = function sort() { sortFirstName(sortFirstNameEl, 0); };
-    sortLocationsEl.onclick = function sort() { sortLocations(sortLocationsEl, 0); };
+function sortLastName(headerElement) {
+    sortFirstNameDesc = false;  // set the next sorting method on first name to asc
+    sortLocationDesc = false;   // set the next sorting method on location to asc
 
     // sort asc or desc and change the onclick prperty of 'headerElement'
-    if (desc) {
-        headerElement.onclick = function sort() { sortLastName(headerElement, 0); };
+    if (sortLastNameDesc) {
         observers.sort((first, second) => first[1] < second[1]);
     } else {
-        headerElement.onclick = function sort() { sortLastName(headerElement, 1); };
         observers.sort((first, second) => first[1] > second[1]);
     }
+
+    sortLastNameDesc = !sortLastNameDesc;
 
     // remove the sort icon from the page
     document.getElementById('sortIcon').remove();
@@ -120,24 +113,19 @@ function sortLastName(headerElement, desc) {
  * icon position if needed and updates the function to be called when clicking
  * on 'headerElement'.
  * @param {html} headerElement html element that performed the call to this function
- * @param {boolean} desc indicates if the table must be sorted desc (1) or asc (0)
  */
-function sortLocations(headerElement, desc) {
-    const sortLastNameEl = document.getElementById('sortLastName');
-    const sortFirstNameEl = document.getElementById('sortFirstName');
-
-    // set other headerElements onclick to default value
-    sortLastNameEl.onclick = function sort() { sortLastName(sortLastNameEl, 0); };
-    sortFirstNameEl.onclick = function sort() { sortFirstName(sortFirstNameEl, 0); };
+function sortLocations(headerElement) {
+    sortFirstNameDesc = false;  // set the next sorting method on first name to asc
+    sortLastNameDesc = false;   // set the next sorting method on last name to asc
 
     // sort asc or desc and change the onclick prperty of 'headerElement'
-    if (desc) {
-        headerElement.onclick = function sort() { sortLocations(headerElement, 0); };
+    if (sortLocationDesc) {
         observers.sort((first, second) => first[2] < second[2]);
     } else {
-        headerElement.onclick = function sort() { sortLocations(headerElement, 1); };
         observers.sort((first, second) => first[2] > second[2]);
     }
+
+    sortLocationDesc = !sortLocationDesc;
 
     // remove the sort icon from the page
     document.getElementById('sortIcon').remove();

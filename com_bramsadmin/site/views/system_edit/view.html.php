@@ -15,9 +15,9 @@ use \Joomla\CMS\MVC\Controller\BaseController;
 /**
  * HTML View class for the BramsAdmin Component
  *
- * @since  0.0.1
+ * @since  0.0.2
  */
-class BramsAdminViewSystems extends HtmlView {
+class BramsAdminViewSystemEdit extends HtmlView {
 	/**
 	 * Display the Systems view
 	 *
@@ -26,9 +26,7 @@ class BramsAdminViewSystems extends HtmlView {
 	 * @return  void
 	 */
 	function display($tpl = null) {
-		// Assign data to the view
-		$this->systems = $this->get('Systems');
-
+        $this->id = JRequest::getVar('id');
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -47,9 +45,9 @@ class BramsAdminViewSystems extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/systems.css');
+		$document->addStyleSheet('/components/com_bramsadmin/views/system_edit/css/system_edit.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
-		$document->addScript('/components/com_bramsadmin/views/systems/js/systems.js');
+		$document->addScript('/components/com_bramsadmin/views/system_edit/js/system_edit.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 	}
 }

@@ -40,17 +40,18 @@ class BramsAdminModelSystems extends ItemModel {
 	}
 
 	// TODO : change this function according to the needs
-	public function getStations() {
+	public function getSystems() {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all inforamtions about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') . ', '
-			. $db->quoteName('system.name') . ', '
-			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('status')
-			);
+			$db->quoteName('system.id') . 'as id, '
+			. $db->quoteName('system.name') . 'as name, '
+			. $db->quoteName('location_code') . 'as code, '
+			. $db->quoteName('start') . ', '
+			. $db->quoteName('end')
+		);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
