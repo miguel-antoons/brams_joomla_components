@@ -28,12 +28,13 @@ class BramsAdminViewSystemEdit extends HtmlView {
 	function display($tpl = null) {
         $this->id = JRequest::getVar('id');
 		$model = $this->getModel();
-		$this->system_info = $model->getSystemInfo($this->id);
 		$this->locations = $model->getLocations();
 
 		if ($this->id) {
+			$this->system_info = $model->getSystemInfo($this->id);
 			$this->date_to_show = $this->system_info[0]->start;
 		} else {
+			$this->id = false;
 			$this->date_to_show = $this->get('Now');
 		}
 
