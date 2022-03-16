@@ -20,6 +20,17 @@ class BramsAdminViewSystemEdit extends HtmlView {
     function display($tpl = null) {
         $input = JFactory::getApplication()->input;
         $new_system_info = $input->get('newSystemInfo', array(), 'ARRAY');
+        $model = $this->getModel();
+        $model->insertSystem($new_system_info);
+
+        // Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+
+			return false;
+		}
+
         echo new JResponseJson(array('this', 'is', 'a', 'test'));
     }
 }
