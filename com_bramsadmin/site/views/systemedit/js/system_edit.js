@@ -20,8 +20,6 @@ function newSystem(form) {
             console.log('api call failed');
         },
     });
-
-    form.preventDefault();
 }
 
 function updateSystem(form) {
