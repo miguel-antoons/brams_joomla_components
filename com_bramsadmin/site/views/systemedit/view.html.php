@@ -34,7 +34,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->system_info = $model->getSystemInfo($this->id);
 			$this->date_to_show = $this->system_info[0]->start;
 		} else {
-			$this->id = false;
+			$this->id = 0;
 			$this->date_to_show = $this->get('Now');
 		}
 
