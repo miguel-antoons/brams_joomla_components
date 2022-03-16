@@ -16,8 +16,8 @@ function newSystem(form) {
         success() {
             window.location.href = '/index.php?option=com_bramsadmin&view=systems';
         },
-        error() {
-            console.log('api call failed');
+        error(response) {
+            console.log('api call failed', '\n', response);
         },
     });
 
