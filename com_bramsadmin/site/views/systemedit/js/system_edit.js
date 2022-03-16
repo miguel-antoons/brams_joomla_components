@@ -29,7 +29,9 @@ function updateSystem(form) {
     return formT;
 }
 
-function formProcess(form) {
+function formProcess(event, form) {
+    event.preventDefault();
+
     if (currentId) {
         return updateSystem(form);
     }

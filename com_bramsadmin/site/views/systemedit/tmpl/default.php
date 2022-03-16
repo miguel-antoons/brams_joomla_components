@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class='col custom_col'>
             <h1>Edit System <?php echo $this->locations[0]->name; ?></h1>
 
-            <form action='#' onsubmit='formProcess(this)' name='updateSystem'>
+            <form action='#' name='updateSystem'>
                 <label for='systemName'>Name</label>
                 <input type='text' value='<?php echo $this->system_info[0]->name; ?>' id='systemName'>
 
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
                 <label for='systemComments'>Comments</label>
                 <input type='text' value='<?php echo $this->system_info[0]->comments; ?>' id='systemComments'>
 
-                <input name='submit' type='submit' id='submit'/>
+                <input name='submit' type='submit' id='submit' onclick="formProcess(document.updateSystem)"/>
             </form>
         </div>
     </div>
