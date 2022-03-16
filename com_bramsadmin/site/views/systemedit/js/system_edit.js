@@ -2,6 +2,7 @@
 /* global currentId */
 function newSystem(form) {
     $.ajax({
+        type: 'POST',
         data: {
             task: 'newSystem',
             format: 'json',
