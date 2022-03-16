@@ -14,14 +14,14 @@ function newSystem(form) {
             },
         },
         success() {
-            window.location.href = 'index.php?option=com_bramsadmin&view=systems';
+            window.location.href = '/index.php?option=com_bramsadmin&view=systems';
         },
         error() {
             console.log('api call failed');
         },
     });
 
-    return false;
+    form.preventDefault();
 }
 
 function updateSystem(form) {
