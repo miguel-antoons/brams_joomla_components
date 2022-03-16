@@ -107,7 +107,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		print_r($system_query);
 
 		$db->setQuery($system_query);
-		$db->execute();
+		// $db->execute();
 	}
 
 	// get today's date in yyyy-mm-dd hh:mm:ss format
