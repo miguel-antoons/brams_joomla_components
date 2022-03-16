@@ -14,6 +14,7 @@ function newSystem(form) {
             },
         },
         success: () => {
+            console.log('hello world');
             window.location.href = '/index.php?option=com_bramsadmin&view=systems';
         },
         error: (response) => {
