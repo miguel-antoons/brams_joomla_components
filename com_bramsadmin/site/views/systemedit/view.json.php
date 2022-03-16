@@ -22,7 +22,6 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $new_system_info = $input->get('newSystemInfo', array(), 'ARRAY');
         $model = $this->getModel();
         $model->insertSystem($new_system_info);
-        print_r($new_system_info);
 
         // Check for errors.
 		if (count($errors = $this->get('Errors')))
