@@ -104,9 +104,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
 				. $db->quote($new_system_info['start']) . ', '
 				. $db->quote($new_system_info['start'])
 			);
-		print_r($system_query);
+		echo $system_query;
 
-		$db->setQuery($system_query);
+		// $db->setQuery($system_query);
 		// $db->execute();
 	}
 
