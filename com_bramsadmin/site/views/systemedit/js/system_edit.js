@@ -31,8 +31,8 @@ function updateSystem(form) {
 
 function formProcess(form) {
     if (currentId) {
-        updateSystem(form);
-    } else {
-        newSystem(form);
+        return updateSystem(form);
     }
+
+    return newSystem(form);
 }
