@@ -17,5 +17,7 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  * @since  0.0.1
  */
 class BramsAdminController extends BaseController {
-
+    public function newSystem() {
+        parent::display();
+    }
 }

@@ -19,6 +19,16 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
     <div class='row'>
+        <div class='col custom_col'>
+            <button
+                type='button'
+                onclick="window.location.href='index.php?option=com_bramsadmin&view=systemedit&id=';"
+            >
+                New System
+            </button>
+        </div>
+    </div>
+    <div class='row'>
         <div class='col'>
             <table class='table'>
                 <thead>

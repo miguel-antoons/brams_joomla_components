@@ -76,6 +76,31 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		return $db->loadObjectList();
 	}
 
+	public function insertSystem($new_system_info) {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		$db
+			->insert($db->quoteName('system'))
+			->columns(
+				$db->quoteName(
+					array(
+						'name',
+						'location_id',
+						'antenna',
+						'start',
+						'comments',
+						'time_created',
+						'time_updated'
+					)
+				)
+			)
+			->values(implode(', ', $new_system_info));
+
+		$db->setQuery($system_query);
+		$db->execute();
+	}
+
 	// get today's date in yyyy-mm-dd hh:mm:ss format
 	public function getNow() {
 		return date('Y-m-d H:i:s');
