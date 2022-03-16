@@ -95,7 +95,15 @@ class BramsAdminModelSystemEdit extends ItemModel {
 					)
 				)
 			)
-			->values(implode(', ', $new_system_info));
+			->values(
+				$db->quote($new_system_info['name']) . ', '
+				. $new_system_info['location'] . ', '
+				. $new_system_info['antenna'] . ', '
+				. $db->quote($new_system_info['start']) . ', '
+				. $db->quote($new_system_info['comments']) . ', '
+				. $db->quote($new_system_info['start']) . ', '
+				. $db->quote($new_system_info['start'])
+			);
 
 		$db->setQuery($system_query);
 		$db->execute();
