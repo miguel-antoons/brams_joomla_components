@@ -43,7 +43,13 @@ defined('_JEXEC') or die('Restricted access');
                 <label for='systemComments'>Comments</label>
                 <input type='text' value='<?php echo $this->system_info[0]->comments; ?>' id='systemComments'>
 
-                <button name='submit' id='submit' onclick="formProcess(document.getElementById('inputContainer').children)">Submit<button/>
+                <button
+                    name='submit'
+                    id='submit'
+                    onclick="formProcess(document.getElementById('inputContainer').children)"
+                >
+                    Submit
+                    </button>
             </div>
         </div>
     </div>
