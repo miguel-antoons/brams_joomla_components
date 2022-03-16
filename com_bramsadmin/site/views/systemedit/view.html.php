@@ -57,9 +57,9 @@ class BramsAdminViewSystemEdit extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('/components/com_bramsadmin/views/system_edit/css/system_edit.css');
+		$document->addStyleSheet('/components/com_bramsadmin/views/systemedit/css/system_edit.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
-		$document->addScript('/components/com_bramsadmin/views/system_edit/js/system_edit.js');
+		$document->addScript('/components/com_bramsadmin/views/systemedit/js/system_edit.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 	}
 }

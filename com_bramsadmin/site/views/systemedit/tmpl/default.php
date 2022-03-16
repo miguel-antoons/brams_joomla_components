@@ -46,5 +46,9 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <script>
-    let currentId = <?php echo $this->id; ?>;
+    let currentId = false;
+
+    if (<?php echo $this->id; ?>) {
+        currentId = <?php echo $this->id; ?>;
+    }
 </script>
