@@ -3,9 +3,8 @@
 function newSystem(form) {
     $.ajax({
         type: 'POST',
+        url: 'index.php?option=com_systemedit&task=newSystem&format=json',
         data: {
-            task: 'newSystem',
-            format: 'json',
             newSystemInfo: {
                 name: form.systemName.value,
                 location: form.systemLocation.value,

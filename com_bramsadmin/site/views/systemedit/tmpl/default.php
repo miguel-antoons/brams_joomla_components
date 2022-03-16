@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
                 </select>
 
                 <label for='systemAntenna'>Antenna</label>
-                <input type='number' value='<?php echo $this->system_info[0]->antenna; ?>' id='systemAntenna'>
+                <input type='number' defaultvalue='1' value='<?php echo $this->system_info[0]->antenna; ?>' id='systemAntenna'>
 
                 <label for='systemStart'>Start</label>
                 <input type='datetime-local' value='<?php echo $this->date_to_show ?>' id='systemStart'>
