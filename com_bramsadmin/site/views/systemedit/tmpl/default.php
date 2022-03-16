@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class='col custom_col'>
             <h1>Edit System <?php echo $this->locations[0]->name; ?></h1>
 
-            <form onsubmit='formProcess(this)' method='put' name='updateSystem'>
+            <form onsubmit='formProcess(this)' name='updateSystem'>
                 <label for='systemName'>Name</label>
                 <input type='text' value='<?php echo $this->system_info[0]->name; ?>' id='systemName'>
 
