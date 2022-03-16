@@ -16,7 +16,7 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  * Class inserts or updates a system and generates
  * a JSON response for front-end.
  */
-class BramsAdminViewSystemEdid extends HtmlView {
+class BramsAdminViewSystemEdit extends HtmlView {
     function display($tpl = null) {
         $input = JFactory::getApplication()->input;
         $new_system_info = $input->get('newSystemInfo', array(), 'ARRAY');
