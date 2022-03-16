@@ -80,7 +80,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 
-		$db
+		$system_query
 			->insert($db->quoteName('system'))
 			->columns(
 				$db->quoteName(
