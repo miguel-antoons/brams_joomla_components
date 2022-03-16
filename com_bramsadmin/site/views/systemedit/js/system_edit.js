@@ -3,7 +3,7 @@
 function newSystem(form) {
     $.ajax({
         type: 'POST',
-        url: '/index.php?option=com_bramsadmin&view=systemedit&task=newSystem&format=json',
+        url: '/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json',
         data: {
             newSystemInfo: {
                 name: form.systemName.value,
