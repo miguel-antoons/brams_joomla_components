@@ -13,10 +13,10 @@ function newSystem(form) {
                 comments: form.systemComments.value,
             },
         },
-        success() {
+        success: () => {
             window.location.href = '/index.php?option=com_bramsadmin&view=systems';
         },
-        error(response) {
+        error: (response) => {
             console.log('api call failed', '\n', response);
         },
     });
