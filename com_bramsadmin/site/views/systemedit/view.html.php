@@ -33,9 +33,11 @@ class BramsAdminViewSystemEdit extends HtmlView {
 		if ($this->id) {
 			$this->system_info = $model->getSystemInfo($this->id);
 			$this->date_to_show = $this->system_info[0]->start;
+			$this->antenna = $this->system_info[0]->antenna;
 		} else {
 			$this->id = 0;
 			$this->date_to_show = $this->get('Now');
+			$this->antenna = 1;
 		}
 
 		$this->locations[array_search($this->id, array_column($this->locations, 'id'))]->selected = 'selected';

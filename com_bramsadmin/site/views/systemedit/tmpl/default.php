@@ -31,7 +31,11 @@ defined('_JEXEC') or die('Restricted access');
                 </select>
 
                 <label for='systemAntenna'>Antenna</label>
-                <input type='number' value='1' value='<?php echo $this->system_info[0]->antenna; ?>' id='systemAntenna'>
+                <input
+                    type='number'
+                    value='<?php echo $this->antenna; ?>'
+                    id='systemAntenna'
+                >
 
                 <label for='systemStart'>Start</label>
                 <input type='datetime-local' value='<?php echo $this->date_to_show ?>' id='systemStart'>
@@ -39,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
                 <label for='systemComments'>Comments</label>
                 <input type='text' value='<?php echo $this->system_info[0]->comments; ?>' id='systemComments'>
 
-                <button name='submit' id='submit' onclick="formProcess(document.getElementById('inputContainer'))">Submit<button/>
+                <button name='submit' id='submit' onclick="formProcess(document.getElementById('inputContainer').children)">Submit<button/>
             </div>
         </div>
     </div>
