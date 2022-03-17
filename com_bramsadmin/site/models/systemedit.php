@@ -92,8 +92,6 @@ class BramsAdminModelSystemEdit extends ItemModel {
 
 			$final_location_array[$location->id]->antennas[] = $location->antenna;
 		}
-		// DEBUG
-		print_r($final_location_array);
 
 		return $final_location_array;
 	}
