@@ -43,7 +43,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->antenna = 1;
 		}
 
-		$this->locations[array_search($this->id, array_column($this->locations, 'id'))]->selected = 'selected';
+		$this->locations[$this->id]->selected = 'selected';
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
