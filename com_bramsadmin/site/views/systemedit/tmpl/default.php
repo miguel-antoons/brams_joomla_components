@@ -83,6 +83,12 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     };
 
+    const systemNames = [
+        <?php foreach ($this->system_names as $system_name) : ?>
+            '<?php echo $system_name; ?>',
+        <?php endforeach; ?>
+    ];
+
     if (<?php echo $this->modifying; ?>) {
         currentId = <?php echo $this->id; ?>;
     }

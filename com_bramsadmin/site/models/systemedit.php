@@ -61,6 +61,20 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		return $db->loadObjectList();
 	}
 
+	public function getSystemNames($id = -1) {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		// SQL query to get all inforamtions about the multiple systems
+		$system_query->select($db->quoteName('name'));
+		$system_query->from($db->quoteName('system'));
+		$system_query->where('not ' . $db->quoteName('id') . ' = ' . $db->quote($id));
+
+		$db->setQuery($system_query);
+
+		return $db->loadObjectList();
+	}
+
 	public function getLocations() {
 		$db = $this->connectToDatabase();
 		$locations_query = $db->getQuery(true);

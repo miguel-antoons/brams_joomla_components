@@ -1,6 +1,7 @@
 /* global $ */
 /* global currentId */
 /* global locationAntennas */
+/* global systemNames */
 function newSystem(form) {
     const antennaValue = form.systemAntenna.value;
     const locationSelect = form.systemLocation;
@@ -12,6 +13,14 @@ function newSystem(form) {
         document.getElementById('error').innerHTML = `
             Please fill all required inputs before submitting the form. 
             Required inputs are Name, Location, Antenna and Start.
+        `;
+
+        return false;
+    }
+
+    if (systemNames.includes(systemName)) {
+        document.getElementById('error').innerHTML = `
+            Entered system name is already taken. Please enter a free sytem name.
         `;
 
         return false;

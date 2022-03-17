@@ -35,12 +35,14 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->system_info = $model->getSystemInfo($this->id);
 			$this->date_to_show = $this->system_info[0]->start;
 			$this->antenna = $this->system_info[0]->antenna;
+			$this->system_names = $model->getSystemNames($this->id);
 		} else {
 			$this->modifying = 0;
 			reset($this->locations);
 			$this->id = key($this->locations);
 			$this->date_to_show = $this->get('Now');
 			$this->antenna = 1;
+			$this->system_names = $model->getSystemNames(-1);
 		}
 
 		$this->locations[$this->id]->selected = 'selected';
