@@ -13,13 +13,20 @@ defined('_JEXEC') or die('Restricted access');
     <div class='row'>
         <div class='col custom_col'>
             <h1>Edit System <?php echo $this->locations[0]->name; ?></h1>
+            <p id='error'>
 
+            </p>
             <div id='inputContainer'>
                 <label for='systemName'>Name</label>
-                <input type='text' value='<?php echo $this->system_info[0]->name; ?>' id='systemName'>
+                <input
+                    type='text'
+                    value='<?php echo $this->system_info[0]->name; ?>'
+                    id='systemName'
+                    required
+                >
 
                 <label for='systemLocation'>Location</label>
-                <select name='locations' id='systemLocation'>
+                <select name='locations' id='systemLocation' onChange='setAntenna()'>
                     <?php foreach($this->locations as $location) : ?>
                         <option
                             value='<?php echo $location->id; ?>' 
@@ -38,10 +45,19 @@ defined('_JEXEC') or die('Restricted access');
                 >
 
                 <label for='systemStart'>Start</label>
-                <input type='datetime-local' value='<?php echo $this->date_to_show ?>' id='systemStart'>
+                <input
+                    type='datetime-local'
+                    value='<?php echo $this->date_to_show ?>'
+                    id='systemStart'
+                    required
+                >
 
                 <label for='systemComments'>Comments</label>
-                <input type='text' value='<?php echo $this->system_info[0]->comments; ?>' id='systemComments'>
+                <input
+                    type='text'
+                    value='<?php echo $this->system_info[0]->comments; ?>'
+                    id='systemComments'
+                >
 
                 <button
                     name='submit'
@@ -49,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
                     onclick="formProcess(document.getElementById('inputContainer').children)"
                 >
                     Submit
-                    </button>
+                </button>
             </div>
         </div>
     </div>
@@ -57,8 +73,19 @@ defined('_JEXEC') or die('Restricted access');
 
 <script>
     let currentId = false;
+    const locationAntennas = {
+        <?php foreach ($this->locations as $location) : ?>
+            <?php echo $location->id; ?>: [
+                <?php foreach ($location->antennas as $antenna) : ?>
+                    <?php echo $antenna; ?>,
+                <?php endforeach; ?>
+            ],
+        <?php endforeach; ?>
+    };
 
     if (<?php echo $this->id; ?>) {
         currentId = <?php echo $this->id; ?>;
     }
+
+    setAntenna();
 </script>

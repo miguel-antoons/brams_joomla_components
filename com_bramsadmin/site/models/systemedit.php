@@ -66,14 +66,34 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$locations_query = $db->getQuery(true);
 
 		$locations_query->select(
-			$db->quoteName('id') . ', '
-			. $db->quoteName('name')
+			$db->quoteName('location.id') . ' as id, '
+			. $db->quoteName('location.name') . ' as name, '
+			. $db->quoteName('antenna')
 		);
 		$locations_query->from($db->quoteName('location'));
+		$locations_query->from($db->quoteName('system'));
+		$locations_query->where(
+			$db->quoteName('location_id') . ' = ' . $db->quoteName('location.id')
+		);
 
 		$db->setQuery($locations_query);
 
-		return $db->loadObjectList();
+		return $this->structureLocations($db->loadObjectList());
+	}
+
+	private function structureLocations($database_data) {
+		$final_location_array = array();
+		foreach ($database_data as $location) {
+			if ($final_location_array[$database_data->id]) {
+				$final_location_array[$database_data->id]->antennas[] = $location->antenna;
+			} else {
+				$final_location_array[$database_data->id]->id = $location->id;
+				$final_location_array[$database_data->id]->name = $location->name;
+				$final_location_array[$database_data->id]->antennas = array($location->antenna);
+			}
+		}
+
+		return $final_location_array;
 	}
 
 	public function insertSystem($new_system_info) {
