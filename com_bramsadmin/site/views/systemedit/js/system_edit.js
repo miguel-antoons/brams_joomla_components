@@ -5,11 +5,11 @@ function newSystem(form) {
     const antennaValue = form.systemAntenna.value;
     const locationId = form.systemLocation.value;
 
-    if (locationAntennas[String(locationId)].includes(antennaValue)) {
+    if (locationAntennas[locationId].includes(antennaValue)) {
         document.getElementById('error').innerHTML = `
             Antenna - location combo ${antennaValue} - ${locationId} (${form.systemLocation.innerText}) 
             already exists. Either set a different antenna value (recommended is 
-            ${locationAntennas[String(locationId)][locationAntennas.length - 1] + 1}) or change system 
+            ${locationAntennas[locationId][locationAntennas[locationId].length - 1] + 1}) or change system 
             location.
         `;
 
@@ -53,5 +53,8 @@ function formProcess(form) {
 function setAntenna() {
     const selectedLocation = document.getElementById('systemLocation').value;
     locationAntennas[String(selectedLocation)].sort();
-    document.getElementById('systemAntenna').value = locationAntennas[String(selectedLocation)][locationAntennas.length - 1] + 1;
+    document.getElementById('systemAntenna').value = (
+        locationAntennas[selectedLocation][locationAntennas[selectedLocation].length - 1]
+        + 1
+    );
 }
