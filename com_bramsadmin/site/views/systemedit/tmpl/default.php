@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 
     const systemNames = [
         <?php foreach ($this->system_names as $system_name) : ?>
-            '<?php echo $system_name; ?>',
+            '<?php echo $system_name->name; ?>',
         <?php endforeach; ?>
     ];
 
