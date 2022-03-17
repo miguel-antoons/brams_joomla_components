@@ -4,13 +4,25 @@
 function newSystem(form) {
     const antennaValue = form.systemAntenna.value;
     const locationSelect = form.systemLocation;
+    const locationId = locationSelect.value;
+    const systemName = form.systemName.value;
+    const systemStart = form.systemStart.value;
 
-    if (locationAntennas[locationSelect.value].includes(Number(antennaValue))) {
+    if (!antennaValue || !locationId || !systemName || !systemStart) {
         document.getElementById('error').innerHTML = `
-            Antenna - location combo ${antennaValue} - ${locationSelect.value} (
+            Please fill all required inputs before submitting the form. 
+            Required inputs are Name, Location, Antenna and Start.
+        `;
+
+        return false;
+    }
+
+    if (locationAntennas[locationId].includes(Number(antennaValue))) {
+        document.getElementById('error').innerHTML = `
+            Antenna - location combo ${antennaValue} - ${locationId} (
             ${locationSelect.options[locationSelect.selectedIndex].label}) 
             already exists. Either set a different antenna value (recommended is 
-            ${locationAntennas[locationSelect.value][locationAntennas[locationSelect.value].length - 1] + 1}) 
+            ${locationAntennas[locationId][locationAntennas[locationId].length - 1] + 1}) 
             or change system location.
         `;
 
