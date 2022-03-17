@@ -5,7 +5,7 @@ function newSystem(form) {
     const antennaValue = form.systemAntenna.value;
     const locationId = form.systemLocation.value;
 
-    if (locationAntennas[locationId].includes(antennaValue)) {
+    if (locationAntennas[locationId].includes(Number(antennaValue))) {
         document.getElementById('error').innerHTML = `
             Antenna - location combo ${antennaValue} - ${locationId} (${form.systemLocation.innerText}) 
             already exists. Either set a different antenna value (recommended is 
