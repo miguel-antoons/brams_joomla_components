@@ -3,14 +3,15 @@
 /* global locationAntennas */
 function newSystem(form) {
     const antennaValue = form.systemAntenna.value;
-    const locationId = form.systemLocation.value;
+    const locationSelect = form.systemLocation;
 
-    if (locationAntennas[locationId].includes(Number(antennaValue))) {
+    if (locationAntennas[locationSelect.value].includes(Number(antennaValue))) {
         document.getElementById('error').innerHTML = `
-            Antenna - location combo ${antennaValue} - ${locationId} (${form.systemLocation.innerText}) 
+            Antenna - location combo ${antennaValue} - ${locationSelect.value} (
+            ${locationSelect.options[locationSelect.selectedIndex].label}) 
             already exists. Either set a different antenna value (recommended is 
-            ${locationAntennas[locationId][locationAntennas[locationId].length - 1] + 1}) or change system 
-            location.
+            ${locationAntennas[locationSelect.value][locationAntennas[locationSelect.value].length - 1] + 1}) 
+            or change system location.
         `;
 
         return false;
