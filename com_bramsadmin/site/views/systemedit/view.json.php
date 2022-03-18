@@ -41,6 +41,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
     public function update() {
         $input = JFactory::getApplication()->input;
         $system_info = $input->get('systemInfo', array(), 'ARRAY');
+        print_r($system_info);
         $model = $this->getModel();
         $model->updateSystem($system_info);
 

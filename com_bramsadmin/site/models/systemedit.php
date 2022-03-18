@@ -165,6 +165,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 			->set($fields)
 			->where($conditions);
 
+		echo $system_query;
 		$db->setQuery($system_query);
 		$db->execute();
 	}
