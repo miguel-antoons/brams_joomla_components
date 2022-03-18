@@ -17,7 +17,7 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  * a JSON response for front-end.
  */
 class BramsAdminViewSystemEdit extends HtmlView {
-    function create() {
+    public function create() {
         $input = JFactory::getApplication()->input;
         $new_system_info = $input->get('newSystemInfo', array(), 'ARRAY');
         $model = $this->getModel();
@@ -38,7 +38,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         );
     }
 
-    function update() {
+    public function update() {
         $input = JFactory::getApplication()->input;
         $system_info = $input->get('systemInfo', array(), 'ARRAY');
         $model = $this->getModel();

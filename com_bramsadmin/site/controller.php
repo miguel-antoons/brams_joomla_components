@@ -18,10 +18,12 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  */
 class BramsAdminController extends BaseController {
     public function newSystem() {
-        parent::create();
+        $view = $this->getView();
+        $view->create();
     }
 
     public function updateSystem() {
-        parent::update();
+        $view = $this->getView();
+        $view->update();
     }
 }
