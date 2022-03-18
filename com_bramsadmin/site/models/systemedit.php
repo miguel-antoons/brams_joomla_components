@@ -75,7 +75,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		return $db->loadObjectList();
 	}
 
-	public function getLocations($antenna = -1) {
+	public function getLocations($antenna = -1, $id = -1) {
 		$db = $this->connectToDatabase();
 		$locations_query = $db->getQuery(true);
 
@@ -89,16 +89,13 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$locations_query->where(
 			$db->quoteName('location_id') . ' = ' . $db->quoteName('location.id')
 		);
-		$locations_query->where(
-			'not' . $db->quoteName('antenna') . ' = ' . $db->quoteName('antenna')
-		);
 
 		$db->setQuery($locations_query);
 
-		return $this->structureLocations($db->loadObjectList());
+		return $this->structureLocations($db->loadObjectList(), $antenna, $id);
 	}
 
-	private function structureLocations($database_data) {
+	private function structureLocations($database_data, $antenna, $id) {
 		$final_location_array = array();
 		foreach ($database_data as $location) {
 			if (!$final_location_array[$location->id]) {
@@ -107,7 +104,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
 				$final_location_array[$location->id]->antennas = array();
 			}
 
-			$final_location_array[$location->id]->antennas[] = $location->antenna;
+			if ($location->id !== $id && $location->antenna !== $antenna) {
+				$final_location_array[$location->id]->antennas[] = $location->antenna;
+			}
 		}
 
 		return $final_location_array;
