@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class='col custom_col'>
             <button
                 type='button'
-                onclick="window.location.href='index.php?option=com_bramsadmin&view=systemedit&id=';"
+                onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=';"
             >
                 New System
             </button>
