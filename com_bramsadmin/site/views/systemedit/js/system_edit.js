@@ -108,7 +108,10 @@ function formProcess(form) {
 function setAntenna() {
     const selectedLocation = document.getElementById('systemLocation').value;
 
-    if (selectedLocation === defLocationAntenna.location && defLocationAntenna.antenna !== -1) {
+    if (
+        Number(selectedLocation) === defLocationAntenna.location
+        && defLocationAntenna.antenna !== -1
+    ) {
         document.getElementById('systemAntenna').value = defLocationAntenna.antenna;
     } else {
         locationAntennas[String(selectedLocation)].sort();
