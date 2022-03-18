@@ -31,21 +31,21 @@ class BramsAdminViewSystemEdit extends HtmlView {
 		$this->locations = $model->getLocations();
 
 		if ($this->id) {
-			$this->modifying = 1;
 			$this->system_info = $model->getSystemInfo($this->id);
+			$this->location_id = $this->system_info[0]->location;
 			$this->date_to_show = $this->system_info[0]->start;
 			$this->antenna = $this->system_info[0]->antenna;
 			$this->system_names = $model->getSystemNames($this->id);
 		} else {
-			$this->modifying = 0;
+			$this->id = 0;
 			reset($this->locations);
-			$this->id = key($this->locations);
+			$this->location_id = key($this->locations);
 			$this->date_to_show = $this->get('Now');
 			$this->antenna = 1;
 			$this->system_names = $model->getSystemNames(-1);
 		}
 
-		$this->locations[$this->id]->selected = 'selected';
+		$this->locations[$this->location_id]->selected = 'selected';
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

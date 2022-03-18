@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
-    if (<?php echo $this->modifying; ?>) {
+    if (<?php echo $this->id; ?>) {
         currentId = <?php echo $this->id; ?>;
     }
 
