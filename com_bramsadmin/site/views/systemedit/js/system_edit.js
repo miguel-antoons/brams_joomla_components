@@ -75,7 +75,7 @@ function updateSystem(form) {
 
     if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
         $.ajax({
-            type: 'PUT',
+            type: 'POST',
             url: '/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json',
             data: {
                 systemInfo: {
