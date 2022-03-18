@@ -149,11 +149,11 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$db = $this->connectToDatabase();
 		$system_query = $db->getQuery(true);
 		$fields = array(
-			$db->quoteName('name') . ' = ' . $system_info['name'],
-			$db->quoteName('location_id') . ' = ' . $system_info['location'],
-			$db->quoteName('antenna') . ' = ' . $system_info['antenna'],
-			$db->quoteName('start') . ' = ' . $system_info['start'],
-			$db->quoteName('comments') . ' = ' . $system_info['comments']
+			$db->quoteName('name') . ' = ' . $db->quote($system_info['name']),
+			$db->quoteName('location_id') . ' = ' . $db->quote($system_info['location']),
+			$db->quoteName('antenna') . ' = ' . $db->quote($system_info['antenna']),
+			$db->quoteName('start') . ' = ' . $db->quote($system_info['start']),
+			$db->quoteName('comments') . ' = ' . $db->quote($system_info['comments'])
 		);
 
 		$conditions = array(
