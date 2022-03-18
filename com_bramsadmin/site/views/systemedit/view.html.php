@@ -45,7 +45,9 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->system_names = $model->getSystemNames(-1);
 		}
 
-		$this->locations[$this->location_id]->selected = 'selected';
+		if ($this->locations) {
+			$this->locations[$this->location_id]->selected = 'selected';
+		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
