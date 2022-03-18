@@ -96,6 +96,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 	}
 
 	private function structureLocations($database_data) {
+		print_r($database_data);
 		$final_location_array = array();
 		foreach ($database_data as $location) {
 			if (!$final_location_array[$location->id]) {
