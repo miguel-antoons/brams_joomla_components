@@ -38,6 +38,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->system_names = $model->getSystemNames($this->id);
 		} else {
 			$this->id = 0;
+			$this->antenna = -1;
 			$this->locations = $model->getLocations(-1, -1);
 			reset($this->locations);
 			$this->location_id = key($this->locations);

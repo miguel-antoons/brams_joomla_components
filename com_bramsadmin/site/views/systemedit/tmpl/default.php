@@ -90,6 +90,11 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
+    const defLocationAntenna = {
+        location: <?php echo $this->location_id; ?>,
+        antenna: <?php echo $this->antenna; ?>,
+    };
+
     if (<?php echo $this->id; ?>) {
         currentId = <?php echo $this->id; ?>;
     }

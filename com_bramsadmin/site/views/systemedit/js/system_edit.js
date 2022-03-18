@@ -2,6 +2,7 @@
 /* global currentId */
 /* global locationAntennas */
 /* global systemNames */
+/* global defLocationAntenna */
 function verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart) {
     if (!antennaValue || !locationId || !systemName || !systemStart) {
         document.getElementById('error').innerHTML = `
@@ -106,9 +107,14 @@ function formProcess(form) {
 
 function setAntenna() {
     const selectedLocation = document.getElementById('systemLocation').value;
-    locationAntennas[String(selectedLocation)].sort();
-    document.getElementById('systemAntenna').value = (
-        locationAntennas[selectedLocation][locationAntennas[selectedLocation].length - 1]
-        + 1
-    );
+
+    if (selectedLocation === defLocationAntenna.location && defLocationAntenna.antenna !== -1) {
+        document.getElementById('systemAntenna').value = defLocationAntenna.antenna;
+    } else {
+        locationAntennas[String(selectedLocation)].sort();
+        document.getElementById('systemAntenna').value = (
+            locationAntennas[selectedLocation][locationAntennas[selectedLocation].length - 1]
+            + 1
+        );
+    }
 }
