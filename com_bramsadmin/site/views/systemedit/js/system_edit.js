@@ -2,13 +2,7 @@
 /* global currentId */
 /* global locationAntennas */
 /* global systemNames */
-function newSystem(form) {
-    const antennaValue = form.systemAntenna.value;
-    const locationSelect = form.systemLocation;
-    const locationId = locationSelect.value;
-    const systemName = form.systemName.value;
-    const systemStart = form.systemStart.value;
-
+function verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart) {
     if (!antennaValue || !locationId || !systemName || !systemStart) {
         document.getElementById('error').innerHTML = `
             Please fill all required inputs before submitting the form. 
@@ -38,30 +32,68 @@ function newSystem(form) {
         return false;
     }
 
-    $.ajax({
-        type: 'POST',
-        url: '/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json',
-        data: {
-            newSystemInfo: {
-                name: form.systemName.value,
-                location: locationId,
-                antenna: antennaValue,
-                start: form.systemStart.value,
-                comments: form.systemComments.value,
+    return true;
+}
+
+function newSystem(form) {
+    const antennaValue = form.systemAntenna.value;
+    const locationSelect = form.systemLocation;
+    const locationId = locationSelect.value;
+    const systemName = form.systemName.value;
+    const systemStart = form.systemStart.value;
+
+    if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
+        $.ajax({
+            type: 'POST',
+            url: '/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json',
+            data: {
+                newSystemInfo: {
+                    name: form.systemName.value,
+                    location: locationId,
+                    antenna: antennaValue,
+                    start: form.systemStart.value,
+                    comments: form.systemComments.value,
+                },
             },
-        },
-        success: () => {
-            window.location.href = '/index.php?option=com_bramsadmin&view=systems';
-        },
-        error: (response) => {
-            console.log('api call failed', '\n', response);
-        },
-    });
+            success: () => {
+                window.location.href = '/index.php?option=com_bramsadmin&view=systems';
+            },
+            error: (response) => {
+                console.log('api call failed', '\n', response);
+            },
+        });
+    }
 }
 
 function updateSystem(form) {
-    const formT = form + 1;
-    return formT;
+    const antennaValue = form.systemAntenna.value;
+    const locationSelect = form.systemLocation;
+    const locationId = locationSelect.value;
+    const systemName = form.systemName.value;
+    const systemStart = form.systemStart.value;
+
+    if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
+        $.ajax({
+            type: 'PUT',
+            url: '/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json',
+            data: {
+                systemInfo: {
+                    id: currentId,
+                    name: form.systemName.value,
+                    location: locationId,
+                    antenna: antennaValue,
+                    start: form.systemStart.value,
+                    comments: form.systemComments.value,
+                },
+            },
+            success: () => {
+                window.location.href = '/index.php?option=com_bramsadmin&view=systems';
+            },
+            error: (response) => {
+                console.log('api call failed', '\n', response);
+            },
+        });
+    }
 }
 
 function formProcess(form) {

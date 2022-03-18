@@ -17,7 +17,7 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  * a JSON response for front-end.
  */
 class BramsAdminViewSystemEdit extends HtmlView {
-    function display($tpl = null) {
+    function create() {
         $input = JFactory::getApplication()->input;
         $new_system_info = $input->get('newSystemInfo', array(), 'ARRAY');
         $model = $this->getModel();
@@ -31,6 +31,31 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			return false;
 		}
 
-        echo new JResponseJson(array('this', 'is', 'a', 'test'));
+        echo new JResponseJson(
+            array(
+                ('message') => 'New system ' . $new_system_info['name'] . ' has been created.'
+            )
+        );
+    }
+
+    function update() {
+        $input = JFactory::getApplication()->input;
+        $system_info = $input->get('systemInfo', array(), 'ARRAY');
+        $model = $this->getModel();
+        $model->updateSystem($system_info);
+
+        // Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+
+			return false;
+		}
+
+        echo new JResponseJson(
+            array(
+                ('message') => 'System ' . $system_info['name'] . ' has been updated.'
+            )
+        );
     }
 }

@@ -41,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
                 <input
                     type='number'
                     value='<?php echo $this->antenna; ?>'
+                    min='0'
                     id='systemAntenna'
                 >
 

@@ -75,7 +75,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		return $db->loadObjectList();
 	}
 
-	public function getLocations() {
+	public function getLocations($antenna = -1) {
 		$db = $this->connectToDatabase();
 		$locations_query = $db->getQuery(true);
 
@@ -89,6 +89,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$locations_query->where(
 			$db->quoteName('location_id') . ' = ' . $db->quoteName('location.id')
 		);
+		$locations_query->where(
+			'not' . $db->quoteName('antenna') . ' = ' . $db->quoteName('antenna')
+		);
 
 		$db->setQuery($locations_query);
 
@@ -96,7 +99,6 @@ class BramsAdminModelSystemEdit extends ItemModel {
 	}
 
 	private function structureLocations($database_data) {
-		print_r($database_data);
 		$final_location_array = array();
 		foreach ($database_data as $location) {
 			if (!$final_location_array[$location->id]) {
@@ -139,6 +141,30 @@ class BramsAdminModelSystemEdit extends ItemModel {
 				. $db->quote($new_system_info['start']) . ', '
 				. $db->quote($new_system_info['start'])
 			);
+
+		$db->setQuery($system_query);
+		$db->execute();
+	}
+
+	public function updateSystem($system_info) {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+		$fields = array(
+			$db->quoteName('name') . ' = ' . $system_info['name'],
+			$db->quoteName('location_id') . ' = ' . $system_info['location'],
+			$db->quoteName('antenna') . ' = ' . $system_info['antenna'],
+			$db->quoteName('start') . ' = ' . $system_info['start'],
+			$db->quoteName('comments') . ' = ' . $system_info['comments']
+		);
+
+		$conditions = array(
+			$db->quoteName('id') . ' = ' . $db->quote($system_info['id'])
+		);
+
+		$system_query
+			->update($db->quoteName('system'))
+			->set($fields)
+			->where($conditions);
 
 		$db->setQuery($system_query);
 		$db->execute();
