@@ -30,7 +30,7 @@ class BramsAdminController extends BaseController {
 	 *
 	 * @since   3.0
 	 */
-	public function display($block_display = false, $cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array(), $block_display = false)
 	{
 		$document = \JFactory::getDocument();
 		$viewType = $document->getType();
@@ -86,7 +86,7 @@ class BramsAdminController extends BaseController {
 				$view->display();
 			}
 		}
-		elseif(block_display)
+		elseif($block_display)
 		{
 			return $view;
 		}
@@ -98,12 +98,12 @@ class BramsAdminController extends BaseController {
 	}
     
     public function newSystem() {
-        $view = $this->display(true);
+        $view = $this->display(false, array(), true);
         $view->create();
     }
 
     public function updateSystem() {
-        $view = $this->display(true);
+        $view = $this->display(false, array(), true);
         $view->update();
     }
 }
