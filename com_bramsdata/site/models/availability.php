@@ -52,7 +52,8 @@ class BramsDataModelAvailability extends ItemModel {
 			$db->quoteName('system.id') . ', '
 			. $db->quoteName('system.name') . ', '
 			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('status')
+			. $db->quoteName('status') . ', '
+			. $db->quote('') . 'as checked'
 			);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('location'));
@@ -109,8 +110,7 @@ class BramsDataModelAvailability extends ItemModel {
 				$end_date,
 				$selected_stations
 			);
-		}
-		else {
+		} else {
 			// set the $time_interval to 5 minutes (300 seconds)
 			$time_interval = 300;
 			// go get and return the availability information
@@ -183,8 +183,7 @@ class BramsDataModelAvailability extends ItemModel {
 			// check a first time to set the correct flag value
 			if ($specific_station_availability[0]->start !== $expected_start) {
 				$flag = false;
-			}
-			else {
+			} else {
 				$flag = true;
 			}
 
@@ -225,17 +224,15 @@ class BramsDataModelAvailability extends ItemModel {
 					$flag
 				);
 			}
-		}
-		else {
+		} else {
 			$flag = false;
 			$this->add_availability_info($final_availability_array, $expected_start, $station, $flag);
 		}
-		
 	}
 
 	/**
 	 * Function add a new availability object to the array. This function works together with 
-	 * the get_unprecise_file_availability function.
+	 * the get_precise_file_availability function.
 	 * 
 	 * @param array		$array				contains the final availability array 
 	 * @param datetime 	$expected_start		contains the expected start, this is the date that will be added to the object 
@@ -248,11 +245,10 @@ class BramsDataModelAvailability extends ItemModel {
 		// set availability according to the flag
 		if ($flag) {
 			$temp_object->available = $this->custom_categories_array[1];
-			if (count($array[$station])) {
+			if (array_key_exists($station, $array)) {
 				$expected_start = $this->add_time_to_sring($expected_start, 'Y-m-d H:i:s', 'PT5M', 1);
 			}
-		}
-		else {
+		} else {
 			$temp_object->available = $this->custom_categories_array[0];
 		}
 
@@ -299,23 +295,17 @@ class BramsDataModelAvailability extends ItemModel {
 				// add an element ot the array according to the availability rate
 				if (intval($availability_info->rate) === 0) {
 					$temp_object = $this->change_category($change, $previous_available, 1);
-				}
-				elseif (intval($availability_info->rate) === 1000) {
+				} elseif (intval($availability_info->rate) === 1000) {
 					$temp_object = $this->change_category($change, $previous_available, 2);
-				}
-				elseif (intval($availability_info->rate) <= 200) {
+				} elseif (intval($availability_info->rate) <= 200) {
 					$temp_object = $this->change_category($change, $previous_available, 3);
-				}
-				elseif (intval($availability_info->rate) <= 400) {
+				} elseif (intval($availability_info->rate) <= 400) {
 					$temp_object = $this->change_category($change, $previous_available, 4);
-				}
-				elseif (intval($availability_info->rate) <= 600) {
+				} elseif (intval($availability_info->rate) <= 600) {
 					$temp_object = $this->change_category($change, $previous_available, 5);
-				}
-				elseif (intval($availability_info->rate) <= 800) {
+				} elseif (intval($availability_info->rate) <= 800) {
 					$temp_object = $this->change_category($change, $previous_available, 6);
-				}
-				elseif (intval($availability_info->rate) < 1000) {
+				} elseif (intval($availability_info->rate) < 1000) {
 					$temp_object = $this->change_category($change, $previous_available, 7);
 				}
 
@@ -345,8 +335,7 @@ class BramsDataModelAvailability extends ItemModel {
 				);
 				$final_availability_array[$station][] = $temp_object;
 			}
-		}
-		else {
+		} else {
 			$temp_object = $this->change_category($change, $previous_available, 1);
 			$temp_object->start = $expected_start;
 			$final_availability_array[$station][] = $temp_object;

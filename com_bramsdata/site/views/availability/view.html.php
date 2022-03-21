@@ -27,7 +27,9 @@ class BramsDataViewAvailability extends HtmlView {
 	 */
 	function display($tpl = null) {
 		// Assign data to the view
+		$this->selected_stations = array();	// initialize the $selected_stations array
 		$this->stations = $this->get('Stations');
+		$this->today = $this->get('Today');
 		$this->set_columns_length();
 
 		// process the submitted form
@@ -56,8 +58,6 @@ class BramsDataViewAvailability extends HtmlView {
 
 	// entry-point of form processing
 	private function processForm() {
-		$this->selected_stations = array();	// initialize the $selected_stations array
-
 		// iterate over the checkboxes
 		foreach ($_POST['station'] as $result) {
 			// prepare the values to return
@@ -88,7 +88,12 @@ class BramsDataViewAvailability extends HtmlView {
 
 		// get the model and call the appropriate method
 		$model = $this->getModel();
-		$this->availability = $model->getAvailability($this->start_date, $this->end_date, $this->selected_stations, $this->interval);
+		$this->availability = $model->getAvailability(
+			$this->start_date,
+			$this->end_date,
+			$this->selected_stations,
+			$this->interval
+		);
 	}
 
 	private function set_columns_length() {
