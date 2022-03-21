@@ -71,11 +71,12 @@ class BramsNetworkModelObservers extends ItemModel {
 
 		foreach ($observer_info as $observer) {
 			// if the owner object already exists
-			if ($new_observer_array[$observer->id]) {
+			if (array_key_exists($observer->id, $new_observer_array)) {
 				// just add the location string to the rest
 				$new_observer_array[$observer->id]->locations .= ', ' . $observer->location_name;
 			} else {
 				// create a new object and set first_name, last_name and temporar locations attributes
+				$new_observer_array[$observer->id] = new stdClass();
 				$new_observer_array[$observer->id]->first_name = $observer->first_name;
 				$new_observer_array[$observer->id]->last_name = $observer->last_name;
 				$new_observer_array[$observer->id]->locations = $observer->location_name;

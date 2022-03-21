@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="container custom_container container_margin">
     <div class='row'>
         <div class='col custom_col'>
-            <h1>Edit System <?php echo $this->locations[0]->name; ?></h1>
+            <h1><?php echo $this->title; ?></h1>
             <p id='error'>
 
             </p>

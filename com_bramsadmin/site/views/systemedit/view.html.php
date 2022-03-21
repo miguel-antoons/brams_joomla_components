@@ -18,6 +18,10 @@ use \Joomla\CMS\MVC\Controller\BaseController;
  * @since  0.0.2
  */
 class BramsAdminViewSystemEdit extends HtmlView {
+	protected $default_system_info = array(
+		('name') => '',
+		('comments') => ''
+	);
 	/**
 	 * Display the Systems view
 	 *
@@ -36,6 +40,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->antenna = $this->system_info[0]->antenna;
 			$this->locations = $model->getLocations($this->antenna, $this->location_id);
 			$this->system_names = $model->getSystemNames($this->id);
+			$this->title = 'Edit System ' . $this->locations[$this->system_info[0]->location_id]->name;
 		} else {
 			$this->id = 0;
 			$this->antenna = -1;
@@ -44,6 +49,10 @@ class BramsAdminViewSystemEdit extends HtmlView {
 			$this->location_id = key($this->locations);
 			$this->date_to_show = $this->get('Now');
 			$this->system_names = $model->getSystemNames(-1);
+			$this->title = 'Create New System';
+			$this->system_info = array(
+				0 => (object) $this->default_system_info
+			);
 		}
 
 		if ($this->locations) {

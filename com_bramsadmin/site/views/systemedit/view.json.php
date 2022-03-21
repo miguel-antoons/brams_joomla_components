@@ -54,7 +54,29 @@ class BramsAdminViewSystemEdit extends HtmlView {
 
         echo new JResponseJson(
             array(
-                ('message') => 'System ' . $system_info['name'] . ' has been updated.'
+                ('message') => 'System ' . $system_info['name'] . ' has been updated.',
+                ('error') => false
+            )
+        );
+    }
+
+    public function delete() {
+        $id = (int) JRequest::getVar('id');
+		$model = $this->getModel();
+        $model->deleteSystem($id);
+
+        // Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+
+			return false;
+		}
+
+        echo new JResponseJson(
+            array(
+                ('message') => 'System with id ' . $id . ' has been deleted.',
+                ('error') => false
             )
         );
     }

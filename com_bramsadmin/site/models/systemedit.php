@@ -98,9 +98,11 @@ class BramsAdminModelSystemEdit extends ItemModel {
 	private function structureLocations($database_data, $antenna, $id) {
 		$final_location_array = array();
 		foreach ($database_data as $location) {
-			if (!$final_location_array[$location->id]) {
+			if (!array_key_exists($location->id, $final_location_array)) {
+				$final_location_array[$location->id] = new stdClass();
 				$final_location_array[$location->id]->id = $location->id;
 				$final_location_array[$location->id]->name = $location->name;
+				$final_location_array[$location->id]->selected = '';
 				$final_location_array[$location->id]->antennas = array();
 			}
 
@@ -164,6 +166,21 @@ class BramsAdminModelSystemEdit extends ItemModel {
 			->update($db->quoteName('system'))
 			->set($fields)
 			->where($conditions);
+
+		$db->setQuery($system_query);
+		$db->execute();
+	}
+
+	public function deleteSystem($id) {
+		$db = $this->connectToDatabase();
+		$system_query = $db->getQuery(true);
+
+		$condition = array(
+			$db->quoteName('id') . ' = ' . $db->quote($id)
+		);
+
+		$system_query->delete($db->quoteName('system'));
+		$system_query->where($condition);
 
 		$db->setQuery($system_query);
 		$db->execute();

@@ -106,4 +106,9 @@ class BramsAdminController extends BaseController {
         $view = $this->display(false, array(), true);
         $view->update();
     }
+
+	public function deleteSystem() {
+		$view = $this->display(false, array(), true);
+        $view->delete();
+	}
 }
