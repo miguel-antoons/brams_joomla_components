@@ -4,6 +4,14 @@ let sortLocationDesc = true;
 let sortNameDesc = false;
 let sortStartDesc = false;
 let sortEndDesc = false;
+// eslint-disable-next-line no-unused-vars
+let log = 'Nothing to show';
+
+function stopPropagation() {
+    $('.systemRow button').on('click', (e) => {
+        e.stopPropagation();
+    });
+}
 
 function generateTable() {
     let HTMLString = '';
@@ -11,7 +19,10 @@ function generateTable() {
     systems.forEach(
         (system) => {
             HTMLString += `
-                <tr>
+                <tr
+                    class='systemRow'
+                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system[0]}';"
+                >
                     <td>${system[1]}</td>
                     <td>${system[2]}</td>
                     <td>${system[3]}</td>
@@ -19,14 +30,18 @@ function generateTable() {
                     <td>
                         <button
                             type='button'
+                            class='customBtn edit'
                             onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system[0]}';"
                         >
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
                         </button>
                         <button
                             type='button'
+                            class='customBtn delete'
                             onclick="deleteSystem(${system[0]})"
                         >
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
                         </button>
                     </td>
@@ -36,17 +51,25 @@ function generateTable() {
     );
 
     document.getElementById('systems').innerHTML = HTMLString;
+    stopPropagation();
 }
 
 function deleteSystem(systemId) {
     $.ajax({
         type: 'DELETE',
         url: `/index.php?option=com_bramsadmin&view=systemedit&task=deletesystem&format=json&id=${systemId}`,
-        success: () => {
-            window.location.href = '/index.php?option=com_bramsadmin&view=systems';
+        success: (response) => {
+            const isDeletedElement = (element) => element[0] === systemId;
+            systems.splice(systems.findIndex(isDeletedElement), 1);
+            generateTable();
+            document.getElementById('message').innerHtml = response.data.message;
         },
         error: (response) => {
-            console.log('api call failed', '\n', response);
+            document.getElementById('message').innerHTML = (
+                'API call failed, please read the \'log\' variable in ',
+                'developper console for more information about the problem.'
+            );
+            log = response;
         },
     });
 }
@@ -127,5 +150,10 @@ function sortEnd(headerElement) {
     sortEndDesc = !sortEndDesc;
 
     setSortIcon(headerElement);
+    generateTable();
+}
+
+function onPageLoad() {
+    systems.sort((first, second) => first[1] > second[1]);
     generateTable();
 }

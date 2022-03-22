@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use \Joomla\CMS\MVC\View\HtmlView;
 use \Joomla\CMS\MVC\Controller\BaseController;
+use \Joomla\CMS\Log\Log;
 
 /**
  * HTML View class for the BramsAdmin Component
@@ -27,13 +28,22 @@ class BramsAdminViewSystems extends HtmlView {
 	 */
 	function display($tpl = null) {
 		// Assign data to the view
-		$this->systems = $this->get('Systems');
+		$model = $this->getModel();
+		// if an error occurred in the model
+		if (!$this->systems = $model->getSystems()) {
+			return false;
+		}
+		$message_id = (int) JRequest::getVar('message');
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
-
+		try {
+			$this->message = $model->system_messages[$message_id];
+		} catch (Exception $e) {
+			echo '
+				An error occurred while looking for a message following a user action. 
+				Most likely, the message code requested does not exist and has yet to be
+				created. Activate Joomla debugging and view the logs for more information.
+			';
+			Log::add($e, JLog::ERROR, 'jerror');
 			return false;
 		}
 
@@ -49,7 +59,8 @@ class BramsAdminViewSystems extends HtmlView {
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/systems.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
-		$document->addScript('/components/com_bramsadmin/views/systems/js/systems.js');
+		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
+		$document->addScript('/components/com_bramsadmin/views/systems/js/systems.js');
 	}
 }

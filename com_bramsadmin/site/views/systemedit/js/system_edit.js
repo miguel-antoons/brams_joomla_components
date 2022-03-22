@@ -57,7 +57,7 @@ function newSystem(form) {
                 },
             },
             success: () => {
-                window.location.href = '/index.php?option=com_bramsadmin&view=systems';
+                window.location.href = '/index.php?option=com_bramsadmin&view=systems&message=2';
             },
             error: (response) => {
                 console.log('api call failed', '\n', response);
@@ -88,7 +88,7 @@ function updateSystem(form) {
                 },
             },
             success: () => {
-                window.location.href = '/index.php?option=com_bramsadmin&view=systems';
+                window.location.href = '/index.php?option=com_bramsadmin&view=systems&message=1';
             },
             error: (response) => {
                 console.log('api call failed', '\n', response);
