@@ -3,7 +3,6 @@ let nRows = 17;                 // number of rows shown when the page is first l
 let sortFirstNameDesc = true;   // set the next sorting method on first name to desc
 let sortLastNameDesc = false;   // set the next sorting method on last name to asc
 let sortLocationDesc = false;   // set the next sorting method on location to asc
-const step = 17;                // number of rows to add when clicking on the 'show more' button
 
 /**
  * Function generates the html string to add inside the tables tbody.
@@ -16,8 +15,6 @@ function showTable() {
 
     // if the number of row to display is greater or equal to the observers array length
     if (nRows >= observers.length) {
-        // update the nRows value to the observers array length
-        nRows = observers.length;
         // select all the observers that will be shown on page
         tempObservers = observers.slice();
         // set the last row to a 'show less' button
@@ -50,8 +47,18 @@ function showTable() {
  */
 function onPageLoad() {
     observers.sort((first, second) => first[0] > second[0]);
-
     showTable();
+}
+
+/**
+ * Function changes the sort icon to the last clicked table header.
+ * @param {html} headerElement table header that was clicked for sorting
+ */
+function setSortIcon(headerElement) {
+    // remove the sort icon from the page
+    document.getElementById('sortIcon').remove();
+    // add the icon to the clicked element ('headerElement')
+    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
 }
 
 /**
@@ -73,11 +80,7 @@ function sortFirstName(headerElement) {
 
     sortFirstNameDesc = !sortFirstNameDesc;
 
-    // remove the sort icon from the page
-    document.getElementById('sortIcon').remove();
-    // add the icon to the clicked element ('headerElement')
-    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
-
+    setSortIcon(headerElement);
     showTable();
 }
 
@@ -100,11 +103,7 @@ function sortLastName(headerElement) {
 
     sortLastNameDesc = !sortLastNameDesc;
 
-    // remove the sort icon from the page
-    document.getElementById('sortIcon').remove();
-    // add the icon to the clicked element ('headerElement')
-    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
-
+    setSortIcon(headerElement);
     showTable();
 }
 
@@ -127,22 +126,18 @@ function sortLocations(headerElement) {
 
     sortLocationDesc = !sortLocationDesc;
 
-    // remove the sort icon from the page
-    document.getElementById('sortIcon').remove();
-    // add the icon to the clicked element ('headerElement')
-    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
-
+    setSortIcon(headerElement);
     showTable();
 }
 
 // increase the rows to show and update the table
 function showMore() {
-    nRows += step;
+    nRows += observers.length;
     showTable();
 }
 
 // decrease the rows to show and update the table
 function showLess() {
-    nRows -= step;
+    nRows = 17;
     showTable();
 }

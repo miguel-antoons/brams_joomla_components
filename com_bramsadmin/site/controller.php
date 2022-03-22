@@ -24,13 +24,13 @@ class BramsAdminController extends BaseController {
 	 * you will need to override it in your own controllers.
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
+	 * @param   array    $url_params  An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
 	 *
 	 * @return  \JControllerLegacy  A \JControllerLegacy object to support chaining.
 	 *
 	 * @since   3.0
 	 */
-	public function display($cachable = false, $urlparams = array(), $block_display = false)
+	public function display($cachable = false, $url_params = array(), $block_display = false)
 	{
 		$document = \JFactory::getDocument();
 		$viewType = $document->getType();
@@ -40,8 +40,7 @@ class BramsAdminController extends BaseController {
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 
 		// Get/Create the model
-		if ($model = $this->getModel($viewName))
-		{
+		if ($model = $this->getModel($viewName)) {
 			// Push the model into the view (as default)
 			$view->setModel($model, true);
 		}
@@ -49,25 +48,19 @@ class BramsAdminController extends BaseController {
 		$view->document = $document;
 
 		// Display the view
-		if ($cachable && $viewType !== 'feed' && \JFactory::getConfig()->get('caching') >= 1)
-		{
+		if ($cachable && $viewType !== 'feed' && \JFactory::getConfig()->get('caching') >= 1) {
 			$option = $this->input->get('option');
 
-			if (is_array($urlparams))
-			{
+			if (is_array($url_params)) {
 				$app = \JFactory::getApplication();
 
-				if (!empty($app->registeredurlparams))
-				{
+				if (!empty($app->registeredurlparams)) {
 					$registeredurlparams = $app->registeredurlparams;
-				}
-				else
-				{
+				} else {
 					$registeredurlparams = new \stdClass;
 				}
 
-				foreach ($urlparams as $key => $value)
-				{
+				foreach ($url_params as $key => $value) {
 					// Add your safe URL parameters with variable type as value {@see \JFilterInput::clean()}.
 					$registeredurlparams->$key = $value;
 				}
@@ -75,28 +68,23 @@ class BramsAdminController extends BaseController {
 				$app->registeredurlparams = $registeredurlparams;
 			}
 
-			try
-			{
+			try {
 				/** @var \JCacheControllerView $cache */
 				$cache = \JFactory::getCache($option, 'view');
 				$cache->get($view, 'display');
-			}
-			catch (\JCacheException $exception)
-			{
+			} catch (\JCacheException $exception) {
 				$view->display();
 			}
-		}
-		elseif($block_display)
-		{
+
+		} elseif($block_display) {
 			return $view;
-		}
-        else {
+		} else {
             $view->display();
         }
 
 		return $this;
 	}
-    
+
     public function newSystem() {
         $view = $this->display(false, array(), true);
         $view->create();

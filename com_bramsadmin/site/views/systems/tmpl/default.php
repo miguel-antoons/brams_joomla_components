@@ -71,5 +71,5 @@ defined('_JEXEC') or die('Restricted access');
         <?php endforeach; ?>
     ];
 
-    onPageLoad();
+    generateTable();
 </script>

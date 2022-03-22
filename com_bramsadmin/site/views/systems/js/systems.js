@@ -1,24 +1,21 @@
 /* global systems */
 /* global $ */
-function onPageLoad() {
+let sortLocationDesc = true;
+let sortNameDesc = false;
+let sortStartDesc = false;
+let sortEndDesc = false;
+
+function generateTable() {
     let HTMLString = '';
 
     systems.forEach(
         (system) => {
             HTMLString += `
                 <tr>
-                    <td>
-                        ${system[2]}
-                    </td>
-                    <td>
-                        ${system[1]}
-                    </td>
-                    <td>
-                        ${system[3]}
-                    </td>
-                    <td>
-                        ${system[4]}
-                    </td>
+                    <td>${system[1]}</td>
+                    <td>${system[2]}</td>
+                    <td>${system[3]}</td>
+                    <td>${system[4]}</td>
                     <td>
                         <button
                             type='button'
@@ -52,4 +49,83 @@ function deleteSystem(systemId) {
             console.log('api call failed', '\n', response);
         },
     });
+}
+
+/**
+ * Function changes the sort icon to the last clicked table header.
+ * @param {html} headerElement table header that was clicked for sorting
+ */
+function setSortIcon(headerElement) {
+    // remove the sort icon from the page
+    document.getElementById('sortIcon').remove();
+    // add the icon to the clicked element ('headerElement')
+    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
+}
+
+function sortLocation(headerElement) {
+    sortNameDesc = false;
+    sortStartDesc = false;
+    sortEndDesc = false;
+
+    if (sortLocationDesc) {
+        systems.sort((first, second) => first[1] < second[1]);
+    } else {
+        systems.sort((first, second) => first[1] > second[1]);
+    }
+
+    sortLocationDesc = !sortLocationDesc;
+
+    setSortIcon(headerElement);
+    generateTable();
+}
+
+function sortName(headerElement) {
+    sortLocationDesc = false;
+    sortStartDesc = false;
+    sortEndDesc = false;
+
+    if (sortNameDesc) {
+        systems.sort((first, second) => first[2] < second[2]);
+    } else {
+        systems.sort((first, second) => first[2] > second[2]);
+    }
+
+    sortNameDesc = !sortNameDesc;
+
+    setSortIcon(headerElement);
+    generateTable();
+}
+
+function sortStart(headerElement) {
+    sortNameDesc = false;
+    sortLocationDesc = false;
+    sortEndDesc = false;
+
+    if (sortStartDesc) {
+        systems.sort((first, second) => first[3] < second[3]);
+    } else {
+        systems.sort((first, second) => first[3] > second[3]);
+    }
+
+    sortStartDesc = !sortStartDesc;
+
+    setSortIcon(headerElement);
+    generateTable();
+}
+
+function sortEnd(headerElement) {
+    sortNameDesc = false;
+    sortStartDesc = false;
+    sortLocationDesc = false;
+
+    if (sortEndDesc) {
+        systems.sort((first, second) => first[4] < second[4]);
+    } else {
+        systems.sort((first, second) => first[4] > second[4]);
+    }
+
+    sortEndDesc = !sortEndDesc;
+
+    setSortIcon(headerElement);
+    generateTable();
 }
