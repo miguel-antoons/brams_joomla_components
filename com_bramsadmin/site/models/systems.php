@@ -9,20 +9,22 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use \Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 use \Joomla\CMS\MVC\Model\ItemModel;
 use \Joomla\CMS\Log\Log;
 
 /**
  * Systems Model
- * 
+ *
  * Edits, inserts and deletes data concerning the BRAMS
  * receiving stations.
  *
  * @since  0.0.2
  */
 class BramsAdminModelSystems extends ItemModel {
+    // array contains various system messages (could be moved to database if a lot of messages are required)
 	public $system_messages = array(
+        // default message (0) is empty
 		(0) => array(
 			('message') => '',
 			('css_class') => ''
@@ -36,10 +38,10 @@ class BramsAdminModelSystems extends ItemModel {
 			('css_class') => 'success'
 		)
 	);
-	// fucntion connects to the database and returns the database object
+	// function connects to the database and returns the database object
 	private function connectToDatabase() {
-		/* Below lines are for connecting to production database later on */
 		try {
+            /* Below lines are for connecting to production database later on */
 			// $database_options = array();
 
 			// $database_options['driver'] = $_ENV['DB_DRIVER'];
@@ -51,28 +53,34 @@ class BramsAdminModelSystems extends ItemModel {
 
 			// return JDatabaseDriver::getInstance($database_options);
 
-			// below line is for connecting to default joomla database
-			return JFactory::getDbo();
+			/*
+			below line is for connecting to default joomla database
+			WARNING : this line should be commented/removed for production
+			*/
+			return Factory::getDbo();
 		} catch (Exception $e) {
-			echo '
-				An error occured when trying to connect to the database. 
-				Activate Joomla debugging and view the logs for more information.
-			';
-			JLog::add($e, JLog::ERROR, 'jerror');
+            // if an error occurs, log the error and return false
+			Log::add($e, Log::ERROR, 'error');
 			return false;
 		}
-
-		return $db;
 	}
 
-	// TODO : change this function according to the needs
+	/**
+     * Function gets system information from the BRAMS database. The information
+     * it requests is the following : (system.id, system.name, location.location_code,
+     * system.start, system.end).
+     *
+     * @returns boolean|array false if an error occurred, else the array with system info
+     * @since 0.1.0
+     */
 	public function getSystems() {
+        // if the connection to the database failed, return false
 		if (!$db = $this->connectToDatabase()) {
 			return false;
 		}
 		$system_query = $db->getQuery(true);
 
-		// SQL query to get all inforamtions about the multiple systems
+		// SQL query to get all information about the multiple systems
 		$system_query->select(
 			$db->quoteName('system.id') . 'as id, '
 			. $db->quoteName('system.name') . 'as name, '
@@ -86,14 +94,12 @@ class BramsAdminModelSystems extends ItemModel {
 
 		$db->setQuery($system_query);
 
+        // try to execute the query and return the system info
 		try {
 			return $db->loadObjectList();
-		} catch (Exception $e) {
-			echo '
-				An error occured while requesting data to the database. 
-				Activate Joomla debugging and view the logs for more information.
-			';
-			Log::add($e, JLog::ERROR, 'jerror');
+		} catch (RuntimeException $e) {
+            // if an error occurs, log the error and return false
+			Log::add($e, Log::ERROR, 'error');
 			return false;
 		}
 	}

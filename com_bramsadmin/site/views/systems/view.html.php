@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use \Joomla\CMS\MVC\View\HtmlView;
-use \Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
 use \Joomla\CMS\Log\Log;
 
 /**
@@ -19,33 +19,45 @@ use \Joomla\CMS\Log\Log;
  * @since  0.0.1
  */
 class BramsAdminViewSystems extends HtmlView {
+    public $systems;
+    public $message;
+
 	/**
 	 * Display the Systems view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
-	 */
+     * @since 0.0.1
+     */
 	function display($tpl = null) {
-		// Assign data to the view
+        try {
+            $input = Factory::getApplication()->input;
+        } catch (Exception $e) {
+            // if an exception occurs, print an error message
+            echo '
+                Something went wrong. 
+                Activate Joomla debug and view log messages for more information.
+            ';
+            // log the error and stop the function
+            Log::add($e, Log::ERROR, 'error');
+            return;
+        }
+        // Assign data to the view
 		$model = $this->getModel();
 		// if an error occurred in the model
 		if (!$this->systems = $model->getSystems()) {
-			return false;
+            // show an error message and stop the function
+            echo '
+                Something went wrong. 
+                Activate Joomla debug and view log messages for more information.
+            ';
+            return;
 		}
-		$message_id = (int) JRequest::getVar('message');
+        // get the message id
+		$message_id = (int) $input->get('message');
 
-		try {
-			$this->message = $model->system_messages[$message_id];
-		} catch (Exception $e) {
-			echo '
-				An error occurred while looking for a message following a user action. 
-				Most likely, the message code requested does not exist and has yet to be
-				created. Activate Joomla debugging and view the logs for more information.
-			';
-			Log::add($e, JLog::ERROR, 'jerror');
-			return false;
-		}
+        $this->message = $model->system_messages[$message_id];
 
 		// Display the view
 		parent::display($tpl);
@@ -56,7 +68,7 @@ class BramsAdminViewSystems extends HtmlView {
 
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/systems.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
 		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
