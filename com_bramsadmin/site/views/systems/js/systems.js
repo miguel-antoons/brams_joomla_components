@@ -76,7 +76,7 @@ function deleteSystem(systemId) {
             const isDeletedElement = (element) => element[0] === systemId;
             systems.splice(systems.findIndex(isDeletedElement), 1);
             generateTable();
-            document.getElementById('message').innerHtml = response.data.message;
+            document.getElementById('message').innerHTML = response.data.message;
         },
         error: (response) => {
             // on fail, show an error message

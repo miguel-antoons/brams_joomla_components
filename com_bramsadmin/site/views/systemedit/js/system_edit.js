@@ -1,9 +1,8 @@
-/* global $ */
-/* global currentId */
-/* global locationAntennas */
-/* global systemNames */
-/* global defLocationAntenna */
-let log = 'Nothing to show';
+let log = 'Nothing to show';    // contains debug information if needed
+let systemId = 0;               // the id of the system to show (if 0 --> no system)
+let systemNames = [];           // array with all taken system names
+let defLocationAntenna = {};    // object with current location and antenna combo
+let locationAntennas = {};      // object with all antennas grouped by location
 
 /**
  * Function verifies if all the required inputs for the system are available
@@ -37,7 +36,7 @@ function verifyValues(antennaValue, locationSelect, locationId, systemName, syst
     }
 
     // if the location_id - antenna number combo is already taken
-    if (locationAntennas[locationId].includes(Number(antennaValue))) {
+    if (locationAntennas[locationId].antennas.includes(Number(antennaValue))) {
         document.getElementById('error').innerHTML = `
             Antenna - location combo ${antennaValue} - ${locationId} (
             ${locationSelect.options[locationSelect.selectedIndex].label}) 
@@ -86,7 +85,7 @@ function newSystem(form) {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('message').innerHTML = (
+                document.getElementById('error').innerHTML = (
                     'API call failed, please read the \'log\' variable in ' +
                     'developer console for more information about the problem.'
                 );
@@ -118,7 +117,7 @@ function updateSystem(form) {
             url: '/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json',
             data: {
                 systemInfo: {
-                    id: currentId,
+                    id: systemId,
                     name: form.systemName.value,
                     location: locationId,
                     antenna: antennaValue,
@@ -132,7 +131,7 @@ function updateSystem(form) {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('message').innerHTML = (
+                document.getElementById('error').innerHTML = (
                     'API call failed, please read the \'log\' variable in ' +
                     'developer console for more information about the problem.'
                 );
@@ -145,7 +144,7 @@ function updateSystem(form) {
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (currentId) {
+    if (systemId) {
         return updateSystem(form);
     }
     return newSystem(form);
@@ -168,10 +167,140 @@ function setAntenna() {
         document.getElementById('systemAntenna').value = defLocationAntenna.antenna;
     } else {
         // take the next available antenna for the selected location
-        locationAntennas[String(selectedLocation)].sort();
+        locationAntennas[selectedLocation].antennas.sort();
         document.getElementById('systemAntenna').value = (
-            locationAntennas[selectedLocation][locationAntennas[selectedLocation].length - 1]
+            Number(locationAntennas[selectedLocation]
+                .antennas[locationAntennas[selectedLocation].antennas.length - 1])
             + 1
         );
     }
 }
+
+/**
+ * Functions call an api to get all the antennas grouped by locations. If
+ * a valid response is returned, it fills the location select with all the
+ * available locations.
+ */
+function getLocations() {
+    $.ajax({
+        type: 'GET',
+        url: `
+            /index.php?option=com_bramsadmin&view=systemedit&task=getlocationantennas
+            &format=json&locationid=${defLocationAntenna.location}
+            &antenna=${defLocationAntenna.antenna}
+        `,
+        success: (response) => {
+            let HTMLString = '';
+            locationAntennas = response.data;
+            for (let key in locationAntennas) {
+                // add one option per location
+                HTMLString += `
+                    <option value=${locationAntennas[key].id} ${locationAntennas[key].selected}>
+                        ${locationAntennas[key].name}
+                    </option>
+                `;
+            }
+            document.getElementById('systemLocation').innerHTML = HTMLString;
+
+            // set correct antenna value
+            setAntenna();
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('error').innerHTML = (
+                'API call failed, please read the \'log\' variable in ' +
+                'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
+
+/**
+ * Function call api to get all system names. However, if 'id' is a non-zero
+ * positive number, the name of the current system will not be part of the
+ * returned array.
+ *
+ * @param {number} id id of the current system if there is one, else -1
+ */
+function getSystemNames(id) {
+    $.ajax({
+        type: 'GET',
+        url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystemnames&format=json&id=${id}`,
+        success: (response) => {
+            // store the response in an array
+            response.data.forEach(
+                (object) => systemNames.push(object.name)
+            );
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('error').innerHTML = (
+                'API call failed, please read the \'log\' variable in ' +
+                'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
+
+/**
+ * Function checks if the form is to create or update a system. If its purpose is
+ * for updating a system (a non-zero number was found in the urls id attribute) it will
+ * request the system info to back-end and set all the inputs accordingly.
+ * If the forms' purpose is creating a system, it will just set default values.
+ */
+function getSystemInfo() {
+    // get the id from url
+    const paramString = window.location.search.split('?')[1];
+    const queryString = new URLSearchParams(paramString);
+    systemId = Number(queryString.get('id'));
+
+    if (systemId) {
+        $.ajax({
+            type: 'GET',
+            url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystem&format=json&id=${systemId}`,
+            success: (response) => {
+                const inputContainer = document.getElementById('inputContainer').children;
+
+                // set all the input values
+                inputContainer.systemName.value = response.data.name;
+                defLocationAntenna.location = Number(response.data.location_id);
+                inputContainer.systemAntenna.value = response.data.antenna;
+                defLocationAntenna.antenna = Number(response.data.antenna);
+                inputContainer.systemStart.value = response.data.start;
+                inputContainer.systemComments.value = response.data.comments;
+                document.getElementById('title').innerHTML = `Update System ${response.data.name}`;
+
+                // get locations and other system names
+                getLocations();
+                getSystemNames(systemId);
+            },
+            error: (response) => {
+                // on fail, show an error message
+                document.getElementById('error').innerHTML = (
+                    'API call failed, please read the \'log\' variable in ' +
+                    'developer console for more information about the problem.'
+                );
+                // store the server response in the log variable
+                log = response;
+            },
+        });
+    } else {
+        // set default values to inputs if needed
+        defLocationAntenna.location = -1;
+        defLocationAntenna.antenna = -1;
+        const currentDate = new Date();
+        document.getElementById('systemStart').value = currentDate.toISOString().substring(0,16);
+
+        // get all locations and antennas
+        getLocations();
+        // get all system names
+        getSystemNames(-1);
+    }
+}
+
+// set onload function
+window.onload = getSystemInfo;

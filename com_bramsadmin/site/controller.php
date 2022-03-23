@@ -88,6 +88,7 @@ class BramsAdminController extends BaseController {
 	}
 
     /**
+     * API - POST
      * Function executes the views create method. This function is executed when a new
      * system has to be created.
      *
@@ -108,6 +109,7 @@ class BramsAdminController extends BaseController {
     }
 
     /**
+     * API - PUT
      * Function executes the views update method. This function is called when
      * a system has to be updated.
      *
@@ -128,6 +130,7 @@ class BramsAdminController extends BaseController {
     }
 
     /**
+     * API - DELETE
      * Function executes the views delete method. This function is called when
      * a system has to be deleted.
      *
@@ -146,4 +149,67 @@ class BramsAdminController extends BaseController {
         }
         $view->delete();
 	}
+
+    /**
+     * API - GET
+     * Function executes the view getSystem method. THis function is called when
+     * front-end needs information about a specific system.
+     *
+     * @since 0.3.0
+     */
+    public function getSystem() {
+        try {
+            $view = $this->display(false, array(), true);
+        } catch (Exception $e) {
+            echo '
+                Something went wrong. 
+                Activate Joomla debug and view log messages for more information.
+            ';
+            Log::add($e, Log::ERROR, 'error');
+            return;
+        }
+        $view->getSystem();
+    }
+
+    /**
+     * API - GET
+     * Function executes the view getLocationAntennas() method. This function is called when
+     * front-end needs all the available locations.
+     *
+     * @since 0.3.0
+     */
+    public function getLocationAntennas() {
+        try {
+            $view = $this->display(false, array(), true);
+        } catch (Exception $e) {
+            echo '
+                Something went wrong. 
+                Activate Joomla debug and view log messages for more information.
+            ';
+            Log::add($e, Log::ERROR, 'error');
+            return;
+        }
+        $view->getLocationAntennas();
+    }
+
+    /**
+     * API - GET
+     * Function executes the view getSystemNames() method. This function is called when
+     * front-end needs all the taken system names.
+     *
+     * @since 0.3.0
+     */
+    public function getSystemNames() {
+        try {
+            $view = $this->display(false, array(), true);
+        } catch (Exception $e) {
+            echo '
+                Something went wrong. 
+                Activate Joomla debug and view log messages for more information.
+            ';
+            Log::add($e, Log::ERROR, 'error');
+            return;
+        }
+        $view->getSystemNames();
+    }
 }
