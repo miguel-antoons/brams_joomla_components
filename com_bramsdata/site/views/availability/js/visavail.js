@@ -1,22 +1,22 @@
 ;(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.visavail = factory());
+		typeof define === 'function' && define.amd ? define(factory) :
+			(global.visavail = factory());
 }(this, (function () { 'use strict';
 	var visavail = {};
 
-	//ie11 fixing 
+	//ie11 fixing
 
 	Number.isInteger = Number.isInteger || function(value) {
-		return typeof value === "number" && 
-			   isFinite(value) && 
-			   Math.floor(value) === value;
+		return typeof value === "number" &&
+			isFinite(value) &&
+			Math.floor(value) === value;
 	};
 	Element.prototype.remove =  Element.prototype.remove || function() {
-			if (this.parentNode) {
-				this.parentNode.removeChild(this);
-			}
-		};
+		if (this.parentNode) {
+			this.parentNode.removeChild(this);
+		}
+	};
 
 
 	function visavailChart(custom_options, dataset) {
@@ -24,7 +24,7 @@
 		var moment = window.moment ? window.moment : typeof require !== 'undefined' ? require("moment") : undefined;
 
 		var t0, start_event;
-			
+
 		if(!d3)
 			throw new Error('Require D3.js before visavail script');
 		if(!moment)
@@ -47,7 +47,7 @@
 			},
 			width: 960,
 			moment_locale: window.navigator.userLanguage || window.navigator.language,
-            reduce_space_wrap: 35,
+			reduce_space_wrap: 35,
 			line_spacing: 35,
 			padding:{
 				top: -49,
@@ -73,7 +73,7 @@
 			//if true reminder to use the correct data format for d3
 			custom_categories: false,
 			is_date_only_format: true,
-		
+
 			date_in_utc: false,
 			date_is_descending: false,
 			// if false remeber to set the padding and margin
@@ -180,7 +180,7 @@
 				enabled: false,
 				onresize: function onresize(){},
 			},
-			
+
 			//copy the correct format from https://github.com/d3/d3-time-format/tree/master/locale
 			// locale: {
 			// 	"dateTime": "%A %e %B %Y, %X",
@@ -207,20 +207,20 @@
 		function convertMomentToStrftime(momentFormat){
 			var replacements =  {"ddd":"a","dddd":"A","MMM":"b","MMMM":"B","lll":"c","DD":"d","D":"e","YYYY-MM-DD":"F","HH":"H","H":"H","hh":"I","h":"I","DDDD":"j","DDD":"-j","MM":"m","M":"-m","mm":"M","m":"-M","A":"p","a":"P","ss":"S","s":"-S","E":"u","d":"w","WW":"W","ll":"x","LTS":"X","YY":"y","YYYY":"Y","ZZ":"z","z":"Z","SSS":"L","%":"%"}
 			var tokens = momentFormat.split(/( |\/|:|,|\]|\[|\.)/);
-			
+
 			var strftime = tokens.map(function (token) {
 				// Replace strftime tokens with moment formats
 				if(token[0] == ":" || token[0] == "/" || token[0] == " " || token[0] == ",")
 					return token
-				else 
-					if (token[0] == "[" || token[0] == "]")
-						return
-					else 
-						if (replacements.hasOwnProperty(token))
-							return "%" + replacements[token];				
+				else
+				if (token[0] == "[" || token[0] == "]")
+					return
+				else
+				if (replacements.hasOwnProperty(token))
+					return "%" + replacements[token];
 				// Escape non-token strings to avoid accidental formatting
 				return token.length > 0 ? '[' + token + ']' : token;
-				}).join('');
+			}).join('');
 			return strftime;
 		}
 
@@ -228,7 +228,7 @@
 			if (date_format_local.LTS.indexOf('a') > -1 ||  date_format_local.LTS.indexOf('A') > -1)
 				return true;
 			return false;
-			
+
 		}
 
 		function loadConfig(default_option, custom_options){
@@ -251,7 +251,7 @@
 		loadConfig(options, custom_options)
 		moment.locale(options.moment_locale);
 		var date_format_local = moment().creationData().locale._longDateFormat;
-		
+
 		options.locale = {
 			"dateTime": convertMomentToStrftime(date_format_local.LLLL),
 			"date": convertMomentToStrftime(date_format_local.L),
@@ -269,7 +269,7 @@
 				format_second : convertMomentToStrftime(":ss"),
 				format_minute : convertMomentToStrftime(date_format_local.LT),
 				format_hour : convertMomentToStrftime(date_format_local.LT.substring(0,1) + (periodInLocal()? " " + date_format_local.LT.slice(-1): "") ),
-				format_day : convertMomentToStrftime("ddd DD"), 
+				format_day : convertMomentToStrftime("ddd DD"),
 				format_week : convertMomentToStrftime("MMM DD"),
 				format_month : convertMomentToStrftime("MMMM"),
 				format_year : convertMomentToStrftime("YYYY")
@@ -284,15 +284,15 @@
 		//function for custom tick format of x axis
 		function multiFormat(date) {
 			return (d3.timeSecond(date) < date ? d3.timeFormat(options.custom_time_format.format_millisecond)
-			: d3.timeMinute(date) < date ? d3.timeFormat(options.custom_time_format.format_second)
-			: d3.timeHour(date) < date ? d3.timeFormat(options.custom_time_format.format_minute)
-			: d3.timeDay(date) < date ? d3.timeFormat(options.custom_time_format.format_hour)
-			: d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? d3.timeFormat(options.custom_time_format.format_day) 
-			: d3.timeFormat(options.custom_time_format.format_week))
-			: d3.timeYear(date) < date ? d3.timeFormat(options.custom_time_format.format_month)
-			: d3.timeFormat(options.custom_time_format.format_year))(date);
+				: d3.timeMinute(date) < date ? d3.timeFormat(options.custom_time_format.format_second)
+					: d3.timeHour(date) < date ? d3.timeFormat(options.custom_time_format.format_minute)
+						: d3.timeDay(date) < date ? d3.timeFormat(options.custom_time_format.format_hour)
+							: d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? d3.timeFormat(options.custom_time_format.format_day)
+									: d3.timeFormat(options.custom_time_format.format_week))
+								: d3.timeYear(date) < date ? d3.timeFormat(options.custom_time_format.format_month)
+									: d3.timeFormat(options.custom_time_format.format_year))(date);
 		}
-		
+
 
 
 		function chart(selection) {
@@ -300,7 +300,7 @@
 			selection.each(function drawGraph(dataset) {
 				//set to locale with moment
 				d3.timeFormatDefaultLocale(options.locale);
-				
+
 				// global div for tooltip
 				var div = d3.select('#'+options.id_div_container).append('div')
 					.attr('class', "visavail-tooltip " + options.id)
@@ -308,14 +308,14 @@
 					.append('div')
 					.attr('class', (options.tooltip.class+"-"+options.tooltip.position ))
 					.style('opacity', 0);
-				
+
 				var yTitlediv = d3.select('#'+options.id_div_container).append('div')
 					.attr('class', "visavail-ytitle-tooltip " + options.id)
 					.attr('id', options.id)
 					.append('div')
 					.attr('class', (options.y_title_tooltip.class))
 					.style('opacity', 0);
-					
+
 				var width = options.width - options.margin.left - options.margin.right;
 				if(!options.oldwidth)
 					options.oldwidth = width
@@ -335,7 +335,7 @@
 					endSet = dataset.length;
 				}
 
-				
+
 				// append data attribute in HTML for pagination interface
 				selection.attr('data-max-pages', maxPages);
 
@@ -348,7 +348,7 @@
 						options.tooltip.description = true;
 					if (dataset[i].data[0] != null && dataset[i].data[0].length == 3 ){
 						options.defined_blocks = true
-						if(!options.custom_categories && !Number.isInteger(dataset[i].data[0][1])) 
+						if(!options.custom_categories && !Number.isInteger(dataset[i].data[0][1]))
 							options.custom_categories = true;
 						break;
 					}
@@ -357,7 +357,7 @@
 				//parse data text strings to JavaScript date stamps
 				// var parseDate = d3.timeParse('%Y-%m-%d');
 				// var parseDateTime = d3.timeParse('%Y-%m-%d %H:%M:%S');
-				
+
 				// if(options.date_in_utc){
 				// 	var parseDate = function(date) {return moment.utc(date).toDate()};
 				// 	var parseDateTime =  function(date) {return moment.utc(date).toDate()};
@@ -379,11 +379,11 @@
 				// 	};
 				// 	var parseDateTime =  function(date) {
 				// 		var format = d3.timeParse('%Y-%m-%d %H:%M:%S');;
-				
+
 				// 		var date_converted = new Date(date);
 				// 		var userTimezoneOffset = new Date(date).getTimezoneOffset()*60000
 				// 		return (format(date))
-				// 	};	
+				// 	};
 				// }
 				var format = d3.timeParse("%Y-%m-%d");
 				var format_utc_time = d3.utcParse("%Y-%m-%d %H:%M:%S");
@@ -404,10 +404,10 @@
 						return new Date(date);
 					};
 				}
-				
+
 				var parseDateRegEx = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
 				var parseDateTimeRegEx = new RegExp(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
-				
+
 				var t0 = performance.now()
 				dataset.forEach(function (d) {
 					d.data.forEach(function (d1) {
@@ -416,7 +416,7 @@
 								// d1[0] is date with time data
 								d1[0] = parseDateTime(d1[0]);
 								options.is_date_only_format = false;
-								
+
 							} else if (parseDateRegEx.test(d1[0])) {
 								// d1[0] is date without time data
 								d1[0] = parseDate(d1[0]);
@@ -440,7 +440,7 @@
 										d1[2] = d1[0];
 										if(options.graph.type != "rhombus")
 											console.error('Date/time format not recognized. Pick between \'YYYY-MM-DD\' or ' +
-											'\'YYYY-MM-DD HH:MM:SS\'.');
+												'\'YYYY-MM-DD HH:MM:SS\'.');
 									}
 								} else
 									throw new Error('Defined block true but dataset not correct');
@@ -448,7 +448,7 @@
 						}
 					});
 				});
-				
+
 				//console.log(performance.now()-t0)
 				var startDate = moment().year(2999).toDate(),
 					endDate = moment().year(0).toDate();
@@ -462,7 +462,7 @@
 						// 	endDate = d[2]
 						// if(moment(d[0]).isSameOrBefore(startDate))
 						// 	startDate = d[0]
-						
+
 						// var temp = [moment(d[0]).valueOf(), moment(d[2]).valueOf()]
 						// var temp2 = [moment(startDate).valueOf(), moment(endDate).valueOf()]
 						// if(temp[1] >= temp2[1])
@@ -525,7 +525,7 @@
 								startDate = moment.utc(options.display_date_range[0]).toDate();
 							else
 								startDate = options.display_date_range[0];
-						}							
+						}
 					}
 					if(options.display_date_range[1]){
 						if (!(options.display_date_range[1] instanceof Date)) {
@@ -544,7 +544,7 @@
 							else
 								endDate = options.display_date_range[1];
 						}
-						
+
 					}
 				}
 
@@ -572,10 +572,10 @@
 
 				// define scales
 				var xScale = d3.scaleTime()
-					.domain([startDate, endDate])	
+					.domain([startDate, endDate])
 					.range([0, width])
 				var xScale2 = d3.scaleTime()
-					.domain([startDate, endDate])	
+					.domain([startDate, endDate])
 					.range([0, width])
 
 				if(options.date_is_descending){
@@ -583,7 +583,7 @@
 					xScale2.domain([endDate, startDate])
 				}
 				options.xScale = xScale;
-					
+
 				// define axes
 				var xAxis = d3.axisTop(options.xScale)
 					.scale(options.xScale)
@@ -591,10 +591,10 @@
 					.tickFormat(multiFormat);
 
 				var subChartXAxis = d3.axisBottom(xScale2)
-									.scale(xScale2)
-									.ticks(options.ticks_for_graph)
-									.tickFormat(multiFormat);
-				
+					.scale(xScale2)
+					.ticks(options.ticks_for_graph)
+					.tickFormat(multiFormat);
+
 				// create SVG element
 				var svg = d3.select(this).append('svg')
 					.attr('width', width + options.margin.left + options.margin.right)
@@ -606,14 +606,14 @@
 
 				svg.append('g').attr('id', 'g_axis');
 				svg.append('g')
-				.attr('id', 'g_data')
-				.append('rect')
-				.attr('id', 'zoom')
-				.attr('width', width)
-				.attr('height', height)
-				.attr('fill-opacity', 0)
-				.attr('x', 0)
-				.attr('y', 0)
+					.attr('id', 'g_data')
+					.append('rect')
+					.attr('id', 'zoom')
+					.attr('width', width)
+					.attr('height', height)
+					.attr('fill-opacity', 0)
+					.attr('x', 0)
+					.attr('y', 0)
 				svg.append('g').attr('id', 'g_axis_text');
 				svg.append('g').attr('id', 'g_title');
 
@@ -621,11 +621,11 @@
 					.scaleExtent([1,Infinity])
 					.translateExtent([[0,0],[width, options.height]])
 					.extent([[0, 0], [width, options.height]])
-					
+
 					.on("start", function () {
 						var e = d3.event;
 						//console.log("start", e.transform, d3.zoomTransform(svg.select("#g_data").node()))
-													
+
 						if (e.sourceEvent && e.sourceEvent.type === "brush") {
 							return;
 						}
@@ -638,10 +638,10 @@
 							start_event = e;
 							options.zoom.onZoomStart.call(this, e);
 						}
-						
+
 					})
 					.on("zoom", zoomed)
-					
+
 					.on('end', function () {
 						var e = d3.event;
 						//console.log( e.type, e.transform.k, e.transform.x, e.sourceEvent)
@@ -656,19 +656,19 @@
 							event.stopImmediatePropagation();
 						}
 						// if click, do nothing. otherwise, click interaction will be canceled.
-// 							if (start_event.sourceEvent && e.sourceEvent && start_event.sourceEvent.type === "touchend"&&  
+// 							if (start_event.sourceEvent && e.sourceEvent && start_event.sourceEvent.type === "touchend"&&
 // 								start_event.sourceEvent.clientX == e.sourceEvent.clientX && start_event.sourceEvent.clientY == e.sourceEvent.clientY) {
 // 								console.log("enter to click")
 // 								return;
 // 							}
-						
+
 						if(e.transform.k || e.transform.x){
 							options["scale"] = d3.zoomTransform(svg.select("#g_data").node())
 							options.zoom.onZoomEnd.call(this, options.xScale.domain());
 						} else {
 							e.transform.k = start_event.transform.k;
 							e.transform.x = start_event.transform.x;
-							
+
 							options["scale"] = d3.zoomIdentity.translate(e.transform.x, e.transform.y).scale(e.transform.k)
 							options.zoom.onZoomEnd.call(this, options.xScale.domain());
 						}
@@ -676,15 +676,15 @@
 
 				if (options.zoom.enabled)
 					svg.select("#g_data")
-					.call(options.zoomed)
-					.attr('cursor', "ew-resize")
+						.call(options.zoomed)
+						.attr('cursor', "ew-resize")
 
 				function wrap() {
 					var self = d3.select(this),
 						textLength = self.node().getComputedTextLength(),
 						text = self.text();
-					
-						while (textLength > (-1 * options.padding.left + options.reduce_space_wrap) && text.length > 0) {
+
+					while (textLength > (-1 * options.padding.left + options.reduce_space_wrap) && text.length > 0) {
 						text = text.slice(0, -1);
 						self.text(text + '...');
 						textLength = self.node().getComputedTextLength();
@@ -701,8 +701,8 @@
 						.attr('id', function (d,i) {
 							return i;
 						});
-						
-					
+
+
 					y_axis_title.selectAll("g").append('text')
 						.attr('x', options.padding.left)
 						.attr('y', function (d,i){
@@ -725,10 +725,10 @@
 								if (d.timedown_ms == 0)
 									returnCSSClass += ' ' + options.y_title_total_availability_class;
 								else
-									if (d.timeup_ms == 0)
-										returnCSSClass += ' ' + options.y_title_total_unavailability_class;
-									else
-										returnCSSClass += ' ' + options.y_title_some_unavailability_class;
+								if (d.timeup_ms == 0)
+									returnCSSClass += ' ' + options.y_title_total_unavailability_class;
+								else
+									returnCSSClass += ' ' + options.y_title_some_unavailability_class;
 							return returnCSSClass;
 						})
 						.on('click', function (d) {
@@ -737,7 +737,7 @@
 							}
 							return null;
 						})
-						
+
 					y_axis_title.selectAll("g")
 						.append("circle")
 						.attr('class', function (d) {
@@ -790,23 +790,23 @@
 							return 0;
 						});
 
-					if(options.y_title_tooltip.enabled){	
+					if(options.y_title_tooltip.enabled){
 						y_axis_title.selectAll("g").selectAll('text')
-						.on('mouseover', function (d, i) {
-							drawTitleTooltipWhenOver(this, dataset, d, i);
-						})
-						.on("touchstart", function (d, i) {
-							drawTitleTooltipWhenOver(this, d, i);
-						})
-						.on('mouseout', function () {
-							hideTitleTooltipWhenOver()
-						})
-						.on("touchleave", function () {
-							hideTitleTooltipWhenOver()
-						})
-						.on("touchcancel", function () {
-							hideTitleTooltipWhenOver()
-						});
+							.on('mouseover', function (d, i) {
+								drawTitleTooltipWhenOver(this, dataset, d, i);
+							})
+							.on("touchstart", function (d, i) {
+								drawTitleTooltipWhenOver(this, d, i);
+							})
+							.on('mouseout', function () {
+								hideTitleTooltipWhenOver()
+							})
+							.on("touchleave", function () {
+								hideTitleTooltipWhenOver()
+							})
+							.on("touchcancel", function () {
+								hideTitleTooltipWhenOver()
+							});
 
 						function drawTitleTooltipWhenOver(obj, dataset, d, i){
 							if (options.y_title_tooltip.enabled){
@@ -816,9 +816,9 @@
 									.style('opacity', 1);
 
 								yTitlediv.html(function () {
-										var output = d.measure_description  || "";
-										return output;
-									})
+									var output = d.measure_description  || "";
+									return output;
+								})
 
 								if(options.y_title_tooltip.type == "right"){
 									yTitlediv.style('left', function(){
@@ -826,23 +826,23 @@
 											return -1 * options.padding.left + 'px';
 										return options.y_title_tooltip.spacing.right + d3.select(obj).node().getComputedTextLength() + 'px';
 									})
-									.classed(options.y_title_tooltip.type, true)
-									.style('top',  matrix.f - (document.getElementsByClassName(options.y_title_tooltip.class)[0].offsetHeight + ((options.line_spacing + options.graph.height) * i))/2 + 'px')
+										.classed(options.y_title_tooltip.type, true)
+										.style('top',  matrix.f - (document.getElementsByClassName(options.y_title_tooltip.class)[0].offsetHeight + ((options.line_spacing + options.graph.height) * i))/2 + 'px')
 								}
 
 								if(options.y_title_tooltip.type == "top"){
 									yTitlediv.style('left', '0px')
-									.style("top", matrix.f - (document.getElementsByClassName(options.y_title_tooltip.class)[0].offsetHeight + options.y_title_tooltip.spacing.top)  + 'px')
-									.classed(options.y_title_tooltip.type, true)
+										.style("top", matrix.f - (document.getElementsByClassName(options.y_title_tooltip.class)[0].offsetHeight + options.y_title_tooltip.spacing.top)  + 'px')
+										.classed(options.y_title_tooltip.type, true)
 								}
-								
+
 								if(options.y_title_tooltip.type == "bottom"){
 									yTitlediv.style('left', '0px')
-									.style("top", matrix.f + options.y_title_tooltip.spacing.bottom  + 'px')
-									.classed(options.y_title_tooltip.type, true)
+										.style("top", matrix.f + options.y_title_tooltip.spacing.bottom  + 'px')
+										.classed(options.y_title_tooltip.type, true)
 								}
 							}
-							
+
 						}
 						function hideTitleTooltipWhenOver(){
 							yTitlediv.transition()
@@ -851,13 +851,13 @@
 						}
 					} else {
 						y_axis_title.selectAll("g").append('title')
-						.text(function (d) {
-								 return d.measure_description || d.measure;
-						});
+							.text(function (d) {
+								return d.measure_description || d.measure;
+							});
 					}
 					/*svg.select('#yAxis').selectAll("g")
 							.insert('text', ':first-child')
-							
+
 							.attr('x', options.padding.left)
 							.attr('y', options.line_spacing)
 							.attr('transform', function (d, i) {
@@ -873,7 +873,7 @@
 								}
 							});
 						*/
-                    
+
 				}
 
 				if (options.y_percentage.enabled) {
@@ -886,8 +886,8 @@
 						.attr('id', function (d,i) {
 							return i;
 						});
-						
-					
+
+
 					y_percentage_title.selectAll("g").append('text')
 						.attr('x', width)
 						.attr('dx', options.padding.right)
@@ -911,13 +911,13 @@
 								if (d.timedown_ms == 0)
 									returnCSSClass += ' ' + options.y_percentage.total_availability_class;
 								else
-									if (d.timeup_ms == 0)
-										returnCSSClass += ' ' + options.y_percentage.total_unavailability_class;
-									else
-										returnCSSClass += ' ' + options.y_percentage.some_unavailability_class;
+								if (d.timeup_ms == 0)
+									returnCSSClass += ' ' + options.y_percentage.total_unavailability_class;
+								else
+									returnCSSClass += ' ' + options.y_percentage.some_unavailability_class;
 							else if(options.y_percentage.custom_percentage)
 								returnCSSClass += ' ' + (d.percentage || "").class || "";;
-							
+
 							return returnCSSClass;
 						});
 				}
@@ -946,7 +946,7 @@
 				if (noOfDatasets) {
 					createVGrid(options.xScale)
 				}
-				
+
 				// create horizontal grid
 				svg.select('#g_axis').append('g').attr('id', 'hGrid').selectAll('line.horz_grid').data(dataset)
 					.enter()
@@ -967,7 +967,7 @@
 						.attr('class', 'xAxis')
 						.call(xAxis);
 				}
-	
+
 				// make y groups for different data series
 				var g = svg.select('#g_data').selectAll('.g_data')
 					.data(dataset.slice(startSet, endSet))
@@ -978,8 +978,8 @@
 					})
 					.attr('cursor', 'pointer')
 					.attr('class', 'dataset');
-				
-				
+
+
 				// g.selectAll('rect')
 				// 	.data(function (d) {
 				// 		return d.disp_data;
@@ -1042,23 +1042,23 @@
 					.on("mousemove", function(){
 						redrawTooltipWhenMoved(d3.event.layerX, d3.event.layerY, this)
 					})
-	
-					// .on("touchstart", function (d, i) {
-					// 	console.log("entrato",  d3.touches)
-					// 	//redrawTooltipWhenOver(this, dataset, d3.event.touches[0].layerX, d3.event.touches[0].layerY, d, i);
-					// })
-					// // .on("touchmove", function () {
-					// // 	console.log(d3.event)
-					// // 	redrawTooltipWhenMoved(d3.event.touches[0].layerX, d3.event.touches[0].layerY)
-					// // })
-					// .on("touchleave", function () {
-					// 	//redrawTooltipWhenOut(this)
-					// })
-					// .on("touchcancel", function () {
-					// 	//redrawTooltipWhenOut(this)
-					// })
-				
-						
+
+				// .on("touchstart", function (d, i) {
+				// 	console.log("entrato",  d3.touches)
+				// 	//redrawTooltipWhenOver(this, dataset, d3.event.touches[0].layerX, d3.event.touches[0].layerY, d, i);
+				// })
+				// // .on("touchmove", function () {
+				// // 	console.log(d3.event)
+				// // 	redrawTooltipWhenMoved(d3.event.touches[0].layerX, d3.event.touches[0].layerY)
+				// // })
+				// .on("touchleave", function () {
+				// 	//redrawTooltipWhenOut(this)
+				// })
+				// .on("touchcancel", function () {
+				// 	//redrawTooltipWhenOut(this)
+				// })
+
+
 				function redrawTooltipWhenMoved(pageX, pageY, obj){
 					div.style('left',  function () {
 						if(options.width < (pageX + div.property('offsetWidth') + options.tooltip.left_spacing))
@@ -1103,7 +1103,7 @@
 						.duration(options.tooltip.duration)
 						.style('opacity', 0);
 				}
-				
+
 				function redrawTooltipWhenOver(obj, dataset, pageX, pageY, d, i){
 					if(options.tooltip.hover_zoom.enabled){
 						d3.select(obj).transition()
@@ -1111,7 +1111,7 @@
 							.attr('x', function (d) {
 								if(options.graph.type == "rhombus" || options.graph.type == "circle")
 									return xForPoint(d, options.graph.width, options.xScale, options.line_spacing*options.tooltip.hover_zoom.ratio*2)
-								return xForPoint(d, options.graph.width, options.xScale, 0)	
+								return xForPoint(d, options.graph.width, options.xScale, 0)
 							})
 							.attr('width', function (d) {
 								if(options.graph.type == "rhombus" || options.graph.type == "circle")
@@ -1130,82 +1130,82 @@
 						.style('opacity', 1);
 					div.html(function () {
 
-							var output = '';
-							if (options.custom_categories) {
-								// custom categories: display category name
-								var series = dataset.filter(
-									function (series) {
-										return series.disp_data.indexOf(d) >= 0;
-									}
-								)[0];
-								if(series && series.categories[d[1]].tooltip_html)
-								  	output = series.categories[d[1]].tooltip_html;
-								else
-									output = '&nbsp;' + d[1] + '&nbsp;';
+						var output = '';
+						if (options.custom_categories) {
+							// custom categories: display category name
+							var series = dataset.filter(
+								function (series) {
+									return series.disp_data.indexOf(d) >= 0;
+								}
+							)[0];
+							if(series && series.categories[d[1]].tooltip_html)
+								output = series.categories[d[1]].tooltip_html;
+							else
+								output = '&nbsp;' + d[1] + '&nbsp;';
+						} else {
+							if (d[1] === 1) {
+								// checkmark icon
+								output = '<i class=" '+ options.icon.class_has_data +' tooltip_has_data"></i>';
 							} else {
-								if (d[1] === 1) {
-									// checkmark icon
-									output = '<i class=" '+ options.icon.class_has_data +' tooltip_has_data"></i>';
-								} else {
-									// cross icon
-									output = '<i class=" '+ options.icon.class_has_no_data + ' tooltip_has_no_data"></i>';
-								}
+								// cross icon
+								output = '<i class=" '+ options.icon.class_has_no_data + ' tooltip_has_no_data"></i>';
 							}
+						}
 
-							if(options.tooltip.description){
-								var series = dataset.filter(
-									function (series) {
-										return series.disp_data.indexOf(d) >= 0;
-									}
-								)[0];
-								if (series && series.description && series.description[i]) {
-									output += ' ' + series.description[i] + ' ';
+						if(options.tooltip.description){
+							var series = dataset.filter(
+								function (series) {
+									return series.disp_data.indexOf(d) >= 0;
 								}
+							)[0];
+							if (series && series.description && series.description[i]) {
+								output += ' ' + series.description[i] + ' ';
 							}
-							
-							if (options.is_date_only_format && !options.tooltip.date_plus_time) {
-								if (d[2] > d3.timeSecond.offset(d[0], 86400) && !options.tooltip.only_first_date) {
-									if(options.date_is_descending)
-										return output + moment(d[2]).format('l') +
+						}
+
+						if (options.is_date_only_format && !options.tooltip.date_plus_time) {
+							if (d[2] > d3.timeSecond.offset(d[0], 86400) && !options.tooltip.only_first_date) {
+								if(options.date_is_descending)
+									return output + moment(d[2]).format('l') +
 										' - ' + moment(d[0]).format('l');
-									return output + moment(d[0]).format('l') +
-										' - ' + moment(d[2]).format('l');
+								return output + moment(d[0]).format('l') +
+									' - ' + moment(d[2]).format('l');
+							}
+							if(options.date_is_descending)
+								return output + moment(d[2]).format('l');
+							return output + moment(d[0]).format('l');
+						} else {
+							if(!options.tooltip.only_first_date){
+								if ((d[2] > d3.timeSecond.offset(d[0], 86400) || options.tooltip.date_plus_time)) {
+									if(options.date_is_descending)
+										return output + moment(d[2]).format('l') + ' ' +
+											moment(d[2]).format('LTS') + ' - ' +
+											moment(d[0]).format('l') + ' ' +
+											moment(d[0]).format('LTS');
+									return output + moment(d[0]).format('l') + ' ' +
+										moment(d[0]).format('LTS') + ' - ' +
+										moment(d[2]).format('l') + ' ' +
+										moment(d[2]).format('LTS');
 								}
 								if(options.date_is_descending)
-									return output + moment(d[2]).format('l');
-								return output + moment(d[0]).format('l');
-							} else {
-								if(!options.tooltip.only_first_date){
-									if ((d[2] > d3.timeSecond.offset(d[0], 86400) || options.tooltip.date_plus_time)) {
-										if(options.date_is_descending)
-											return output + moment(d[2]).format('l') + ' ' +
-												moment(d[2]).format('LTS') + ' - ' +
-												moment(d[0]).format('l') + ' ' +
-												moment(d[0]).format('LTS');
-										return output + moment(d[0]).format('l') + ' ' +
-											moment(d[0]).format('LTS') + ' - ' +
-											moment(d[2]).format('l') + ' ' +
-											moment(d[2]).format('LTS');
-									}
-									if(options.date_is_descending)
-										return output + moment(d[2]).format('LTS') + ' - ' +
+									return output + moment(d[2]).format('LTS') + ' - ' +
 										moment(d[0]).format('LTS');
-									return output + moment(d[0]).format('LTS') + ' - ' +
-										moment(d[2]).format('LTS');
-								} else {
-									if (d[2] > d3.timeSecond.offset(d[0], 86400) || options.tooltip.date_plus_time) {
-										if(options.date_is_descending)
-											return output + moment(d[2]).format('l') + ' ' +
-												moment(d[2]).format('LTS');
-										return output + moment(d[0]).format('l') + ' ' +
-											moment(d[0]).format('LTS');
-									}
+								return output + moment(d[0]).format('LTS') + ' - ' +
+									moment(d[2]).format('LTS');
+							} else {
+								if (d[2] > d3.timeSecond.offset(d[0], 86400) || options.tooltip.date_plus_time) {
 									if(options.date_is_descending)
-										return output + moment(d[2]).format('LTS');
-									return output + moment(d[0]).format('LTS');
-								}								
+										return output + moment(d[2]).format('l') + ' ' +
+											moment(d[2]).format('LTS');
+									return output + moment(d[0]).format('l') + ' ' +
+										moment(d[0]).format('LTS');
+								}
+								if(options.date_is_descending)
+									return output + moment(d[2]).format('LTS');
+								return output + moment(d[0]).format('LTS');
 							}
-						})
+						}
+					})
 						.style('left', function () {
 							if(options.width < (pageX + div.property('offsetWidth') + options.tooltip.left_spacing))
 								return ((pageX - div.property('offsetWidth')) - options.tooltip.left_spacing)+ 'px';
@@ -1218,13 +1218,13 @@
 								return window.pageYOffset + matrix.f - options.tooltip.height - options.tooltip.hover_zoom.ratio*options.line_spacing + 'px';
 							return matrix.f  - options.tooltip.height + 'px';
 						})
-						.style('height', 
-							function(){
-								if(options.tooltip.hover_zoom.enabled)
-									return	options.tooltip.hover_zoom.ratio*options.line_spacing + options.graph.height + options.tooltip.height + 'px'
-								return	options.graph.height + options.tooltip.height + 'px'
-							})
-						
+							.style('height',
+								function(){
+									if(options.tooltip.hover_zoom.enabled)
+										return	options.tooltip.hover_zoom.ratio*options.line_spacing + options.graph.height + options.tooltip.height + 'px'
+									return	options.graph.height + options.tooltip.height + 'px'
+								})
+
 						if(options.width < (pageX + div.property('offsetWidth') + options.tooltip.left_spacing)){
 							div.style('border-right', "solid thin rgb(0, 0, 0)")
 								.style('border-left', "none");
@@ -1281,14 +1281,14 @@
 						!isMonthTick.every(function (d) {
 							return d === true;
 						})) {
-                        d3.selectAll('#' + options.id_div_graph +' g.tick').each(function (d, i) {
-                            if (isMonthTick[i]) {
+						d3.selectAll('#' + options.id_div_graph +' g.tick').each(function (d, i) {
+							if (isMonthTick[i]) {
 								d3.select(this)
 									.attr('class', 'tick x_tick_emph');
 							}
 						});
 						d3.selectAll('#' + options.id_div_graph + ' g.vert_grid').each(function (d, i) {
-                            if (isMonthTick[i]) {
+							if (isMonthTick[i]) {
 								d3.select(this)
 									.attr('class', 'vert_grid vert_grid_emph');
 							}
@@ -1364,32 +1364,32 @@
 						.attr('dy', "0.5ex")
 						.attr('class', 'legend');
 
-					
+
 				}
-				
+
 
 				// function for zoomed
-				function zoomed() {	
+				function zoomed() {
 					//prevent event null for type != zooming
 					var e = d3.event
-					
+
 					if (e.sourceEvent && e.sourceEvent.type === "brush"){
 						if(!options.sub_chart.animation)
 							return	// ignore zoom-by-brush
 					}
-					
+
 					if (e && e.type !== "zoom")	return;
 					//if (!e)	return;
 					if(e.transform.k || e.transform.x){
-						
+
 						options.xScale = e.transform.rescaleX(xScale);
-					
+
 						//redraw tooltip
 						if(e.sourceEvent && e.sourceEvent== "touchmove")
 							redrawTooltipWhenMoved(e.sourceEvent.touches[0].layerX, e.sourceEvent.touches[0].layerY)
 						else if(e.sourceEvent)
 							redrawTooltipWhenMoved(e.sourceEvent.layerX, e.sourceEvent.layerY)
-							
+
 						g.selectAll('rect')
 							.attr('x', function (d) {
 								return xForPoint(d, options.graph.width, options.xScale, 0);
@@ -1416,19 +1416,19 @@
 						// 	//svg.select("#g_brush").call(brush.move, [(remap[0] - (remap[1] - xScale.range()[1])) , (remap[1] - (remap[1] - xScale.range()[1]))]);
 						// } else
 						if(options.sub_chart.enabled)
-							svg.select("#g_brush").call(brush.move, options.xScale.range().map(e.transform.invertX, e.transform));		
+							svg.select("#g_brush").call(brush.move, options.xScale.range().map(e.transform.invertX, e.transform));
 						options.zoom.onZoom.call(this, options.xScale.domain())
-		
+
 					}
-				
+
 
 				}
 
 				//start brushing
 				if(options.sub_chart.enabled){
 					var brush = d3.brushX()
-								.extent([[0, 0], [width,  options.sub_chart.height]])
-								.on("brush end", brushed);
+						.extent([[0, 0], [width,  options.sub_chart.height]])
+						.on("brush end", brushed);
 
 					svg.append('g')
 						.attr("id", "g_sub")
@@ -1441,7 +1441,7 @@
 					svg.selectAll("#g_sub")
 						.append("g")
 						.attr("id", "g_sub_data")
-					
+
 					if(options.sub_chart.graph.enabled){
 						svg.selectAll("#g_sub_data").selectAll(".g_sub_data")
 							.data(dataset.slice(startSet, endSet))
@@ -1504,64 +1504,64 @@
 						.attr('width', width)
 						.attr("transform", 'translate( 0, '+  (options.sub_chart.margin.top + height)  + ')')
 						.call(brush)
-						//.call(brush.move, options.xScale.range());
+					//.call(brush.move, options.xScale.range());
 
 					function brushed() {
 						if (d3.event && d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
 						var s = d3.event.selection || xScale2.range();
-						//options.xScale.domain(s.map(xScale.invert, xScale));		
+						//options.xScale.domain(s.map(xScale.invert, xScale));
 						//svg.select(".subchart-xAxis").call(subChartXAxis.scale(options.xScale));
-						
+
 						svg.select("#g_data")
-							.call(options.zoomed.transform, 
+							.call(options.zoomed.transform,
 								d3.zoomIdentity.scale((width) / (s[1] - s[0])).translate(-s[0], 0)
-								);
+							);
 					}
 				}
-				
+
 				//restore zoom and size when resize
-				
+
 				if(options.scale){
 					// var oldFullWidth = (options.oldwidth * options.scale.k);
 					// var newFullWidth = (width * options.scale.k);
 					var newX = -((width * options.scale.k) * ((options.scale.x * -1) / (options.oldwidth * options.scale.k)));
 					var new_translate = (newX - options.scale.x) / options.scale.k;
-					
+
 					svg.select("#g_data")
 						.call(options.zoomed.transform, options.scale.translate(new_translate,0)
 						);
 					//restore width
 					options.oldwidth = width;
-							
+
 				} else {
 					if(options.sub_chart.enabled)
 						svg.select('#g_brush').call(brush.move, xScale.range());
 				}
 
 				function xForPoint(d, graph_width, xScale, ratio){
-					
+
 					var x_scale = xScale(d[0]) - ratio;
 					if(options.date_is_descending)
 						x_scale = xScale(d[2]) - ratio;
 					if(isNaN(x_scale) || x_scale <= 0 || x_scale + ratio > width)
 						return 0 - ratio/2
 					if(options.graph.type == "rhombus" || options.graph.type == "circle")
-						return xScale(d[0]) - graph_width/2 
-					
+						return xScale(d[0]) - graph_width/2
+
 					return x_scale;
 				}
-				
+
 				function widthForPoint(d, graph_width, xScale, ratio){
-					
+
 					var x_scale_d0 = xScale(d[0]) - ratio;
 					var x_scale_d2 = xScale(d[2]) + ratio;
-					
+
 					if(options.date_is_descending) {
 						x_scale_d0 = xScale(d[2]) - ratio;
 						x_scale_d2 =  xScale(d[0]) + ratio;
 					}
-					
-					if(isNaN(x_scale_d0) || isNaN(x_scale_d2) || (!options.date_is_descending && (x_scale_d2 - x_scale_d0) < 0) || x_scale_d2 <= 0 && x_scale_d0 <= 0 ) 
+
+					if(isNaN(x_scale_d0) || isNaN(x_scale_d2) || (!options.date_is_descending && (x_scale_d2 - x_scale_d0) < 0) || x_scale_d2 <= 0 && x_scale_d0 <= 0 )
 						return 0;
 
 					if(options.date_is_descending && (x_scale_d2 - x_scale_d0) < 0)
@@ -1578,12 +1578,12 @@
 
 					if (x_scale_d2 < 0 && x_scale_d0 > 0)
 						return x_scale_d0 > width ? width  : x_scale_d0 - ratio
-					
+
 					if (x_scale_d2 > width)
 						return width - x_scale_d0 < 0 ? 0 : (width - x_scale_d0 + ratio);
 					else
 						return x_scale_d2 - x_scale_d0;
-					
+
 				}
 
 				function transformForTypeOfGraph(d, xScale, graph_height, line_spacing, ratio){
@@ -1598,23 +1598,23 @@
 				function roundedRect(){
 					if(options.graph.type == "circle")
 						return 200000
-					return 0  
+					return 0
 				}
-				
-			}); 
-			
+
+			});
+
 //			console.log("Generating chart " + ( performance.now() - t0) + " milliseconds.");
-		
+
 		};
 
-		
+
 		function removeElementsByClass(className){
 			var elements = document.getElementsByClassName(className);
 			while(elements.length > 0){
 				elements[0].parentNode.removeChild(elements[0]);
 			}
 		}
-		
+
 
 
 		// chart.width = function (_) {
@@ -1651,9 +1651,9 @@
 			if (!arguments.length) return  options.display_date_range;
 			options.display_date_range = date_range ;
 			if(!document.getElementById(options.id_div_graph) ){
-                return chart;
-            }
-            return chart.updateGraph(null, dataset)
+				return chart;
+			}
+			return chart.updateGraph(null, dataset)
 		};
 
 		chart.updateOptions = function (custom_options){
@@ -1677,22 +1677,22 @@
 
 				if(dataset)
 					return chart.createGraph(dataset)
-	
-                d3.select('#' + options.id_div_graph)
-						.call(chart);
+
+				d3.select('#' + options.id_div_graph)
+					.call(chart);
 			}
 			return chart;
 		};
 
 		chart.createGraph = function(dataset){
 			d3.select('#' + options.id_div_graph)
-					.datum(dataset)
-					.call(chart);
+				.datum(dataset)
+				.call(chart);
 			return chart;
 		};
 
 		chart.destroy = function(_){
-            if(document.getElementById(options.id_div_graph))
+			if(document.getElementById(options.id_div_graph))
 				document.getElementById(options.id_div_graph).innerHTML = "";
 			if(document.getElementById(options.id))
 				document.getElementById(options.id).remove();
@@ -1703,10 +1703,10 @@
 		};
 
 		options.responsive["function"] = function () {
-            if (!options.id_div_container || !document.getElementById(options.id_div_graph) || document.getElementById(options.id_div_graph).innerHTML == "" ) {
-                return;
-            }
-           chart.resizeWidth(document.getElementById(options.id_div_graph).offsetWidth);
+			if (!options.id_div_container || !document.getElementById(options.id_div_graph) || document.getElementById(options.id_div_graph).innerHTML == "" ) {
+				return;
+			}
+			chart.resizeWidth(document.getElementById(options.id_div_graph).offsetWidth);
 		}
 
 		if(options.responsive.enabled){
@@ -1714,7 +1714,7 @@
 		}
 
 		chart.createGraph(dataset);
-		
+
 		return chart;
 
 	}
