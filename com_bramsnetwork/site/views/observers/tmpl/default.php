@@ -10,6 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class='container'>
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div class='row'>
         <div class='col'>
             <h1>Observers</h1>
@@ -23,12 +24,12 @@ defined('_JEXEC') or die('Restricted access');
             <table class='table'>
                 <thead>
                     <tr>
-                        <th class='headerCol' id='sortFirstName' onClick='sortFirstName(this)' width="25%">
+                        <th class='headerCol width25' id='sortFirstName' onclick='sortFirstName(this)'>
                             First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class='headerCol' id='sortLastName' onClick='sortLastName(this)' width="25%">
+                        <th class='headerCol width25' id='sortLastName' onclick='sortLastName(this)'>
                             Last name </th>
-                        <th class='headerCol' id='sortLocations' onClick='sortLocations(this)' width="50%">
+                        <th class='headerCol width50' id='sortLocations' onclick='sortLocations(this)'>
                             Stations </th>
                     </tr>
                 </thead>
@@ -39,16 +40,3 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 </div>
-<script>
-    let observers = [
-        <?php foreach($this->observer_info as $observer) : ?>
-            [
-                '<?php echo $observer->first_name ?>',
-                '<?php echo $observer->last_name ?>',
-                '<?php echo $observer->locations ?>',
-            ],
-        <?php endforeach; ?>
-    ];
-
-    onPageLoad();
-</script>
