@@ -109,4 +109,28 @@ class BramsNetworkController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /**
+     * Function calls the view method to return all the stations ordered by status
+     * (active, inactive  or beacon).
+     *
+     * @since 0.3.5
+     */
+    public function getStations() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo '
+                    Something went wrong. 
+                    Activate Joomla debug and view log messages for more information.
+                ';
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getStations();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }

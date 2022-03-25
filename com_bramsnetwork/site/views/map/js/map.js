@@ -5,14 +5,12 @@ const minLongitude = 2.158350;      // minimum longitude possible on the shown b
 const maxLongitude = 6.883813;      // maximum longitude possible on the shown belgian map
 const imageXmin = 0;                // start x point of the shown map
 const imageYmin = 0;                // start y point of the shown map
-let activeStations = [];            // array contains all active stations
-let inactiveStations = [];          // array contains all inactive stations
-let beacons = [];                   // array contains all beacons
+let allStations = [];               // array contains all stations
 
 /**
  * Calculates the x and y coordinates for a specific station on the
  * network map.
- * @param {number} longitude longtitude of the station
+ * @param {number} longitude longitude of the station
  * @param {number} latitude latitude of the station
  * @returns {array} x & y coordinates of the station on the map image
  */
@@ -44,12 +42,12 @@ function calculateXY(longitude, latitude) {
  * @returns {string} area tag with station info
  */
 function addStationString(station) {
-    const [xPosition, yPosition] = calculateXY(station[3], station[4]);
-    let mapOptions = '';    // colors of 1 station on the map
+    const [xPosition, yPosition] = calculateXY(station['longitude'], station['latitude']);
+    let mapOptions;    // colors of 1 station on the map
 
-    // if the station has a non null data availability rate on
+    // if the station has a non-null data availability rate on
     // the given date
-    if (station[station.length - 2]) {
+    if (Number(station['rate'])) {
         // set the station color to green
         mapOptions = {
             fillColor: '00ff00',
@@ -66,11 +64,11 @@ function addStationString(station) {
     // return new area element
     return `
         <area 
-            class="${station[2]}"
+            class="${station['transfer_type']}"
             shape='circle'
-            onmouseover="showStationInfo('${station[0]}', '${station[1]}', '${station[2]}', ${station[5] / 10})"
-            alt='${station[0]}'
-            title='${station[0]}'
+            onmouseover="showStationInfo('${station['name']}', '${station['country_code']}', ${station['rate'] / 10})"
+            alt='${station['name']}'
+            title='${station['name']}'
             coords='${xPosition},${yPosition},4'
             data-maphilight=${JSON.stringify(mapOptions)}
         />
@@ -83,7 +81,7 @@ function addStationString(station) {
  * @returns {string} area tag of the beacon
  */
 function addBeaconString(beacon) {
-    const [xPosition, yPosition] = calculateXY(beacon[3], beacon[4]);
+    const [xPosition, yPosition] = calculateXY(beacon['longitude'], beacon['latitude']);
     // set blue color for beacon
     const mapOptions = {
         fillColor: '0000ff',
@@ -93,11 +91,11 @@ function addBeaconString(beacon) {
     // return new area element
     return `
         <area 
-            class="${beacon[2]}"
+            class="${beacon['transfer_type']}"
             shape='poly'
-            onmouseover="showStationInfo('${beacon[0]}', '${beacon[1]}', '${beacon[2]}', '${beacon[5]}')"
-            alt='${beacon[0]}'
-            title='${beacon[0]}'
+            onmouseover="showStationInfo('${beacon['name']}', '${beacon['country_code']}', '${beacon['rate']}')"
+            alt='${beacon['name']}'
+            title='${beacon['name']}'
             coords='${xPosition},${yPosition - 5},${xPosition - 4},${yPosition + 4},${xPosition + 4},${yPosition + 4}'
             data-maphilight=${JSON.stringify(mapOptions)}
         />
@@ -123,7 +121,7 @@ function showStations(stationsToShow) {
     );
 
     // generate an 'area' element for each beacon
-    beacons.forEach(
+    allStations['beacon'].forEach(
         (beacon) => {
             areaString += addBeaconString(beacon);
         },
@@ -136,8 +134,8 @@ function showStations(stationsToShow) {
 }
 
 /**
- * Entry point to show the stations on the map. The functions verifies
- * wich checkboxes are checked and passes the correct array with the
+ * Entry point to show the stations on the map. The function verifies
+ * which checkboxes are checked and passes the correct array with the
  * stations to show to the function that will update the page.
  */
 function showStationsEntry() {
@@ -150,11 +148,11 @@ function showStationsEntry() {
 
     // set stations to show according to the active/inactive checkboxes
     if (activeCheckbox && inactiveCheckbox) {
-        stationsToShow = allStations;
+        stationsToShow = allStations['active'].concat(allStations['inactive']);
     } else if (activeCheckbox) {
-        stationsToShow = activeStations;
+        stationsToShow = allStations['active'];
     } else if (inactiveCheckbox) {
-        stationsToShow = inactiveStations;
+        stationsToShow = allStations['inactive'];
     } else {
         stationsToShow = [];
     }
@@ -163,9 +161,9 @@ function showStationsEntry() {
     if (newCheckbox && oldCheckbox) {
         showStations(stationsToShow);
     } else if (newCheckbox) {
-        showStations(stationsToShow.filter((station) => station[2] === 'SSH'));
+        showStations(stationsToShow.filter((station) => station['transfer_type'] === 'SSH'));
     } else if (oldCheckbox) {
-        showStations(stationsToShow.filter((station) => station[2] !== 'SSH'));
+        showStations(stationsToShow.filter((station) => station['transfer_type'] !== 'SSH'));
     } else {
         showStations([]);
     }
@@ -176,13 +174,11 @@ function showStationsEntry() {
  * is hovered.
  * @param {string} stationName name of the station
  * @param {string} stationCountry country code of the station (i.e. 'BE')
- * @param {string} stationTransfer station tranfer type (i.e. 'SSH')
- * @param {int} stationRate station file availability rate for a given date
+ * @param {string} stationRate station file availability rate for a given date
  */
-function showStationInfo(stationName, stationCountry, stationTransfer, stationRate) {
+function showStationInfo(stationName, stationCountry, stationRate) {
     document.getElementById('stationName').innerHTML = stationName;
     document.getElementById('stationCountry').innerHTML = stationCountry;
-    document.getElementById('stationTransfer').innerHTML = stationTransfer;
     if (typeof stationRate === 'number') {
         document.getElementById('stationRate').innerHTML = `${stationRate} %`;
     } else {
@@ -191,20 +187,33 @@ function showStationInfo(stationName, stationCountry, stationTransfer, stationRa
 }
 
 /**
- * Function is called when the page is loading. It spearates the active
- * and inactive stations in separate arrays and calls shows the stations
- * on screen for the first time.
+ * Function call an api to get all the stations' information from backend. If no problems
+ * occur, it will receive an object with 3 arrays: one with active stations, one with beacons
+ * and one with inactive stations.
  */
-function onMapLoad() {
-    // separate active and inactive stations in 2 arrays
-    beacons = allStations.filter((station) => station[station.length - 1]);
-    allStations = allStations.filter((station) => !station[station.length - 1]);
-    activeStations = allStations.filter((station) => station[station.length - 2] > 0);
-    inactiveStations = allStations.filter((station) => station[station.length - 2] === 0);
+function getStations() {
+    // get the token
+    const token = $('#token').attr('name');
+    const date = document.getElementById('startDate').value;
 
-    // show current selected date on screen
-    document.getElementById('selectedDate').innerHTML = document.getElementById('startDate').value;
-
-    // show the station on the shown map
-    showStationsEntry();
+    $.ajax({
+        type: 'GET',
+        url: `/index.php?option=com_bramsnetwork&view=map&task=getstations&format=json&${token}=1&date=${date}`,
+        success: (response) => {
+            allStations = response.data;
+            document.getElementById('selectedDate').innerHTML = date;
+            showStationsEntry();
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('error').innerHTML = (
+                'API call failed, please read the \'log\' variable in ' +
+                'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
 }
+
+window.onload = getStations;

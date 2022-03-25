@@ -29,9 +29,6 @@ class BramsNetworkViewObservers extends HtmlView {
      * @since 0.2.0
 	 */
 	function display($tpl = null) {
-		// get all the observer information
-		$this->observer_info = $this->get('ObserverInfo');
-
 		// Display the view
 		parent::display($tpl);
 

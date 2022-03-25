@@ -28,9 +28,7 @@ class BramsNetworkViewObservers extends HtmlView {
      * @since 0.3.5
      */
     public function getObservers() {
-        if (!$observer_info = (array) $this->get('ObserverInfo')) {
-            // return an error response to front-end and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($observer_info = $this->get('ObserverInfo')) === -1) {
             return;
         }
 

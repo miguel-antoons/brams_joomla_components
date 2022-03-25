@@ -2,6 +2,10 @@
     cursor: pointer !important;
 }
 
+.headerCol:hover {
+    color: darkcyan;
+}
+
 .width25 {
     width: 25% !important;
 }

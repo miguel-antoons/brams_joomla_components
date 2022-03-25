@@ -45,6 +45,7 @@ class BramsNetworkModelObservers extends ItemModel {
             return Factory::getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
             return false;
         }
@@ -52,7 +53,10 @@ class BramsNetworkModelObservers extends ItemModel {
 
 	// get all station locations and their owners from the database
 	public function getObserverInfo() {
-		$db = $this->connectToDatabase();
+        // if database connection fails, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
 		$system_query = $db->getQuery(true);
 
 		// SQL query to get all information about the multiple systems
@@ -73,8 +77,9 @@ class BramsNetworkModelObservers extends ItemModel {
             return $this->structureObserverInfo($db->loadObjectList());
         } catch (RuntimeException $e) {
             // if it fails, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
