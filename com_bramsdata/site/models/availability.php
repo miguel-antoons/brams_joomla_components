@@ -49,6 +49,7 @@ class BramsDataModelAvailability extends ItemModel {
 			return Factory::getDbo();
 		} catch (Exception $e) {
 			// if an error occurs, log the error and return false
+			echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
 			return false;
 		}
@@ -59,12 +60,12 @@ class BramsDataModelAvailability extends ItemModel {
 	 * (system.id, system.name, location.transfer_type, location.status, ''). If everything
 	 * goes well, it returns all that data.
 	 *
-	 * @return boolean|array false if an error occurs, the array with all the results if everything wen well.
+	 * @return int|array -1 if an error occurs, the array with all the results if everything wen well.
 	 * @since 0.0.2
 	 */
 	public function getStations() {
 		if (!$db = $this->connectToDatabase()) {
-			return false;
+			return -1;
 		}
 		$system_query = $db->getQuery(true);
 
@@ -88,7 +89,7 @@ class BramsDataModelAvailability extends ItemModel {
 		} catch (RuntimeException $e) {
 			// if it fails, log the error and return false
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 	}
 
@@ -117,8 +118,8 @@ class BramsDataModelAvailability extends ItemModel {
 	 * @param   array   $selected_stations  Array with the selected stations
 	 * @param   int     $time_interval      Time interval of the availability chart
 	 *
-	 * @return  boolean|array   false if a failure happened, array with all the availability information
-	 *                          of $selected_stations from $start_date to $end_date
+	 * @return  int|array   -1 if a failure happened, array with all the availability information
+	 *                      of $selected_stations from $start_date to $end_date
 	 *
 	 * @since 0.0.2
 	 */
@@ -128,13 +129,13 @@ class BramsDataModelAvailability extends ItemModel {
 			$start_date = new DateTime($start_date);
 		} catch (Exception $e) {
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 		try {
 			$end_date = new DateTime($end_date);
 		} catch (Exception $e) {
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 		$time_difference = $start_date->diff($end_date);				// get the time difference between $start_date and $end_date
 		$start_date = $start_date->format('Y-m-d H:i:s');
@@ -175,15 +176,15 @@ class BramsDataModelAvailability extends ItemModel {
 	 * @param string 	$end_date				End date of the availability to be seen
 	 * @param array		$selected_stations	Array with the selected stations
 	 *
-	 * @return    boolean|array on fail returns false, on success returns an array with all the availability
-	 *                          information of $selected_stations from $start_date to $end_date
+	 * @return    int|array on fail returns -1, on success returns an array with all the availability
+	 *                      information of $selected_stations from $start_date to $end_date
 	 *
 	 * @since 0.0.2
 	 */
 	private function get_availability_general($db_function_to_use, $function_to_use, $start_date, $end_date, $selected_stations) {
 		// contains all the raw availability information coming from the database
-		if (($db_availability = $db_function_to_use($start_date, $end_date, $selected_stations)) === false) {
-			return false;
+		if (($db_availability = $db_function_to_use($start_date, $end_date, $selected_stations)) === -1) {
+			return -1;
 		}
 		$final_availability_array = array();					// array will contain all the final availability info
 
@@ -324,7 +325,7 @@ class BramsDataModelAvailability extends ItemModel {
 	 * @param string    $expected_start					first expected start
 	 * @param int 	    $station						id of the currently treated station
 	 *
-	 * @return boolean|void false if an error occurs, nothing if everything goes well
+	 * @return int|void -1 if an error occurs, nothing if everything goes well
 	 *
 	 * @since 0.0.2
 	 */
@@ -341,8 +342,9 @@ class BramsDataModelAvailability extends ItemModel {
 		try {
 			$expected_start = new DateTime($expected_start);
 		} catch (Exception $e) {
+			echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 		$expected_start = $expected_start->format('Y-m-d');
 
@@ -437,7 +439,9 @@ class BramsDataModelAvailability extends ItemModel {
 
 	// get file availability from database
 	private function getAvailabilityDB($start_date, $end_date, $selected_stations) {
-		$db = $this->connectToDatabase();			// create a database connection
+		if (!$db = $this->connectToDatabase()) {
+			return -1;
+		}			// create a database connection
 		$availability_query = $db->getQuery(true);
 
 		// generate a database query
@@ -462,14 +466,17 @@ class BramsDataModelAvailability extends ItemModel {
 			return $db->loadObjectList();
 		} catch (RuntimeException $e) {
 			// if it fails, log the error and return false
+			echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 	}
 
 	// get file availability rate from database
 	private function getAvailabilityRateDB($start_date, $end_date, $selected_stations) {
-		$db = $this->connectToDatabase();			// create a database connection
+		if (!$db = $this->connectToDatabase()) {
+			return -1;
+		}			// create a database connection
 		$availability_query = $db->getQuery(true);
 
 		// generate a database query
@@ -495,8 +502,9 @@ class BramsDataModelAvailability extends ItemModel {
 			return $db->loadObjectList();
 		} catch (RuntimeException $e) {
 			// if it fails, log the error and return false
+			echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 	}
 

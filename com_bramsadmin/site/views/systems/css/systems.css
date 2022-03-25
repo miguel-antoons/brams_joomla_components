@@ -10,6 +10,10 @@ th, tr {
     cursor: pointer;
 }
 
+th, td {
+    width: 20%;
+}
+
 th:hover {
     color: darkcyan;
 }

@@ -8,10 +8,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
+
 <div class="container custom_container container_margin">
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div class='row'>
         <div class='col custom_col'>
-            <button type='button' class='customBtn return' onclick='history.back()'>
+            <button
+                type='button'
+                class='customBtn return'
+                onclick='window.location.href="/index.php?option=com_bramsadmin&view=systems"'
+            >
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 Return
             </button>
@@ -64,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
                     onclick="formProcess(document.getElementById('inputContainer').children)"
                 >
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                    Submit
+                    Save
                 </button>
             </div>
         </div>

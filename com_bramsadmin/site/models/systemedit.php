@@ -10,8 +10,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use \Joomla\CMS\MVC\Model\ItemModel;
-use \Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * SystemEdit Model
@@ -44,6 +44,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return Factory::getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
             return false;
         }
@@ -51,19 +52,19 @@ class BramsAdminModelSystemEdit extends ItemModel {
 
 	/**
      * Function gets all the information about one and only system from the database.
-     * The $id argument tells the function which sytem to get. The information
+     * The $id argument tells the function which system to get. The information
      * requested by the function is the following : (system.id, system.name, system.location_id,
      * system.start, system.antenna, system.comments).
      *
      * @param $id int the id of the requested system
-     * @return boolean|array false if an error occurred, the array with system info on success
+     * @return int|array -1 if an error occurred, the array with system info on success
      *
      * @since 0.2.0
      */
 	public function getSystemInfo($id) {
         // if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$system_query = $db->getQuery(true);
 
@@ -86,24 +87,25 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $db->loadObjectList();
         } catch (RuntimeException $e) {
             // if it fails, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
     /**
      * Function gets all system names except for the system which id is given as argument.
-     * The data requested for each system is the followin : (system.name).
+     * The data requested for each system is the following : (system.name).
      *
      * @param $id int the id of the system not to take the name from. Defaults to -1
-     * @return boolean|array false on fail, database results on success
+     * @return int|array -1 on fail, database results on success
      *
      * @since 0.2.0
      */
 	public function getSystemNames($id = -1) {
         // if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$system_query = $db->getQuery(true);
 
@@ -119,8 +121,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $db->loadObjectList();
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
@@ -133,14 +136,14 @@ class BramsAdminModelSystemEdit extends ItemModel {
      *
      * @param $antenna int antenna number of the system shown at front-end, defaults to -1
      * @param $id int  location id of the system shown at front-end, defaults to -1
-     * @return boolean|array on fail returns false, on success returns the array with all the results
+     * @return int|array on fail returns -1, on success returns the array with all the results
      *
      * @since 0.2.0
      */
 	public function getLocations($antenna = -1, $id = -1) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$locations_query = $db->getQuery(true);
 
@@ -163,8 +166,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $this->structureLocations($db->loadObjectList(), $antenna, $id);
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
@@ -209,14 +213,14 @@ class BramsAdminModelSystemEdit extends ItemModel {
      * Function inserts a new system with values received as argument
      *
      * @param $new_system_info array array with all the new system attributes
-     * @return boolean|JDatabaseDriver on fail returns false, on success returns JDatabaseDriver
+     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
      *
      * @since 0.2.0
      */
 	public function insertSystem($new_system_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$system_query = $db->getQuery(true);
 
@@ -253,8 +257,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $db->execute();
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
@@ -263,14 +268,14 @@ class BramsAdminModelSystemEdit extends ItemModel {
      * arguments.
      *
      * @param $system_info array array with the new system attribute values
-     * @return boolean|JDatabaseDriver on fail returns false, on success returns JDatabaseDriver
+     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
      *
      * @since 0.2.0
      */
 	public function updateSystem($system_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$system_query = $db->getQuery(true);
         // attributes to update
@@ -300,8 +305,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $db->execute();
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 
@@ -309,14 +315,14 @@ class BramsAdminModelSystemEdit extends ItemModel {
      * Function deletes system with system.id equal to $id (arg)
      *
      * @param $id int id of the system that has to be deleted
-     * @return boolean|JDatabaseDriver on fail returns false, on success returns JDatabaseDriver
+     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
      *
      * @since 0.2.0
      */
 	public function deleteSystem($id) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
-            return false;
+            return -1;
         }
 		$system_query = $db->getQuery(true);
 
@@ -336,8 +342,9 @@ class BramsAdminModelSystemEdit extends ItemModel {
             return $db->execute();
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
-            return false;
+            return -1;
         }
 	}
 

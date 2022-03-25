@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 </p>
 <div class="container custom_container container_margin">
+	<?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div class='row'>
         <div class='col custom_col'>
             <input type='checkbox' onclick="checkAllBoxes(this)" id='checkAll' name='checkAll' />
@@ -88,6 +89,7 @@ defined('_JEXEC') or die('Restricted access');
                 id='submit'
                 onclick="getAvailability()"
         >
+            <i class="fa fa-check-square" aria-hidden="true"></i>
             Submit
         </button>
     </div>

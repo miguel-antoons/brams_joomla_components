@@ -36,8 +36,6 @@ class BramsDataViewAvailability extends HtmlView {
 		try {
 			return Factory::getApplication()->input;
 		} catch (Exception $e) {
-			// if an exception occurs, return false to front-end
-			echo new JResponseJson(array(('message') => false));
 			// log the exception
 			Log::add($e, Log::ERROR, 'error');
 			return false;
@@ -45,6 +43,7 @@ class BramsDataViewAvailability extends HtmlView {
 	}
 
 	/**
+	 * API - GET
 	 * Function gets all the file availability data from the model and structures it in
 	 * a way that front-end can use the data. It eventually returns a json string with
 	 * all the availability data to the front-end of the site.
@@ -54,9 +53,6 @@ class BramsDataViewAvailability extends HtmlView {
 	public function getAvailability() {
 		// if an error occurred when getting the app input, stop the function
 		if (!$input = $this->getAppInput()) {
-			echo new JResponseJson(array(
-				('message') => false
-			));
 			return;
 		}
 		// get all the selected stations from the request
@@ -65,19 +61,11 @@ class BramsDataViewAvailability extends HtmlView {
 		$this->end_date = $input->get('end');      // get the end date from the request
 
 		// get the availability
-		if (!$this->getFileAvailability()) {
-			// error handling
-			echo new JResponseJson(array(
-				('message') => false
-			));
+		if ($this->getFileAvailability() === -1) {
 			return;
 		}
 		// get all the stations
-		if (!$this->stations = $this->get('Stations')) {
-			// error handling
-			echo new JResponseJson(array(
-				('message') => false
-			));
+		if (($this->stations = $this->get('Stations')) === -1) {
 			return;
 		}
 

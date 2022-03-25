@@ -9,9 +9,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use \Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
-use \Joomla\CMS\Log\Log;
+use Joomla\CMS\Log\Log;
 
 /**
  * HTML View class for the BramsAdmin Component
@@ -45,15 +45,6 @@ class BramsAdminViewSystems extends HtmlView {
         }
         // Assign data to the view
 		$model = $this->getModel();
-		// if an error occurred in the model
-		if (!$this->systems = $model->getSystems()) {
-            // show an error message and stop the function
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            return;
-		}
         // get the message id
 		$message_id = (int) $input->get('message');
 

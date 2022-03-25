@@ -1,7 +1,8 @@
+/* global $ */
 let log = 'Nothing to show';    // contains debug information if needed
 let systemId = 0;               // the id of the system to show (if 0 --> no system)
-let systemNames = [];           // array with all taken system names
-let defLocationAntenna = {};    // object with current location and antenna combo
+const systemNames = [];           // array with all taken system names
+const defLocationAntenna = {};    // object with current location and antenna combo
 let locationAntennas = {};      // object with all antennas grouped by location
 
 /**
@@ -29,7 +30,7 @@ function verifyValues(antennaValue, locationSelect, locationId, systemName, syst
     // if the system name is already taken
     if (systemNames.includes(systemName)) {
         document.getElementById('error').innerHTML = `
-            Entered system name is already taken. Please enter a free sytem name.
+            Entered system name is already taken. Please enter a free system name.
         `;
 
         return false;
@@ -66,10 +67,12 @@ function newSystem(form) {
 
     // if the inputs are valid
     if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
+        const token = $('#token').attr('name');
+
         // call the create api with the input values
         $.ajax({
             type: 'POST',
-            url: '/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json',
+            url: `/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json&${token}=1`,
             data: {
                 newSystemInfo: {
                     name: form.systemName.value,
@@ -86,8 +89,8 @@ function newSystem(form) {
             error: (response) => {
                 // on fail, show an error message
                 document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in ' +
-                    'developer console for more information about the problem.'
+                    'API call failed, please read the \'log\' variable in '
+                    + 'developer console for more information about the problem.'
                 );
                 // store the server response in the log variable
                 log = response;
@@ -111,10 +114,12 @@ function updateSystem(form) {
 
     // if the inputs are valid
     if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
+        const token = $('#token').attr('name');
+
         // call the update api with the input values
         $.ajax({
             type: 'POST',
-            url: '/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json',
+            url: `/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json&${token}=1`,
             data: {
                 systemInfo: {
                     id: systemId,
@@ -132,8 +137,8 @@ function updateSystem(form) {
             error: (response) => {
                 // on fail, show an error message
                 document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in ' +
-                    'developer console for more information about the problem.'
+                    'API call failed, please read the \'log\' variable in '
+                    + 'developer console for more information about the problem.'
                 );
                 // store the server response in the log variable
                 log = response;
@@ -182,24 +187,27 @@ function setAntenna() {
  * available locations.
  */
 function getLocations() {
+    const token = $('#token').attr('name');
+
     $.ajax({
         type: 'GET',
         url: `
             /index.php?option=com_bramsadmin&view=systemedit&task=getlocationantennas
             &format=json&locationid=${defLocationAntenna.location}
-            &antenna=${defLocationAntenna.antenna}
+            &antenna=${defLocationAntenna.antenna}&${token}=1
         `,
         success: (response) => {
             let HTMLString = '';
             locationAntennas = response.data;
-            for (let key in locationAntennas) {
-                // add one option per location
+
+            Object.keys(locationAntennas).forEach((key) => {
                 HTMLString += `
                     <option value=${locationAntennas[key].id} ${locationAntennas[key].selected}>
                         ${locationAntennas[key].name}
                     </option>
                 `;
-            }
+            });
+
             document.getElementById('systemLocation').innerHTML = HTMLString;
 
             // set correct antenna value
@@ -208,8 +216,8 @@ function getLocations() {
         error: (response) => {
             // on fail, show an error message
             document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in ' +
-                'developer console for more information about the problem.'
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
             );
             // store the server response in the log variable
             log = response;
@@ -225,20 +233,22 @@ function getLocations() {
  * @param {number} id id of the current system if there is one, else -1
  */
 function getSystemNames(id) {
+    const token = $('#token').attr('name');
+
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystemnames&format=json&id=${id}`,
+        url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystemnames&format=json&id=${id}&${token}=1`,
         success: (response) => {
             // store the response in an array
             response.data.forEach(
-                (object) => systemNames.push(object.name)
+                (object) => systemNames.push(object.name),
             );
         },
         error: (response) => {
             // on fail, show an error message
             document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in ' +
-                'developer console for more information about the problem.'
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
             );
             // store the server response in the log variable
             log = response;
@@ -259,9 +269,11 @@ function getSystemInfo() {
     systemId = Number(queryString.get('id'));
 
     if (systemId) {
+        const token = $('#token').attr('name');
+
         $.ajax({
             type: 'GET',
-            url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystem&format=json&id=${systemId}`,
+            url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystem&format=json&id=${systemId}&${token}=1`,
             success: (response) => {
                 const inputContainer = document.getElementById('inputContainer').children;
 
@@ -270,7 +282,7 @@ function getSystemInfo() {
                 defLocationAntenna.location = Number(response.data.location_id);
                 inputContainer.systemAntenna.value = response.data.antenna;
                 defLocationAntenna.antenna = Number(response.data.antenna);
-                inputContainer.systemStart.value = response.data.start;
+                inputContainer.systemStart.value = response.data.start.replace(/ /g, 'T');
                 inputContainer.systemComments.value = response.data.comments;
                 document.getElementById('title').innerHTML = `Update System ${response.data.name}`;
 
@@ -281,8 +293,8 @@ function getSystemInfo() {
             error: (response) => {
                 // on fail, show an error message
                 document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in ' +
-                    'developer console for more information about the problem.'
+                    'API call failed, please read the \'log\' variable in '
+                    + 'developer console for more information about the problem.'
                 );
                 // store the server response in the log variable
                 log = response;
@@ -293,7 +305,7 @@ function getSystemInfo() {
         defLocationAntenna.location = -1;
         defLocationAntenna.antenna = -1;
         const currentDate = new Date();
-        document.getElementById('systemStart').value = currentDate.toISOString().substring(0,16);
+        document.getElementById('systemStart').value = currentDate.toISOString().substring(0, 16);
 
         // get all locations and antennas
         getLocations();

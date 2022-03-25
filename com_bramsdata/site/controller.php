@@ -94,16 +94,18 @@ class BramsDataController extends BaseController {
 	 * @since 0.3.5
 	 */
 	public function getAvailability() {
-		try {
-			$view = $this->display(false, array(), true);
-		} catch (Exception $e) {
-			echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-			Log::add($e, Log::ERROR, 'error');
-			return;
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+
+				return;
+			}
+			$view->getAvailability();
+		} else {
+			echo new JResponseJson(array(('message') => false));
 		}
-		$view->getAvailability();
 	}
 }

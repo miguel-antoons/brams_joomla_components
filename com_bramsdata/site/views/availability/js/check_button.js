@@ -194,6 +194,7 @@ function getAvailability() {
     if (!checkboxValues) {
         return;
     }
+    const token = $('#token').attr('name');
     // verify the inputted dates
     verifyDates();
 
@@ -201,7 +202,7 @@ function getAvailability() {
     $.ajax({
         type: 'GET',
         url: `
-            /index.php?option=com_bramsdata&view=availability&task=getAvailability&format=json
+            /index.php?option=com_bramsdata&view=availability&task=getAvailability&format=json&${token}=1
         `,
         data: {
             ids: checkboxValues,
@@ -209,7 +210,6 @@ function getAvailability() {
             end: document.getElementById('endDate').value,
         },
         success: (response) => {
-            console.log(response);
             if (chart) {
                 chart.updateGraph(options, response.data);
             } else {

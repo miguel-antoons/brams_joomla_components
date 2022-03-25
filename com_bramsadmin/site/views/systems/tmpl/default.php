@@ -10,6 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="container custom_container container_margin">
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div class='row'>
         <div class='col custom_col'>
             <p id='message' class='<?php echo $this->message['css_class']; ?>'>
@@ -17,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
             </p>
             <h1>Systems</h1>
             <p>
-                Click on one of the buttons in the right side column to edit or delete the system.
+                Click on one of the buttons on the right side column to edit or delete the system.
             </p>
         </div>
     </div>
@@ -38,20 +39,20 @@ defined('_JEXEC') or die('Restricted access');
             <table class='table'>
                 <thead>
                     <tr>
-                        <th class='headerCol' onClick='sortLocation(this)' width="20%">
+                        <th class='headerCol' onclick='sortLocation(this)'>
                             Location Code <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class='headerCol' onClick='sortName(this)' width="20%">
-                            System Name 
+                        <th class='headerCol' onclick='sortName(this)'>
+                            System Name
                         </th>
-                        <th class='headerCol' onClick='sortStart(this)' width="20%">
-                            Start 
+                        <th class='headerCol' onclick='sortStart(this)'>
+                            Start
                         </th>
-                        <th class='headerCol' onClick='sortEnd(this)' width="20%">
-                            End 
+                        <th class='headerCol' onclick='sortEnd(this)'>
+                            End
                         </th>
-                        <th class='headerCol' width="20%">
-                            Actions 
+                        <th class='headerCol'>
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -62,19 +63,3 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 </div>
-
-<script>
-    let systems = [
-        <?php foreach($this->systems as $system) : ?>
-            [
-                <?php echo $system->id; ?>,
-                '<?php echo $system->code; ?>',
-                '<?php echo $system->name; ?>',
-                '<?php echo $system->start; ?>',
-                '<?php echo $system->end; ?>'
-            ],
-        <?php endforeach; ?>
-    ];
-
-    onPageLoad();
-</script>

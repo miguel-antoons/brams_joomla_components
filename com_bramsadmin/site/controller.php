@@ -38,7 +38,7 @@ class BramsAdminController extends BaseController {
      */
 	public function display($cacheable = false, $url_params = array(), $block_display = false)
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 		$viewName = $this->input->get('view', $this->default_view);
 		$viewLayout = $this->input->get('layout', 'default', 'string');
@@ -95,17 +95,18 @@ class BramsAdminController extends BaseController {
      * @since 0.2.0
      */
     public function newSystem() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->create();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->create();
     }
 
     /**
@@ -116,17 +117,18 @@ class BramsAdminController extends BaseController {
      * @since 0.2.0
      */
     public function updateSystem() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->update();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->update();
     }
 
     /**
@@ -137,17 +139,18 @@ class BramsAdminController extends BaseController {
      * @since 0.2.0
      */
 	public function deleteSystem() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->delete();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->delete();
 	}
 
     /**
@@ -158,17 +161,18 @@ class BramsAdminController extends BaseController {
      * @since 0.3.0
      */
     public function getSystem() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getSystem();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->getSystem();
     }
 
     /**
@@ -179,17 +183,18 @@ class BramsAdminController extends BaseController {
      * @since 0.3.0
      */
     public function getLocationAntennas() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getLocationAntennas();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->getLocationAntennas();
     }
 
     /**
@@ -200,16 +205,32 @@ class BramsAdminController extends BaseController {
      * @since 0.3.0
      */
     public function getSystemNames() {
-        try {
-            $view = $this->display(false, array(), true);
-        } catch (Exception $e) {
-            echo '
-                Something went wrong. 
-                Activate Joomla debug and view log messages for more information.
-            ';
-            Log::add($e, Log::ERROR, 'error');
-            return;
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getSystemNames();
+        } else {
+            echo new JResponseJson(array(('message') => false));
         }
-        $view->getSystemNames();
+    }
+
+    public function getSystems() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getSystems();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
     }
 }

@@ -31,7 +31,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
             return Factory::getApplication()->input;
         } catch (Exception $e) {
             // if an exception occurs, return false to front-end
-            echo new JResponseJson(array(('message') => false));
+            echo new JResponseJson(array(('message') => $e));
             // log the exception
             Log::add($e, Log::ERROR, 'error');
             return false;
@@ -55,9 +55,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $model = $this->getModel();
 
         // if the database insert fails
-        if (!$model->insertSystem($new_system_info)) {
-            // return an error response to front-end and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($model->insertSystem($new_system_info)) === -1) {
             return;
         }
 
@@ -84,9 +82,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $model = $this->getModel();
 
         // if the database update fails
-        if (!$model->updateSystem($system_info)) {
-            // return an error response to front-end and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($model->updateSystem($system_info)) === -1) {
             return;
         }
 
@@ -113,9 +109,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 		$model = $this->getModel();
 
         // if the database delete failed
-        if (!$model->deleteSystem($id)) {
-            // return an error message and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($model->deleteSystem($id)) === -1) {
             return;
         }
 
@@ -142,9 +136,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $model = $this->getModel();
 
         // if the database select failed
-        if (!$response = $model->getSystemInfo($id)) {
-            // return an error message and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($response = $model->getSystemInfo($id)) === -1) {
             return;
         }
 
@@ -169,9 +161,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $model = $this->getModel();
 
         // if the database select failed
-        if (!$locations = $model->getLocations($antenna, $location_id)) {
-            // return an error message and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($locations = $model->getLocations($antenna, $location_id)) === -1) {
             return;
         }
 
@@ -199,9 +189,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         $model = $this->getModel();
 
         // if the database select failed
-        if (!$response = $model->getSystemNames($id)) {
-            // return an error message and stop the function
-            echo new JResponseJson(array(('message') => false));
+        if (($response = $model->getSystemNames($id)) === -1) {
             return;
         }
 

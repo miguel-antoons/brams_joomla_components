@@ -38,7 +38,7 @@ class BramsDataViewAvailability extends HtmlView {
 	function display($tpl = null) {
 		// Assign data to the view
 		$this->selected_stations = array();	// initialize the $selected_stations array
-		if (!$this->stations = $this->get('Stations')) {
+		if (($this->stations = $this->get('Stations')) === -1) {
 			// show an error message and stop the function
 			echo '
                 Something went wrong. 

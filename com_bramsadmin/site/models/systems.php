@@ -60,6 +60,7 @@ class BramsAdminModelSystems extends ItemModel {
 			return Factory::getDbo();
 		} catch (Exception $e) {
             // if an error occurs, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
 			return false;
 		}
@@ -76,7 +77,7 @@ class BramsAdminModelSystems extends ItemModel {
 	public function getSystems() {
         // if the connection to the database failed, return false
 		if (!$db = $this->connectToDatabase()) {
-			return false;
+			return -1;
 		}
 		$system_query = $db->getQuery(true);
 
@@ -98,9 +99,11 @@ class BramsAdminModelSystems extends ItemModel {
 		try {
 			return $db->loadObjectList();
 		} catch (RuntimeException $e) {
+            echo 'hello';
             // if an error occurs, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
-			return false;
+			return -1;
 		}
 	}
 }
