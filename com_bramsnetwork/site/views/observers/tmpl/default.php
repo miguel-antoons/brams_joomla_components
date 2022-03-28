@@ -24,12 +24,12 @@ defined('_JEXEC') or die('Restricted access');
             <table class='table'>
                 <thead>
                     <tr>
-                        <th class='headerCol width25' id='sortFirstName' onclick='sortFirstName(this)'>
+                        <th class='headerCol width25' id='sortFirstName' onclick="sortTable(this, 'first_name')">
                             First name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class='headerCol width25' id='sortLastName' onclick='sortLastName(this)'>
+                        <th class='headerCol width25' id='sortLastName' onclick="sortTable(this, 'last_name')">
                             Last name </th>
-                        <th class='headerCol width50' id='sortLocations' onclick='sortLocations(this)'>
+                        <th class='headerCol width50' id='sortLocations' onclick="sortTable(this, 'locations')">
                             Stations </th>
                     </tr>
                 </thead>

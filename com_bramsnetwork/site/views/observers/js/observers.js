@@ -1,16 +1,38 @@
 /* global observers */
+let sortDescFlags = {
+    first_name: true,           // set the next sorting method on first name to desc
+    last_name: false,           // set the next sorting method on last name to asc
+    locations: false,           // set the next sorting method on location to asc
+};
 let nRows = 17;                 // number of rows shown when the page is first loaded
-let sortFirstNameDesc = true;   // set the next sorting method on first name to desc
-let sortLastNameDesc = false;   // set the next sorting method on last name to asc
-let sortLocationDesc = false;   // set the next sorting method on location to asc
 let log = 'Nothing to show';
 let observers;
+
+function sortAsc(first, second, noSpace) {
+    if (first === null) return 1;
+    if (second === null) return -1;
+    // eslint-disable-next-line no-param-reassign
+    if (noSpace) { first = first.replace(/\s/g, ''); second = second.replace(/\s/g, ''); }
+    if (first > second) return 1;
+    if (first < second) return -1;
+    return 0;
+}
+
+function sortDesc(first, second, noSpace) {
+    if (first === null) return 1;
+    if (second === null) return -1;
+    // eslint-disable-next-line no-param-reassign
+    if (noSpace) { first = first.replace(/\s/g, ''); second = second.replace(/\s/g, ''); }
+    if (first < second) return 1;
+    if (first > second) return -1;
+    return 0;
+}
 
 /**
  * Function generates the html string to add inside the tables tbody.
  * It finally replaces the t-body inner-html with that string.
  */
-function showTable() {
+function generateTable() {
     let tempObservers;          // contains the observers that will be shown
     let tbodyString = '';       // contains the complete html string
     let lastRow;                // contains the last rows html string
@@ -55,84 +77,45 @@ function setSortIcon(headerElement) {
 }
 
 /**
- * Function sorts table by first name (asc or desc). It also changes the sort
- * icon position if needed and updates the function to be called when clicking
- * on 'headerElement'.
- * @param {HTMLTableCellElement} headerElement html element that performed the call to this function
+ * Function sorts the table by attribute parameter
+ * @param {HTMLTableCellElement} headerElement  table header that was clicked for sorting
+ * @param {string}               attribute      location attribute to sort on
+ * @param {boolean}              noSpace        Whether to remove spaces or not from strings when sorting
  */
-function sortFirstName(headerElement) {
-    sortLastNameDesc = false;   // set the next sorting method on last name to asc
-    sortLocationDesc = false;   // set the next sorting method on location to asc
+function sortTable(headerElement, attribute, noSpace = false) {
+    // reset all the sorting methods for all the other table headers
+    Object.keys(sortDescFlags).forEach((key) => {
+        if (key !== attribute) {
+            sortDescFlags[key] = false;
+        }
+    });
 
-    // sort asc or desc and change the onclick property of 'headerElement'
-    if (sortFirstNameDesc) {
-        observers.sort((first, second) => first['first_name'] < second['first_name']);
+    // if sorting method is set to desc
+    if (sortDescFlags[attribute]) {
+        // sort the system array desc
+        observers.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
     } else {
-        observers.sort((first, second) => first['first_name'] > second['first_name']);
+        // sort asc
+        observers.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
     }
 
-    sortFirstNameDesc = !sortFirstNameDesc;
+    // toggle the sorting method
+    sortDescFlags[attribute] = !sortDescFlags[attribute];
 
     setSortIcon(headerElement);
-    showTable();
-}
-
-/**
- * Function sorts table by last name (asc or desc). It also changes the sort
- * icon position if needed and updates the function to be called when clicking
- * on 'headerElement'.
- * @param {HTMLTableCellElement} headerElement html element that performed the call to this function
- */
-function sortLastName(headerElement) {
-    sortFirstNameDesc = false;  // set the next sorting method on first name to asc
-    sortLocationDesc = false;   // set the next sorting method on location to asc
-
-    // sort asc or desc and change the onclick property of 'headerElement'
-    if (sortLastNameDesc) {
-        observers.sort((first, second) => first['last_name'] < second['last_name']);
-    } else {
-        observers.sort((first, second) => first['last_name'] > second['last_name']);
-    }
-
-    sortLastNameDesc = !sortLastNameDesc;
-
-    setSortIcon(headerElement);
-    showTable();
-}
-
-/**
- * Function sorts table by location (asc or desc). It also changes the sort
- * icon position if needed and updates the function to be called when clicking
- * on 'headerElement'.
- * @param {HTMLTableCellElement} headerElement html element that performed the call to this function
- */
-function sortLocations(headerElement) {
-    sortFirstNameDesc = false;  // set the next sorting method on first name to asc
-    sortLastNameDesc = false;   // set the next sorting method on last name to asc
-
-    // sort asc or desc and change the onclick property of 'headerElement'
-    if (sortLocationDesc) {
-        observers.sort((first, second) => first['locations'] < second['locations']);
-    } else {
-        observers.sort((first, second) => first['locations'] > second['locations']);
-    }
-
-    sortLocationDesc = !sortLocationDesc;
-
-    setSortIcon(headerElement);
-    showTable();
+    generateTable();
 }
 
 // increase the rows to show and update the table
 function showMore() {
     nRows += observers.length;
-    showTable();
+    generateTable();
 }
 
 // decrease the rows to show and update the table
 function showLess() {
     nRows = 17;
-    showTable();
+    generateTable();
 }
 
 /**
@@ -151,7 +134,7 @@ function getObservers() {
             observers = Object.keys(response.data).map((key) => response.data[key]);
             // sort once by first name and show the table on page
             observers.sort((first, second) => first['first_name'] > second['first_name']);
-            showTable();
+            generateTable();
         },
         error: (response) => {
             // on fail, show an error message
