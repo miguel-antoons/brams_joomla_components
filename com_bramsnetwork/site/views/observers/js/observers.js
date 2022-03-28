@@ -133,7 +133,7 @@ function getObservers() {
             // convert the primary object into an array of objects
             observers = Object.keys(response.data).map((key) => response.data[key]);
             // sort once by first name and show the table on page
-            observers.sort((first, second) => first['first_name'] > second['first_name']);
+            observers.sort((first, second) => sortAsc(first.first_name, second.first_name))
             generateTable();
         },
         error: (response) => {
