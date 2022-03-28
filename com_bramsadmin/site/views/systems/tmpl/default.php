@@ -39,16 +39,16 @@ defined('_JEXEC') or die('Restricted access');
             <table class='table'>
                 <thead>
                     <tr>
-                        <th class='headerCol' onclick='sortLocation(this)'>
+                        <th class='headerCol' onclick="sortTable(this, 'code')">
                             Location Code <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class='headerCol' onclick='sortName(this)'>
+                        <th class='headerCol' onclick="sortTable(this, 'name')">
                             System Name
                         </th>
-                        <th class='headerCol' onclick='sortStart(this)'>
+                        <th class='headerCol' onclick="sortTable(this, 'start')">
                             Start
                         </th>
-                        <th class='headerCol' onclick='sortEnd(this)'>
+                        <th class='headerCol' onclick="sortTable(this, 'end')">
                             End
                         </th>
                         <th class='headerCol'>

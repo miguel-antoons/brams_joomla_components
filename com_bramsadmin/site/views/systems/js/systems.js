@@ -1,8 +1,10 @@
 /* global $ */
-let sortLocationDesc = true;    // next sort method for the location table header (true = desc, false = asc)
-let sortNameDesc = false;       // next sort method for the name table header (true = desc, false = asc)
-let sortStartDesc = false;      // next sort method for the start table header (true = desc, false = asc)
-let sortEndDesc = false;        // next sort method for the end table header (true = desc, false = asc)
+let sortDescFlags = {
+    code: true,     // next sort method for the location table header (true = desc, false = asc)
+    name: false,    // next sort method for the name table header (true = desc, false = asc)
+    start: false,   // next sort method for the start table header (true = desc, false = asc)
+    end: false      // next sort method for the end table header (true = desc, false = asc)
+};
 // eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';    // variable contains log messages if something was logged
 let systems;
@@ -10,7 +12,7 @@ let systems;
 // function stop the onclick property from .systemRow classes
 // from firing when clicking on a button inside a .systemRow class
 function stopPropagation() {
-    $('.systemRow button').on('click', (e) => {
+    $('.tableRow button').on('click', (e) => {
         e.stopPropagation();
     });
 }
@@ -39,7 +41,7 @@ function generateTable() {
         (system) => {
             HTMLString += `
                 <tr
-                    class='systemRow'
+                    class="tableRow"
                     onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system.id}';"
                 >
                     <td>${system.code}</td>
@@ -58,7 +60,7 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
-                            onclick="deleteSystem(${system.id})"
+                            onclick="deleteSystem(${system.id}, '${system.name}')"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
@@ -78,13 +80,15 @@ function generateTable() {
  * If the system was successfully deleted, it updates the html table.
  *
  * @param {number} systemId id of the system that has to be deleted
+ * @param {string} locationName name of the systems' location to be deleted
  */
-function deleteSystem(systemId) {
+function deleteSystem(systemId, locationName) {
+    if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
     const token = $('#token').attr('name');
 
     $.ajax({
         type: 'DELETE',
-        url: `/index.php?option=com_bramsadmin&view=systemedit&task=deletesystem&format=json&id=${systemId}&${token}=1`,
+        url: `/index.php?option=com_bramsadmin&view=systems&task=deletesystem&format=json&id=${systemId}&${token}=1`,
         success: (response) => {
             // on success, update the html table by removing the system from it
             const isDeletedElement = (element) => Number(element.id) === systemId;
@@ -116,104 +120,30 @@ function setSortIcon(headerElement) {
 }
 
 /**
- * Function sorts the table by location
- * @param {HTMLTableCellElement} headerElement table header that was clicked for sorting
+ * Function sorts the table by attribute parameter
+ * @param {HTMLTableCellElement} headerElement  table header that was clicked for sorting
+ * @param {string}               attribute      location attribute to sort on
+ * @param {boolean}              noSpace        Whether to remove spaces or not from strings when sorting
  */
-function sortLocation(headerElement) {
+function sortTable(headerElement, attribute, noSpace = false) {
     // reset all the sorting methods for all the other table headers
-    sortNameDesc = false;
-    sortStartDesc = false;
-    sortEndDesc = false;
+    Object.keys(sortDescFlags).forEach((key) => {
+        if (key !== attribute) {
+            sortDescFlags[key] = false;
+        }
+    });
 
     // if sorting method is set to desc
-    if (sortLocationDesc) {
+    if (sortDescFlags[attribute]) {
         // sort the system array desc
-        systems.sort((first, second) => sortDesc(first.code, second.code));
+        systems.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
     } else {
         // sort asc
-        systems.sort((first, second) => sortAsc(first.code, second.code));
+        systems.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
     }
 
     // toggle the sorting method
-    sortLocationDesc = !sortLocationDesc;
-
-    setSortIcon(headerElement);
-    generateTable();
-}
-
-/**
- * Function sorts the table by system name
- * @param {HTMLTableCellElement} headerElement table header that was clicked for sorting
- */
-function sortName(headerElement) {
-    // reset all the sorting methods for all the other table headers
-    sortLocationDesc = false;
-    sortStartDesc = false;
-    sortEndDesc = false;
-
-    // if sorting method is set to desc
-    if (sortNameDesc) {
-        // sort the system array desc
-        systems.sort((first, second) => sortDesc(first.name, second.name));
-    } else {
-        // sort asc
-        systems.sort((first, second) => sortAsc(first.name, second.name));
-    }
-
-    // toggle the sorting method
-    sortNameDesc = !sortNameDesc;
-
-    setSortIcon(headerElement);
-    generateTable();
-}
-
-/**
- * Function sorts the table by system start
- * @param {HTMLTableCellElement} headerElement table header that was clicked for sorting
- */
-function sortStart(headerElement) {
-    // reset all the sorting methods for all the other table headers
-    sortNameDesc = false;
-    sortLocationDesc = false;
-    sortEndDesc = false;
-
-    // if sorting method is set to desc
-    if (sortStartDesc) {
-        // sort the system array desc
-        systems.sort((first, second) => sortDesc(first.start, second.start));
-    } else {
-        // sort asc
-        systems.sort((first, second) => sortAsc(first.start, second.start));
-    }
-
-    // toggle the sorting method (if it was asc it will be desc, ...)
-    sortStartDesc = !sortStartDesc;
-
-    setSortIcon(headerElement);
-    generateTable();
-}
-
-/**
- * Function sorts the table by system end
- * @param {HTMLTableCellElement} headerElement table header that was clicked for sorting
- */
-function sortEnd(headerElement) {
-    // reset all the sorting methods for all the other table headers
-    sortNameDesc = false;
-    sortStartDesc = false;
-    sortLocationDesc = false;
-
-    // if sorting method is set to desc
-    if (sortEndDesc) {
-        // sort the system array desc
-        systems.sort((first, second) => sortDesc(first.end, second.end));
-    } else {
-        // sort asc
-        systems.sort((first, second) => sortAsc(first.end, second.end));
-    }
-
-    // toggle the sorting method (if it was asc it will be desc, ...)
-    sortEndDesc = !sortEndDesc;
+    sortDescFlags[attribute] = !sortDescFlags[attribute];
 
     setSortIcon(headerElement);
     generateTable();

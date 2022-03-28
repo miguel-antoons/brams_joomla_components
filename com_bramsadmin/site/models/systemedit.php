@@ -311,43 +311,6 @@ class BramsAdminModelSystemEdit extends ItemModel {
         }
 	}
 
-    /**
-     * Function deletes system with system.id equal to $id (arg)
-     *
-     * @param $id int id of the system that has to be deleted
-     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
-     *
-     * @since 0.2.0
-     */
-	public function deleteSystem($id) {
-        // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
-		$system_query = $db->getQuery(true);
-
-        // system to delete condition
-		$condition = array(
-			$db->quoteName('id') . ' = ' . $db->quote($id)
-		);
-
-        // delete query
-		$system_query->delete($db->quoteName('system'));
-		$system_query->where($condition);
-
-		$db->setQuery($system_query);
-
-        // trying to execute the query and return the results
-        try {
-            return $db->execute();
-        } catch (RuntimeException $e) {
-            // on fail, log the error and return false
-            echo new JResponseJson(array(('message') => $e));
-            Log::add($e, Log::ERROR, 'error');
-            return -1;
-        }
-	}
-
 	// get today's date in yyyy-mm-dd hh:mm:ss format
 	public function getNow() {
 		return date('Y-m-d H:i:s');

@@ -93,33 +93,6 @@ class BramsAdminViewSystemEdit extends HtmlView {
     }
 
     /**
-     * Function is the entrypoint to delete a system. It calls the
-     * system delete method from the model and returns a json response
-     * to front-end.
-     *
-     * @since 0.2.0
-     */
-    public function delete() {
-        // if an error occurred when getting the app input, stop the function
-        if (!$input = $this->getAppInput()) {
-            return;
-        }
-        // get the system's id from url
-        $id = (int) $input->get('id');
-		$model = $this->getModel();
-
-        // if the database delete failed
-        if (($model->deleteSystem($id)) === -1) {
-            return;
-        }
-
-        // if everything goes well, return a validation message to front-end
-        echo new JResponseJson(
-            array(('message') => 'System with id ' . $id . ' has been deleted.')
-        );
-    }
-
-    /**
      * Function is the entrypoint to get specific system information.
      * It calls the method to get all the information about one system.
      * The system it will request information for is given in the api url (id).
