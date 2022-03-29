@@ -139,7 +139,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
         }
 
         // if a valid location_id was given, set a default location to be selected
-        if ($location_id !== -1) {
+        if ($location_id > 0) {
             $locations[$location_id]->selected = 'selected';
         }
 

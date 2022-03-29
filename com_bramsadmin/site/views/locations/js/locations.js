@@ -100,7 +100,7 @@ function generateTable() {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${location.id}';"
+                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=locationedit&id=${location.id}';"
                 >
                     <td>${location.location_code}</td>
                     <td>${location.name}</td>

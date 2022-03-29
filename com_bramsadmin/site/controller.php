@@ -289,4 +289,97 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /** + LOCATION EDIT VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the locationEdit view getLocationCodes method.
+     * This function is called when the front-end of the site needs all
+     * the locations with the location code.
+     *
+     * @since 0.4.2
+     */
+    public function getLocationCodes() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getLocationCodes();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - GET
+     * Function executes the locationEdit view getCountries method.
+     * This function is called when the front-end of the site needs all
+     * the countries from the database.
+     *
+     * @since 0.4.2
+     */
+    public function getCountries() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getCountries();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - GET
+     * Function executes the locationEdit view getObservers method.
+     * This function is called when the front-end of the site needs all
+     * the observers from the database.
+     *
+     * @since 0.4.2
+     */
+    public function getObservers() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getObservers();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - GET
+     * Function executes the locationEdit view getLocation method.
+     * This function is called when the front-end of the site needs all
+     * the information about one location from the database.
+     *
+     * @since 0.4.2
+     */
+    public function getLocation() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getLocation();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }

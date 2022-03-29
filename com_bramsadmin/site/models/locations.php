@@ -82,7 +82,7 @@ class BramsAdminModelLocations extends ItemModel {
 
         // SQL query to get all the locations and their information
         $locations_query->select(
-            $db->quoteName('location.id') . ' as location_id, '
+            $db->quoteName('location.id') . ' as id, '
             . $db->quoteName('location_code') . ', '
             . $db->quoteName('name') . ', '
             . $db->quoteName('longitude') . ', '

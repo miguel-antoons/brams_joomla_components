@@ -1,9 +1,9 @@
 /* global $ */
-let log = 'Nothing to show';    // contains debug information if needed
-let systemId = 0;               // the id of the system to show (if 0 --> no system)
-const systemNames = [];           // array with all taken system names
-const defLocationAntenna = {};    // object with current location and antenna combo
-let locationAntennas = {};      // object with all antennas grouped by location
+let log = 'Nothing to show';        // contains debug information if needed
+let systemId = 0;                   // the id of the system to show (if 0 --> no system)
+const systemNames = [];             // array with all taken system names
+const defLocationAntenna = {};      // object with current location and antenna combo
+let locationAntennas = {};          // object with all antennas grouped by location
 
 /**
  * Function verifies if all the required inputs for the system are available

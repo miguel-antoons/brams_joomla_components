@@ -179,7 +179,7 @@ class BramsAdminModelSystemEdit extends ItemModel {
      * (antenna == $antenna (arg) && location->id == $lid (arg)) then is is not added
      * to the array.
      *
-     * @param $database_data array results from the databas
+     * @param $database_data array results from the database
      * @param $antenna int antenna number to ignore if found with $id
      * @param $id int location id for which $antenna will be ignored
      * @return array array with the database data grouped by location id
