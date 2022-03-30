@@ -382,4 +382,52 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /**
+     * API - POST
+     * Function executes the locationEdit view newLocation method.
+     * This function is called when the front-end of the site wants to
+     * create a new location. The front posts all the information about
+     * that new location.
+     *
+     * @since 0.4.3
+     */
+    public function newLocation() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->newLocation();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - PUT
+     * Function executes the locationEdit view updateLocation method.
+     * This function is called when the front-end of the site wants to
+     * update a new location. The front posts all the information about
+     * that modified location.
+     *
+     * @since 0.4.3
+     */
+    public function updateLocation() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->updateLocation();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }

@@ -51,7 +51,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested system
-        $location_id = (int) $input->get('locationid');
+        $location_id = $input->get('locationId');
         $model = $this->getModel();
 
         // if the database select failed
@@ -134,5 +134,65 @@ class BramsAdminViewLocationEdit extends HtmlView {
         }
 
         echo new JResponseJson($location_info[0]);
+    }
+
+    /**
+     * Function is the entrypoint to create a new location.
+     * This function calls the model method to insert a new location
+     * into the database and returns a JSON response with a confirmation
+     * message.
+     *
+     * @return void
+     *
+     * @since 0.4.3
+     */
+    public function newLocation() {
+         // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) {
+            return;
+        }
+        // get all the location info from the post request
+        $new_location = $input->get('new_location', array(), 'ARRAY');
+        $model = $this->getModel();
+
+        // if the database insert fails
+        if (($model->newLocation($new_location)) === -1) {
+            return;
+        }
+
+        // if everything goes well, return a validation message to front-end
+        echo new JResponseJson(
+            array(('message') => 'New system ' . $new_location['name'] . ' has been created.')
+        );
+    }
+
+    /**
+     * Function is the entrypoint to update a location.
+     * This function calls the model method to update a location
+     * in the database and returns a JSON response with a confirmation
+     * message.
+     *
+     * @return void
+     *
+     * @since 0.4.3
+     */
+    public function updateLocation() {
+        // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) {
+            return;
+        }
+        // get all the location info from the post request
+        $modified_location = $input->get('modified_location', array(), 'ARRAY');
+        $model = $this->getModel();
+
+        // if the database insert fails
+        if (($model->updateLocation($modified_location)) === -1) {
+            return;
+        }
+
+        // if everything goes well, return a validation message to front-end
+        echo new JResponseJson(
+            array(('message') => 'Location ' . $modified_location['name'] . ' has been updated.')
+        );
     }
 }

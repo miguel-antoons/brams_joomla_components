@@ -49,18 +49,35 @@ function sortDesc(first, second, noSpace) {
  * @param {number} locationId id of the location that has to be deleted
  * @param {string} locationName name of the systems' location to be deleted
  */
-function deleteLocation(locationId, locationName) {
+function deleteLocation(locationId, locationName, notDeletable) {
+    if (notDeletable !== null) {
+        alert(
+            "Location can't be deleted as long as there are systems referencing this location." +
+            " Please remove the systems referencing this location in order to remove the location."
+        );
+        return;
+    }
+
     if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
     const token = $('#token').attr('name');
 
     $.ajax({
         type: 'DELETE',
-        url: `/index.php?option=com_bramsadmin&view=locations&task=deletesystem&format=json&id=${systemId}&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &view=locations
+            &task=deleteSystem
+            &format=json
+            &id=${locationId}
+            &${token}=1
+        `,
         success: (response) => {
             // on success, update the html table by removing the system from it
             const isDeletedElement = (element) => Number(element.id) === locationId;
-            systems.splice(systems.findIndex(isDeletedElement), 1);
+            locations.splice(locations.findIndex(isDeletedElement), 1);
             generateTable();
+            console.log(response);
             document.getElementById('message').innerHTML = response.data.message;
         },
         error: (response) => {
@@ -122,7 +139,11 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
-                            onclick="deleteLocation(${location.id}, '${location.location_code}')"
+                            onclick="deleteLocation(
+                                ${location.id},
+                                '${location.location_code}',
+                                ${location.not_deletable}
+                            )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>

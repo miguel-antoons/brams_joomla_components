@@ -154,10 +154,11 @@ class BramsAdminModelSystemEdit extends ItemModel {
 			. $db->quoteName('antenna')
 		);
 		$locations_query->from($db->quoteName('location'));
-		$locations_query->from($db->quoteName('system'));
-		$locations_query->where(
-			$db->quoteName('location_id') . ' = ' . $db->quoteName('location.id')
-		);
+        $locations_query->join(
+            'LEFT',
+            $db->quoteName('system')
+            . ' ON '
+            . $db->quoteName('location_id') . ' = ' . $db->quoteName('location.id'));
 
 		$db->setQuery($locations_query);
 
@@ -280,11 +281,11 @@ class BramsAdminModelSystemEdit extends ItemModel {
 		$system_query = $db->getQuery(true);
         // attributes to update
 		$fields = array(
-			$db->quoteName('name') . ' = ' . $db->quote($system_info['name']),
-			$db->quoteName('location_id') . ' = ' . $db->quote($system_info['location']),
-			$db->quoteName('antenna') . ' = ' . $db->quote($system_info['antenna']),
-			$db->quoteName('start') . ' = ' . $db->quote($system_info['start']),
-			$db->quoteName('comments') . ' = ' . $db->quote($system_info['comments'])
+			$db->quoteName('name')          . ' = ' . $db->quote($system_info['name']),
+			$db->quoteName('location_id')   . ' = ' . $db->quote($system_info['location']),
+			$db->quoteName('antenna')       . ' = ' . $db->quote($system_info['antenna']),
+			$db->quoteName('start')         . ' = ' . $db->quote($system_info['start']),
+			$db->quoteName('comments')      . ' = ' . $db->quote($system_info['comments'])
 		);
 
         // system that will be updated

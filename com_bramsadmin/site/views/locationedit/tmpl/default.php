@@ -26,8 +26,8 @@ defined('_JEXEC') or die('Restricted access');
 
             </p>
             <div id='inputContainer'>
-                <label class='form-label' for='locationCode'>Code</label>
-                <div class="input-group">
+                <label id="code" class='form-label required' for='locationCode'>Code</label>
+                <div id="codeWrapper" class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipUsernamePrepend">
                             <label id="codeStatusL">
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
                     <input type="text" class="form-control" id="locationCode" readonly required>
                 </div>
 
-                <label class='form-label' for='locationName'>Name</label>
+                <label class='form-label required' for='locationName'>Name</label>
                 <input
                         type='text'
                         class='form-control'
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
                         required
                 >
 
-                <label for='locationStatus'>Status</label>
+                <label for='locationStatus' class="required">Status</label>
                 <select
                         name='locations'
                         class='form-control'
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
                     <option value="D">Inactive</option>
                 </select>
 
-                <label for='locationCountry'>Country</label>
+                <label for='locationCountry' class="required">Country</label>
                 <select
                     name='locations'
                     class='form-control'
@@ -67,30 +67,26 @@ defined('_JEXEC') or die('Restricted access');
                     <!-- country options will all come here -->
                 </select>
 
-                <label for='locationLatitude'>Latitude</label>
+                <label id="latitude" for='locationLatitude' class="required">Latitude</label>
                 <input
                     class='form-control'
                     type='number'
                     value='0'
-                    min='-180'
-                    max="180"
                     id='locationLatitude'
                     required
                 >
 
-                <label for='locationLongitude'>Longitude</label>
+                <label id="longitude" for='locationLongitude' class="required">Longitude</label>
                 <input
                     class='form-control'
-                    type='number'
+                    type="number"
                     value='0'
-                    min='-180'
-                    max="180"
                     id='locationLongitude'
+                    name="locationLongitude"
                     required
-                >
+                />
 
-                <label for='locationTransferType'>Transfer Type</label>
-                <!-- ! change function below -->
+                <label for='locationTransferType'  class="required">Transfer Type</label>
                 <select
                         name='locations'
                         class='form-control'
@@ -101,8 +97,7 @@ defined('_JEXEC') or die('Restricted access');
                     <option value="FTP">FTP</option>
                 </select>
 
-                <label for='locationObserver'>Observer</label>
-                <!-- ! change function below -->
+                <label for='locationObserver'  class="required">Observer</label>
                 <select
                         name='locations'
                         class='form-control'

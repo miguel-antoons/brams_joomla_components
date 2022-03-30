@@ -16,7 +16,13 @@ let locationAntennas = {};          // object with all antennas grouped by locat
  * @param {string} systemStart
  * @returns {boolean} true if everything is okay, false if an error was detected
  */
-function verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart) {
+function verifyValues(
+    antennaValue,
+    locationSelect,
+    locationId,
+    systemName,
+    systemStart
+) {
     // one of the input values is empty
     if (!antennaValue || !locationId || !systemName || !systemStart) {
         document.getElementById('error').innerHTML = `
@@ -75,10 +81,10 @@ function newSystem(form) {
             url: `/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json&${token}=1`,
             data: {
                 newSystemInfo: {
-                    name: form.systemName.value,
+                    name: systemName,
                     location: locationId,
                     antenna: antennaValue,
-                    start: form.systemStart.value,
+                    start: systemStart,
                     comments: form.systemComments.value,
                 },
             },

@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
             <p id='message' class='<?php echo $this->message['css_class']; ?>'>
                 <?php echo $this->message['message']; ?>
             </p>
-            <h1>Systems</h1>
+            <h1>Locations</h1>
             <p>
                 Click on one of the buttons on the right side column to edit or delete the location.
             </p>

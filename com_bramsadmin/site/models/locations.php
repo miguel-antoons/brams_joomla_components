@@ -82,9 +82,9 @@ class BramsAdminModelLocations extends ItemModel {
 
         // SQL query to get all the locations and their information
         $locations_query->select(
-            $db->quoteName('location.id') . ' as id, '
+            'distinct ' . $db->quoteName('location.id') . ' as id, '
             . $db->quoteName('location_code') . ', '
-            . $db->quoteName('name') . ', '
+            . $db->quoteName('location.name') . ' as name, '
             . $db->quoteName('longitude') . ', '
             . $db->quoteName('latitude') . ', '
             . $db->quoteName('transfer_type') . ', '
@@ -93,12 +93,25 @@ class BramsAdminModelLocations extends ItemModel {
             . $db->quoteName('last_name') . ') as obs_name, '
             . $db->quoteName('ftp_password') . ', '
             . $db->quoteName('tv_id') . ', '
-            . $db->quoteName('tv_password')
+            . $db->quoteName('tv_password') . ', '
+            . $db->quoteName('system.location_id') . ' as not_deletable'
         );
-        $locations_query->from($db->quoteName('location'));
         $locations_query->from($db->quoteName('observer'));
-        $locations_query->where(
-            $db->quoteName('location.observer_id') . ' = ' . $db->quoteName('observer.id')
+        $locations_query->join(
+            'INNER',
+            $db->quoteName('location')
+            . ' ON '
+            . $db->quoteName('observer.id')
+            . ' = '
+            . $db->quoteName('location.observer_id')
+        );
+        $locations_query->join(
+            'LEFT',
+            $db->quoteName('system')
+            . ' ON '
+            . $db->quoteName('location.id')
+            . ' = '
+            . $db->quoteName('system.location_id')
         );
 
         $db->setQuery($locations_query);

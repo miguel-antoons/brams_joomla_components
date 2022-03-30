@@ -323,4 +323,124 @@ class BramsAdminModelLocationEdit extends ItemModel {
             return -1;
         }
     }
+
+    /**
+     * Function inserts a new location int the database. The attributes of the new
+     * value are given as argument ($location_info)
+     *
+     * @param $location_info    array               array with the attributes of the new location
+     * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
+     *
+     * @since 0.4.3
+     */
+    public function newLocation($location_info) {
+        // if database connection fails, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
+        $location_query = $db->getQuery(true);
+
+        // query to insert a new location with data being the $location_info arg
+        $location_query
+            ->insert($db->quoteName('location'))
+            ->columns(
+                $db->quoteName(
+                    array(
+                        'observer_id',
+                        'location_code',
+                        'name',
+                        'status',
+                        'transfer_type',
+                        'country_code',
+                        'longitude',
+                        'latitude',
+                        'comments',
+                        'ftp_password',
+                        'tv_id',
+                        'tv_password'
+                    )
+                )
+            )
+            ->values(
+                $db->quote($location_info['observer_id']) . ', '
+                . $db->quote($location_info['code']) . ', '
+                . $db->quote($location_info['name']) . ', '
+                . $db->quote($location_info['status']) . ', '
+                . $db->quote($location_info['transfer_type']) . ', '
+                . $db->quote($location_info['country']) . ', '
+                . $db->quote($location_info['longitude']) . ', '
+                . $db->quote($location_info['latitude']) . ', '
+                . $db->quote($location_info['comments']) . ', '
+                . $db->quote($location_info['ftp_pass']) . ', '
+                . $db->quote($location_info['tv_id']) . ', '
+                . $db->quote($location_info['tv_pass'])
+            );
+
+        $db->setQuery($location_query);
+
+        // try to execute the query and return the result
+        try {
+            return $db->execute();
+        } catch (RuntimeException $e) {
+            // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
+    /**
+     * Function updates a location from the database with values from the
+     * $location_info argument.
+     *
+     * @param $location_info    array               array with the attributes of the modified location
+     * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
+     *
+     * @since 0.4.3
+     */
+    public function updateLocation($location_info) {
+        // if database connection fails, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
+        $location_query = $db->getQuery(true);
+        // attributes to update with their new values
+        $fields = array(
+            $db->quoteName('observer_id')   . ' = ' . $db->quote($location_info['observer_id']),
+            $db->quoteName('location_code') . ' = ' . $db->quote($location_info['code']),
+            $db->quoteName('name')          . ' = ' . $db->quote($location_info['name']),
+            $db->quoteName('status')        . ' = ' . $db->quote($location_info['status']),
+            $db->quoteName('transfer_type') . ' = ' . $db->quote($location_info['transfer_type']),
+            $db->quoteName('country_code')  . ' = ' . $db->quote($location_info['country']),
+            $db->quoteName('longitude')     . ' = ' . $db->quote($location_info['longitude']),
+            $db->quoteName('latitude')      . ' = ' . $db->quote($location_info['latitude']),
+            $db->quoteName('comments')      . ' = ' . $db->quote($location_info['comments']),
+            $db->quoteName('ftp_password')  . ' = ' . $db->quote($location_info['ftp_pass']),
+            $db->quoteName('tv_id')         . ' = ' . $db->quote($location_info['tv_id']),
+            $db->quoteName('tv_password')   . ' = ' . $db->quote($location_info['tv_pass'])
+        );
+
+        // location to be updated
+        $conditions = array(
+            $db->quoteName('id') . ' = ' . $db->quote($location_info['id'])
+        );
+
+        // update query
+        $location_query
+            ->update($db->quoteName('location'))
+            ->set($fields)
+            ->where($conditions);
+
+        $db->setQuery($location_query);
+
+        // trying to execute the query and return the result
+        try {
+            return $db->execute();
+        } catch (RuntimeException $e) {
+            // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
 }

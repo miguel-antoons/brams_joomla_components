@@ -87,3 +87,16 @@ label {
 #codeStatusL {
     margin: 0;
 }
+
+.red {
+    color: red !important;
+}
+
+.orange {
+    color: orange !important;
+}
+
+.right {
+    float: right;
+    margin: 5px;
+}
