@@ -99,12 +99,12 @@ function verifyCode(locationCode, oldIsValid) {
  * Function verifies if the entered latitude is within the permitted limits
  * (-90 -> 90). Values outside this range will generate an error message.
  *
- * @param locationLatitude  {number}    locationLatitude input value
- * @param oldIsValid        {boolean}   flag that determines if values are valid or not
+ * @param locationLatitude  {string|number}     locationLatitude input value
+ * @param oldIsValid        {boolean}           flag that determines if values are valid or not
  * @returns                 {(*|string)[]|(boolean|string)[]}
- *                                      Returns an array with 2 values :
- *                                          0: new isValid flag
- *                                          1: error message if the latitude is outside the permitted range
+ *                                              Returns an array with 2 values :
+ *                                                  0: new isValid flag
+ *                                                  1: error message if the latitude is outside the permitted range
  */
 function verifyLatitude(locationLatitude, oldIsValid) {
     locationLatitude = Number(locationLatitude);
@@ -131,12 +131,12 @@ function verifyLatitude(locationLatitude, oldIsValid) {
  * Function verifies if the entered longitude is within the permitted limits
  * (-180 -> 180). Values outside this range will generate an error message.
  *
- * @param locationLongitude {number}    locationLongitude input value
- * @param oldIsValid        {boolean}   flag that determines if values are valid or not
+ * @param locationLongitude {string|number}     locationLongitude input value
+ * @param oldIsValid        {boolean}           flag that determines if values are valid or not
  * @returns                 {(*|string)[]|(boolean|string)[]}
- *                                      Returns an array with 2 values :
- *                                          0: new isValid flag
- *                                          1: error message if the longitude is outside the permitted range
+ *                                              Returns an array with 2 values :
+ *                                                  0: new isValid flag
+ *                                                  1: error message if the longitude is outside the permitted range
  */
 function verifyLongitude(locationLongitude, oldIsValid) {
     locationLongitude = Number(locationLongitude);
@@ -160,7 +160,7 @@ function verifyLongitude(locationLongitude, oldIsValid) {
 }
 
 /**
- * Function verifies if the enetred values are valid upon api call. If all the
+ * Function verifies if the entered values are valid upon api call. If all the
  * values are valid, the function returns true. If not it returns false.
  *
  * @param locationCode          {string}    locationCode input value

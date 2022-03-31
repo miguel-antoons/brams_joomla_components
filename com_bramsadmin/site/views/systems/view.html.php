@@ -19,7 +19,6 @@ use Joomla\CMS\Log\Log;
  * @since  0.0.1
  */
 class BramsAdminViewSystems extends HtmlView {
-    public $systems;
     public $message;
 
 	/**

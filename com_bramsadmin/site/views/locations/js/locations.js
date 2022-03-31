@@ -46,14 +46,15 @@ function sortDesc(first, second, noSpace) {
  * Calls an api to delete the location with id equal to 'locationId' argument.
  * If the location was successfully deleted, it updates the html table.
  *
- * @param {number} locationId id of the location that has to be deleted
- * @param {string} locationName name of the systems' location to be deleted
+ * @param {number}      locationId   id of the location that has to be deleted
+ * @param {string}      locationName name of the location to be deleted
+ * @param {string|null} notDeletable determines if the location can be deleted or not
  */
 function deleteLocation(locationId, locationName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            "Location can't be deleted as long as there are systems referencing this location." +
-            " Please remove the systems referencing this location in order to remove the location."
+            "Location can't be deleted as long as there are systems referencing this location.\n" +
+            "Please remove the systems referencing this location in order to remove the location."
         );
         return;
     }

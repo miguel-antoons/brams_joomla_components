@@ -1,6 +1,6 @@
 /* global $ */
 let sortDescFlags = {
-    code: true,     // next sort method for the location table header (true = desc, false = asc)
+    code: true,     // next sort method for the location code table header (true = desc, false = asc)
     name: false,    // next sort method for the name table header (true = desc, false = asc)
     start: false,   // next sort method for the start table header (true = desc, false = asc)
     end: false      // next sort method for the end table header (true = desc, false = asc)

@@ -337,28 +337,7 @@ class BramsAdminController extends BaseController {
         }
     }
 
-    /**
-     * API - GET
-     * Function executes the locationEdit view getObservers method.
-     * This function is called when the front-end of the site needs all
-     * the observers from the database.
-     *
-     * @since 0.4.2
-     */
-    public function getObservers() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getObservers();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
+    // * GET api for observers is to be found in the OBSERVERS view part
 
     /**
      * API - GET
@@ -426,6 +405,52 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->updateLocation();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /** + OBSERVERS VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the specified view getObservers method.
+     * This function is called when the front-end of the site needs all
+     * the observers from the database.
+     *
+     * @since 0.4.2
+     */
+    public function getObservers() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getObservers();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - DELETE
+     * Function executes the observers view deleteObserver method. This function is called when
+     * a location has to be deleted.
+     *
+     * @since 0.5.1
+     */
+    public function deleteObserver() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->deleteObserver();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

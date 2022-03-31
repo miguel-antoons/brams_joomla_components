@@ -9,6 +9,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 
 /**
@@ -33,7 +34,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addStyleSheet('/components/com_bramsadmin/views/systemedit/css/system_edit.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
 		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
