@@ -455,4 +455,101 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /** + OBSERVER EDIT VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the observerEdit view getObserverCodes method.
+     * This function is called when the front-end of the site needs all
+     * the observer codes.
+     *
+     * @since 0.5.2
+     */
+    public function getObserverCodes() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getObserverCodes();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    // * getCountries goes trough the same task as in the LOCATION EDIT part
+
+    /**
+     * API - GET
+     * Function executes the observerEdit view getObserver method.
+     * This function is called when the front-end of the site needs all
+     * the information about one observer from the database.
+     *
+     * @since 0.5.2
+     */
+    public function getObserver() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getObserver();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - POST
+     * Function executes the observerEdit view newObserver method.
+     * This function is called when the front-end of the site wants to
+     * create a new observer. The front posts all the information about
+     * that new observer.
+     *
+     * @since 0.5.2
+     */
+    public function newObserver() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->newObserver();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - PUT
+     * Function executes the observerEdit view updateObserver method.
+     * This function is called when the front-end of the site wants to
+     * update an observer. The front posts all the information about
+     * that modified observer.
+     *
+     * @since 0.5.2
+     */
+    public function updateObserver() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->updateObserver();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }

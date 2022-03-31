@@ -1,7 +1,7 @@
 /* global $ */
 let log = 'Nothing to show';        // contains debug information if needed
 let locationId = 0;                 // the id of the location to show (if 0 --> no location)
-let locationCodes = {};             // object with all location codes grouped by location
+let locationCodes = [];             // array with all location codes grouped by location
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't

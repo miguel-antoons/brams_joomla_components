@@ -93,7 +93,7 @@ class BramsAdminModelObservers extends ItemModel
             . $db->quoteName('last_name') . ', '
             . $db->quoteName('email') . ', '
             . $db->quoteName('observer_code') . ' as code, '
-            . $db->quoteName('location.id') . ' as not_deletable'
+            . $db->quoteName('location.observer_id') . ' as not_deletable'
         );
         $observer_query->from($db->quoteName('observer'));
         $observer_query->join(
