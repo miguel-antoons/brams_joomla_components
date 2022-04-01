@@ -99,7 +99,7 @@ class BramsAdminModelBeacons extends ItemModel {
             . ' ON '
             . $db->quoteName('beacon.id')
             . ' = '
-            . $db->quoteName('beacon_id')
+            . $db->quoteName('file.beacon_id')
         );
 
         $db->setQuery($beacon_query);

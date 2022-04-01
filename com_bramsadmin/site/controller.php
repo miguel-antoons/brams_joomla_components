@@ -598,4 +598,101 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /** + OBSERVER EDIT VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the given view getBeaconCodes method.
+     * This function is called when the front-end of the site needs all
+     * the beacon codes.
+     *
+     * @since 0.6.2
+     */
+    public function getBeaconCodes() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getBeaconCodes();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    // * getCountries goes trough the same task as in the LOCATION EDIT part
+
+    /**
+     * API - GET
+     * Function executes the given view getBeacon method.
+     * This function is called when the front-end of the site needs all
+     * the information about one beacon from the database.
+     *
+     * @since 0.6.2
+     */
+    public function getBeacon() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getBeacon();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - POST
+     * Function executes the given view newBeacon method.
+     * This function is called when the front-end of the site wants to
+     * create a new beacon. The front posts all the information about
+     * that new beacon.
+     *
+     * @since 0.6.2
+     */
+    public function newBeacon() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->newBeacon();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - PUT
+     * Function executes the given view updateBeacon method.
+     * This function is called when the front-end of the site wants to
+     * update a beacon. The front posts all the information about
+     * that modified beacon.
+     *
+     * @since 0.6.2
+     */
+    public function updateBeacon() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->updateBeacon();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }

@@ -1,7 +1,7 @@
 /* global $ */
 let log = 'Nothing to show';        // contains debug information if needed
 let locationId = 0;                 // the id of the location to show (if 0 --> no location)
-let locationCodes = [];             // array with all location codes grouped by location
+let locationCodes = [];             // array with all location codes
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -150,7 +150,7 @@ function verifyLongitude(locationLongitude, oldIsValid) {
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered value for longitude is either higher than 180 or lower than -180. Please enter
+                Entered value for longitude is either higher than 90 or lower than -90. Please enter
                 a value in between -90 and 90 for latitude.
             </li>`
         ];
