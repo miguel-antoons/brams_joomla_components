@@ -494,6 +494,8 @@ function getObserver() {
                 document.getElementById('observerLName').value = response.data.last_name;
                 document.getElementById('observerCode').value = response.data.observer_code;
                 document.getElementById('observerEmail').value = response.data.email;
+                document.getElementById('title').innerHTML = `
+                    Update Observer ${response.data.first_name} ${response.data.last_name}`;
 
                 setCodeStatus(statusCheckbox);
             },

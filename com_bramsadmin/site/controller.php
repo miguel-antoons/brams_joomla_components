@@ -552,4 +552,50 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /** + BEACONS VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the specified view getBeacons method.
+     * This function is called when the front-end of the site needs all
+     * the beacons from the database.
+     *
+     * @since 0.6.1
+     */
+    public function getBeacons() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getBeacons();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - DELETE
+     * Function executes the specified view deleteBeacon method.
+     * This function is called when a beacon has to be deleted.
+     *
+     * @since 0.6.1
+     */
+    public function deleteBeacon() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->deleteBeacon();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }
