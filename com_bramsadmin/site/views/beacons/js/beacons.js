@@ -1,5 +1,5 @@
 /* global $ */
-let sortDescFlags = {
+const sortDescFlags = {
     name: true,         // next sort method for the beacon name table header (true = desc, false = asc)
     latitude: false,    // next sort method for the latitude table header (true = desc, false = asc)
     longitude: false,   // next sort method for the longitude table header (true = desc, false = asc)
@@ -31,6 +31,66 @@ function sortDesc(first, second) {
 }
 
 /**
+ * Function generates the beacon table from the beacons array.
+ * It then renders the table on inside the #beacons element.
+ */
+function generateTable() {
+    let HTMLString = '';
+
+    // generate a row for each system
+    beacons.forEach(
+        (beacon) => {
+            HTMLString += `
+                <tr
+                    class="tableRow"
+                    onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=beaconEdit'
+                        + '&id=${beacon.id}';"
+                >
+                    <td>${beacon.name}</td>
+                    <td>${beacon.latitude}</td>
+                    <td>${beacon.longitude}</td>
+                    <td>${beacon.frequency}</td>
+                    <td>${beacon.power}</td>
+                    <td class="actions">
+                        <button
+                            type='button'
+                            class='customBtn edit'
+                            onclick="window.location.href=
+                                '/index.php?'
+                                + 'option=com_bramsadmin'
+                                + '&view=beaconEdit'
+                                + '&id=${beacon.id}';"
+                        >
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button
+                            type='button'
+                            class='customBtn delete'
+                            onclick=
+                                "deleteBeacon(
+                                    ${beacon.id},
+                                    '${beacon.name}',
+                                    ${beacon.not_deletable}
+                                )"
+                        >
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+        },
+    );
+
+    document.getElementById('beacons').innerHTML = HTMLString;
+    stopPropagation();
+}
+
+/**
  * Calls an api to delete the beacon with id equal to 'beaconId' argument.
  * If the beacon was successfully deleted, it updates the html table.
  *
@@ -41,8 +101,8 @@ function sortDesc(first, second) {
 function deleteBeacon(beaconId, beaconName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            "Beacon can't be deleted as long as there are files referencing this beacon.\n" +
-            "Please remove the files referencing this beacon in order to remove the beacon."
+            "Beacon can't be deleted as long as there are files referencing this beacon.\n"
+            + 'Please remove the files referencing this beacon in order to remove the beacon.',
         );
         return;
     }
@@ -55,7 +115,7 @@ function deleteBeacon(beaconId, beaconName, notDeletable) {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=deleteBeacon
+            &task=delete
             &view=beacons
             &format=json
             &id=${beaconId}
@@ -78,53 +138,6 @@ function deleteBeacon(beaconId, beaconName, notDeletable) {
             log = response;
         },
     });
-}
-
-/**
- * Function generates the beacon table from the beacons array.
- * It then renders the table on inside the #beacons element.
- */
-function generateTable() {
-    let HTMLString = '';
-
-    // generate a row for each system
-    beacons.forEach(
-        (beacon) => {
-            HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=beaconEdit&id=${beacon.id}';"
-                >
-                    <td>${beacon.name}</td>
-                    <td>${beacon.latitude}</td>
-                    <td>${beacon.longitude}</td>
-                    <td>${beacon.frequency}</td>
-                    <td>${beacon.power}</td>
-                    <td class="actions">
-                        <button
-                            type='button'
-                            class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=beaconEdit&id=${beacon.id}';"
-                        >
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            Edit
-                        </button>
-                        <button
-                            type='button'
-                            class='customBtn delete'
-                            onclick="deleteBeacon(${beacon.id}, '${beacon.name}', ${beacon.not_deletable})"
-                        >
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `;
-        },
-    );
-
-    document.getElementById('beacons').innerHTML = HTMLString;
-    stopPropagation();
 }
 
 /**
@@ -182,7 +195,7 @@ function getBeacons() {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=getBeacons
+            &task=getAll
             &view=beacons
             &format=json
             &${token}=1

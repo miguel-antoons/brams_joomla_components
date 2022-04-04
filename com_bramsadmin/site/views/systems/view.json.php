@@ -66,7 +66,7 @@ class BramsAdminViewSystems extends HtmlView {
     }
 
     // function returns all the systems in a JSON array
-    public function getSystems() {
+    public function getAll() {
         $model = $this->getModel();
         // if an error occurred in the model
         if (($systems = $model->getSystems()) === -1) {

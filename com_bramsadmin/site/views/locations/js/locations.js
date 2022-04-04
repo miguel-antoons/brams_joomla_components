@@ -43,57 +43,6 @@ function sortDesc(first, second, noSpace) {
 }
 
 /**
- * Calls an api to delete the location with id equal to 'locationId' argument.
- * If the location was successfully deleted, it updates the html table.
- *
- * @param {number}      locationId   id of the location that has to be deleted
- * @param {string}      locationName name of the location to be deleted
- * @param {string|null} notDeletable determines if the location can be deleted or not
- */
-function deleteLocation(locationId, locationName, notDeletable) {
-    if (notDeletable !== null) {
-        alert(
-            "Location can't be deleted as long as there are systems referencing this location.\n" +
-            "Please remove the systems referencing this location in order to remove the location."
-        );
-        return;
-    }
-
-    if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'DELETE',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &view=locations
-            &task=deleteSystem
-            &format=json
-            &id=${locationId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // on success, update the html table by removing the system from it
-            const isDeletedElement = (element) => Number(element.id) === locationId;
-            locations.splice(locations.findIndex(isDeletedElement), 1);
-            generateTable();
-            console.log(response);
-            document.getElementById('message').innerHTML = response.data.message;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('message').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
-}
-
-/**
  * Function generates the system table from the systems array.
  * It then renders the table on inside the #systems element.
  */
@@ -118,7 +67,11 @@ function generateTable() {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=locationedit&id=${location.id}';"
+                    onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
                 >
                     <td>${location.location_code}</td>
                     <td>${location.name}</td>
@@ -133,7 +86,11 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=locationedit&id=${location.id}';"
+                            onclick="window.location.href=
+                                '/index.php?'
+                                + 'option=com_bramsadmin'
+                                + '&view=locationEdit'
+                                + '&id=${location.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
@@ -156,6 +113,57 @@ function generateTable() {
 
     document.getElementById('locations').innerHTML = HTMLString;
     stopPropagation();
+}
+
+/**
+ * Calls an api to delete the location with id equal to 'locationId' argument.
+ * If the location was successfully deleted, it updates the html table.
+ *
+ * @param {number}      locationId   id of the location that has to be deleted
+ * @param {string}      locationName name of the location to be deleted
+ * @param {string|null} notDeletable determines if the location can be deleted or not
+ */
+function deleteLocation(locationId, locationName, notDeletable) {
+    if (notDeletable !== null) {
+        alert(
+            "Location can't be deleted as long as there are systems referencing this location.\n"
+            + 'Please remove the systems referencing this location in order to remove the '
+            + 'location.',
+        );
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
+    const token = $('#token').attr('name');
+
+    $.ajax({
+        type: 'DELETE',
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=delete
+            &view=locations
+            &format=json
+            &id=${locationId}
+            &${token}=1
+        `,
+        success: (response) => {
+            // on success, update the html table by removing the system from it
+            const isDeletedElement = (element) => Number(element.id) === locationId;
+            locations.splice(locations.findIndex(isDeletedElement), 1);
+            generateTable();
+            document.getElementById('message').innerHTML = response.data.message;
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('message').innerHTML = (
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
 }
 
 /**
@@ -209,7 +217,14 @@ function getLocations() {
 
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=locations&task=getlocations&format=json&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=getAll
+            &view=locations
+            &format=json
+            &${token}=1
+        `,
         success: (response) => {
             locations = response.data;
             locations.sort((first, second) => sortAsc(first.location_code, second.location_code));

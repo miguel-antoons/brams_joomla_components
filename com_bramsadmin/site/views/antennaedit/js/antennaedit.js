@@ -1,4 +1,5 @@
 /* global $ */
+// eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
 let antennaId = 0;                  // the id of the antenna to show (if 0 --> no antenna)
 let antennaCodes = [];              // array with all antenna codes
@@ -20,8 +21,10 @@ function verifyRequired(antennaCode, oldIsValid) {
         // add an exclamation circle to the required inputs
         const requiredInputs = document.getElementsByClassName('required');
         Array.from(requiredInputs).forEach(
-            (input) => input.innerHTML +=
-                '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>'
+            (input) => {
+                input.innerHTML
+                    += '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>';
+            },
         );
 
         // add an error text
@@ -31,7 +34,7 @@ function verifyRequired(antennaCode, oldIsValid) {
                 <i class="fa fa-exclamation-circle orange" aria-hidden="true"></i>
                 Please fill all required inputs before submitting the form. 
                 Required inputs are Antenna Code.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -50,11 +53,11 @@ function verifyRequired(antennaCode, oldIsValid) {
  *                                      1: error message if the antenna code already exists
  */
 function verifyCode(antennaCode, oldIsValid) {
-    let pattern = /^[a-z\d\-_]+$/i;
+    const pattern = /^[a-z\d\-_]+$/i;
     // if the location code already exists
     if (antennaCodes.includes(antennaCode)) {
-        document.getElementById('code').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('code').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
@@ -62,14 +65,14 @@ function verifyCode(antennaCode, oldIsValid) {
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered antenna code is already taken. Please enter a free antenna code.
-            </li>`
+            </li>`,
         ];
     }
 
     // test if any forbidden characters are in the code
     if (!pattern.test(antennaCode)) {
-        document.getElementById('code').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('code').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
@@ -78,7 +81,7 @@ function verifyCode(antennaCode, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered antenna code contains forbidden characters. Be sure to only use dash, 
                 underscore and alphanumeric characters.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -111,7 +114,7 @@ function verifyValues(antennaCode) {
     [isValid] = verificationResult;
 
     // display the errors on the page
-    document.getElementById('error').innerHTML = HTMLError + verificationResult[1] + '</ul>';
+    document.getElementById('error').innerHTML = `${HTMLError}${verificationResult[1]}</ul>`;
 
     return isValid;
 }
@@ -138,7 +141,7 @@ function newAntenna(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
-                &task=newAntenna
+                &task=new
                 &view=antennaEdit
                 &format=json
                 &${token}=1
@@ -151,9 +154,9 @@ function newAntenna(formInputs) {
                     comments: antComments,
                 },
             },
-            success: (response) => {
+            success: () => {
                 // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=2'
+                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=2';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -189,7 +192,7 @@ function updateAntenna(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
-                &task=updateAntenna
+                &task=update
                 &view=antennaEdit
                 &format=json
                 &${token}=1
@@ -286,7 +289,7 @@ function getAntennaInfo() {
             url: `
                 index.php?
                 option=com_bramsadmin
-                &task=getAntenna
+                &task=getOne
                 &view=antennaEdit
                 &format=json
                 &id=${antennaId}
@@ -315,4 +318,3 @@ function getAntennaInfo() {
 
 // set onload function
 window.onload = getAntennaInfo;
-

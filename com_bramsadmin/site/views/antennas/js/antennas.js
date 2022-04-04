@@ -1,5 +1,5 @@
 /* global $ */
-let sortDescFlags = {
+const sortDescFlags = {
     code: true,
     brand: false,
     model: false,
@@ -37,20 +37,25 @@ function generateTable() {
 
     // generate a row for each system
     antennas.forEach(
-        (antennas) => {
+        (antenna) => {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=antennaEdit&id=${antennas.id}';"
+                    onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
                 >
-                    <td>${antennas.code}</td>
-                    <td>${antennas.brand}</td>
-                    <td>${antennas.model}</td>
+                    <td>${antenna.code}</td>
+                    <td>${antenna.brand}</td>
+                    <td>${antenna.model}</td>
                     <td>
                         <button
                             type='button'
                             class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=antennaEdit&id=${antennas.id}';"
+                            onclick="window.location.href=
+                                '/index.php'
+                                + '?option=com_bramsadmin'
+                                + '&view=antennaEdit'
+                                + '&id=${antenna.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -58,7 +63,12 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
-                            onclick="deleteAntenna(${antennas.id}, '${antennas.brand} ${antennas.model}', ${antennas.not_deletable})"
+                            onclick=
+                                "deleteAntenna(
+                                    ${antenna.id},
+                                    '${antenna.brand} ${antenna.model}',
+                                    ${antenna.not_deletable}
+                                )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
@@ -84,8 +94,9 @@ function generateTable() {
 function deleteAntenna(antennaId, antennaName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            "Antenna can't be deleted as long as there are systems (radsys_system) referencing this antenna.\n" +
-            "Please remove the systems referencing this antenna in order to remove the antenna."
+            'Antenna can\'t be deleted as long as there are systems (radsys_system) '
+            + 'referencing this antenna.\nPlease remove the systems referencing this'
+            + ' antenna in order to remove the antenna.',
         );
         return;
     }
@@ -99,7 +110,7 @@ function deleteAntenna(antennaId, antennaName, notDeletable) {
             /index.php?
             option=com_bramsadmin
             &view=antennas
-            &task=deleteAntenna
+            &task=delete
             &format=json
             &id=${antennaId}
             &${token}=1
@@ -177,7 +188,7 @@ function getAntennas() {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=getAntennas
+            &task=getAll
             &view=antennas
             &format=json
             &${token}=1

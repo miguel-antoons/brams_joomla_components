@@ -71,7 +71,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
      *
      * @since 0.7.2
      */
-    public function getAntenna() {
+    public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -97,7 +97,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
      *
      * @since 0.7.2
      */
-    public function newAntenna() {
+    public function new() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -130,7 +130,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
      *
      * @since 0.7.2
      */
-    public function updateAntenna() {
+    public function update() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

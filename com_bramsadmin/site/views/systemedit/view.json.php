@@ -45,7 +45,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
      *
      * @since 0.2.0
      */
-    public function create() {
+    public function new() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -99,7 +99,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
      *
      * @since 0.3.0
      */
-    public function getSystem() {
+    public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

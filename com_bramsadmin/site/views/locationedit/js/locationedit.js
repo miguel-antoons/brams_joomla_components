@@ -1,4 +1,5 @@
 /* global $ */
+// eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
 let locationId = 0;                 // the id of the location to show (if 0 --> no location)
 let locationCodes = [];             // array with all location codes
@@ -30,7 +31,7 @@ function verifyRequired(
     locationLongitude,
     locationTransferT,
     locationObserver,
-    oldIsValid
+    oldIsValid,
 ) {
     // if one of the required inputs are empty
     if (
@@ -46,8 +47,10 @@ function verifyRequired(
         // add an exclamation circle to the required inputs
         const requiredInputs = document.getElementsByClassName('required');
         Array.from(requiredInputs).forEach(
-            (input) => input.innerHTML +=
-                '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>'
+            (input) => {
+                input.innerHTML
+                    += '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>';
+            },
         );
 
         // add an error text
@@ -56,8 +59,9 @@ function verifyRequired(
             `<li>
                 <i class="fa fa-exclamation-circle orange" aria-hidden="true"></i>
                 Please fill all required inputs before submitting the form. 
-                Required inputs are Code, Name, Status, Country, Latitude, Longitude, Transfer Type, and Observer.
-            </li>`
+                Required inputs are Code, Name, Status, Country, Latitude, Longitude, 
+                Transfer Type, and Observer.
+            </li>`,
         ];
     }
 
@@ -78,17 +82,17 @@ function verifyRequired(
 function verifyCode(locationCode, oldIsValid) {
     // if the location code already exists
     if (locationCodes.includes(locationCode)) {
-        document.getElementById('code').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('code').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered location code is already taken. Please enter a free location code or uncheck 
-                the checkbox next to the location code input.
-            </li>`
+                Entered location code is already taken. Please enter a free location code or 
+                uncheck the checkbox next to the location code input.
+            </li>`,
         ];
     }
 
@@ -111,8 +115,8 @@ function verifyLatitude(locationLatitude, oldIsValid) {
 
     // if latitude is higher than 90 / lower than 90
     if (locationLatitude > 90 || locationLatitude < -90) {
-        document.getElementById('latitude').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('latitude').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         // add an error message
         return [
             false,
@@ -120,7 +124,7 @@ function verifyLatitude(locationLatitude, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered value for latitude is either higher than 90 or lower than -90. Please enter
                 a value in between -90 and 90 for latitude.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -143,8 +147,8 @@ function verifyLongitude(locationLongitude, oldIsValid) {
 
     // if longitude is higher than 180 / lower than -180
     if (locationLongitude > 180 || locationLongitude < -180) {
-        document.getElementById('longitude').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('longitude').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         // add an error message
         return [
             false,
@@ -152,7 +156,7 @@ function verifyLongitude(locationLongitude, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered value for longitude is either higher than 90 or lower than -90. Please enter
                 a value in between -90 and 90 for latitude.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -181,7 +185,7 @@ function verifyValues(
     locationLatitude,
     locationLongitude,
     locationTransferT,
-    locationObserver
+    locationObserver,
 ) {
     // remove all the icons inside the labels
     const icons = document.querySelectorAll('label .fa');
@@ -201,26 +205,26 @@ function verifyValues(
         locationLongitude,
         locationTransferT,
         locationObserver,
-        isValid
+        isValid,
     );
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if location code is valid
     verificationResult = verifyCode(locationCode, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if latitude is valid
     verificationResult = verifyLatitude(locationLatitude, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if longitude is valid
     verificationResult = verifyLongitude(locationLongitude, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     // display the errors on the page
-    document.getElementById('error').innerHTML = HTMLError + verificationResult[1] + '</ul>';
+    document.getElementById('error').innerHTML = `${HTMLError + verificationResult[1]}</ul>`;
 
     return isValid;
 }
@@ -252,7 +256,7 @@ function newLocation(formInputs) {
             locLatitude,
             locLongitude,
             locTransferT,
-            locObserver
+            locObserver,
         )
     ) {
         const token = $('#token').attr('name');
@@ -262,9 +266,9 @@ function newLocation(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
+                &task=new
                 &view=locationEdit
                 &format=json
-                &task=newLocation
                 &${token}=1
             `,
             data: {
@@ -285,7 +289,7 @@ function newLocation(formInputs) {
             },
             success: () => {
                 // on success return to the location page
-                window.location.href = '/index.php?option=com_bramsadmin&view=locations&message=2'
+                window.location.href = '/index.php?option=com_bramsadmin&view=locations&message=2';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -328,7 +332,7 @@ function updateLocation(formInputs) {
             locLatitude,
             locLongitude,
             locTransferT,
-            locObserver
+            locObserver,
         )
     ) {
         $.ajax({
@@ -336,9 +340,9 @@ function updateLocation(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
+                &task=update
                 &view=locationEdit
                 &format=json
-                &task=updateLocation
                 &${token}=1
             `,
             data: {
@@ -384,22 +388,6 @@ function formProcess(form) {
 }
 
 /**
- * Function activates ore deactivates the readonly attribute of the code input
- * based on the value of a checkbox element received as argument.
- *
- * @param checkbox  {HTMLInputElement}  checkbox element
- */
-function setCodeStatus(checkbox) {
-    // update the readonly attribute of the code input
-    document.getElementById('locationCode').readOnly = !checkbox.checked;
-
-    // if the checkbox has been unchecked, update the code input value
-    if (!checkbox.checked) {
-        setCode();
-    }
-}
-
-/**
  * Function sets the code value base on the selected country and the
  * entered name.
  * * NOTE :
@@ -416,9 +404,9 @@ function setCode() {
     }
 
     let locationCode;
-    let selectedCountry = document.getElementById('locationCountry').value;
+    const selectedCountry = document.getElementById('locationCountry').value;
     // take the first word from the location name
-    let locationName = document.getElementById('locationName').value.split(' ')[0];
+    const locationName = document.getElementById('locationName').value.split(' ')[0];
 
     // take the country code, add the 4 first letters from the location name
     locationCode = selectedCountry + locationName.substring(0, 4).toUpperCase();
@@ -441,7 +429,7 @@ function setCode() {
     }
 
     // while the locationCode already exists
-    for (let i = 2; locationCodes.includes(locationCode); i++) {
+    for (let i = 2; locationCodes.includes(locationCode); i += 1) {
         // generate a new locationCode from the country code, the 3 first letters
         // from the location name and i
         locationCode = selectedCountry
@@ -450,6 +438,22 @@ function setCode() {
     }
 
     document.getElementById('locationCode').value = locationCode;
+}
+
+/**
+ * Function activates ore deactivates the readonly attribute of the code input
+ * based on the value of a checkbox element received as argument.
+ *
+ * @param checkbox  {HTMLInputElement}  checkbox element
+ */
+function setCodeStatus(checkbox) {
+    // update the readonly attribute of the code input
+    document.getElementById('locationCode').readOnly = !checkbox.checked;
+
+    // if the checkbox has been unchecked, update the code input value
+    if (!checkbox.checked) {
+        setCode();
+    }
 }
 
 /**
@@ -514,9 +518,11 @@ function getCountries(currentCountry = '') {
             // add an option element for each location
             response.data.forEach((country) => {
                 HTMLString += `
-                    <option value=${country.country_code} ${country.selected}>${country.name}</option>
+                    <option value=${country.country_code} ${country.selected}>
+                        ${country.name}
+                    </option>
                 `;
-            })
+            });
 
             document.getElementById('locationCountry').innerHTML = HTMLString;
         },
@@ -600,9 +606,9 @@ function getLocationInfo() {
             url: `
                 index.php?
                 option=com_bramsadmin
+                &task=getOne
                 &view=locationEdit
                 &format=json
-                &task=getLocation
                 &id=${locationId}
                 &${token}=1
             `,
@@ -622,12 +628,13 @@ function getLocationInfo() {
                 document.getElementById('locationLongitude').value = response.data.longitude;
                 document.getElementById('locationTransferType').value = response.data.transfer_type;
                 document.getElementById('locationComments').value = (
-                    ( response.data.comments === null) ? '' : response.data.comments
+                    (response.data.comments === null) ? '' : response.data.comments
                 );
                 document.getElementById('locationFTPPass').value = response.data.ftp_password;
                 document.getElementById('locationTVId').value = response.data.tv_id;
                 document.getElementById('locationTVPass').value = response.data.tv_password;
-                document.getElementById('title').innerHTML = `Update location ${response.data.name}`;
+                document.getElementById('title').innerHTML = `
+                    Update location ${response.data.name}`;
 
                 setCodeStatus(statusCheckbox);
             },

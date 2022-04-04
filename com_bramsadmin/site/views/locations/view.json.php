@@ -39,7 +39,7 @@ class BramsAdminViewLocations extends HtmlView {
     }
 
     // function returns all the systems in a JSON array
-    public function getLocations() {
+    public function getAll() {
         $model = $this->getModel();
         // if an error occurred in the model
         if (($locations = $model->getLocations()) === -1) {

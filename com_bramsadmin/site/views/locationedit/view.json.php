@@ -120,7 +120,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
      *
      * @since 0.4.2
      */
-    public function getLocation() {
+    public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -146,7 +146,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
      *
      * @since 0.4.3
      */
-    public function newLocation() {
+    public function new() {
          // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -176,7 +176,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
      *
      * @since 0.4.3
      */
-    public function updateLocation() {
+    public function update() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

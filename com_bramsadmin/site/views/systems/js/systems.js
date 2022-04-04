@@ -3,7 +3,7 @@ const sortDescFlags = {
     code: true,     // next sort method for the location code table header (true = desc, false = asc)
     name: false,    // next sort method for the name table header (true = desc, false = asc)
     start: false,   // next sort method for the start table header (true = desc, false = asc)
-    end: false      // next sort method for the end table header (true = desc, false = asc)
+    end: false,     // next sort method for the end table header (true = desc, false = asc)
 };
 // eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';    // variable contains log messages if something was logged
@@ -42,7 +42,11 @@ function generateTable() {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system.id}';"
+                    onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=systemEdit'
+                        + '&id=${system.id}';"
                 >
                     <td>${system.code}</td>
                     <td>${system.name}</td>
@@ -52,7 +56,11 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system.id}';"
+                            onclick="window.location.href=
+                                '/index.php?'
+                                + 'option=com_bramsadmin'
+                                + '&view=systemEdit'
+                                + '&id=${system.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -83,12 +91,21 @@ function generateTable() {
  * @param {string} locationName name of the systems' location to be deleted
  */
 function deleteSystem(systemId, locationName) {
+    // eslint-disable-next-line no-alert
     if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
     const token = $('#token').attr('name');
 
     $.ajax({
         type: 'DELETE',
-        url: `/index.php?option=com_bramsadmin&view=systems&task=deletesystem&format=json&id=${systemId}&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=delete
+            &view=systems
+            &format=json
+            &id=${systemId}
+            &${token}=1
+        `,
         success: (response) => {
             // on success, update the html table by removing the system from it
             const isDeletedElement = (element) => Number(element.id) === systemId;
@@ -159,7 +176,14 @@ function getSystems() {
 
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=systems&task=getsystems&format=json&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=getAll
+            &view=systems
+            &format=json
+            &${token}=1
+        `,
         success: (response) => {
             systems = response.data;
             systems.sort((first, second) => sortAsc(first.code, second.code));

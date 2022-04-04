@@ -49,6 +49,9 @@ class BramsAdminController extends BaseController {
         if ($model = $this->getModel($viewName)) {
             // Push the model into the view (as default)
             $view->setModel($model, true);
+        } elseif ($model = $this->getModel(substr($viewName, 0, -4) . 's')) {
+             // Push the model into the view (as default)
+             $view->setModel($model, true);
         }
 
         $view->document = $document;
@@ -87,15 +90,14 @@ class BramsAdminController extends BaseController {
         return $this;
     }
 
-    /** + SYSTEMS VIEW APIs */
     /**
      * API - POST
-     * Function executes the views create method. This function is executed when a new
-     * system has to be created.
+     * Function executes the views new method. This function is executed when a new
+     * database row has to be created.
      *
-     * @since 0.2.0
+     * @since 0.7.3
      */
-    public function newSystem() {
+    public function new() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -104,7 +106,7 @@ class BramsAdminController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            $view->create();
+            $view->new();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -112,12 +114,13 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - DELETE
-     * Function executes the system view delete method. This function is called when
-     * a system has to be deleted.
+     * Function executes the view delete method. This function is called when
+     * a database row has to be deleted.
+     * The row depends on the view that will be called
      *
-     * @since 0.2.0
+     * @since 0.7.3
      */
-    public function deleteSystem() {
+    public function delete() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -134,13 +137,14 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - GET
-     * Function executes the views getSystem method. This method
-     * will get all the system and their information and return this
+     * Function executes the views getOne method. This method
+     * will get all the information about equivalent elements and return this
      * to the sites front-end.
+     * The element info that will be returned depends on the view.
      *
-     * @since 0.3.5
+     * @since 0.7.3
      */
-    public function getSystems() {
+    public function getAll() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -149,21 +153,21 @@ class BramsAdminController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            $view->getSystems();
+            $view->getAll();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
     }
 
-    /** + SYSTEMEDIT VIEW APIs  */
     /**
      * API - PUT
      * Function executes the views update method. This function is called when
-     * a system has to be updated.
+     * a database row has to be updated.
+     * The database row to be updated depends on the specified view.
      *
-     * @since 0.2.0
+     * @since 0.7.3
      */
-    public function updateSystem() {
+    public function update() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -180,12 +184,13 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - GET
-     * Function executes the view getSystem method. THis function is called when
-     * front-end needs information about a specific system.
+     * Function executes the view getOne method. THis function is called when
+     * front-end needs information about one specific row.
+     * The database row to return depends on the specified view.
      *
-     * @since 0.3.0
+     * @since 0.7.3
      */
-    public function getSystem() {
+    public function getOne() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -194,7 +199,7 @@ class BramsAdminController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            $view->getSystem();
+            $view->getOne();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -239,52 +244,6 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->getSystemNames();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /** + LOCATIONS VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the views getLocations method. This method
-     * will get all the locations and their information and return this
-     * to the sites front-end.
-     *
-     * @since 0.4.1
-     */
-    public function getLocations() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getLocations();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - DELETE
-     * Function executes the locations view delete method. This function is called when
-     * a location has to be deleted.
-     *
-     * @since 0.4.1
-     */
-    public function deleteLocation() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->delete();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -339,77 +298,6 @@ class BramsAdminController extends BaseController {
 
     // * GET api for observers is to be found in the OBSERVERS view part
 
-    /**
-     * API - GET
-     * Function executes the locationEdit view getLocation method.
-     * This function is called when the front-end of the site needs all
-     * the information about one location from the database.
-     *
-     * @since 0.4.2
-     */
-    public function getLocation() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getLocation();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - POST
-     * Function executes the locationEdit view newLocation method.
-     * This function is called when the front-end of the site wants to
-     * create a new location. The front posts all the information about
-     * that new location.
-     *
-     * @since 0.4.3
-     */
-    public function newLocation() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->newLocation();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - PUT
-     * Function executes the locationEdit view updateLocation method.
-     * This function is called when the front-end of the site wants to
-     * update a new location. The front posts all the information about
-     * that modified location.
-     *
-     * @since 0.4.3
-     */
-    public function updateLocation() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->updateLocation();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
     /** + OBSERVERS VIEW APIs */
     /**
      * API - GET
@@ -429,28 +317,6 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->getObservers();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - DELETE
-     * Function executes the observers view deleteObserver method. This function is called when
-     * a location has to be deleted.
-     *
-     * @since 0.5.1
-     */
-    public function deleteObserver() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->deleteObserver();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -482,123 +348,6 @@ class BramsAdminController extends BaseController {
 
     // * getCountries goes trough the same task as in the LOCATION EDIT part
 
-    /**
-     * API - GET
-     * Function executes the observerEdit view getObserver method.
-     * This function is called when the front-end of the site needs all
-     * the information about one observer from the database.
-     *
-     * @since 0.5.2
-     */
-    public function getObserver() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getObserver();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - POST
-     * Function executes the observerEdit view newObserver method.
-     * This function is called when the front-end of the site wants to
-     * create a new observer. The front posts all the information about
-     * that new observer.
-     *
-     * @since 0.5.2
-     */
-    public function newObserver() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->newObserver();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - PUT
-     * Function executes the observerEdit view updateObserver method.
-     * This function is called when the front-end of the site wants to
-     * update an observer. The front posts all the information about
-     * that modified observer.
-     *
-     * @since 0.5.2
-     */
-    public function updateObserver() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->updateObserver();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /** + BEACONS VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the specified view getBeacons method.
-     * This function is called when the front-end of the site needs all
-     * the beacons from the database.
-     *
-     * @since 0.6.1
-     */
-    public function getBeacons() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getBeacons();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - DELETE
-     * Function executes the specified view deleteBeacon method.
-     * This function is called when a beacon has to be deleted.
-     *
-     * @since 0.6.1
-     */
-    public function deleteBeacon() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->deleteBeacon();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
     /** + BEACON EDIT VIEW APIs */
     /**
      * API - GET
@@ -625,123 +374,6 @@ class BramsAdminController extends BaseController {
 
     // * getCountries goes trough the same task as in the LOCATION EDIT part
 
-    /**
-     * API - GET
-     * Function executes the given view getBeacon method.
-     * This function is called when the front-end of the site needs all
-     * the information about one beacon from the database.
-     *
-     * @since 0.6.2
-     */
-    public function getBeacon() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getBeacon();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - POST
-     * Function executes the given view newBeacon method.
-     * This function is called when the front-end of the site wants to
-     * create a new beacon. The front posts all the information about
-     * that new beacon.
-     *
-     * @since 0.6.2
-     */
-    public function newBeacon() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->newBeacon();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - PUT
-     * Function executes the given view updateBeacon method.
-     * This function is called when the front-end of the site wants to
-     * update a beacon. The front posts all the information about
-     * that modified beacon.
-     *
-     * @since 0.6.2
-     */
-    public function updateBeacon() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->updateBeacon();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /** + ANTENNAS VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the specified view getAntennas method.
-     * This function is called when the front-end of the site needs all
-     * the antennas from the database.
-     *
-     * @since 0.7.1
-     */
-    public function getAntennas() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getAntennas();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - DELETE
-     * Function executes the specified view deleteAntenna method.
-     * This function is called when an antenna has to be deleted.
-     *
-     * @since 0.7.1
-     */
-    public function deleteAntenna() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->deleteAntenna();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
     /** + ANTENNA EDIT VIEW APIs */
     /**
      * API - GET
@@ -761,77 +393,6 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->getAntennaCodes();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - GET
-     * Function executes the given view getAntenna method.
-     * This function is called when the front-end of the site needs all
-     * the information about one antenna from the database.
-     *
-     * @since 0.7.2
-     */
-    public function getAntenna() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getAntenna();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - POST
-     * Function executes the given view newAntenna method.
-     * This function is called when the front-end of the site wants to
-     * create a new antenna. The front posts all the information about
-     * that new antenna.
-     *
-     * @since 0.7.2
-     */
-    public function newAntenna() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->newAntenna();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /**
-     * API - PUT
-     * Function executes the given view updateAntenna method.
-     * This function is called when the front-end of the site wants to
-     * update an antenna. The front posts all the information about
-     * that modified antenna.
-     *
-     * @since 0.7.2
-     */
-    public function updateAntenna() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->updateAntenna();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

@@ -95,7 +95,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
      *
      * @since 0.6.2
      */
-    public function getBeacon() {
+    public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -121,7 +121,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
      *
      * @since 0.6.2
      */
-    public function newBeacon() {
+    public function new() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -151,7 +151,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
      *
      * @since 0.6.2
      */
-    public function updateBeacon() {
+    public function update() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

@@ -304,7 +304,7 @@ function newBeacon(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
-                &task=newBeacon
+                &task=new
                 &view=beaconEdit
                 &format=json
                 &${token}=1
@@ -374,7 +374,7 @@ function updateBeacon(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
-                &task=updateBeacon
+                &task=update
                 &view=beaconEdit
                 &format=json
                 &${token}=1
@@ -592,7 +592,7 @@ function getBeaconInfo() {
             url: `
                 index.php?
                 option=com_bramsadmin
-                &task=getBeacon
+                &task=getOne
                 &view=beaconEdit
                 &format=json
                 &id=${beaconId}

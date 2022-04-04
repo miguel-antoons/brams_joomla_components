@@ -1,4 +1,5 @@
 /* global $ */
+// eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
 let observerId = 0;                 // the id of the observer to show (if 0 --> no observer)
 let observerCodes = [];             // array with all the taken observer codes
@@ -24,7 +25,7 @@ function verifyRequired(
     observerLName,
     observerCountry,
     observerEmail,
-    oldIsValid
+    oldIsValid,
 ) {
     // if one of the required inputs are empty
     if (
@@ -37,8 +38,10 @@ function verifyRequired(
         // add an exclamation circle to the required inputs
         const requiredInputs = document.getElementsByClassName('required');
         Array.from(requiredInputs).forEach(
-            (input) => input.innerHTML +=
-                '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>'
+            (input) => {
+                input.innerHTML
+                    += '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>';
+            },
         );
 
         // add an error text
@@ -48,7 +51,7 @@ function verifyRequired(
                 <i class="fa fa-exclamation-circle orange" aria-hidden="true"></i>
                 Please fill all required inputs before submitting the form. 
                  All inputs are required.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -69,17 +72,17 @@ function verifyRequired(
 function verifyCode(observerCode, oldIsValid) {
     // if the location code already exists
     if (observerCodes.includes(observerCode)) {
-        document.getElementById('code').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('code').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered observer code is already taken. Please enter a free observer code or uncheck 
-                the checkbox next to the observer code input.
-            </li>`
+                Entered observer code is already taken. Please enter a free observer code or 
+                uncheck the checkbox next to the observer code input.
+            </li>`,
         ];
     }
 
@@ -104,8 +107,8 @@ function verifyEmail(observerEmail, oldIsValid) {
         || !observerEmail.includes('.')
         || observerEmail.length < 5
     ) {
-        document.getElementById('email').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('email').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
@@ -113,8 +116,9 @@ function verifyEmail(observerEmail, oldIsValid) {
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered e-mail does not fulfill the minimum requirements for an e-mail.
-                An e-mail must at least contain 5 characters, one '@' character and one '.' character.
-            </li>`
+                An e-mail must at least contain 5 characters, one '@' character and one 
+                '.' character.
+            </li>`,
         ];
     }
 
@@ -154,21 +158,21 @@ function verifyValues(
         observerLName,
         observerCountry,
         observerEmail,
-        isValid
+        isValid,
     );
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if location code is valid
     verificationResult = verifyCode(observerCode, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if latitude is valid
     verificationResult = verifyEmail(observerEmail, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     // display the errors on the page
-    document.getElementById('error').innerHTML = HTMLError + verificationResult[1] + '</ul>';
+    document.getElementById('error').innerHTML = `${HTMLError + verificationResult[1]}</ul>`;
 
     return isValid;
 }
@@ -194,7 +198,7 @@ function newObserver(formInputs) {
             obsFName,
             obsLName,
             obsCountry,
-            obsEmail
+            obsEmail,
         )
     ) {
         const token = $('#token').attr('name');
@@ -204,9 +208,9 @@ function newObserver(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
+                &task=new
                 &view=observerEdit
                 &format=json
-                &task=newObserver
                 &${token}=1
             `,
             data: {
@@ -220,7 +224,7 @@ function newObserver(formInputs) {
             },
             success: () => {
                 // on success return to the location page
-                window.location.href = '/index.php?option=com_bramsadmin&view=observers&message=2'
+                window.location.href = '/index.php?option=com_bramsadmin&view=observers&message=2';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -256,7 +260,7 @@ function updateObserver(formInputs) {
             obsFName,
             obsLName,
             obsCountry,
-            obsEmail
+            obsEmail,
         )
     ) {
         const token = $('#token').attr('name');
@@ -266,9 +270,9 @@ function updateObserver(formInputs) {
             url: `
                 /index.php?
                 option=com_bramsadmin
+                &task=update
                 &view=observerEdit
                 &format=json
-                &task=updateObserver
                 &${token}=1
             `,
             data: {
@@ -348,7 +352,7 @@ function setCode() {
     }
 
     // while the locationCode already exists
-    for (let i = 2; observerCodes.includes(observerCode); i++) {
+    for (let i = 2; observerCodes.includes(observerCode); i += 1) {
         // generate a new locationCode from the country code, the 3 first letters
         // from the location name and i
         observerCode = lastName.substring(0, 3).toUpperCase()
@@ -437,9 +441,11 @@ function getCountries(currentCountry = '') {
             // add an option element for each location
             response.data.forEach((country) => {
                 HTMLString += `
-                    <option value=${country.country_code} ${country.selected}>${country.name}</option>
+                    <option value=${country.country_code} ${country.selected}>
+                        ${country.name}
+                    </option>
                 `;
-            })
+            });
 
             document.getElementById('observerCountry').innerHTML = HTMLString;
         },
@@ -478,14 +484,13 @@ function getObserver() {
             url: `
                 index.php?
                 option=com_bramsadmin
-                &task=getObserver
+                &task=getOne
                 &view=observerEdit
                 &format=json
                 &id=${observerId}
                 &${token}=1
             `,
             success: (response) => {
-                console.log(response);
                 // get all the countries
                 getCountries(response.data.country_code);
                 const statusCheckbox = document.getElementById('codeStatus');
@@ -511,7 +516,7 @@ function getObserver() {
         });
     } else {
         // get all countries
-        getCountries()
+        getCountries();
     }
 }
 

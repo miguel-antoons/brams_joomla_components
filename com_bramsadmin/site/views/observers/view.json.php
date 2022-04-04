@@ -39,7 +39,7 @@ class BramsAdminViewObservers extends HtmlView {
     }
 
     // function returns all the observers in a JSON array
-    public function getObservers() {
+    public function getAll() {
         $model = $this->getModel();
         // if an error occurred in the model
         if (($observers = $model->getObservers()) === -1) {
@@ -56,7 +56,7 @@ class BramsAdminViewObservers extends HtmlView {
      *
      * @since 0.5.1
      */
-    public function deleteObserver() {
+    public function delete() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

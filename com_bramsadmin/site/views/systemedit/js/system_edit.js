@@ -1,4 +1,5 @@
 /* global $ */
+// eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
 let systemId = 0;                   // the id of the system to show (if 0 --> no system)
 const systemNames = [];             // array with all taken system names
@@ -21,7 +22,7 @@ function verifyValues(
     locationSelect,
     locationId,
     systemName,
-    systemStart
+    systemStart,
 ) {
     // one of the input values is empty
     if (!antennaValue || !locationId || !systemName || !systemStart) {
@@ -78,7 +79,14 @@ function newSystem(form) {
         // call the create api with the input values
         $.ajax({
             type: 'POST',
-            url: `/index.php?option=com_bramsadmin&view=systemedit&task=newsystem&format=json&${token}=1`,
+            url: `
+                /index.php?
+                option=com_bramsadmin
+                &task=new
+                &view=systemEdit
+                &format=json
+                &${token}=1
+            `,
             data: {
                 newSystemInfo: {
                     name: systemName,
@@ -125,7 +133,14 @@ function updateSystem(form) {
         // call the update api with the input values
         $.ajax({
             type: 'POST',
-            url: `/index.php?option=com_bramsadmin&view=systemedit&task=updatesystem&format=json&${token}=1`,
+            url: `
+                /index.php?
+                option=com_bramsadmin
+                &task=update
+                &view=systemEdit
+                &format=json
+                &${token}=1
+            `,
             data: {
                 systemInfo: {
                     id: systemId,
@@ -198,9 +213,14 @@ function getLocations() {
     $.ajax({
         type: 'GET',
         url: `
-            /index.php?option=com_bramsadmin&view=systemedit&task=getlocationantennas
-            &format=json&locationid=${defLocationAntenna.location}
-            &antenna=${defLocationAntenna.antenna}&${token}=1
+            /index.php?
+            option=com_bramsadmin
+            &task=getLocationAntennas
+            &view=systemEdit
+            &format=json
+            &locationid=${defLocationAntenna.location}
+            &antenna=${defLocationAntenna.antenna}
+            &${token}=1
         `,
         success: (response) => {
             let HTMLString = '';
@@ -243,7 +263,15 @@ function getSystemNames(id) {
 
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystemnames&format=json&id=${id}&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=getSystemNames
+            &view=systemEdit
+            &format=json
+            &id=${id}
+            &${token}=1
+        `,
         success: (response) => {
             // store the response in an array
             response.data.forEach(
@@ -279,7 +307,15 @@ function getSystemInfo() {
 
         $.ajax({
             type: 'GET',
-            url: `/index.php?option=com_bramsadmin&view=systemedit&task=getsystem&format=json&id=${systemId}&${token}=1`,
+            url: `
+                /index.php?
+                option=com_bramsadmin
+                &task=getOne
+                &view=systemEdit
+                &format=json
+                &id=${systemId}
+                &${token}=1
+            `,
             success: (response) => {
                 const inputContainer = document.getElementById('inputContainer').children;
 

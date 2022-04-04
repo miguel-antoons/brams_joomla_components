@@ -1,5 +1,5 @@
 /* global $ */
-let sortDescFlags = {
+const sortDescFlags = {
     code: true,         // next sort method for the observer code table header (true = desc, false = asc)
     firstName: false,   // next sort method for the observer first name table header (true = desc, false = asc)
     lastName: false,    // next sort method for the observer last name table header (true = desc, false = asc)
@@ -42,7 +42,11 @@ function generateTable() {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=observerEdit&id=${observer.id}';"
+                    onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=observerEdit'
+                        + '&id=${observer.id}';"
                 >
                     <td>${observer.code}</td>
                     <td>${observer.first_name}</td>
@@ -52,7 +56,11 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=observerEdit&id=${observer.id}';"
+                            onclick="window.location.href=
+                                '/index.php?'
+                                + 'option=com_bramsadmin'
+                                + '&view=observerEdit'
+                                + '&id=${observer.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -131,8 +139,9 @@ function sortTable(headerElement, attribute, noSpace = false) {
 function deleteObserver(observerId, observerName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            "Observer can't be deleted as long as there are locations referencing this observer.\n" +
-            "Please remove the locations referencing this observer in order to remove the observer."
+            "Observer can't be deleted as long as there are locations referencing this observer.\n"
+            + 'Please remove the locations referencing this observer in order to remove the'
+            + ' observer.',
         );
         return;
     }
@@ -145,8 +154,8 @@ function deleteObserver(observerId, observerName, notDeletable) {
         url: `
             /index.php?
             option=com_bramsadmin
+            &task=delete
             &view=observers
-            &task=deleteObserver
             &format=json
             &id=${observerId}
             &${token}=1
@@ -181,7 +190,14 @@ function getObservers() {
 
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=observers&task=getObservers&format=json&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=getAll
+            &view=observers
+            &format=json
+            &${token}=1
+        `,
         success: (response) => {
             observers = response.data;
             observers.sort((first, second) => sortAsc(first.code, second.code));
@@ -200,4 +216,3 @@ function getObservers() {
 }
 
 window.onload = getObservers;
-

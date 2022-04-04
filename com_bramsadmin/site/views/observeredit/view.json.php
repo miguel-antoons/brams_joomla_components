@@ -95,7 +95,7 @@ class BramsAdminViewObserverEdit extends HtmlView {
      *
      * @since 0.5.2
      */
-    public function getObserver() {
+    public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -121,7 +121,7 @@ class BramsAdminViewObserverEdit extends HtmlView {
      *
      * @since 0.5.2
      */
-    public function newObserver() {
+    public function new() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -155,7 +155,7 @@ class BramsAdminViewObserverEdit extends HtmlView {
      *
      * @since 0.5.2
      */
-    public function updateObserver() {
+    public function update() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

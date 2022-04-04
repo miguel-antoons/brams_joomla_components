@@ -45,7 +45,7 @@ class BramsAdminViewAntennas extends HtmlView {
      *
      * @since 0.7.1
      */
-    public function deleteAntenna() {
+    public function delete() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -66,7 +66,7 @@ class BramsAdminViewAntennas extends HtmlView {
     }
 
     // function returns all the antennas in a JSON array
-    public function getAntennas() {
+    public function getAll() {
         $model = $this->getModel();
         // if an error occurred in the model
         if (($antennas = $model->getAntennas()) === -1) {
