@@ -500,7 +500,7 @@ function getBeaconCodes() {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=getBeaconCodes
+            &task=getCodes
             &view=beaconEdit
             &format=json
             &beaconId=${beaconId}
@@ -538,7 +538,7 @@ function getCountries(currentCountry = '') {
             /index.php?
             option=com_bramsadmin
             &task=getCountries
-            &view=beaconEdit
+            &view=locationEdit
             &format=json
             &currentCountry=${currentCountry}
             &${token}=1

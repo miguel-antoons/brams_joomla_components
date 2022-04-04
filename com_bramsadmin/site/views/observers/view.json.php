@@ -50,6 +50,35 @@ class BramsAdminViewObservers extends HtmlView {
     }
 
     /**
+     * Function is the entrypoint to get all the observers form the database.
+     * This function returns a JSON array with objects. Each object is a different
+     * observer.
+     * 
+     * * NOTE : 
+     * *    This function only returns a limited amount of observer information
+     * *    compared to the 'getAll' function.
+     *
+     * @return void
+     *
+     * @since 0.4.2
+     */
+    public function getAllSimple() {
+        // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) {
+            return;
+        }
+        $current_observer = $input->get('currentObserver');
+        $model = $this->getModel();
+
+        // if the database select failed
+        if (($observers = $model->getObserversSimple($current_observer)) === -1) {
+            return;
+        }
+
+        echo new JResponseJson($observers);
+    }
+
+    /**
      * Function is the entrypoint to delete an observer. It calls the
      * observer delete method from the model and returns a json response
      * to front-end.

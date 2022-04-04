@@ -266,7 +266,7 @@ function getSystemNames(id) {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=getSystemNames
+            &task=getAllSimple
             &view=systemEdit
             &format=json
             &id=${id}

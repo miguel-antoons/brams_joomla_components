@@ -137,7 +137,7 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - GET
-     * Function executes the views getOne method. This method
+     * Function executes the views getAll method. This method
      * will get all the information about equivalent elements and return this
      * to the sites front-end.
      * The element info that will be returned depends on the view.
@@ -154,6 +154,31 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->getAll();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - GET
+     * Function executes the views getAllSimple method. This method
+     * will get all the information about equivalent elements and return this
+     * to the sites front-end. Note that the simple means that only a limited
+     * amount of inforamtion will be sent compared to the 'getAll' method.
+     * The element info that will be returned depends on the view.
+     *
+     * @since 0.7.3
+     */
+    public function getAllSimple() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getAllSimple();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -229,36 +254,13 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - GET
-     * Function executes the view getSystemNames() method. This function is called when
-     * front-end needs all the taken system names.
-     *
-     * @since 0.3.0
-     */
-    public function getSystemNames() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getSystemNames();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /** + LOCATION EDIT VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the locationEdit view getLocationCodes method.
+     * Function executes the view getCodes method.
      * This function is called when the front-end of the site needs all
-     * the locations with the location code.
+     * the codes of a certain dataset.
      *
      * @since 0.4.2
      */
-    public function getLocationCodes() {
+    public function getCodes() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -267,7 +269,7 @@ class BramsAdminController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            $view->getLocationCodes();
+            $view->getCodes();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
@@ -291,108 +293,6 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->getCountries();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    // * GET api for observers is to be found in the OBSERVERS view part
-
-    /** + OBSERVERS VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the specified view getObservers method.
-     * This function is called when the front-end of the site needs all
-     * the observers from the database.
-     *
-     * @since 0.4.2
-     */
-    public function getObservers() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getObservers();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    /** + OBSERVER EDIT VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the observerEdit view getObserverCodes method.
-     * This function is called when the front-end of the site needs all
-     * the observer codes.
-     *
-     * @since 0.5.2
-     */
-    public function getObserverCodes() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getObserverCodes();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    // * getCountries goes trough the same task as in the LOCATION EDIT part
-
-    /** + BEACON EDIT VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the given view getBeaconCodes method.
-     * This function is called when the front-end of the site needs all
-     * the beacon codes.
-     *
-     * @since 0.6.2
-     */
-    public function getBeaconCodes() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getBeaconCodes();
-        } else {
-            echo new JResponseJson(array(('message') => false));
-        }
-    }
-
-    // * getCountries goes trough the same task as in the LOCATION EDIT part
-
-    /** + ANTENNA EDIT VIEW APIs */
-    /**
-     * API - GET
-     * Function executes the given view getAntennaCodes method.
-     * This function is called when the front-end of the site needs all
-     * the antenna codes.
-     *
-     * @since 0.7.2
-     */
-    public function getAntennaCodes() {
-        if (Jsession::checkToken('get')) {
-            try {
-                $view = $this->display(false, array(), true);
-            } catch (Exception $e) {
-                echo new JResponseJson(array(('message') => $e));
-                Log::add($e, Log::ERROR, 'error');
-                return;
-            }
-            $view->getAntennaCodes();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

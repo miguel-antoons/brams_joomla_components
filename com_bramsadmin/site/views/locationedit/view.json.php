@@ -45,7 +45,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
      *
      * @since 0.4.2
      */
-    public function getLocationCodes() {
+    public function getCodes() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -84,31 +84,6 @@ class BramsAdminViewLocationEdit extends HtmlView {
         }
 
         echo new JResponseJson($countries);
-    }
-
-    /**
-     * Function is the entrypoint to get all the observers form the database.
-     * This function returns a JSON array with objects. Each object is a different
-     * observer.
-     *
-     * @return void
-     *
-     * @since 0.4.2
-     */
-    public function getObservers() {
-        // if an error occurred when getting the app input, stop the function
-        if (!$input = $this->getAppInput()) {
-            return;
-        }
-        $current_observer = $input->get('currentObserver');
-        $model = $this->getModel();
-
-        // if the database select failed
-        if (($observers = $model->getObservers($current_observer)) === -1) {
-            return;
-        }
-
-        echo new JResponseJson($observers);
     }
 
     /**

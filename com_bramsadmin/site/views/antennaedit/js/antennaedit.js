@@ -244,7 +244,7 @@ function getAntennaCodes() {
         url: `
             /index.php?
             option=com_bramsadmin
-            &task=getAntennaCodes
+            &task=getCodes
             &view=antennaEdit
             &format=json
             &antennaId=${antennaId}

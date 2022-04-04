@@ -469,9 +469,9 @@ function getLocations() {
         url: `
             /index.php?
             option=com_bramsadmin
+            &task=getCodes
             &view=locationEdit
             &format=json
-            &task=getLocationCodes
             &locationId=${locationId}
             &${token}=1
         `,
@@ -553,9 +553,9 @@ function getObservers(currentObserver = 0) {
         url: `
             /index.php?
             option=com_bramsadmin
-            &view=locationEdit
+            &task=getAllSimple
+            &view=observers
             &format=json
-            &task=getObservers
             &currentObserver=${currentObserver}
             &${token}=1
         `,

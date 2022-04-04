@@ -45,7 +45,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
      *
      * @since 0.7.2
      */
-    public function getAntennaCodes() {
+    public function getCodes() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

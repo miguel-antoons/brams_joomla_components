@@ -152,7 +152,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
      *
      * @since 0.3.0
      */
-    public function getSystemNames() {
+    public function getAllSimple() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

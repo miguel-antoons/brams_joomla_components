@@ -119,6 +119,92 @@ class BramsAdminModelObservers extends ItemModel
     }
 
     /**
+     * Function gets all the observer from the database and returns them
+     * with an additional 'selected' attribute. This attribute will decide
+     * which observer to select by default.
+     *
+     * @param $current_observer     int          id of the observer to select by default
+     * @return                      int|array    -1 if the function fails, the results from the database on success
+     *
+     * @since 0.4.2
+     */
+    public function getObserversSimple($current_observer) {
+        // if database connection fails, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
+        $observer_query = $db->getQuery(true);
+
+        // query to get all the available countries and their code
+        $observer_query->select(
+            $db->quoteName('id') . ', '
+            . 'concat(' . $db->quoteName('first_name') . ', \' \', '
+            . $db->quoteName('last_name') . ') as name'
+        );
+        $observer_query->from($db->quoteName('observer'));
+        $observer_query->order($db->quoteName('name'));
+
+        $db->setQuery($observer_query);
+
+        // try to execute the query and return the results
+        try {
+            return $this->structureObserversSimple($db->loadObjectList(), $current_observer);
+        } catch (RuntimeException $e) {
+            // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
+    /**
+     * Function adds a selected attribute to each observer object from the
+     * database. This attribute will decide which observer will be selected
+     * by default.
+     * The observer that will be selected by default has its id equal to
+     * $current_observer
+     *
+     * @param $database_data    array   observers coming straight from the database
+     * @param $current_observer int     id of the observer to select by default
+     * @return                  array   array of observers with the added 'selected' attribute
+     *
+     * @since 0.4.2
+     */
+    private function structureObserversSimple($database_data, $current_observer) {
+        $final_observer_array = array();
+
+        // if no observer has to be selected by default
+        if (!$current_observer) {
+            // set a placeholder by default
+            $final_observer_array[] = array(
+                ('id')       => 0,
+                ('name')     => '--select an observer--',
+                ('selected') => 'selected'
+            );
+        }
+
+        // iterate over the database data (all the observers)
+        foreach ($database_data as $observer) {
+            // if the observers id is equal to $current_observer (arg)
+            if ($observer->id === $current_observer) {
+                // set this observer to be the default selected one
+                $selected = 'selected';
+            } else {
+                $selected = '';
+            }
+
+            // add all the information to the final array
+            $final_observer_array[] = array(
+                ('id')       => $observer->id,
+                ('name')     => $observer->name,
+                ('selected') => $selected
+            );
+        }
+
+        return $final_observer_array;
+    }
+
+    /**
      * Function deletes observer with observer.id equal to $id (arg)
      *
      * @param $id   int                 id of the observer that has to be deleted
@@ -212,86 +298,6 @@ class BramsAdminModelObservers extends ItemModel
         }
 
         return $final_observer_array;
-    }
-
-    /**
-     * Function gets all the countries (country.country_code, country.name) from
-     * the database. It then adds a new 'selected' attribute to each returned object.
-     * The new attribute will decide which country will be the one selected by default.
-     *
-     * @param $current_country  string      Country to set to default selected
-     * @return                  array|int   -1 if the function fails, the array with all the countries on success
-     *
-     * @since 0.4.2
-     */
-    public function getCountries($current_country) {
-        // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
-        $country_query = $db->getQuery(true);
-
-        // query to get all the available countries and their code
-        $country_query->select(
-            $db->quoteName('country_code') . ', '
-            . $db->quoteName('name')
-        );
-        $country_query->from($db->quoteName('country'));
-        $country_query->order($db->quoteName('name'));
-
-        $db->setQuery($country_query);
-
-        // try to execute the query and return the results
-        try {
-            return $this->structureCountries($db->loadObjectList(), $current_country);
-        } catch (RuntimeException $e) {
-            // on fail, log the error and return false
-            echo new JResponseJson(array(('message') => $e));
-            Log::add($e, Log::ERROR, 'error');
-            return -1;
-        }
-    }
-
-    /**
-     * Function adds a new 'selected' attribute to each country received from the database.
-     * This 'selected' attribute will decide which country will be selected by default
-     * on the front-end of the page.
-     *
-     * @param $database_data    array   array containing all the countries from the database
-     * @param $current_country  string  country to select by default
-     * @return                  array   array with the new 'selected' attribute
-     *
-     * @since 0.5.2
-     */
-    private function structureCountries($database_data, $current_country) {
-        $final_country_array = array();
-
-        // if no value us set for current_country
-        if (!$current_country) {
-            // set the default one to 'BE'
-            $current_country = 'BE';
-        }
-
-        foreach ($database_data as $country) {
-            // if the country code is not equal to $current_country (arg)
-            if ($country->country_code !== $current_country) {
-                // the country won't be the one that's selected
-                $selected = '';
-            } else {
-                // if it is equal to $current_country
-                // set this country to be the default one
-                $selected = 'selected';
-            }
-
-            // add all the data to the final array
-            $final_country_array[] = array(
-                ('country_code')    => $country->country_code,
-                ('name')            => $country->name,
-                ('selected')        => $selected
-            );
-        }
-
-        return $final_country_array;
     }
 
     /**

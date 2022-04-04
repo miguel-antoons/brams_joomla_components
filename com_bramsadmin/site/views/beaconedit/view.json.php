@@ -45,7 +45,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
      *
      * @since 0.6.2
      */
-    public function getBeaconCodes() {
+    public function getCodes() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
@@ -60,30 +60,6 @@ class BramsAdminViewBeaconEdit extends HtmlView {
         }
 
         echo new JResponseJson($beacon_codes);
-    }
-
-    /**
-     * Function is the entrypoint to get all the countries.
-     * This function returns a json array with all the countries
-     * to the front-end of the site.
-     *
-     * @since 0.4.2
-     */
-    public function getCountries() {
-        // if an error occurred when getting the app input, stop the function
-        if (!$input = $this->getAppInput()) {
-            return;
-        }
-        // check which country has to be selected
-        $current_country = $input->get('currentCountry');
-        $model = $this->getModel();
-
-        // if the database select failed
-        if (($countries = $model->getCountries($current_country)) === -1) {
-            return;
-        }
-
-        echo new JResponseJson($countries);
     }
 
     /**

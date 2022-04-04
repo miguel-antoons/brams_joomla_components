@@ -394,7 +394,7 @@ function getObsCodes() {
             option=com_bramsadmin
             &view=observerEdit
             &format=json
-            &task=getObserverCodes
+            &task=getCodes
             &observerId=${observerId}
             &${token}=1
         `,
@@ -429,7 +429,7 @@ function getCountries(currentCountry = '') {
         url: `
             /index.php?
             option=com_bramsadmin
-            &view=observerEdit
+            &view=locationEdit
             &format=json
             &task=getCountries
             &currentCountry=${currentCountry}
