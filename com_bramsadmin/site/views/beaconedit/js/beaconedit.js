@@ -1,4 +1,5 @@
 /* global $ */
+// eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
 let beaconId = 0;                   // the id of the beacon to show (if 0 --> no beacon)
 let beaconCodes = [];               // array with all beacon codes
@@ -28,7 +29,7 @@ function verifyRequired(
     beaFrequency,
     beaPower,
     beaPolarization,
-    oldIsValid
+    oldIsValid,
 ) {
     // if one of the required inputs are empty
     if (
@@ -43,8 +44,10 @@ function verifyRequired(
         // add an exclamation circle to the required inputs
         const requiredInputs = document.getElementsByClassName('required');
         Array.from(requiredInputs).forEach(
-            (input) => input.innerHTML +=
-                '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>'
+            (input) => {
+                input.innerHTML
+                    += '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>';
+            },
         );
 
         // add an error text
@@ -53,8 +56,9 @@ function verifyRequired(
             `<li>
                 <i class="fa fa-exclamation-circle orange" aria-hidden="true"></i>
                 Please fill all required inputs before submitting the form. 
-                Required inputs are Code, Name, Status, Latitude, Longitude, Frequency, Power and Polarization.
-            </li>`
+                Required inputs are Code, Name, Status, Latitude, Longitude, 
+                Frequency, Power and Polarization.
+            </li>`,
         ];
     }
 
@@ -75,8 +79,8 @@ function verifyRequired(
 function verifyCode(beaCode, oldIsValid) {
     // if the beacon code already exists
     if (beaconCodes.includes(beaCode)) {
-        document.getElementById('code').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('code').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
         // set the valid flag to false and return an error message
         return [
@@ -85,7 +89,7 @@ function verifyCode(beaCode, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered beacon code is already taken. Please enter a free beacon code or uncheck 
                 the checkbox next to the location code input.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -104,12 +108,13 @@ function verifyCode(beaCode, oldIsValid) {
  *                                                  1: error message if the latitude is outside the permitted range
  */
 function verifyLatitude(beaLatitude, oldIsValid) {
+    // eslint-disable-next-line no-param-reassign
     beaLatitude = Number(beaLatitude);
 
     // if latitude is higher than 90 / lower than 90
     if (beaLatitude > 90 || beaLatitude < -90) {
-        document.getElementById('latitude').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('latitude').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         // add an error message
         return [
             false,
@@ -117,7 +122,7 @@ function verifyLatitude(beaLatitude, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered value for latitude is either higher than 90 or lower than -90. Please enter
                 a value in between -90 and 90 for latitude.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -136,20 +141,21 @@ function verifyLatitude(beaLatitude, oldIsValid) {
  *                                                  1: error message if the longitude is outside the permitted range
  */
 function verifyLongitude(beaLongitude, oldIsValid) {
+    // eslint-disable-next-line no-param-reassign
     beaLongitude = Number(beaLongitude);
 
     // if longitude is higher than 180 / lower than -180
     if (beaLongitude > 180 || beaLongitude < -180) {
-        document.getElementById('longitude').innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('longitude').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         // add an error message
         return [
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered value for longitude is either higher than 180 or lower than -180. Please enter
-                a value in between -180 and 180 for latitude.
-            </li>`
+                Entered value for longitude is either higher than 180 or lower than -180. 
+                Please enter a value in between -180 and 180 for latitude.
+            </li>`,
         ];
     }
 
@@ -169,12 +175,13 @@ function verifyLongitude(beaLongitude, oldIsValid) {
  *                                          1: error message if the number is negative
  */
 function verifyPositiveNumber(inputNumber, elementId, oldIsValid) {
+    // eslint-disable-next-line no-param-reassign
     inputNumber = Number(inputNumber);
 
     // if the entered number is lower than 0
     if (inputNumber < 0) {
-        document.getElementById(elementId).innerHTML += '' +
-            '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById(elementId).innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         // add an error message
         return [
             false,
@@ -182,7 +189,7 @@ function verifyPositiveNumber(inputNumber, elementId, oldIsValid) {
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
                 Entered value for ${elementId} is cannot be negative. Please enter
                 a positive value for ${elementId}.
-            </li>`
+            </li>`,
         ];
     }
 
@@ -213,7 +220,7 @@ function verifyValues(
 ) {
     // remove all the icons inside the labels
     const icons = document.querySelectorAll('label .fa');
-    let verificationResult;
+    let verificationResult = [];
     icons.forEach((icon) => icon.remove());
 
     let isValid = true;
@@ -228,36 +235,36 @@ function verifyValues(
         beaFrequency,
         beaPower,
         beaPolarization,
-        isValid
+        isValid,
     );
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if location code is valid
     verificationResult = verifyCode(beaCode, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if latitude is valid
     verificationResult = verifyLatitude(beaLatitude, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if longitude is valid
     verificationResult = verifyLongitude(beaLongitude, isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // check if frequency is higher than 0
     verificationResult = verifyPositiveNumber(beaFrequency, 'frequency', isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
     // verify that power is higher than 0
     verificationResult = verifyPositiveNumber(beaPower, 'power', isValid);
-    isValid = verificationResult[0];
+    [isValid] = verificationResult;
     // display the errors on the page
-    document.getElementById('error').innerHTML = HTMLError + verificationResult[1] + '</ul>';
+    document.getElementById('error').innerHTML = `${HTMLError + verificationResult[1]}</ul>`;
 
     return isValid;
 }
@@ -287,7 +294,7 @@ function newBeacon(formInputs) {
             beaLongitude,
             beaFrequency,
             beaPower,
-            beaPolarization
+            beaPolarization,
         )
     ) {
         const token = $('#token').attr('name');
@@ -317,7 +324,7 @@ function newBeacon(formInputs) {
             },
             success: () => {
                 // on success return to the location page
-                window.location.href = '/index.php?option=com_bramsadmin&view=beacons&message=2'
+                window.location.href = '/index.php?option=com_bramsadmin&view=beacons&message=2';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -357,7 +364,7 @@ function updateBeacon(formInputs) {
             beaLongitude,
             beaFrequency,
             beaPower,
-            beaPolarization
+            beaPolarization,
         )
     ) {
         const token = $('#token').attr('name');
@@ -411,23 +418,6 @@ function formProcess(form) {
     return newBeacon(form);
 }
 
-
-/**
- * Function activates ore deactivates the readonly attribute of the code input
- * based on the value of a checkbox element received as argument.
- *
- * @param checkbox  {HTMLInputElement}  checkbox element
- */
-function setCodeStatus(checkbox) {
-    // update the readonly attribute of the code input
-    document.getElementById('beaconCode').readOnly = !checkbox.checked;
-
-    // if the checkbox has been unchecked, update the code input value
-    if (!checkbox.checked) {
-        setCode();
-    }
-}
-
 /**
  * Function sets the code value base on the selected country and the
  * entered name.
@@ -445,9 +435,9 @@ function setCode() {
     }
 
     let beaconCode;
-    let selectedCountry = document.getElementById('beaconCountry').value;
+    const selectedCountry = document.getElementById('beaconCountry').value;
     // take the first word from the location name
-    let beaconName = document.getElementById('beaconName').value.split(' ')[0];
+    const beaconName = document.getElementById('beaconName').value.split(' ')[0];
 
     // take the country code, add the 4 first letters from the location name
     beaconCode = selectedCountry + beaconName.substring(0, 4).toUpperCase();
@@ -470,7 +460,7 @@ function setCode() {
     }
 
     // while the locationCode already exists
-    for (let i = 2; beaconCodes.includes(beaconCode); i++) {
+    for (let i = 2; beaconCodes.includes(beaconCode); i += 1) {
         // generate a new locationCode from the country code, the 3 first letters
         // from the location name and i
         beaconCode = selectedCountry
@@ -479,6 +469,22 @@ function setCode() {
     }
 
     document.getElementById('beaconCode').value = beaconCode;
+}
+
+/**
+ * Function activates ore deactivates the readonly attribute of the code input
+ * based on the value of a checkbox element received as argument.
+ *
+ * @param checkbox  {HTMLInputElement}  checkbox element
+ */
+function setCodeStatus(checkbox) {
+    // update the readonly attribute of the code input
+    document.getElementById('beaconCode').readOnly = !checkbox.checked;
+
+    // if the checkbox has been unchecked, update the code input value
+    if (!checkbox.checked) {
+        setCode();
+    }
 }
 
 /**
@@ -543,9 +549,11 @@ function getCountries(currentCountry = '') {
             // add an option element for each location
             response.data.forEach((country) => {
                 HTMLString += `
-                    <option value=${country.country_code} ${country.selected}>${country.name}</option>
+                    <option value=${country.country_code} ${country.selected}>
+                        ${country.name}
+                    </option>
                 `;
-            })
+            });
 
             document.getElementById('beaconCountry').innerHTML = HTMLString;
         },
@@ -591,7 +599,6 @@ function getBeaconInfo() {
                 &${token}=1
             `,
             success: (response) => {
-                console.log(response);
                 // get all the countries
                 getCountries(response.data.code.substring(0, 2));
                 const statusCheckbox = document.getElementById('codeStatus');

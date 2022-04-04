@@ -599,7 +599,7 @@ class BramsAdminController extends BaseController {
         }
     }
 
-    /** + OBSERVER EDIT VIEW APIs */
+    /** + BEACON EDIT VIEW APIs */
     /**
      * API - GET
      * Function executes the given view getBeaconCodes method.
@@ -737,6 +737,101 @@ class BramsAdminController extends BaseController {
                 return;
             }
             $view->deleteAntenna();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /** + ANTENNA EDIT VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the given view getAntennaCodes method.
+     * This function is called when the front-end of the site needs all
+     * the antenna codes.
+     *
+     * @since 0.7.2
+     */
+    public function getAntennaCodes() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getAntennaCodes();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - GET
+     * Function executes the given view getAntenna method.
+     * This function is called when the front-end of the site needs all
+     * the information about one antenna from the database.
+     *
+     * @since 0.7.2
+     */
+    public function getAntenna() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getAntenna();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - POST
+     * Function executes the given view newAntenna method.
+     * This function is called when the front-end of the site wants to
+     * create a new antenna. The front posts all the information about
+     * that new antenna.
+     *
+     * @since 0.7.2
+     */
+    public function newAntenna() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->newAntenna();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - PUT
+     * Function executes the given view updateAntenna method.
+     * This function is called when the front-end of the site wants to
+     * update an antenna. The front posts all the information about
+     * that modified antenna.
+     *
+     * @since 0.7.2
+     */
+    public function updateAntenna() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->updateAntenna();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

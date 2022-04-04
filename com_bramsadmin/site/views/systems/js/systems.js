@@ -1,5 +1,5 @@
 /* global $ */
-let sortDescFlags = {
+const sortDescFlags = {
     code: true,     // next sort method for the location code table header (true = desc, false = asc)
     name: false,    // next sort method for the name table header (true = desc, false = asc)
     start: false,   // next sort method for the start table header (true = desc, false = asc)
