@@ -1,13 +1,12 @@
 /* global $ */
 let sortDescFlags = {
-    code: true,     // next sort method for the location code table header (true = desc, false = asc)
-    name: false,    // next sort method for the name table header (true = desc, false = asc)
-    start: false,   // next sort method for the start table header (true = desc, false = asc)
-    end: false      // next sort method for the end table header (true = desc, false = asc)
+    code: true,
+    brand: false,
+    model: false,
 };
 // eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';    // variable contains log messages if something was logged
-let systems;
+let antennas;
 
 // function stops the onclick property from .systemRow classes
 // from firing when clicking on a button inside a .systemRow class
@@ -30,29 +29,28 @@ function sortDesc(first, second) {
 }
 
 /**
- * Function generates the system table from the systems array.
- * It then renders the table on inside the #systems element.
+ * Function generates the antenna table from the antennas array.
+ * It then renders the table on inside the #antennas element.
  */
 function generateTable() {
     let HTMLString = '';
 
     // generate a row for each system
-    systems.forEach(
-        (system) => {
+    antennas.forEach(
+        (antennas) => {
             HTMLString += `
                 <tr
                     class="tableRow"
-                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system.id}';"
+                    onclick="window.location.href='/index.php?option=com_bramsadmin&view=antennaEdit&id=${antennas.id}';"
                 >
-                    <td>${system.code}</td>
-                    <td>${system.name}</td>
-                    <td>${system.start}</td>
-                    <td>${system.end}</td>
+                    <td>${antennas.code}</td>
+                    <td>${antennas.brand}</td>
+                    <td>${antennas.model}</td>
                     <td>
                         <button
                             type='button'
                             class='customBtn edit'
-                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=systemedit&id=${system.id}';"
+                            onclick="window.location.href='/index.php?option=com_bramsadmin&view=antennaEdit&id=${antennas.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -60,7 +58,7 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
-                            onclick="deleteSystem(${system.id}, '${system.name}')"
+                            onclick="deleteAntenna(${antennas.id}, '${antennas.brand} ${antennas.model}', ${antennas.not_deletable})"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
@@ -71,28 +69,45 @@ function generateTable() {
         },
     );
 
-    document.getElementById('systems').innerHTML = HTMLString;
+    document.getElementById('antennas').innerHTML = HTMLString;
     stopPropagation();
 }
 
 /**
- * Calls an api to delete the system with id equal to 'systemId' argument.
- * If the system was successfully deleted, it updates the html table.
+ * Calls an api to delete the antenna with id equal to 'antennaId' argument.
+ * If the antenna was successfully deleted, it updates the html table.
  *
- * @param {number} systemId id of the system that has to be deleted
- * @param {string} locationName name of the systems' location to be deleted
+ * @param {number}      antennaId    id of the antenna that has to be deleted
+ * @param {string}      antennaName  name of the antenna to be deleted
+ * @param {string|null} notDeletable determines if the location can be deleted or not
  */
-function deleteSystem(systemId, locationName) {
-    if (!confirm(`Are you sure you want to delete ${locationName}`)) return;
+function deleteAntenna(antennaId, antennaName, notDeletable) {
+    if (notDeletable !== null) {
+        alert(
+            "Antenna can't be deleted as long as there are systems (radsys_system) referencing this antenna.\n" +
+            "Please remove the systems referencing this antenna in order to remove the antenna."
+        );
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${antennaName}`)) return;
     const token = $('#token').attr('name');
 
     $.ajax({
         type: 'DELETE',
-        url: `/index.php?option=com_bramsadmin&view=systems&task=deletesystem&format=json&id=${systemId}&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &view=antennas
+            &task=deleteAntenna
+            &format=json
+            &id=${antennaId}
+            &${token}=1
+        `,
         success: (response) => {
             // on success, update the html table by removing the system from it
-            const isDeletedElement = (element) => Number(element.id) === systemId;
-            systems.splice(systems.findIndex(isDeletedElement), 1);
+            const isDeletedElement = (element) => Number(element.id) === antennaId;
+            antennas.splice(antennas.findIndex(isDeletedElement), 1);
             generateTable();
             document.getElementById('message').innerHTML = response.data.message;
         },
@@ -122,7 +137,7 @@ function setSortIcon(headerElement) {
 /**
  * Function sorts the table by attribute parameter
  * @param {HTMLTableCellElement} headerElement  table header that was clicked for sorting
- * @param {string}               attribute      location attribute to sort on
+ * @param {string}               attribute      antenna attribute to sort on
  * @param {boolean}              noSpace        Whether to remove spaces or not from strings when sorting
  */
 function sortTable(headerElement, attribute, noSpace = false) {
@@ -136,10 +151,10 @@ function sortTable(headerElement, attribute, noSpace = false) {
     // if sorting method is set to desc
     if (sortDescFlags[attribute]) {
         // sort the system array desc
-        systems.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
+        antennas.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
     } else {
         // sort asc
-        systems.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
+        antennas.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
     }
 
     // toggle the sorting method
@@ -150,19 +165,26 @@ function sortTable(headerElement, attribute, noSpace = false) {
 }
 
 /**
- * Function calls an api to get all the systems from the back-end. If no error occurs
- * it should receive the id, name, location code, start and end for each system.
+ * Function calls an api to get all the antennas from the back-end. If no error occurs
+ * it should receive the id, brand, model and code for each antenna.
  */
-function getSystems() {
+function getAntennas() {
     // get the token
     const token = $('#token').attr('name');
 
     $.ajax({
         type: 'GET',
-        url: `/index.php?option=com_bramsadmin&view=systems&task=getsystems&format=json&${token}=1`,
+        url: `
+            /index.php?
+            option=com_bramsadmin
+            &task=getAntennas
+            &view=antennas
+            &format=json
+            &${token}=1
+        `,
         success: (response) => {
-            systems = response.data;
-            systems.sort((first, second) => sortAsc(first.code, second.code));
+            antennas = response.data;
+            antennas.sort((first, second) => sortAsc(first.code, second.code));
             generateTable();
         },
         error: (response) => {
@@ -177,4 +199,4 @@ function getSystems() {
     });
 }
 
-window.onload = getSystems;
+window.onload = getAntennas;

@@ -695,4 +695,50 @@ class BramsAdminController extends BaseController {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+    /** + ANTENNAS VIEW APIs */
+    /**
+     * API - GET
+     * Function executes the specified view getAntennas method.
+     * This function is called when the front-end of the site needs all
+     * the antennas from the database.
+     *
+     * @since 0.7.1
+     */
+    public function getAntennas() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->getAntennas();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    /**
+     * API - DELETE
+     * Function executes the specified view deleteAntenna method.
+     * This function is called when an antenna has to be deleted.
+     *
+     * @since 0.7.1
+     */
+    public function deleteAntenna() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->deleteAntenna();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
 }
