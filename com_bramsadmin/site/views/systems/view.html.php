@@ -60,7 +60,8 @@ class BramsAdminViewSystems extends HtmlView {
 	private function setDocument() {
 		$document = Factory::getDocument();
 		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/systems.css');
-		$document->addStyleSheet('/components/com_bramsadmin/views/systems/css/bootstrap.min.css');
+		$document->addStyleSheet('/components/com_bramsadmin/views/_css/list.css');
+		$document->addStyleSheet('/components/com_bramsadmin/views/_css/bootstrap.min.css');
 		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 		$document->addScript('/components/com_bramsadmin/views/systems/js/systems.js');
