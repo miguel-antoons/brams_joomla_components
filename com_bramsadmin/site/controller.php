@@ -20,8 +20,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 class BramsAdminController extends BaseController {
     /**
-     * CHANGES : if $block_display is set to true, the function
-     *  will NOT call the views display method and returns the view instead.
+     * * CHANGES : 
+     * *      - if $block_display is set to true, the function
+     * *        will NOT call the views display method and returns the view instead.
+     * *      - if no model is found for the view name, the function will search a 
+     * *        model that has a name matching the requested view name without the last
+     * *        4 letters.
      *
      * Typical view method for MVC based architecture
      *

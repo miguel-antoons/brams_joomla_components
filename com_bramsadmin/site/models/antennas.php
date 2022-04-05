@@ -198,9 +198,9 @@ class BramsAdminModelAntennas extends ItemModel {
     private function structureAntennas($database_data, $id) {
         $final_antenna_array = array();
         foreach ($database_data as $antenna) {
-            // if the location id is not equal to $id (arg)
+            // if the antenna id is not equal to $id (arg)
             if ($antenna->id !== $id) {
-                // add the location code to the location codes array
+                // add the antenna code to the codes array
                 $final_antenna_array[] = $antenna->antenna_code;
             }
         }
@@ -212,8 +212,8 @@ class BramsAdminModelAntennas extends ItemModel {
      * Function gets all the information from the database related to the antenna
      * with its id equal to $antenna_id (arg)
      *
-     * @param $antenna_id   int         id of the location to get information about
-     * @return              array|int   -1 on fail, array with location info on success
+     * @param $antenna_id   int         id of the antenna to get information about
+     * @return              array|int   -1 on fail, array with antenna info on success
      *
      * @since 0.7.2
      */
@@ -224,7 +224,7 @@ class BramsAdminModelAntennas extends ItemModel {
         }
         $antenna_query = $db->getQuery(true);
 
-        // query to get the location information
+        // query to get the antenna information
         $antenna_query->select(
             $db->quoteName('antenna_code') . ' as code, '
             . $db->quoteName('brand') . ', '
@@ -250,7 +250,7 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function inserts a new antenna int the database. The attributes of the new
+     * Function inserts a new antenna into the database. The attributes of the new
      * value are given as argument ($antenna_info)
      *
      * @param $antenna_info     array               array with the attributes of the new antenna
@@ -265,7 +265,7 @@ class BramsAdminModelAntennas extends ItemModel {
         }
         $antenna_query = $db->getQuery(true);
 
-        // query to insert a new location with data being the $location_info arg
+        // query to insert a new antenna with data being the $antenna_info arg
         $antenna_query
             ->insert($db->quoteName('radsys_antenna'))
             ->columns(

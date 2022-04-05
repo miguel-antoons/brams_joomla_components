@@ -1,23 +1,23 @@
 /* global $ */
 // eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';        // contains debug information if needed
-let antennaId = 0;                  // the id of the antenna to show (if 0 --> no antenna)
-let antennaCodes = [];              // array with all antenna codes
+let digitizerId = 0;                  // the id of the antenna to show (if 0 --> no antenna)
+let digitizerCodes = [];              // array with all antenna codes
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
  * check the values itself, just if there is something.
  *
- * @param antennaCode   {string}    antennaCode input value
+ * @param digitizerCode {string}    digitizerCode input value
  * @param oldIsValid    {boolean}   flag that determines if values are valid or not
  * @returns             {(*|string)[]|(boolean|string)[]}
  *                                  Returns an array with 2 values :
  *                                      0: new isValid flag
  *                                      1: error message if an input is empty
  */
-function verifyRequired(antennaCode, oldIsValid) {
+function verifyRequired(digitizerCode, oldIsValid) {
     // if one of the required inputs are empty
-    if (!antennaCode) {
+    if (!digitizerCode) {
         // add an exclamation circle to the required inputs
         const requiredInputs = document.getElementsByClassName('required');
         Array.from(requiredInputs).forEach(
@@ -33,7 +33,7 @@ function verifyRequired(antennaCode, oldIsValid) {
             `<li>
                 <i class="fa fa-exclamation-circle orange" aria-hidden="true"></i>
                 Please fill all required inputs before submitting the form. 
-                Required inputs are Antenna Code.
+                Required inputs are Digitizer Code.
             </li>`,
         ];
     }
@@ -42,20 +42,20 @@ function verifyRequired(antennaCode, oldIsValid) {
 }
 
 /**
- * Function verifies if the entered antenna code doesn't exist already.
- * This is done so that each antenna code is unique.
+ * Function verifies if the entered digitizer code doesn't exist already.
+ * This is done so that each digitizer code is unique.
  *
- * @param antennaCode   {string}    locationCode input value
+ * @param digitizerCode {string}    digitizerCode input value
  * @param oldIsValid    {boolean}   flag that determines if values are valid or not
  * @returns             {(*|string)[]|(boolean|string)[]}
  *                                  Returns an array with 2 values :
  *                                      0: new isValid flag
- *                                      1: error message if the antenna code already exists
+ *                                      1: error message if the digitizer code already exists
  */
-function verifyCode(antennaCode, oldIsValid) {
+function verifyCode(digitizerCode, oldIsValid) {
     const pattern = /^[a-z\d\-_]+$/i;
     // if the location code already exists
-    if (antennaCodes.includes(antennaCode)) {
+    if (digitizerCodes.includes(digitizerCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -64,13 +64,13 @@ function verifyCode(antennaCode, oldIsValid) {
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered antenna code is already taken. Please enter a free antenna code.
+                Entered digitizer code is already taken. Please enter a free digitizer code.
             </li>`,
         ];
     }
 
     // test if any forbidden characters are in the code
-    if (!pattern.test(antennaCode)) {
+    if (!pattern.test(digitizerCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -79,7 +79,7 @@ function verifyCode(antennaCode, oldIsValid) {
             false,
             `<li>
                 <i class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-                Entered antenna code contains forbidden characters. Be sure to only use dash, 
+                Entered digitizer code contains forbidden characters. Be sure to only use dash, 
                 underscore and alphanumeric characters.
             </li>`,
         ];
@@ -92,10 +92,10 @@ function verifyCode(antennaCode, oldIsValid) {
  * Function verifies if the entered values are valid upon api call. If all the
  * values are valid, the function returns true. If not it returns false.
  *
- * @param antennaCode   {string}    antennaCode input value
+ * @param digitizerCode {string}    digitizerCode input value
  * @returns             {boolean}   true if the inputs are valid, else returns false
  */
-function verifyValues(antennaCode) {
+function verifyValues(digitizerCode) {
     // remove all the icons inside the labels
     const icons = document.querySelectorAll('label .fa');
     let verificationResult;
@@ -105,12 +105,12 @@ function verifyValues(antennaCode) {
     let HTMLError = '<h4>Found Problems</h4><ul>';
 
     // check if all required inputs are filled
-    verificationResult = verifyRequired(antennaCode, isValid);
+    verificationResult = verifyRequired(digitizerCode, isValid);
     [isValid] = verificationResult;
     HTMLError += verificationResult[1];
 
-    // check if antenna code is valid
-    verificationResult = verifyCode(antennaCode, isValid);
+    // check if digitizer code is valid
+    verificationResult = verifyCode(digitizerCode, isValid);
     [isValid] = verificationResult;
 
     // display the errors on the page
@@ -120,20 +120,20 @@ function verifyValues(antennaCode) {
 }
 
 /**
- * Function calls an api to create a new antenna. It sends all the information
- * about the new antenna to back-end. For the api to be called, the input values
+ * Function calls an api to create a new digitizer. It sends all the information
+ * about the new digitizer to back-end. For the api to be called, the input values
  * have to be valid.
  *
  * @param formInputs    {HTMLDivElement.children}    Div element containing the inputs
  */
-function newAntenna(formInputs) {
-    const antCode = formInputs.antennaCode.value;
-    const antBrand = formInputs.antennaBrand.value;
-    const antModel = formInputs.antennaModel.value;
-    const antComments = formInputs.antennaComments.value;
+function newDigitizer(formInputs) {
+    const digCode = formInputs.digitizerCode.value;
+    const digBrand = formInputs.digitizerBrand.value;
+    const digModel = formInputs.digitizerModel.value;
+    const digComments = formInputs.digitizerComments.value;
 
     // verify if the entered values are valid
-    if (verifyValues(antCode)) {
+    if (verifyValues(digCode)) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -142,21 +142,21 @@ function newAntenna(formInputs) {
                 /index.php?
                 option=com_bramsadmin
                 &task=new
-                &view=antennaEdit
+                &view=digitizerEdit
                 &format=json
                 &${token}=1
             `,
             data: {
-                new_antenna: {
-                    code: antCode,
-                    brand: antBrand,
-                    model: antModel,
-                    comments: antComments,
+                new_digitizer: {
+                    code: digCode,
+                    brand: digBrand,
+                    model: digModel,
+                    comments: digComments,
                 },
             },
             success: () => {
-                // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=2';
+                // on success return to the digitizers page
+                window.location.href = '/index.php?option=com_bramsadmin&view=digitizers&message=2';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -172,20 +172,20 @@ function newAntenna(formInputs) {
 }
 
 /**
- * Function calls an api to update an antenna. It sends all the information
- * about the updated antenna to back-end. For the api to be called, the input values
+ * Function calls an api to update a digitizer. It sends all the information
+ * about the updated digitizer to back-end. For the api to be called, the input values
  * have to be valid.
  *
  * @param formInputs    {HTMLDivElement.children}    Div element containing the inputs
  */
-function updateAntenna(formInputs) {
-    const antCode = formInputs.antennaCode.value;
-    const antBrand = formInputs.antennaBrand.value;
-    const antModel = formInputs.antennaModel.value;
-    const antComments = formInputs.antennaComments.value;
+function updateDigitizer(formInputs) {
+    const digCode = formInputs.digitizerCode.value;
+    const digBrand = formInputs.digitizerBrand.value;
+    const digModel = formInputs.digitizerModel.value;
+    const digComments = formInputs.digitizerComments.value;
 
     // verify if all the entered values are valid
-    if (verifyValues(antCode)) {
+    if (verifyValues(digCode)) {
         const token = $('#token').attr('name');
         $.ajax({
             type: 'POST',
@@ -193,22 +193,22 @@ function updateAntenna(formInputs) {
                 /index.php?
                 option=com_bramsadmin
                 &task=update
-                &view=antennaEdit
+                &view=digitizerEdit
                 &format=json
                 &${token}=1
             `,
             data: {
-                modified_antenna: {
-                    id: antennaId,
-                    code: antCode,
-                    brand: antBrand,
-                    model: antModel,
-                    comments: antComments,
+                modified_digitizer: {
+                    id: digitizerId,
+                    code: digCode,
+                    brand: digBrand,
+                    model: digModel,
+                    comments: digComments,
                 },
             },
             success: () => {
-                // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=1';
+                // on success return to the digitizers page
+                window.location.href = '/index.php?option=com_bramsadmin&view=digitizers&message=1';
             },
             error: (response) => {
                 // on fail, show an error message
@@ -225,18 +225,18 @@ function updateAntenna(formInputs) {
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (antennaId) {
-        return updateAntenna(form);
+    if (digitizerId) {
+        return updateDigitizer(form);
     }
-    return newAntenna(form);
+    return newDigitizer(form);
 }
 
 /**
- * Function gets all the taken antenna codes via an api call to
+ * Function gets all the taken digitizer codes via an api call to
  * the sites back-end. This function exists in order to verify if
- * the entered antenna code hasn't been taken yet.
+ * the entered digitizer code hasn't been taken yet.
  */
-function getAntennaCodes() {
+function getDigitizerCodes() {
     const token = $('#token').attr('name');
 
     $.ajax({
@@ -245,14 +245,14 @@ function getAntennaCodes() {
             /index.php?
             option=com_bramsadmin
             &task=getCodes
-            &view=antennaEdit
+            &view=digitizerEdit
             &format=json
-            &antennaId=${antennaId}
+            &digitizerId=${digitizerId}
             &${token}=1
         `,
         success: (response) => {
-            // store the antenna codes locally
-            antennaCodes = response.data;
+            // store the digitizer codes locally
+            digitizerCodes = response.data;
         },
         error: (response) => {
             // on fail, show an error message
@@ -267,21 +267,21 @@ function getAntennaCodes() {
 }
 
 /**
- * Function gets all the information about a specific antenna through
- * an api to the sites back-end. The antenna to get information from
+ * Function gets all the information about a specific digitizer through
+ * an api to the sites back-end. The digitizer to get information from
  * is specified in the pages url.
- * It then prepares the page to update/create an antenna.
+ * It then prepares the page to update/create a digitizer.
  */
-function getAntennaInfo() {
+function getDigitizerInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    antennaId = Number(queryString.get('id'));
+    digitizerId = Number(queryString.get('id'));
     // get all the location codes
-    getAntennaCodes();
+    getDigitizerCodes();
 
-    // if an antenna has to be updated
-    if (antennaId) {
+    // if a digitizer has to be updated
+    if (digitizerId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -290,18 +290,18 @@ function getAntennaInfo() {
                 index.php?
                 option=com_bramsadmin
                 &task=getOne
-                &view=antennaEdit
+                &view=digitizerEdit
                 &format=json
-                &id=${antennaId}
+                &id=${digitizerId}
                 &${token}=1
             `,
             success: (response) => {
-                document.getElementById('antennaCode').value = response.data.code;
-                document.getElementById('antennaBrand').value = response.data.brand;
-                document.getElementById('antennaModel').value = response.data.model;
-                document.getElementById('antennaComments').value = response.data.comments;
+                document.getElementById('digitizerCode').value = response.data.code;
+                document.getElementById('digitizerBrand').value = response.data.brand;
+                document.getElementById('digitizerModel').value = response.data.model;
+                document.getElementById('digitizerComments').value = response.data.comments;
                 document.getElementById('title').innerHTML = `
-                    Update Antenna ${response.data.brand} ${response.data.model}`;
+                    Update Digitizer ${response.data.code}`;
             },
             error: (response) => {
                 // on fail, show an error message
@@ -317,4 +317,4 @@ function getAntennaInfo() {
 }
 
 // set onload function
-window.onload = getAntennaInfo;
+window.onload = getDigitizerInfo;

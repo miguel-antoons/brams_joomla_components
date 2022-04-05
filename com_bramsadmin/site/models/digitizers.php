@@ -151,36 +151,93 @@ class BramsAdminModelDigitizers extends ItemModel {
     }
 
     /**
-     * Function gets all the information about one and only system from the database.
-     * The $id argument tells the function which system to get. The information
-     * requested by the function is the following : (system.id, system.name, system.location_id,
-     * system.start, system.antenna, system.comments).
+     * Function gets all the available digitizer codes from the database except
+     * the digitizer code whose id is equal to $id (arg)
      *
-     * @param $id int the id of the requested system
-     * @return int|array -1 if an error occurred, the array with system info on success
+     * @param $id   int         id of the digitizer not to take the digitizer code from
+     * @return      int|array   -1 if the function fails, the array with digitizer codes on success
      *
-     * @since 0.2.0
+     * @since 0.8.2
      */
-    public function getSystemInfo($id) {
+    public function getDigitizerCodes($id = -1) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $system_query = $db->getQuery(true);
+        $digitizer_query = $db->getQuery(true);
 
-        // query to get the system info
-        $system_query->select(
+        // query to get all the location codes and ids
+        $digitizer_query->select(
             $db->quoteName('id') . ', '
-            . $db->quoteName('name') . ', '
-            . $db->quoteName('location_id') . ', '
-            . $db->quoteName('start') . ', '
-            . $db->quoteName('antenna') . ', '
+            . $db->quoteName('digitizer_code')
+        );
+        $digitizer_query->from($db->quoteName('radsys_digitizer'));
+
+        $db->setQuery($digitizer_query);
+
+        // try to execute the query and return the results
+        try {
+            return $this->structureDigitizers($db->loadObjectList(), $id);
+        } catch (RuntimeException $e) {
+            // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
+    /**
+     * Function filters the digitizer whose id is equal to $id from the database
+     * results and also transforms an array of stdClasses into a simple array.
+     *
+     * @param $database_data    array   digitizer codes from the database
+     * @param $id               int     id to filter
+     * @return                  array   array of strings with all digitizer codes except the one with id = $id
+     *
+     * @since 0.8.2
+     */
+    private function structureDigitizers($database_data, $id) {
+        $final_digitizer_array = array();
+        foreach ($database_data as $digitizer) {
+            // if the digitizer id is not equal to $id (arg)
+            if ($digitizer->id !== $id) {
+                // add the location code to the location codes array
+                $final_digitizer_array[] = $digitizer->digitizer_code;
+            }
+        }
+
+        return $final_digitizer_array;
+    }
+
+    /**
+     * Function gets all the information from the database related to the digitizer
+     * with its id equal to $digitizer_id (arg)
+     *
+     * @param $digitizer_id int         id of the digitizer to get information about
+     * @return              array|int   -1 on fail, array with digitizer info on success
+     *
+     * @since 0.8.2
+     */
+    public function getDigitizer($digitizer_id) {
+        // if database connection fails, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
+        $digitizer_query = $db->getQuery(true);
+
+        // query to get the digitizer information
+        $digitizer_query->select(
+            $db->quoteName('digitizer_code') . ' as code, '
+            . $db->quoteName('brand') . ', '
+            . $db->quoteName('model') . ', '
             . $db->quoteName('comments')
         );
-        $system_query->from($db->quoteName('system'));
-        $system_query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+        $digitizer_query->from($db->quoteName('radsys_digitizer'));
+        $digitizer_query->where(
+            $db->quoteName('id') . ' = ' . $db->quote($digitizer_id)
+        );
 
-        $db->setQuery($system_query);
+        $db->setQuery($digitizer_query);
 
         // try to execute the query and return the result
         try {
@@ -194,82 +251,42 @@ class BramsAdminModelDigitizers extends ItemModel {
     }
 
     /**
-     * Function gets all system names except for the system which id is given as argument.
-     * The data requested for each system is the following : (system.name).
+     * Function inserts a new digitizer into the database. The attributes of the new
+     * value are given as argument ($digitizer_info)
      *
-     * @param $id int the id of the system not to take the name from. Defaults to -1
-     * @return int|array -1 on fail, database results on success
+     * @param $digitizer_info   array               array with the attributes of the new digitizer
+     * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
      *
-     * @since 0.2.0
+     * @since 0.8.2
      */
-    public function getSystemNames($id = -1) {
+    public function newDigitizer($digitizer_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $system_query = $db->getQuery(true);
+        $digitizer_query = $db->getQuery(true);
 
-        // query to get the system names
-        $system_query->select($db->quoteName('name'));
-        $system_query->from($db->quoteName('system'));
-        $system_query->where('not ' . $db->quoteName('id') . ' = ' . $db->quote($id));
-
-        $db->setQuery($system_query);
-
-        // try to execute the query and return its results
-        try {
-            return $db->loadObjectList();
-        } catch (RuntimeException $e) {
-            // on fail, log the error and return false
-            echo new JResponseJson(array(('message') => $e));
-            Log::add($e, Log::ERROR, 'error');
-            return -1;
-        }
-    }
-
-
-    /**
-     * Function inserts a new system with values received as argument
-     *
-     * @param $new_system_info array array with all the new system attributes
-     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
-     *
-     * @since 0.2.0
-     */
-    public function insertSystem($new_system_info) {
-        // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
-        $system_query = $db->getQuery(true);
-
-        // query to insert the new system with its values
-        $system_query
-            ->insert($db->quoteName('system'))
+        // query to insert a new digitizer with data being the $digitizer_info arg
+        $digitizer_query
+            ->insert($db->quoteName('radsys_digitizer'))
             ->columns(
                 $db->quoteName(
                     array(
-                        'name',
-                        'location_id',
-                        'antenna',
-                        'start',
-                        'comments',
-                        'time_created',
-                        'time_updated'
+                        'digitizer_code',
+                        'brand',
+                        'model',
+                        'comments'
                     )
                 )
             )
             ->values(
-                $db->quote($new_system_info['name']) . ', '
-                . $db->quote($new_system_info['location']) . ', '
-                . $db->quote($new_system_info['antenna']) . ', '
-                . $db->quote($new_system_info['start']) . ', '
-                . $db->quote($new_system_info['comments']) . ', '
-                . $db->quote($new_system_info['start']) . ', '
-                . $db->quote($new_system_info['start'])
+                $db->quote($digitizer_info['code']) . ', '
+                . $db->quote($digitizer_info['brand']) . ', '
+                . $db->quote($digitizer_info['model']) . ', '
+                . $db->quote($digitizer_info['comments'])
             );
 
-        $db->setQuery($system_query);
+        $db->setQuery($digitizer_query);
 
         // try to execute the query and return the result
         try {
@@ -283,41 +300,40 @@ class BramsAdminModelDigitizers extends ItemModel {
     }
 
     /**
-     * Function updates a unique systems attributes with values it receives as
-     * arguments.
+     * Function updates a digitizer from the database with values from the
+     * $digitizer_info argument.
      *
-     * @param $system_info array array with the new system attribute values
-     * @return int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
+     * @param $digitizer_info   array               array with the attributes of the modified digitizer
+     * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
      *
-     * @since 0.2.0
+     * @since 0.8.2
      */
-    public function updateSystem($system_info) {
+    public function updateDigitizer($digitizer_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $system_query = $db->getQuery(true);
-        // attributes to update
+        $digitizer_query = $db->getQuery(true);
+        // attributes to update with their new values
         $fields = array(
-            $db->quoteName('name')          . ' = ' . $db->quote($system_info['name']),
-            $db->quoteName('location_id')   . ' = ' . $db->quote($system_info['location']),
-            $db->quoteName('antenna')       . ' = ' . $db->quote($system_info['antenna']),
-            $db->quoteName('start')         . ' = ' . $db->quote($system_info['start']),
-            $db->quoteName('comments')      . ' = ' . $db->quote($system_info['comments'])
+            $db->quoteName('digitizer_code'). ' = ' . $db->quote($digitizer_info['code']),
+            $db->quoteName('brand')         . ' = ' . $db->quote($digitizer_info['brand']),
+            $db->quoteName('model')         . ' = ' . $db->quote($digitizer_info['model']),
+            $db->quoteName('comments')      . ' = ' . $db->quote($digitizer_info['comments'])
         );
 
-        // system that will be updated
+        // location to be updated
         $conditions = array(
-            $db->quoteName('id') . ' = ' . $db->quote($system_info['id'])
+            $db->quoteName('id') . ' = ' . $db->quote($digitizer_info['id'])
         );
 
         // update query
-        $system_query
-            ->update($db->quoteName('system'))
+        $digitizer_query
+            ->update($db->quoteName('radsys_digitizer'))
             ->set($fields)
             ->where($conditions);
 
-        $db->setQuery($system_query);
+        $db->setQuery($digitizer_query);
 
         // trying to execute the query and return the result
         try {
@@ -328,10 +344,5 @@ class BramsAdminModelDigitizers extends ItemModel {
             Log::add($e, Log::ERROR, 'error');
             return -1;
         }
-    }
-
-    // get today's date in yyyy-mm-dd hh:mm:ss format
-    public function getNow() {
-        return date('Y-m-d H:i:s');
     }
 }

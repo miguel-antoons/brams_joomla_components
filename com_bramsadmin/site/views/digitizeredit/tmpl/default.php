@@ -16,48 +16,48 @@ defined('_JEXEC') or die('Restricted access');
             <button
                 type='button'
                 class='customBtn return'
-                onclick='window.location.href="/index.php?option=com_bramsadmin&view=antennas"'
+                onclick='window.location.href="/index.php?option=com_bramsadmin&view=digitizers"'
             >
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 Return
             </button>
-            <h1 id="title">Create New Antenna</h1>
+            <h1 id="title">Create New Digitizer</h1>
             <p id='error'>
 
             </p>
             <div id='inputContainer'>
-                <label id="code" class='form-label required' for='antennaCode'>Antenna Code</label>
+                <label id="code" class='form-label required' for='digitizerCode'>Digitizer Code</label>
                 <input
                     type="text"
                     class="form-control"
-                    id="antennaCode"
+                    id="digitizerCode"
                     maxlength="31"
                     required
                 >
 
-                <label class='form-label' for='antennaBrand'>Brand</label>
+                <label class='form-label' for='digitizerBrand'>Brand</label>
                 <input
                     type='text'
                     class='form-control'
-                    id='antennaBrand'
+                    id='digitizerBrand'
                     maxlength="31"
                     required
                 >
 
-                <label for='antennaModel' class="form-label">Model</label>
+                <label for='digitizerModel' class="form-label">Model</label>
                 <input
                     class='form-control'
                     type='text'
-                    id='antennaModel'
+                    id='digitizerModel'
                     maxlength="31"
                     required
                 >
 
-                <label for='antennaComments'>Comments</label>
+                <label for='digitizerComments'>Comments</label>
                 <input
                     class='form-control'
                     type='text'
-                    id='antennaComments'
+                    id='digitizerComments'
                     maxlength="255"
                 >
 
