@@ -14,27 +14,27 @@ use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Log\Log;
 
 /**
- * Antennas Model
+ * Receivers Model
  *
  * Edits, inserts and deletes data concerning the BRAMS
- * antennas.
+ * receivers.
  *
- * @since  0.7.1
+ * @since  0.8.1
  */
-class BramsAdminModelAntennas extends ItemModel {
-    // array contains various antenna messages (could be moved to database if a lot of messages are required)
-    public $antenna_messages = array(
+class BramsAdminModelReceivers extends ItemModel {
+    // array contains various receiver messages (could be moved to database if a lot of messages are required)
+    public $receiver_messages = array(
         // default message (0) is empty
         (0) => array(
             ('message') => '',
             ('css_class') => ''
         ),
         (1) => array(
-            ('message') => 'Antenna was successfully updated',
+            ('message') => 'Receiver was successfully updated',
             ('css_class') => 'success'
         ),
         (2) => array(
-            ('message') => 'Antenna was successfully created',
+            ('message') => 'Receiver was successfully created',
             ('css_class') => 'success'
         )
     );
@@ -68,38 +68,38 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function gets antenna information from the BRAMS database. The information
-     * it requests is the following : (id, brand, model and antenna code).
+     * Function gets receiver information from the BRAMS database. The information
+     * it requests is the following : (id, brand, model and receiver_code).
      *
-     * @returns int|array -1 if an error occurred, else the array with antenna info
-     * @since 0.7.1
+     * @returns int|array -1 if an error occurs, else the array with receiver info
+     * @since 0.8.1
      */
-    public function getAntennas() {
+    public function getReceivers() {
         // if the connection to the database failed, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
 
-        // SQL query to get all information about the multiple antennas
-        $antenna_query->select(
-            'distinct ' . $db->quoteName('radsys_antenna.id') . 'as id, '
+        // SQL query to get all information about the multiple receivers
+        $receiver_query->select(
+            'distinct ' . $db->quoteName('radsys_receiver.id') . 'as id, '
             . $db->quoteName('brand') . ', '
-            . $db->quoteName('antenna_code') . 'as code, '
+            . $db->quoteName('receiver_code') . 'as code, '
             . $db->quoteName('model') . ', '
-            . $db->quoteName('antenna_id') . ' as not_deletable'
+            . $db->quoteName('receiver_id') . ' as not_deletable'
         );
-        $antenna_query->from($db->quoteName('radsys_antenna'));
-        $antenna_query->join(
+        $receiver_query->from($db->quoteName('radsys_receiver'));
+        $receiver_query->join(
             'LEFT',
             $db->quoteName('radsys_system')
             . ' ON '
-            . $db->quoteName('radsys_antenna.id')
+            . $db->quoteName('radsys_receiver.id')
             . ' = '
-            . $db->quoteName('radsys_system.antenna_id')
+            . $db->quoteName('radsys_system.receiver_id')
         );
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // try to execute the query and return the system info
         try {
@@ -113,30 +113,30 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function deletes antenna with antenna.id equal to $id (arg)
+     * Function deletes receiver with receiver.id equal to $id (arg)
      *
-     * @param $id   int                 id of the antenna that has to be deleted
+     * @param $id   int                 id of the receiver that has to be deleted
      * @return      int|JDatabaseDriver on fail returns -1, on success returns JDatabaseDriver
      *
-     * @since 0.7.1
+     * @since 0.8.1
      */
-    public function deleteAntenna($id) {
+    public function deleteReceiver($id) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
 
-        // antenna to delete condition
+        // delete condition
         $condition = array(
             $db->quoteName('id') . ' = ' . $db->quote($id)
         );
 
         // delete query
-        $antenna_query->delete($db->quoteName('radsys_antenna'));
-        $antenna_query->where($condition);
+        $receiver_query->delete($db->quoteName('radsys_receiver'));
+        $receiver_query->where($condition);
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // trying to execute the query and return the results
         try {
@@ -150,33 +150,33 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function gets all the available antenna codes from the database except
-     * the antenna code whose id is equal to $id (arg)
+     * Function gets all the available receiver codes from the database except
+     * the receiver code whose id is equal to $id (arg)
      *
-     * @param $id   int         id of the antenna not to take the antenna code from
-     * @return      int|array   -1 if the function fails, the array with antenna codes on success
+     * @param $id   int         id of the receiver not to take the receiver code from
+     * @return      int|array   -1 if the function fails, the array with receiver codes on success
      *
-     * @since 0.7.2
+     * @since 0.8.1
      */
-    public function getAntennaCodes($id = -1) {
+    public function getReceiverCodes($id = -1) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
 
-        // query to get all the antenna codes and ids
-        $antenna_query->select(
+        // query to get all the receiver codes and ids
+        $receiver_query->select(
             $db->quoteName('id') . ', '
-            . $db->quoteName('antenna_code')
+            . $db->quoteName('receiver_code')
         );
-        $antenna_query->from($db->quoteName('radsys_antenna'));
+        $receiver_query->from($db->quoteName('radsys_receiver'));
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // try to execute the query and return the results
         try {
-            return $this->structureAntennas($db->loadObjectList(), $id);
+            return $this->structureReceivers($db->loadObjectList(), $id);
         } catch (RuntimeException $e) {
             // on fail, log the error and return false
             echo new JResponseJson(array(('message') => $e));
@@ -186,57 +186,57 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function filters the antenna whose id is equal to $id from the database
+     * Function filters the receiver whose id is equal to $id from the database
      * results and also transforms an array of stdClasses into a simple array.
      *
-     * @param $database_data    array   antenna codes from the database
+     * @param $database_data    array   receiver codes from the database
      * @param $id               int     id to filter
-     * @return                  array   array of strings with all antennas codes except the one with id = $id
+     * @return                  array   array of strings with all receiver codes except the one with id = $id
      *
-     * @since 0.7.2
+     * @since 0.8.1
      */
-    private function structureAntennas($database_data, $id) {
-        $final_antenna_array = array();
-        foreach ($database_data as $antenna) {
-            // if the antenna id is not equal to $id (arg)
-            if ($antenna->id !== $id) {
-                // add the antenna code to the codes array
-                $final_antenna_array[] = $antenna->antenna_code;
+    private function structureReceivers($database_data, $id) {
+        $final_receiver_array = array();
+        foreach ($database_data as $receiver) {
+            // if the receiver id is not equal to $id (arg)
+            if ($receiver->id !== $id) {
+                // add the receiver code to the codes array
+                $final_receiver_array[] = $receiver->receiver_code;
             }
         }
 
-        return $final_antenna_array;
+        return $final_receiver_array;
     }
 
     /**
-     * Function gets all the information from the database related to the antenna
-     * with its id equal to $antenna_id (arg)
+     * Function gets all the information from the database related to the receiver
+     * with its id equal to $receiver_id (arg)
      *
-     * @param $antenna_id   int         id of the antenna to get information about
-     * @return              array|int   -1 on fail, array with antenna info on success
+     * @param $receiver_id  int         id of the receiver to get information about
+     * @return              array|int   -1 on fail, array with receiver info on success
      *
-     * @since 0.7.2
+     * @since 0.8.1
      */
-    public function getAntenna($antenna_id) {
+    public function getReceiver($receiver_id) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
 
-        // query to get the antenna information
-        $antenna_query->select(
-            $db->quoteName('antenna_code') . ' as code, '
+        // query to get the receiver information
+        $receiver_query->select(
+            $db->quoteName('receiver_code') . ' as code, '
             . $db->quoteName('brand') . ', '
             . $db->quoteName('model') . ', '
             . $db->quoteName('comments')
         );
-        $antenna_query->from($db->quoteName('radsys_antenna'));
-        $antenna_query->where(
-            $db->quoteName('id') . ' = ' . $db->quote($antenna_id)
+        $receiver_query->from($db->quoteName('radsys_receiver'));
+        $receiver_query->where(
+            $db->quoteName('id') . ' = ' . $db->quote($receiver_id)
         );
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // try to execute the query and return the result
         try {
@@ -250,28 +250,28 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function inserts a new antenna into the database. The attributes of the new
-     * value are given as argument ($antenna_info)
+     * Function inserts a new receiver into the database. The attributes of the new
+     * value are given as argument ($receiver_info)
      *
-     * @param $antenna_info     array               array with the attributes of the new antenna
+     * @param $receiver_info    array               array with the attributes of the new receiver
      * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
      *
      * @since 0.7.2
      */
-    public function newAntenna($antenna_info) {
+    public function newReceiver($receiver_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
 
-        // query to insert a new antenna with data being the $antenna_info arg
-        $antenna_query
-            ->insert($db->quoteName('radsys_antenna'))
+        // query to insert a new receiver with data being the $receiver_info arg
+        $receiver_query
+            ->insert($db->quoteName('radsys_receiver'))
             ->columns(
                 $db->quoteName(
                     array(
-                        'antenna_code',
+                        'receiver_code',
                         'brand',
                         'model',
                         'comments'
@@ -279,13 +279,13 @@ class BramsAdminModelAntennas extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($antenna_info['code']) . ', '
-                . $db->quote($antenna_info['brand']) . ', '
-                . $db->quote($antenna_info['model']) . ', '
-                . $db->quote($antenna_info['comments'])
+                $db->quote($receiver_info['code']) . ', '
+                . $db->quote($receiver_info['brand']) . ', '
+                . $db->quote($receiver_info['model']) . ', '
+                . $db->quote($receiver_info['comments'])
             );
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // try to execute the query and return the result
         try {
@@ -299,40 +299,40 @@ class BramsAdminModelAntennas extends ItemModel {
     }
 
     /**
-     * Function updates an antenna from the database with values from the
-     * $antenna_info argument.
+     * Function updates a receiver from the database with values from the
+     * $receiver_info argument.
      *
-     * @param $antenna_info     array               array with the attributes of the modified antenna
+     * @param $receiver_info    array               array with the attributes of the modified receiver
      * @return                  int|JDatabaseDriver -1 on fail, JDatabaseDriver on success
      *
-     * @since 0.7.2
+     * @since 0.8.1
      */
-    public function updateAntenna($antenna_info) {
+    public function updateReceiver($receiver_info) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-        $antenna_query = $db->getQuery(true);
+        $receiver_query = $db->getQuery(true);
         // attributes to update with their new values
         $fields = array(
-            $db->quoteName('antenna_code')  . ' = ' . $db->quote($antenna_info['code']),
-            $db->quoteName('brand')         . ' = ' . $db->quote($antenna_info['brand']),
-            $db->quoteName('model')         . ' = ' . $db->quote($antenna_info['model']),
-            $db->quoteName('comments')      . ' = ' . $db->quote($antenna_info['comments'])
+            $db->quoteName('receiver_code') . ' = ' . $db->quote($receiver_info['code']),
+            $db->quoteName('brand')         . ' = ' . $db->quote($receiver_info['brand']),
+            $db->quoteName('model')         . ' = ' . $db->quote($receiver_info['model']),
+            $db->quoteName('comments')      . ' = ' . $db->quote($receiver_info['comments'])
         );
 
-        // antenna to be updated
+        // receiver to be updated
         $conditions = array(
-            $db->quoteName('id') . ' = ' . $db->quote($antenna_info['id'])
+            $db->quoteName('id') . ' = ' . $db->quote($receiver_info['id'])
         );
 
         // update query
-        $antenna_query
-            ->update($db->quoteName('radsys_antenna'))
+        $receiver_query
+            ->update($db->quoteName('radsys_receiver'))
             ->set($fields)
             ->where($conditions);
 
-        $db->setQuery($antenna_query);
+        $db->setQuery($receiver_query);
 
         // trying to execute the query and return the result
         try {

@@ -6,7 +6,7 @@ const sortDescFlags = {
 };
 // eslint-disable-next-line no-unused-vars
 let log = 'Nothing to show';    // variable contains log messages if something was logged
-let antennas;
+let receivers;
 
 // function stops the onclick property from .tableRow classes
 // from firing when clicking on a button inside a .systemRow class
@@ -29,24 +29,24 @@ function sortDesc(first, second) {
 }
 
 /**
- * Function generates the antenna table from the antennas array.
- * It then renders the table on inside the #antennas element.
+ * Function generates the receiver table from the receivers array.
+ * It then renders the table on inside the #receivers element.
  */
 function generateTable() {
     let HTMLString = '';
 
-    // generate a row for each antenna
-    antennas.forEach(
-        (antenna) => {
+    // generate a row for each receiver
+    receivers.forEach(
+        (receiver) => {
             HTMLString += `
                 <tr
                     class="tableRow"
                     onclick="window.location.href=
-                        '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
+                        '/index.php?option=com_bramsadmin&view=receiverEdit&id=${receiver.id}';"
                 >
-                    <td>${antenna.code}</td>
-                    <td>${antenna.brand}</td>
-                    <td>${antenna.model}</td>
+                    <td>${receiver.code}</td>
+                    <td>${receiver.brand}</td>
+                    <td>${receiver.model}</td>
                     <td>
                         <button
                             type='button'
@@ -54,8 +54,8 @@ function generateTable() {
                             onclick="window.location.href=
                                 '/index.php'
                                 + '?option=com_bramsadmin'
-                                + '&view=antennaEdit'
-                                + '&id=${antenna.id}';"
+                                + '&view=receiverEdit'
+                                + '&id=${receiver.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -64,10 +64,10 @@ function generateTable() {
                             type='button'
                             class='customBtn delete'
                             onclick=
-                                "deleteAntenna(
-                                    ${antenna.id},
-                                    '${antenna.brand} ${antenna.model}',
-                                    ${antenna.not_deletable}
+                                "deleteReceiver(
+                                    ${receiver.id},
+                                    '${receiver.code}',
+                                    ${receiver.not_deletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -79,29 +79,29 @@ function generateTable() {
         },
     );
 
-    document.getElementById('antennas').innerHTML = HTMLString;
+    document.getElementById('receivers').innerHTML = HTMLString;
     stopPropagation();
 }
 
 /**
- * Calls an api to delete the antenna with id equal to 'antennaId' argument.
+ * Calls an api to delete the receiver with id equal to 'receiverId' argument.
  * If the antenna was successfully deleted, it updates the html table.
  *
- * @param {number}      antennaId    id of the antenna that has to be deleted
- * @param {string}      antennaName  name of the antenna to be deleted
- * @param {string|null} notDeletable determines if the antenna can be deleted or not
+ * @param {number}      receiverId   id of the receiver that has to be deleted
+ * @param {string}      receiverName name of the receiver to be deleted
+ * @param {string|null} notDeletable determines if the receiver can be deleted or not
  */
-function deleteAntenna(antennaId, antennaName, notDeletable) {
+function deleteReceiver(receiverId, receiverName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            'Antenna can\'t be deleted as long as there are systems (radsys_system) '
-            + 'referencing this antenna.\nPlease remove the systems referencing this'
-            + ' antenna in order to remove the antenna.',
+            'Receiver can\'t be deleted as long as there are systems (radsys_system) '
+            + 'referencing this receiver.\nPlease remove the systems referencing this'
+            + ' receiver in order to remove the receiver.',
         );
         return;
     }
 
-    if (!confirm(`Are you sure you want to delete ${antennaName}`)) return;
+    if (!confirm(`Are you sure you want to delete ${receiverName}`)) return;
     const token = $('#token').attr('name');
 
     $.ajax({
@@ -109,16 +109,16 @@ function deleteAntenna(antennaId, antennaName, notDeletable) {
         url: `
             /index.php?
             option=com_bramsadmin
-            &view=antennas
+            &view=receivers
             &task=delete
             &format=json
-            &id=${antennaId}
+            &id=${receiverId}
             &${token}=1
         `,
         success: (response) => {
             // on success, update the html table by removing the system from it
-            const isDeletedElement = (element) => Number(element.id) === antennaId;
-            antennas.splice(antennas.findIndex(isDeletedElement), 1);
+            const isDeletedElement = (element) => Number(element.id) === receiverId;
+            receivers.splice(receivers.findIndex(isDeletedElement), 1);
             generateTable();
             document.getElementById('message').innerHTML = response.data.message;
         },
@@ -148,8 +148,8 @@ function setSortIcon(headerElement) {
 /**
  * Function sorts the table by attribute parameter
  * @param {HTMLTableCellElement} headerElement  table header that was clicked for sorting
- * @param {string}               attribute      antenna attribute to sort on
- * @param {boolean}              noSpace        Whether to remove spaces or not from strings when sorting
+ * @param {string}               attribute      column to sort on
+ * @param {boolean}              noSpace        whether to remove spaces or not from strings when sorting
  */
 function sortTable(headerElement, attribute, noSpace = false) {
     // reset all the sorting methods for all the other table headers
@@ -161,11 +161,11 @@ function sortTable(headerElement, attribute, noSpace = false) {
 
     // if sorting method is set to desc
     if (sortDescFlags[attribute]) {
-        // sort the antennas array desc
-        antennas.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
+        // sort the receivers array desc
+        receivers.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
     } else {
         // sort asc
-        antennas.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
+        receivers.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
     }
 
     // toggle the sorting method
@@ -176,10 +176,10 @@ function sortTable(headerElement, attribute, noSpace = false) {
 }
 
 /**
- * Function calls an api to get all the antennas from the back-end. If no error occurs
- * it should receive the id, brand, model and code for each antenna.
+ * Function calls an api to get all the receivers from the back-end. If no error occurs
+ * it should receive the id, brand, model and code for each receiver.
  */
-function getAntennas() {
+function getReceivers() {
     // get the token
     const token = $('#token').attr('name');
 
@@ -189,13 +189,13 @@ function getAntennas() {
             /index.php?
             option=com_bramsadmin
             &task=getAll
-            &view=antennas
+            &view=receivers
             &format=json
             &${token}=1
         `,
         success: (response) => {
-            antennas = response.data;
-            antennas.sort((first, second) => sortAsc(first.code, second.code));
+            receivers = response.data;
+            receivers.sort((first, second) => sortAsc(first.code, second.code));
             generateTable();
         },
         error: (response) => {
@@ -210,4 +210,4 @@ function getAntennas() {
     });
 }
 
-window.onload = getAntennas;
+window.onload = getReceivers;

@@ -16,9 +16,9 @@ use Joomla\CMS\MVC\View\HtmlView;
 /**
  * HTML View class for the BramsAdmin Component
  *
- * @since  0.6.1
+ * @since  0.8.1
  */
-class BramsAdminViewAntennas extends HtmlView {
+class BramsAdminViewReceivers extends HtmlView {
     /**
      * Function makes sure to get the application input. If it fails, it
      * will return false
@@ -39,29 +39,29 @@ class BramsAdminViewAntennas extends HtmlView {
     }
 
     /**
-     * Function is the entrypoint to delete an antenna. It calls the
-     * antenna delete method from the model and returns a json response
+     * Function is the entrypoint to delete a receiver. It calls the
+     * receiver delete method from the model and returns a json response
      * to front-end.
      *
-     * @since 0.7.1
+     * @since 0.8.1
      */
     public function delete() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
         }
-        // get the antenna's id from url
+        // get the receiver's id from url
         $id = (int) $input->get('id');
         $model = $this->getModel();
 
         // if the database delete failed
-        if (($model->deleteAntenna($id)) === -1) {
+        if (($model->deleteReceiver($id)) === -1) {
             return;
         }
 
         // if everything goes well, return a validation message to front-end
         echo new JResponseJson(
-            array(('message') => 'Antenna with id ' . $id . ' has been deleted.')
+            array(('message') => 'Receiver with id ' . $id . ' has been deleted.')
         );
     }
 
@@ -69,10 +69,10 @@ class BramsAdminViewAntennas extends HtmlView {
     public function getAll() {
         $model = $this->getModel();
         // if an error occurred in the model
-        if (($antennas = $model->getAntennas()) === -1) {
+        if (($receivers = $model->getReceivers()) === -1) {
             return;
         }
 
-        echo new JResponseJson($antennas);
+        echo new JResponseJson($receivers);
     }
 }

@@ -16,18 +16,18 @@ use Joomla\CMS\Log\Log;
 /**
  * HTML View class for the BramsAdmin Component
  *
- * @since  0.6.1
+ * @since  0.9.1
  */
-class BramsAdminViewAntennas extends HtmlView {
+class BramsAdminViewReceivers extends HtmlView {
     public $message;
 
     /**
-     * Display the Antennas view
+     * Display the Receivers view
      *
      * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
      *
      * @return  void
-     * @since 0.6.1
+     * @since 0.9.1
      */
     function display($tpl = null) {
         try {
@@ -47,7 +47,7 @@ class BramsAdminViewAntennas extends HtmlView {
         // get the message id
         $message_id = (int) $input->get('message');
 
-        $this->message = $model->antenna_messages[$message_id];
+        $this->message = $model->receiver_messages[$message_id];
 
         // Display the view
         parent::display($tpl);
@@ -63,6 +63,6 @@ class BramsAdminViewAntennas extends HtmlView {
         $document->addStyleSheet('/components/com_bramsadmin/views/_css/bootstrap.min.css');
         $document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
         $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
-        $document->addScript('/components/com_bramsadmin/views/antennas/js/antennas.js');
+        $document->addScript('/components/com_bramsadmin/views/receivers/js/receivers.js');
     }
 }
