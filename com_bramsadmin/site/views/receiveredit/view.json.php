@@ -14,11 +14,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
 /**
- * Class inserts or updates an antenna and generates
+ * Class inserts or updates a receiver and generates
  * a JSON response for front-end.
- * @since 0.7.2
+ * @since 0.9.2
  */
-class BramsAdminViewAntennaEdit extends HtmlView {
+class BramsAdminViewReceiverEdit extends HtmlView {
     /**
      * Function makes sure to get the application input. If it fails, it
      * will return false
@@ -39,116 +39,114 @@ class BramsAdminViewAntennaEdit extends HtmlView {
     }
 
     /**
-     * Function is the entrypoint to get all the antenna codes.
-     * This function returns a json array containing all the antenna
+     * Function is the entrypoint to get all the receiver codes.
+     * This function returns a json array containing all the receiver
      * codes to the front-end.
      *
-     * @since 0.7.2
+     * @since 0.9.2
      */
     public function getCodes() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
         }
-        // retrieve the id of the requested antenna
-        $antenna_id = $input->get('antennaId');
+        // retrieve the id of the requested receiver
+        $receiver_id = $input->get('receiverId');
         $model = $this->getModel();
 
         // if the database select failed
-        if (($antenna_codes = $model->getAntennaCodes($antenna_id)) === -1) {
+        if (($receiver_codes = $model->getReceiverCodes($receiver_id)) === -1) {
             return;
         }
 
-        echo new JResponseJson($antenna_codes);
+        echo new JResponseJson($receiver_codes);
     }
 
     /**
-     * Function is the entrypoint to get all the information about a specific antenna.
+     * Function is the entrypoint to get all the information about a specific receiver.
      * This function returns a JSON object with the attributes being the information
-     * about the requested antenna.
+     * about the requested receiver.
      *
      * @return void
      *
-     * @since 0.7.2
+     * @since 0.9.2
      */
     public function getOne() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
         }
-        $antenna_id = (int) $input->get('id');
+        $receiver_id = (int) $input->get('id');
         $model = $this->getModel();
 
         // if the database select failed
-        if (($antenna_info = $model->getAntenna($antenna_id)) === -1) {
+        if (($receiver_info = $model->getReceiver($receiver_id)) === -1) {
             return;
         }
 
-        echo new JResponseJson($antenna_info[0]);
+        echo new JResponseJson($receiver_info[0]);
     }
 
     /**
-     * Function is the entrypoint to create a new antenna.
-     * This function calls the model method to insert a new antenna
+     * Function is the entrypoint to create a new receiver.
+     * This function calls the model method to insert a new receiver
      * into the database and returns a JSON response with a confirmation
      * message.
      *
      * @return void
      *
-     * @since 0.7.2
+     * @since 0.9.2
      */
     public function new() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
         }
-        // get all the antenna info from the post request
-        $new_antenna = $input->get('new_antenna', array(), 'ARRAY');
+        // get all the receiver info from the post request
+        $new_receiver = $input->get('new_receiver', array(), 'ARRAY');
         $model = $this->getModel();
 
         // if the database insert fails
-        if (($model->newAntenna($new_antenna)) === -1) {
+        if (($model->newReceiver($new_receiver)) === -1) {
             return;
         }
 
         // if everything goes well, return a validation message to front-end
         echo new JResponseJson(
-            array(('message') => 'New antenna '
-                . $new_antenna['brand']
-                . ' ' . $new_antenna['model']
+            array(('message') => 'New receiver '
+                . $new_receiver['code']
                 . ' has been created.')
         );
     }
 
     /**
-     * Function is the entrypoint to update an antenna.
-     * This function calls the model method to update an antenna
+     * Function is the entrypoint to update a receiver.
+     * This function calls the model method to update a receiver
      * in the database and returns a JSON response with a confirmation
      * message.
      *
      * @return void
      *
-     * @since 0.7.2
+     * @since 0.9.2
      */
     public function update() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
         }
-        // get all the antenna info from the post request
-        $modified_antenna = $input->get('modified_antenna', array(), 'ARRAY');
+        // get all the receiver info from the post request
+        $modified_receiver = $input->get('modified_receiver', array(), 'ARRAY');
         $model = $this->getModel();
 
         // if the database insert fails
-        if (($model->updateAntenna($modified_antenna)) === -1) {
+        if (($model->updateReceiver($modified_receiver)) === -1) {
             return;
         }
 
         // if everything goes well, return a validation message to front-end
         echo new JResponseJson(
-            array(('message') => 'Antenna '
-                . $modified_antenna['brand']
-                . ' ' . $modified_antenna['model']
+            array(('message') => 'Receiver '
+                . $modified_receiver['code']
                 . ' has been updated.')
         );
     }
