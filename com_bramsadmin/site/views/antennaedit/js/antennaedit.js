@@ -1,8 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let antennaId = 0;                  // the id of the antenna to show (if 0 --> no antenna)
-let antennaCodes = [];              // array with all antenna codes
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'antennaEdit';
+const redirectView = 'antennas';
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -55,7 +55,7 @@ function verifyRequired(antennaCode, oldIsValid) {
 function verifyCode(antennaCode, oldIsValid) {
     const pattern = /^[a-z\d\-_]+$/i;
     // if the antenna code already exists
-    if (antennaCodes.includes(antennaCode)) {
+    if (codes.includes(antennaCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -134,40 +134,15 @@ function newAntenna(formInputs) {
 
     // verify if the entered values are valid
     if (verifyValues(antCode)) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=antennaEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                new_antenna: {
-                    code: antCode,
-                    brand: antBrand,
-                    model: antModel,
-                    comments: antComments,
-                },
+        const data = {
+            new_antenna: {
+                code: antCode,
+                brand: antBrand,
+                model: antModel,
+                comments: antComments,
             },
-            success: () => {
-                // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -186,84 +161,25 @@ function updateAntenna(formInputs) {
 
     // verify if all the entered values are valid
     if (verifyValues(antCode)) {
-        const token = $('#token').attr('name');
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=antennaEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                modified_antenna: {
-                    id: antennaId,
-                    code: antCode,
-                    brand: antBrand,
-                    model: antModel,
-                    comments: antComments,
-                },
+        data = {
+            modified_antenna: {
+                id: elementId,
+                code: antCode,
+                brand: antBrand,
+                model: antModel,
+                comments: antComments,
             },
-            success: () => {
-                // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=antennas&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (antennaId) {
+    if (elementId) {
         return updateAntenna(form);
     }
     return newAntenna(form);
-}
-
-/**
- * Function gets all the taken antenna codes via an api call to
- * the sites back-end. This function exists in order to verify if
- * the entered antenna code hasn't been taken yet.
- */
-function getAntennaCodes() {
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'GET',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &task=getCodes
-            &view=antennaEdit
-            &format=json
-            &antennaId=${antennaId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // store the antenna codes locally
-            antennaCodes = response.data;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
 }
 
 /**
@@ -276,12 +192,12 @@ function getAntennaInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    antennaId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
     // get all the antenna codes
-    getAntennaCodes();
+    getCodes(currentView);
 
     // if an antenna has to be updated
-    if (antennaId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -292,7 +208,7 @@ function getAntennaInfo() {
                 &task=getOne
                 &view=antennaEdit
                 &format=json
-                &id=${antennaId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -305,10 +221,7 @@ function getAntennaInfo() {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

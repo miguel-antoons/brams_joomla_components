@@ -38,6 +38,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsadmin/views/_css/edit.css');
 		$document->addStyleSheet('/components/com_bramsadmin/views/_css/bootstrap.min.css');
 		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+		$document->addScript('/components/com_bramsadmin/views/_js/edit.js');
 		$document->addScript('/components/com_bramsadmin/views/systemedit/js/system_edit.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 	}

@@ -51,7 +51,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested antenna
-        $antenna_id = $input->get('antennaId');
+        $antenna_id = $input->get('id');
         $model = $this->getModel();
 
         // if the database select failed
@@ -97,7 +97,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
      *
      * @since 0.7.2
      */
-    public function new() {
+    public function create() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

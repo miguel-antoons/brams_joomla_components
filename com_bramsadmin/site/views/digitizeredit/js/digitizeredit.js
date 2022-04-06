@@ -1,8 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let digitizerId = 0;                  // the id of the antenna to show (if 0 --> no antenna)
-let digitizerCodes = [];              // array with all antenna codes
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'digitizerEdit';
+const redirectView = 'digitizers';
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -55,7 +55,7 @@ function verifyRequired(digitizerCode, oldIsValid) {
 function verifyCode(digitizerCode, oldIsValid) {
     const pattern = /^[a-z\d\-_]+$/i;
     // if the location code already exists
-    if (digitizerCodes.includes(digitizerCode)) {
+    if (codes.includes(digitizerCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -134,40 +134,15 @@ function newDigitizer(formInputs) {
 
     // verify if the entered values are valid
     if (verifyValues(digCode)) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=digitizerEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                new_digitizer: {
-                    code: digCode,
-                    brand: digBrand,
-                    model: digModel,
-                    comments: digComments,
-                },
+        const data = {
+            new_digitizer: {
+                code: digCode,
+                brand: digBrand,
+                model: digModel,
+                comments: digComments,
             },
-            success: () => {
-                // on success return to the digitizers page
-                window.location.href = '/index.php?option=com_bramsadmin&view=digitizers&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -186,84 +161,25 @@ function updateDigitizer(formInputs) {
 
     // verify if all the entered values are valid
     if (verifyValues(digCode)) {
-        const token = $('#token').attr('name');
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=digitizerEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                modified_digitizer: {
-                    id: digitizerId,
-                    code: digCode,
-                    brand: digBrand,
-                    model: digModel,
-                    comments: digComments,
-                },
+        const data = {
+            modified_digitizer: {
+                id: elementId,
+                code: digCode,
+                brand: digBrand,
+                model: digModel,
+                comments: digComments,
             },
-            success: () => {
-                // on success return to the digitizers page
-                window.location.href = '/index.php?option=com_bramsadmin&view=digitizers&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (digitizerId) {
+    if (elementId) {
         return updateDigitizer(form);
     }
     return newDigitizer(form);
-}
-
-/**
- * Function gets all the taken digitizer codes via an api call to
- * the sites back-end. This function exists in order to verify if
- * the entered digitizer code hasn't been taken yet.
- */
-function getDigitizerCodes() {
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'GET',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &task=getCodes
-            &view=digitizerEdit
-            &format=json
-            &digitizerId=${digitizerId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // store the digitizer codes locally
-            digitizerCodes = response.data;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
 }
 
 /**
@@ -276,12 +192,12 @@ function getDigitizerInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    digitizerId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
     // get all the location codes
-    getDigitizerCodes();
+    getCodes(currentView);
 
     // if a digitizer has to be updated
-    if (digitizerId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -292,7 +208,7 @@ function getDigitizerInfo() {
                 &task=getOne
                 &view=digitizerEdit
                 &format=json
-                &id=${digitizerId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -305,10 +221,7 @@ function getDigitizerInfo() {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

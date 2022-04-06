@@ -45,7 +45,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
      *
      * @since 0.2.0
      */
-    public function new() {
+    public function create() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

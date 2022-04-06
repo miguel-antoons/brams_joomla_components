@@ -1,8 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let beaconId = 0;                   // the id of the beacon to show (if 0 --> no beacon)
-let beaconCodes = [];               // array with all beacon codes
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'beaconEdit';
+const redirectView = 'beacons';
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -78,7 +78,7 @@ function verifyRequired(
  */
 function verifyCode(beaCode, oldIsValid) {
     // if the beacon code already exists
-    if (beaconCodes.includes(beaCode)) {
+    if (codes.includes(beaCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -297,45 +297,20 @@ function newBeacon(formInputs) {
             beaPolarization,
         )
     ) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=beaconEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                new_beacon: {
-                    code: beaCode,
-                    name: beaName,
-                    latitude: beaLatitude,
-                    longitude: beaLongitude,
-                    frequency: beaFrequency,
-                    power: beaPower,
-                    polarization: beaPolarization,
-                    // ? uncomment the following line to add a comments field
-                    // comments: formInputs.beaconComments.value,
-                },
+        const data = {
+            new_beacon: {
+                code: beaCode,
+                name: beaName,
+                latitude: beaLatitude,
+                longitude: beaLongitude,
+                frequency: beaFrequency,
+                power: beaPower,
+                polarization: beaPolarization,
+                // ? uncomment the following line to add a comments field
+                // comments: formInputs.beaconComments.value,
             },
-            success: () => {
-                // on success return to the location page
-                window.location.href = '/index.php?option=com_bramsadmin&view=beacons&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -367,52 +342,27 @@ function updateBeacon(formInputs) {
             beaPolarization,
         )
     ) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=beaconEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                modified_beacon: {
-                    id: beaconId,
-                    code: beaCode,
-                    name: beaName,
-                    latitude: beaLatitude,
-                    longitude: beaLongitude,
-                    frequency: beaFrequency,
-                    power: beaPower,
-                    polarization: beaPolarization,
-                    // ? uncomment the following line to add a comments field
-                    // comments: formInputs.beaconComments.value,
-                },
+        const data = {
+            modified_beacon: {
+                id: elementId,
+                code: beaCode,
+                name: beaName,
+                latitude: beaLatitude,
+                longitude: beaLongitude,
+                frequency: beaFrequency,
+                power: beaPower,
+                polarization: beaPolarization,
+                // ? uncomment the following line to add a comments field
+                // comments: formInputs.beaconComments.value,
             },
-            success: () => {
-                // on success return to the locations page
-                window.location.href = '/index.php?option=com_bramsadmin&view=beacons&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (beaconId) {
+    if (elementId) {
         return updateBeacon(form);
     }
     return newBeacon(form);
@@ -443,7 +393,7 @@ function setCode() {
     beaconCode = selectedCountry + beaconName.substring(0, 4).toUpperCase();
 
     // if the code doesn't exist yet, set the code value
-    if (!beaconCodes.includes(beaconCode)) {
+    if (!codes.includes(beaconCode)) {
         document.getElementById('beaconCode').value = beaconCode;
         return;
     }
@@ -454,13 +404,13 @@ function setCode() {
         + beaconName.substring(beaconName.length - 1).toUpperCase();
 
     // if the code doesn't exist yet, set the code value
-    if (!beaconCodes.includes(beaconCode)) {
+    if (!codes.includes(beaconCode)) {
         document.getElementById('beaconCode').value = beaconCode;
         return;
     }
 
     // while the locationCode already exists
-    for (let i = 2; beaconCodes.includes(beaconCode); i += 1) {
+    for (let i = 2; codes.includes(beaconCode); i += 1) {
         // generate a new locationCode from the country code, the 3 first letters
         // from the location name and i
         beaconCode = selectedCountry
@@ -485,41 +435,6 @@ function setCodeStatus(checkbox) {
     if (!checkbox.checked) {
         setCode();
     }
-}
-
-/**
- * Function gets all the taken beacon codes via an api call to
- * the sites back-end. This function exists in order to verify if
- * the entered beacon code hasn't been taken yet.
- */
-function getBeaconCodes() {
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'GET',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &task=getCodes
-            &view=beaconEdit
-            &format=json
-            &beaconId=${beaconId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // store the beacon codes locally
-            beaconCodes = response.data;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
 }
 
 /**
@@ -559,10 +474,7 @@ function getCountries(currentCountry = '') {
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
+            document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },
@@ -579,12 +491,12 @@ function getBeaconInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    beaconId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
     // get all the beacon codes
-    getBeaconCodes();
+    getCodes(currentView);
 
     // if a location has to be updated
-    if (beaconId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -595,7 +507,7 @@ function getBeaconInfo() {
                 &task=getOne
                 &view=beaconEdit
                 &format=json
-                &id=${beaconId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -622,10 +534,7 @@ function getBeaconInfo() {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

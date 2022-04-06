@@ -1,7 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let systemId = 0;                   // the id of the system to show (if 0 --> no system)
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'systemEdit';
+const redirectView = 'systems';
 const systemNames = [];             // array with all taken system names
 const defLocationAntenna = {};      // object with current location and antenna combo
 let locationAntennas = {};          // object with all antennas grouped by location
@@ -74,42 +75,16 @@ function newSystem(form) {
 
     // if the inputs are valid
     if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
-        const token = $('#token').attr('name');
-
-        // call the create api with the input values
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=systemEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                newSystemInfo: {
-                    name: systemName,
-                    location: locationId,
-                    antenna: antennaValue,
-                    start: systemStart,
-                    comments: form.systemComments.value,
-                },
+        const data = {
+            newSystemInfo: {
+                name: systemName,
+                location: locationId,
+                antenna: antennaValue,
+                start: systemStart,
+                comments: form.systemComments.value,
             },
-            success: () => {
-                // on success, return to the system page
-                window.location.href = '/index.php?option=com_bramsadmin&view=systems&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -128,49 +103,23 @@ function updateSystem(form) {
 
     // if the inputs are valid
     if (verifyValues(antennaValue, locationSelect, locationId, systemName, systemStart)) {
-        const token = $('#token').attr('name');
-
-        // call the update api with the input values
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=systemEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                systemInfo: {
-                    id: systemId,
-                    name: form.systemName.value,
-                    location: locationId,
-                    antenna: antennaValue,
-                    start: form.systemStart.value,
-                    comments: form.systemComments.value,
-                },
+        const data = {
+            systemInfo: {
+                id: elementId,
+                name: form.systemName.value,
+                location: locationId,
+                antenna: antennaValue,
+                start: form.systemStart.value,
+                comments: form.systemComments.value,
             },
-            success: () => {
-                // on success, return to the system page
-                window.location.href = '/index.php?option=com_bramsadmin&view=systems&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (systemId) {
+    if (elementId) {
         return updateSystem(form);
     }
     return newSystem(form);
@@ -216,7 +165,7 @@ function getLocations() {
             /index.php?
             option=com_bramsadmin
             &task=getLocationAntennas
-            &view=systemEdit
+            &view=${currentView}
             &format=json
             &locationid=${defLocationAntenna.location}
             &antenna=${defLocationAntenna.antenna}
@@ -241,10 +190,7 @@ function getLocations() {
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
+            document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },
@@ -267,7 +213,7 @@ function getSystemNames(id) {
             /index.php?
             option=com_bramsadmin
             &task=getAllSimple
-            &view=systemEdit
+            &view=${currentView}
             &format=json
             &id=${id}
             &${token}=1
@@ -280,10 +226,7 @@ function getSystemNames(id) {
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
+            document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },
@@ -300,9 +243,9 @@ function getSystemInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    systemId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
 
-    if (systemId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -311,9 +254,9 @@ function getSystemInfo() {
                 /index.php?
                 option=com_bramsadmin
                 &task=getOne
-                &view=systemEdit
+                &view=${currentView}
                 &format=json
-                &id=${systemId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -330,14 +273,11 @@ function getSystemInfo() {
 
                 // get locations and other system names
                 getLocations();
-                getSystemNames(systemId);
+                getSystemNames(elementId);
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

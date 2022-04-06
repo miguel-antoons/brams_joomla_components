@@ -51,7 +51,7 @@ class BramsAdminViewObserverEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested observer
-        $observer_id = $input->get('observerId');
+        $observer_id = $input->get('id');
         $model = $this->getModel();
 
         // if the database select fails
@@ -97,7 +97,7 @@ class BramsAdminViewObserverEdit extends HtmlView {
      *
      * @since 0.5.2
      */
-    public function new() {
+    public function create() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

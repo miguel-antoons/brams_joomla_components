@@ -51,7 +51,7 @@ class BramsAdminViewReceiverEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested receiver
-        $receiver_id = $input->get('receiverId');
+        $receiver_id = $input->get('id');
         $model = $this->getModel();
 
         // if the database select failed
@@ -97,7 +97,7 @@ class BramsAdminViewReceiverEdit extends HtmlView {
      *
      * @since 0.9.2
      */
-    public function new() {
+    public function create() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

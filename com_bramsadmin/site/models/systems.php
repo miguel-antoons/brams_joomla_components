@@ -81,18 +81,31 @@ class BramsAdminModelSystems extends ItemModel {
 			return -1;
 		}
 		$system_query = $db->getQuery(true);
+        $sub_system_query = $db->getQuery(true);
+
+        // query to check if there are any files for a given system
+        $sub_system_query->select($db->quoteName('system_id'));
+        $sub_system_query->from($db->quoteName('file'));
+        $sub_system_query->where($db->quoteName('system_id') . ' = ' . $db->quoteName('system.id'));
 
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') . 'as id, '
-			. $db->quoteName('system.name') . 'as name, '
-			. $db->quoteName('location_code') . 'as code, '
-			. $db->quoteName('start') . ', '
-			. $db->quoteName('end')
+			'distinct ' . $db->quoteName('system.id')   . ' as id, '
+			. $db->quoteName('system.name')             . ' as name, '
+			. $db->quoteName('location_code')           . ' as code, '
+			. $db->quoteName('system.start')            . ' as start, '
+			. $db->quoteName('system.end')              . ' as end, '
+            . 'exists(' . $sub_system_query . ')'       . ' as notDeletable'
 		);
-		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+        $system_query->from($db->quoteName('location'));
+		$system_query->join(
+            'INNER',
+            $db->quoteName('system')
+            . ' ON '
+            . $db->quoteName('system.location_id')
+            . ' = '
+            . $db->quoteName('location.id')
+        );
 
 		$db->setQuery($system_query);
 
@@ -164,11 +177,11 @@ class BramsAdminModelSystems extends ItemModel {
 
 		// query to get the system info
 		$system_query->select(
-			$db->quoteName('id') . ', '
-			. $db->quoteName('name') . ', '
+			$db->quoteName('id')            . ', '
+			. $db->quoteName('name')        . ', '
 			. $db->quoteName('location_id') . ', '
-			. $db->quoteName('start') . ', '
-			. $db->quoteName('antenna') . ', '
+			. $db->quoteName('start')       . ', '
+			. $db->quoteName('antenna')     . ', '
 			. $db->quoteName('comments')
 		);
 		$system_query->from($db->quoteName('system'));
@@ -243,8 +256,8 @@ class BramsAdminModelSystems extends ItemModel {
 
         // query to get all the antennas, location names and location ids
 		$locations_query->select(
-			$db->quoteName('location.id') . ' as id, '
-			. $db->quoteName('location.name') . ' as name, '
+			$db->quoteName('location.id')       . ' as id, '
+			. $db->quoteName('location.name')   . ' as name, '
 			. $db->quoteName('antenna')
 		);
 		$locations_query->from($db->quoteName('location'));
@@ -287,11 +300,11 @@ class BramsAdminModelSystems extends ItemModel {
             // if the location has not yet been added to the final array
 			if (!array_key_exists($location->id, $final_location_array)) {
                 // add all the basic values
-				$final_location_array[$location->id] = new stdClass();
-				$final_location_array[$location->id]->id = $location->id;
-				$final_location_array[$location->id]->name = $location->name;
-				$final_location_array[$location->id]->selected = '';
-				$final_location_array[$location->id]->antennas = array();
+				$final_location_array[$location->id]            = new stdClass();
+				$final_location_array[$location->id]->id        = $location->id;
+				$final_location_array[$location->id]->name      = $location->name;
+				$final_location_array[$location->id]->selected  = '';
+				$final_location_array[$location->id]->antennas  = array();
 			}
 
             // if the antenna and location id are not equal to $antenna and $id
@@ -336,12 +349,12 @@ class BramsAdminModelSystems extends ItemModel {
 				)
 			)
 			->values(
-				$db->quote($new_system_info['name']) . ', '
-				. $db->quote($new_system_info['location']) . ', '
-				. $db->quote($new_system_info['antenna']) . ', '
-				. $db->quote($new_system_info['start']) . ', '
-				. $db->quote($new_system_info['comments']) . ', '
-				. $db->quote($new_system_info['start']) . ', '
+				$db->quote($new_system_info['name'])        . ', '
+				. $db->quote($new_system_info['location'])  . ', '
+				. $db->quote($new_system_info['antenna'])   . ', '
+				. $db->quote($new_system_info['start'])     . ', '
+				. $db->quote($new_system_info['comments'])  . ', '
+				. $db->quote($new_system_info['start'])     . ', '
 				. $db->quote($new_system_info['start'])
 			);
 

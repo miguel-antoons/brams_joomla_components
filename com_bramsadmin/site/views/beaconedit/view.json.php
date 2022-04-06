@@ -51,7 +51,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested system
-        $beacon_id = $input->get('beaconId');
+        $beacon_id = $input->get('id');
         $model = $this->getModel();
 
         // if the database select failed
@@ -97,7 +97,7 @@ class BramsAdminViewBeaconEdit extends HtmlView {
      *
      * @since 0.6.2
      */
-    public function new() {
+    public function create() {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;

@@ -1,8 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let receiverId = 0;                  // the id of the receiver to show (if 0 --> no receiver)
-let receiverCodes = [];              // array with all receiver codes
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'receiverEdit';
+const redirectView = 'receivers';
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -55,7 +55,7 @@ function verifyRequired(receiverCode, oldIsValid) {
 function verifyCode(receiverCode, oldIsValid) {
     const pattern = /^[a-z\d\-_]+$/i;
     // if the receiver code already exists
-    if (receiverCodes.includes(receiverCode)) {
+    if (codes.includes(receiverCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -134,40 +134,15 @@ function newReceiver(formInputs) {
 
     // verify if the entered values are valid
     if (verifyValues(recCode)) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=receiverEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                new_receiver: {
-                    code: recCode,
-                    brand: recBrand,
-                    model: recModel,
-                    comments: recComments,
-                },
+        const data = {
+            new_receiver: {
+                code: recCode,
+                brand: recBrand,
+                model: recModel,
+                comments: recComments,
             },
-            success: () => {
-                // on success return to the antennas page
-                window.location.href = '/index.php?option=com_bramsadmin&view=receivers&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -186,84 +161,25 @@ function updateReceiver(formInputs) {
 
     // verify if all the entered values are valid
     if (verifyValues(recCode)) {
-        const token = $('#token').attr('name');
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=receiverEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                modified_receiver: {
-                    id: receiverId,
-                    code: recCode,
-                    brand: recBrand,
-                    model: recModel,
-                    comments: recComments,
-                },
+        const data = {
+            modified_receiver: {
+                id: elementId,
+                code: recCode,
+                brand: recBrand,
+                model: recModel,
+                comments: recComments,
             },
-            success: () => {
-                // on success return to the receivers page
-                window.location.href = '/index.php?option=com_bramsadmin&view=receivers&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (receiverId) {
+    if (elementId) {
         return updateReceiver(form);
     }
     return newReceiver(form);
-}
-
-/**
- * Function gets all the taken receiver codes via an api call to
- * the sites back-end. This function exists in order to verify if
- * the entered receiver code hasn't been taken yet.
- */
-function getReceiverCodes() {
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'GET',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &task=getCodes
-            &view=receiverEdit
-            &format=json
-            &receiverId=${receiverId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // store the receiver codes locally
-            receiverCodes = response.data;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
 }
 
 /**
@@ -276,12 +192,12 @@ function getReceiverInfo() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    receiverId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
     // get all the receiver codes
-    getReceiverCodes();
+    getCodes(currentView);
 
     // if a receiver has to be updated
-    if (receiverId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -292,7 +208,7 @@ function getReceiverInfo() {
                 &task=getOne
                 &view=receiverEdit
                 &format=json
-                &id=${receiverId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -305,10 +221,7 @@ function getReceiverInfo() {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

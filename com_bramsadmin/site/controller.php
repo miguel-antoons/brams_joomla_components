@@ -40,8 +40,7 @@ class BramsAdminController extends BaseController {
      * @throws Exception
      * @since   3.0
      */
-    public function display($cacheable = false, $url_params = array(), $block_display = false)
-    {
+    public function display($cacheable = false, $url_params = array(), $block_display = false) {
         $document = Factory::getDocument();
         $viewType = $document->getType();
         $viewName = $this->input->get('view', $this->default_view);
@@ -96,12 +95,12 @@ class BramsAdminController extends BaseController {
 
     /**
      * API - POST
-     * Function executes the views new method. This function is executed when a new
+     * Function executes the views create method. This function is executed when a new
      * database row has to be created.
      *
      * @since 0.7.3
      */
-    public function new() {
+    public function create() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -110,7 +109,7 @@ class BramsAdminController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            $view->new();
+            $view->create();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

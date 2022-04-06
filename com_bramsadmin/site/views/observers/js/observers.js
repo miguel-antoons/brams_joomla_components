@@ -1,43 +1,21 @@
-/* global $ */
+// eslint-disable-next-line no-unused-vars
+/* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
 const sortDescFlags = {
     code: true,         // next sort method for the observer code table header (true = desc, false = asc)
     firstName: false,   // next sort method for the observer first name table header (true = desc, false = asc)
     lastName: false,    // next sort method for the observer last name table header (true = desc, false = asc)
     eMail: false,       // next sort method for the observer e-mail table header (true = desc, false = asc)
 };
-// eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';    // variable contains log messages if something was logged
-let observers;
-
-// function stop the onclick property from .tableRow classes
-// from firing when clicking on a button inside a .tableRow class
-function stopPropagation() {
-    $('.tableRow button').on('click', (e) => {
-        e.stopPropagation();
-    });
-}
-
-function sortAsc(first, second) {
-    if (first > second) return 1;
-    if (first < second) return -1;
-    return 0;
-}
-
-function sortDesc(first, second) {
-    if (first < second) return 1;
-    if (first > second) return -1;
-    return 0;
-}
 
 /**
- * Function generates the system table from the systems array.
- * It then renders the table on inside the #systems element.
+ * Function generates the observer table from the elements array.
+ * It then renders the table on inside the #observers element.
  */
 function generateTable() {
     let HTMLString = '';
 
-    // generate a row for each system
-    observers.forEach(
+    // generate a row for each observer
+    elements.forEach(
         (observer) => {
             HTMLString += `
                 <tr
@@ -88,47 +66,6 @@ function generateTable() {
 }
 
 /**
- * Function changes the sort icon to the last clicked table header.
- * @param {HTMLTableCellElement} headerElement table header that was clicked for sorting
- */
-function setSortIcon(headerElement) {
-    // remove the sort icon from the page
-    document.getElementById('sortIcon').remove();
-    // add the icon to the clicked element ('headerElement')
-    headerElement.innerHTML += '<i id="sortIcon" class="fa fa-sort" aria-hidden="true"></i>';
-}
-
-/**
- * Function sorts the table by attribute parameter
- * @param {HTMLTableCellElement} headerElement  table header that was clicked for sorting
- * @param {string}               attribute      location attribute to sort on
- * @param {boolean}              noSpace        Whether to remove spaces or not from strings when sorting
- */
-function sortTable(headerElement, attribute, noSpace = false) {
-    // reset all the sorting methods for all the other table headers
-    Object.keys(sortDescFlags).forEach((key) => {
-        if (key !== attribute) {
-            sortDescFlags[key] = false;
-        }
-    });
-
-    // if sorting method is set to desc
-    if (sortDescFlags[attribute]) {
-        // sort the system array desc
-        observers.sort((first, second) => sortDesc(first[attribute], second[attribute], noSpace));
-    } else {
-        // sort asc
-        observers.sort((first, second) => sortAsc(first[attribute], second[attribute], noSpace));
-    }
-
-    // toggle the sorting method
-    sortDescFlags[attribute] = !sortDescFlags[attribute];
-
-    setSortIcon(headerElement);
-    generateTable();
-}
-
-/**
  * Calls an api to delete the observer with id equal to 'systemId' argument.
  * If the system was successfully deleted, it updates the html table.
  *
@@ -146,37 +83,7 @@ function deleteObserver(observerId, observerName, notDeletable) {
         return;
     }
 
-    if (!confirm(`Are you sure you want to delete ${observerName}`)) return;
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'DELETE',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &task=delete
-            &view=observers
-            &format=json
-            &id=${observerId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // on success, update the html table by removing the system from it
-            const isDeletedElement = (element) => Number(element.id) === observerId;
-            observers.splice(observers.findIndex(isDeletedElement), 1);
-            generateTable();
-            document.getElementById('message').innerHTML = response.data.message;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('message').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
+    deleteRow(observerId, observerName, 'observers');
 }
 
 /**
@@ -199,16 +106,13 @@ function getObservers() {
             &${token}=1
         `,
         success: (response) => {
-            observers = response.data;
-            observers.sort((first, second) => sortAsc(first.code, second.code));
+            elements = response.data;
+            elements.sort((first, second) => sortAsc(first.code, second.code));
             generateTable();
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('message').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
+            document.getElementById('message').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },

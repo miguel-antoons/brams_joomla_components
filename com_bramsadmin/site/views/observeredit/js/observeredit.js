@@ -1,8 +1,8 @@
-/* global $ */
+// * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-let log = 'Nothing to show';        // contains debug information if needed
-let observerId = 0;                 // the id of the observer to show (if 0 --> no observer)
-let observerCodes = [];             // array with all the taken observer codes
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+const currentView = 'observerEdit';
+const redirectView = 'observers';
 
 /**
  * Function checks if all the required inputs have values in them. It doesn't
@@ -71,7 +71,7 @@ function verifyRequired(
  */
 function verifyCode(observerCode, oldIsValid) {
     // if the location code already exists
-    if (observerCodes.includes(observerCode)) {
+    if (codes.includes(observerCode)) {
         document.getElementById('code').innerHTML += ''
             + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
 
@@ -201,41 +201,16 @@ function newObserver(formInputs) {
             obsEmail,
         )
     ) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=new
-                &view=observerEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                new_observer: {
-                    code: obsCode,
-                    first_name: obsFName,
-                    last_name: obsLName,
-                    country: obsCountry,
-                    email: obsEmail,
-                },
+        const data = {
+            new_observer: {
+                code: obsCode,
+                first_name: obsFName,
+                last_name: obsLName,
+                country: obsCountry,
+                email: obsEmail,
             },
-            success: () => {
-                // on success return to the location page
-                window.location.href = '/index.php?option=com_bramsadmin&view=observers&message=2';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        newElement(data, currentView, redirectView);
     }
 }
 
@@ -263,48 +238,23 @@ function updateObserver(formInputs) {
             obsEmail,
         )
     ) {
-        const token = $('#token').attr('name');
-
-        $.ajax({
-            type: 'POST',
-            url: `
-                /index.php?
-                option=com_bramsadmin
-                &task=update
-                &view=observerEdit
-                &format=json
-                &${token}=1
-            `,
-            data: {
-                modified_observer: {
-                    id: observerId,
-                    code: obsCode,
-                    first_name: obsFName,
-                    last_name: obsLName,
-                    country: obsCountry,
-                    email: obsEmail,
-                },
+        const data = {
+            modified_observer: {
+                id: elementId,
+                code: obsCode,
+                first_name: obsFName,
+                last_name: obsLName,
+                country: obsCountry,
+                email: obsEmail,
             },
-            success: () => {
-                // on success return to the locations page
-                window.location.href = '/index.php?option=com_bramsadmin&view=observers&message=1';
-            },
-            error: (response) => {
-                // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
-                // store the server response in the log variable
-                log = response;
-            },
-        });
+        };
+        updateElement(data, currentView, redirectView);
     }
 }
 
 // function decides which api to call (update or create)
 function formProcess(form) {
-    if (observerId) {
+    if (elementId) {
         return updateObserver(form);
     }
     return newObserver(form);
@@ -335,7 +285,7 @@ function setCode() {
     observerCode = lastName.substring(0, 3).toUpperCase() + firstName.substring(0, 2).toUpperCase();
 
     // if the code doesn't exist yet, set the code value
-    if (!observerCodes.includes(observerCode)) {
+    if (!codes.includes(observerCode)) {
         document.getElementById('observerCode').value = observerCode;
         return;
     }
@@ -346,13 +296,13 @@ function setCode() {
         + firstName.substring(0, 2).toUpperCase();
 
     // if the code doesn't exist yet, set the code value
-    if (!observerCodes.includes(observerCode)) {
+    if (!codes.includes(observerCode)) {
         document.getElementById('observerCode').value = observerCode;
         return;
     }
 
     // while the locationCode already exists
-    for (let i = 2; observerCodes.includes(observerCode); i += 1) {
+    for (let i = 2; codes.includes(observerCode); i += 1) {
         // generate a new locationCode from the country code, the 3 first letters
         // from the location name and i
         observerCode = lastName.substring(0, 3).toUpperCase()
@@ -377,41 +327,6 @@ function setCodeStatus(checkbox) {
     if (!checkbox.checked) {
         setCode();
     }
-}
-
-/**
- * Function gets all the taken observer codes via an api call to
- * the sites back-end. This function exists in order to verify if
- * the entered observer code hasn't been taken yet.
- */
-function getObsCodes() {
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        type: 'GET',
-        url: `
-            /index.php?
-            option=com_bramsadmin
-            &view=observerEdit
-            &format=json
-            &task=getCodes
-            &observerId=${observerId}
-            &${token}=1
-        `,
-        success: (response) => {
-            // store the location codes locally
-            observerCodes = response.data;
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
-            // store the server response in the log variable
-            log = response;
-        },
-    });
 }
 
 /**
@@ -451,10 +366,7 @@ function getCountries(currentCountry = '') {
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('error').innerHTML = (
-                'API call failed, please read the \'log\' variable in '
-                + 'developer console for more information about the problem.'
-            );
+            document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },
@@ -471,12 +383,12 @@ function getObserver() {
     // get the id from url
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
-    observerId = Number(queryString.get('id'));
+    elementId = Number(queryString.get('id'));
     // get all the observer codes
-    getObsCodes();
+    getCodes(currentView);
 
     // if an observer has to be updated
-    if (observerId) {
+    if (elementId) {
         const token = $('#token').attr('name');
 
         $.ajax({
@@ -487,7 +399,7 @@ function getObserver() {
                 &task=getOne
                 &view=observerEdit
                 &format=json
-                &id=${observerId}
+                &id=${elementId}
                 &${token}=1
             `,
             success: (response) => {
@@ -506,10 +418,7 @@ function getObserver() {
             },
             error: (response) => {
                 // on fail, show an error message
-                document.getElementById('error').innerHTML = (
-                    'API call failed, please read the \'log\' variable in '
-                    + 'developer console for more information about the problem.'
-                );
+                document.getElementById('error').innerHTML = apiFailMessg;
                 // store the server response in the log variable
                 log = response;
             },

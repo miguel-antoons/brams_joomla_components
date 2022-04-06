@@ -51,7 +51,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
             return;
         }
         // retrieve the id of the requested system
-        $location_id = $input->get('locationId');
+        $location_id = $input->get('id');
         $model = $this->getModel();
 
         // if the database select failed
@@ -121,7 +121,7 @@ class BramsAdminViewLocationEdit extends HtmlView {
      *
      * @since 0.4.3
      */
-    public function new() {
+    public function create() {
          // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) {
             return;
