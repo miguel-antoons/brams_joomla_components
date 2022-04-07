@@ -35,7 +35,14 @@ defined('_JEXEC') or die('Restricted access');
                             </label>
                         </span>
                     </div>
-                    <input type="text" class="form-control" id="beaconCode" readonly required>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="beaconCode"
+                        maxlength="31"
+                        readonly
+                        required
+                    >
                 </div>
 
                 <label class='form-label required' for='beaconName'>Name</label>
@@ -44,6 +51,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id='beaconName'
                     oninput="setCode()"
+                    maxlength="31"
                     required
                 >
 
@@ -53,6 +61,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id='beaconCountry'
                     onchange='setCode()'
+                    required
                 >
                     <!-- country options will all come here -->
                 </select>
@@ -81,6 +90,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     type='number'
                     id='beaconFrequency'
+                    max="9999"
                     value="0"
                     min="0"
                     required
@@ -91,6 +101,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     type='number'
                     id='beaconPower'
+                    max="999999"
                     value="0"
                     min="0"
                     required
@@ -101,6 +112,7 @@ defined('_JEXEC') or die('Restricted access');
                         class='form-control'
                         type='text'
                         id='beaconPolarization'
+                        maxlength="15"
                         required
                 >
 

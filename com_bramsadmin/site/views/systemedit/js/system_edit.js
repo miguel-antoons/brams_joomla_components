@@ -1,3 +1,4 @@
+/* eslint-disable no-global-assign */
 // * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
 /* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
@@ -118,6 +119,7 @@ function updateSystem(form) {
 }
 
 // function decides which api to call (update or create)
+// eslint-disable-next-line no-unused-vars
 function formProcess(form) {
     if (elementId) {
         return updateSystem(form);

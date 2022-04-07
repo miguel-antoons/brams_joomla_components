@@ -77,11 +77,11 @@ defined('_JEXEC') or die('Restricted access');
 
                 <label id="email" class='form-label required' for='observerEmail'>Email</label>
                 <input
-                        type='email'
-                        class='form-control'
-                        id='observerEmail'
-                        maxlength="63"
-                        required
+                    type='email'
+                    class='form-control'
+                    id='observerEmail'
+                    maxlength="63"
+                    required
                 >
 
                 <button

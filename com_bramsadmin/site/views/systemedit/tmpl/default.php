@@ -31,11 +31,18 @@ defined('_JEXEC') or die('Restricted access');
                     type='text'
                     class='form-control'
                     id='systemName'
+                    maxlength="31"
                     required
                 >
 
                 <label for='systemLocation'>Location</label>
-                <select name='locations' class='form-control' id='systemLocation' onChange='setAntenna()'>
+                <select
+                    name='locations'
+                    class='form-control'
+                    id='systemLocation'
+                    onChange='setAntenna()'
+                    required
+                >
 
                 </select>
 
@@ -45,7 +52,9 @@ defined('_JEXEC') or die('Restricted access');
                     type='number'
                     value='0'
                     min='0'
+                    max="999999"
                     id='systemAntenna'
+                    required
                 >
 
                 <label for='systemStart'>Start</label>

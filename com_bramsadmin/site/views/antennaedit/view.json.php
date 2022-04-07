@@ -114,8 +114,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
         // if everything goes well, return a validation message to front-end
         echo new JResponseJson(
             array(('message') => 'New antenna '
-                . $new_antenna['brand']
-                . ' ' . $new_antenna['model']
+                . $new_antenna['code']
                 . ' has been created.')
         );
     }
@@ -147,8 +146,7 @@ class BramsAdminViewAntennaEdit extends HtmlView {
         // if everything goes well, return a validation message to front-end
         echo new JResponseJson(
             array(('message') => 'Antenna '
-                . $modified_antenna['brand']
-                . ' ' . $modified_antenna['model']
+                . $modified_antenna['code']
                 . ' has been updated.')
         );
     }

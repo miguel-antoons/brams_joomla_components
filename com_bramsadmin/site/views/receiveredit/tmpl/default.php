@@ -41,7 +41,6 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id="receiverBrand"
                     maxlength="31"
-                    required
                 >
 
                 <label for='receiverModel' class="form-label">Model</label>
@@ -50,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
                     type='text'
                     id="receiverModel"
                     maxlength="31"
-                    required
                 >
 
                 <label for='receiverComments'>Comments</label>

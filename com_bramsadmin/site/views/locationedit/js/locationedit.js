@@ -1,3 +1,4 @@
+/* eslint-disable no-global-assign */
 // * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
 /* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
@@ -111,6 +112,7 @@ function verifyCode(locationCode, oldIsValid) {
  *                                                  1: error message if the latitude is outside the permitted range
  */
 function verifyLatitude(locationLatitude, oldIsValid) {
+    // eslint-disable-next-line no-param-reassign
     locationLatitude = Number(locationLatitude);
 
     // if latitude is higher than 90 / lower than 90
@@ -143,6 +145,7 @@ function verifyLatitude(locationLatitude, oldIsValid) {
  *                                                  1: error message if the longitude is outside the permitted range
  */
 function verifyLongitude(locationLongitude, oldIsValid) {
+    // eslint-disable-next-line no-param-reassign
     locationLongitude = Number(locationLongitude);
 
     // if longitude is higher than 180 / lower than -180
@@ -287,7 +290,6 @@ function newLocation(formInputs) {
  * @param formInputs    {HTMLDivElement.children}    Div element containing the inputs
  */
 function updateLocation(formInputs) {
-    const token = $('#token').attr('name');
     const locCode = formInputs.codeWrapper.children.locationCode.value;
     const locName = formInputs.locationName.value;
     const locStatus = formInputs.locationStatus.value;
@@ -332,6 +334,7 @@ function updateLocation(formInputs) {
 }
 
 // function decides which api to call (update or create)
+// eslint-disable-next-line no-unused-vars
 function formProcess(form) {
     if (elementId) {
         return updateLocation(form);

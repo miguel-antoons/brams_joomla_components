@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,         // next sort method for the observer code table header (true = desc, false = asc)
     firstName: false,   // next sort method for the observer first name table header (true = desc, false = asc)
@@ -73,8 +76,10 @@ function generateTable() {
  * @param {string}      observerName name of the observer's location to be deleted
  * @param {string|null} notDeletable determines if the observer can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteObserver(observerId, observerName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             "Observer can't be deleted as long as there are locations referencing this observer.\n"
             + 'Please remove the locations referencing this observer in order to remove the'

@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,     // next sort method for the digitizer code table header (true = desc, false = asc)
     brand: false,   // next sort method for the brand table header (true = desc, false = asc)
@@ -70,8 +73,10 @@ function generateTable() {
  * @param {string}      digitizerName   name of the digitizer to be deleted
  * @param {null|string} notDeletable    Indicates if the element can be deleted
  */
+// eslint-disable-next-line no-unused-vars
 function deleteDigitizer(digitizerId, digitizerName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             'Digitizer can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this digitizer.\nPlease remove the systems referencing this'

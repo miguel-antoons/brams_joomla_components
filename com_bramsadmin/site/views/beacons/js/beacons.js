@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     name: true,         // next sort method for the beacon name table header (true = desc, false = asc)
     latitude: false,    // next sort method for the latitude table header (true = desc, false = asc)
@@ -76,8 +79,10 @@ function generateTable() {
  * @param {string}      beaconName   name of the beacon to be deleted
  * @param {string|null} notDeletable determines if the beacon can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteBeacon(beaconId, beaconName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             "Beacon can't be deleted as long as there are files referencing this beacon.\n"
             + 'Please remove the files referencing this beacon in order to remove the beacon.',

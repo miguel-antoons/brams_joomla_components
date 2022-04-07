@@ -41,7 +41,6 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id="softwareName"
                     maxlength="31"
-                    required
                 >
 
                 <label for='softwareVersion' class="form-label">Version</label>
@@ -50,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
                     type='text'
                     id="softwareVersion"
                     maxlength="31"
-                    required
                 >
 
                 <label for='softwareComments'>Comments</label>

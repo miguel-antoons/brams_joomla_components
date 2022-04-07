@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     location_code: true,    // next sort method for the location table header (true = desc, false = asc)
     name: false,            // next sort method for the name table header (true = desc, false = asc)
@@ -93,8 +96,10 @@ function generateTable() {
  * @param {string}      locationName name of the location to be deleted
  * @param {string|null} notDeletable determines if the location can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteLocation(locationId, locationName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             "Location can't be deleted as long as there are systems referencing this location.\n"
             + 'Please remove the systems referencing this location in order to remove the '

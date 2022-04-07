@@ -1,3 +1,4 @@
+/* eslint-disable no-global-assign */
 // * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
 /* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
@@ -161,7 +162,7 @@ function updateAntenna(formInputs) {
 
     // verify if all the entered values are valid
     if (verifyValues(antCode)) {
-        data = {
+        const data = {
             modified_antenna: {
                 id: elementId,
                 code: antCode,
@@ -175,6 +176,7 @@ function updateAntenna(formInputs) {
 }
 
 // function decides which api to call (update or create)
+// eslint-disable-next-line no-unused-vars
 function formProcess(form) {
     if (elementId) {
         return updateAntenna(form);
@@ -217,7 +219,7 @@ function getAntennaInfo() {
                 document.getElementById('antennaModel').value = response.data.model;
                 document.getElementById('antennaComments').value = response.data.comments;
                 document.getElementById('title').innerHTML = `
-                    Update Antenna ${response.data.brand} ${response.data.model}`;
+                    Update Antenna ${response.data.code}`;
             },
             error: (response) => {
                 // on fail, show an error message

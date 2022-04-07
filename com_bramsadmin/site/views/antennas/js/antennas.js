@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,
     brand: false,
@@ -69,8 +72,10 @@ function generateTable() {
  * @param {string}      antennaName  name of the antenna to be deleted
  * @param {string|null} notDeletable determines if the antenna can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteAntenna(antennaId, antennaName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             'Antenna can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this antenna.\nPlease remove the systems referencing this'
@@ -79,7 +84,7 @@ function deleteAntenna(antennaId, antennaName, notDeletable) {
         return;
     }
 
-    deleteRow(antennaId, antennaName, 'antennas')
+    deleteRow(antennaId, antennaName, 'antennas');
 }
 
 /**

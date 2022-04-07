@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,
     brand: false,
@@ -69,8 +72,10 @@ function generateTable() {
  * @param {string}      receiverName name of the receiver to be deleted
  * @param {string|null} notDeletable determines if the receiver can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteReceiver(receiverId, receiverName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             'Receiver can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this receiver.\nPlease remove the systems referencing this'

@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,
     name: false,
@@ -69,8 +72,10 @@ function generateTable() {
  * @param {string}      softwareName name of the software to be deleted
  * @param {string|null} notDeletable determines if the software can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteSoftware(softwareId, softwareName, notDeletable) {
     if (notDeletable !== null) {
+        // eslint-disable-next-line no-alert
         alert(
             'Software can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this software.\nPlease remove the systems referencing this'
@@ -79,7 +84,7 @@ function deleteSoftware(softwareId, softwareName, notDeletable) {
         return;
     }
 
-    deleteRow(softwareId, softwareName, 'softwares')
+    deleteRow(softwareId, softwareName, 'softwares');
 }
 
 /**

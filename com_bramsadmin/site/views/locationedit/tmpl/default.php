@@ -35,7 +35,14 @@ defined('_JEXEC') or die('Restricted access');
                             </label>
                         </span>
                     </div>
-                    <input type="text" class="form-control" id="locationCode" readonly required>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="locationCode"
+                        maxlength="31"
+                        readonly
+                        required
+                    >
                 </div>
 
                 <label class='form-label required' for='locationName'>Name</label>
@@ -44,14 +51,16 @@ defined('_JEXEC') or die('Restricted access');
                         class='form-control'
                         id='locationName'
                         oninput="setCode()"
+                        maxlength="31"
                         required
                 >
 
                 <label for='locationStatus' class="required">Status</label>
                 <select
-                        name='locations'
-                        class='form-control'
-                        id='locationStatus'
+                    name='locations'
+                    class='form-control'
+                    id='locationStatus'
+                    required
                 >
                     <option value="A" selected>Active</option>
                     <option value="D">Inactive</option>
@@ -63,6 +72,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id='locationCountry'
                     onchange='setCode()'
+                    required
                 >
                     <!-- country options will all come here -->
                 </select>
@@ -88,9 +98,10 @@ defined('_JEXEC') or die('Restricted access');
 
                 <label for='locationTransferType'  class="required">Transfer Type</label>
                 <select
-                        name='locations'
-                        class='form-control'
-                        id='locationTransferType'
+                    name='locations'
+                    class='form-control'
+                    id='locationTransferType'
+                    required
                 >
                     <option value="SSH" selected>SSH</option>
                     <option value="USB">USB</option>
@@ -99,9 +110,9 @@ defined('_JEXEC') or die('Restricted access');
 
                 <label for='locationObserver'  class="required">Observer</label>
                 <select
-                        name='locations'
-                        class='form-control'
-                        id='locationObserver'
+                    name='locations'
+                    class='form-control'
+                    id='locationObserver'
                 >
                     <!-- observer options will all come here -->
                 </select>
@@ -111,27 +122,31 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     type='text'
                     id='locationComments'
+                    maxlength="255"
                 >
 
                 <label for='locationFTPPass'>FTP Password</label>
                 <input
-                        class='form-control'
-                        type='text'
-                        id='locationFTPPass'
+                    class='form-control'
+                    type='text'
+                    id='locationFTPPass'
+                    maxlength="20"
                 >
 
                 <label for='locationTVId'>Teamviewer ID</label>
                 <input
-                        class='form-control'
-                        type='text'
-                        id='locationTVId'
+                    class='form-control'
+                    type='text'
+                    id='locationTVId'
+                    maxlength="20"
                 >
 
                 <label for='locationTVPass'>Teamviewer Password</label>
                 <input
-                        class='form-control'
-                        type='text'
-                        id='locationTVPass'
+                    class='form-control'
+                    type='text'
+                    id='locationTVPass'
+                    maxlength="20"
                 >
 
                 <button

@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+// * cf. ../../_js/list.js
 // eslint-disable-next-line no-unused-vars
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
+// eslint-disable-next-line no-unused-vars
 const sortDescFlags = {
     code: true,     // next sort method for the location code table header (true = desc, false = asc)
     name: false,    // next sort method for the name table header (true = desc, false = asc)
@@ -72,8 +75,10 @@ function generateTable() {
  * @param {string}      locationName name of the systems' location to be deleted
  * @param {string|null} notDeletable determines if the system can be deleted or not
  */
+// eslint-disable-next-line no-unused-vars
 function deleteSystem(systemId, locationName, notDeletable) {
     if (notDeletable) {
+        // eslint-disable-next-line no-alert
         alert(
             'System can\'t be deleted as long as there are files '
             + 'referencing this system.\nPlease remove the files referencing this'

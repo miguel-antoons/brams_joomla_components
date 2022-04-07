@@ -41,7 +41,6 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id='antennaBrand'
                     maxlength="31"
-                    required
                 >
 
                 <label for='antennaModel' class="form-label">Model</label>
@@ -50,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
                     type='text'
                     id='antennaModel'
                     maxlength="31"
-                    required
                 >
 
                 <label for='antennaComments'>Comments</label>

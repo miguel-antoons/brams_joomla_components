@@ -41,7 +41,6 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     id='digitizerBrand'
                     maxlength="31"
-                    required
                 >
 
                 <label for='digitizerModel' class="form-label">Model</label>
@@ -50,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
                     type='text'
                     id='digitizerModel'
                     maxlength="31"
-                    required
                 >
 
                 <label for='digitizerComments'>Comments</label>
