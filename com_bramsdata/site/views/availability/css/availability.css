@@ -55,6 +55,7 @@
 
 .checkbox_label {
     display: inline-block !important;
+    line-height: 1.2;
 }
 
 .master_checkbox {
@@ -64,6 +65,7 @@
 
 .custom_col {
     padding-left: 0 !important;
+    line-height: 1.1;
 }
 
 .custom_container {
