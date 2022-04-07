@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @author Antoons Miguel
  *
@@ -61,6 +62,7 @@ function sortDesc(first, second, noSpace = false) {
  * @returns void
  */
 function deleteRow(elementId, displayName, viewName) {
+    // eslint-disable-next-line no-alert, no-restricted-globals
     if (!confirm(`Are you sure you want to delete ${displayName}`)) return;
     const token = $('#token').attr('name');
 
@@ -84,7 +86,7 @@ function deleteRow(elementId, displayName, viewName) {
         },
         error: (response) => {
             // on fail, show an error message
-            document.getElementById('message').innerHTML = apiFailMessg
+            document.getElementById('message').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
         },
