@@ -2,29 +2,29 @@
 /* global $, log, elements, sortAsc, sortDesc, stopPropagation, deleteRow, apiFailMessg */
 const sortDescFlags = {
     code: true,
-    brand: false,
-    model: false,
+    name: false,
+    version: false,
 };
 
 /**
- * Function generates the antenna table from the elements array.
+ * Function generates the software table from the elements array.
  * It then renders the table on inside the #antennas element.
  */
 function generateTable() {
     let HTMLString = '';
 
-    // generate a row for each antenna
+    // generate a row for each software
     elements.forEach(
-        (antenna) => {
+        (software) => {
             HTMLString += `
                 <tr
                     class="tableRow"
                     onclick="window.location.href=
-                        '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
+                        '/index.php?option=com_bramsadmin&view=softwareEdit&id=${software.id}';"
                 >
-                    <td>${antenna.code}</td>
-                    <td>${antenna.brand}</td>
-                    <td>${antenna.model}</td>
+                    <td>${software.code}</td>
+                    <td>${software.name}</td>
+                    <td>${software.version}</td>
                     <td>
                         <button
                             type='button'
@@ -32,8 +32,8 @@ function generateTable() {
                             onclick="window.location.href=
                                 '/index.php'
                                 + '?option=com_bramsadmin'
-                                + '&view=antennaEdit'
-                                + '&id=${antenna.id}';"
+                                + '&view=softwareEdit'
+                                + '&id=${software.id}';"
                         >
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit
@@ -42,10 +42,10 @@ function generateTable() {
                             type='button'
                             class='customBtn delete'
                             onclick=
-                                "deleteAntenna(
-                                    ${antenna.id},
-                                    '${antenna.brand} ${antenna.model}',
-                                    ${antenna.not_deletable}
+                                "deleteSoftware(
+                                    ${software.id},
+                                    '${software.code}',
+                                    ${software.not_deletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -57,34 +57,34 @@ function generateTable() {
         },
     );
 
-    document.getElementById('antennas').innerHTML = HTMLString;
+    document.getElementById('softwares').innerHTML = HTMLString;
     stopPropagation();
 }
 
 /**
- * Calls an api to delete the antenna with id equal to 'antennaId' argument.
- * If the antenna was successfully deleted, it updates the html table.
+ * Calls an api to delete the software with id equal to 'softwareId' argument.
+ * If the software was successfully deleted, it updates the html table.
  *
- * @param {number}      antennaId    id of the antenna that has to be deleted
- * @param {string}      antennaName  name of the antenna to be deleted
- * @param {string|null} notDeletable determines if the antenna can be deleted or not
+ * @param {number}      softwareId   id of the software that has to be deleted
+ * @param {string}      softwareName name of the software to be deleted
+ * @param {string|null} notDeletable determines if the software can be deleted or not
  */
-function deleteAntenna(antennaId, antennaName, notDeletable) {
+function deleteSoftware(softwareId, softwareName, notDeletable) {
     if (notDeletable !== null) {
         alert(
-            'Antenna can\'t be deleted as long as there are systems (radsys_system) '
-            + 'referencing this antenna.\nPlease remove the systems referencing this'
-            + ' antenna in order to remove the antenna.',
+            'Software can\'t be deleted as long as there are systems (radsys_system) '
+            + 'referencing this software.\nPlease remove the systems referencing this'
+            + ' software in order to remove the software.',
         );
         return;
     }
 
-    deleteRow(antennaId, antennaName, 'antennas')
+    deleteRow(softwareId, softwareName, 'softwares')
 }
 
 /**
- * Function calls an api to get all the antennas from the back-end. If no error occurs
- * it should receive the id, brand, model and code for each antenna.
+ * Function calls an api to get all the software from the back-end. If no error occurs
+ * it should receive the id, name, version and code for each single software.
  */
 function getAll() {
     // get the token
@@ -96,7 +96,7 @@ function getAll() {
             /index.php?
             option=com_bramsadmin
             &task=getAll
-            &view=antennas
+            &view=softwares
             &format=json
             &${token}=1
         `,
