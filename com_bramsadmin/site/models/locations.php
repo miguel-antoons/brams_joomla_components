@@ -25,16 +25,16 @@ class BramsAdminModelLocations extends ItemModel {
     public $location_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Location was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Location was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Location was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Location was successfully created',
+            ('css_class')   => 'success'
         )
     );
 
@@ -79,22 +79,30 @@ class BramsAdminModelLocations extends ItemModel {
             return -1;
         }
         $locations_query = $db->getQuery(true);
+        $sub_location_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given location
+        $sub_location_query->select($db->quoteName('location_id'));
+        $sub_location_query->from($db->quoteName('system'));
+        $sub_location_query->where(
+            $db->quoteName('location_id') . ' = ' . $db->quoteName('location.id') . ' limit 1'
+        );
 
         // SQL query to get all the locations and their information
         $locations_query->select(
-            'distinct ' . $db->quoteName('location.id') . ' as id, '
-            . $db->quoteName('location_code') . ', '
-            . $db->quoteName('location.name') . ' as name, '
-            . $db->quoteName('longitude') . ', '
-            . $db->quoteName('latitude') . ', '
-            . $db->quoteName('transfer_type') . ', '
-            . $db->quoteName('observer.id') . ' as obs_id, '
-            . 'concat(' . $db->quoteName('first_name') . ', \' \', '
-            . $db->quoteName('last_name') . ') as obs_name, '
-            . $db->quoteName('ftp_password') . ', '
-            . $db->quoteName('tv_id') . ', '
-            . $db->quoteName('tv_password') . ', '
-            . $db->quoteName('system.location_id') . ' as not_deletable'
+            $db->quoteName('location.id')               . ' as id, '
+            . $db->quoteName('location_code')           . ', '
+            . $db->quoteName('location.name')           . ' as name, '
+            . $db->quoteName('longitude')               . ', '
+            . $db->quoteName('latitude')                . ', '
+            . $db->quoteName('transfer_type')           . ', '
+            . $db->quoteName('observer.id')             . ' as obs_id, '
+            . 'concat(' . $db->quoteName('first_name')  . ', \' \', '
+            . $db->quoteName('last_name')               . ') as obs_name, '
+            . $db->quoteName('ftp_password')            . ', '
+            . $db->quoteName('tv_id')                   . ', '
+            . $db->quoteName('tv_password')             . ', '
+            . 'exists(' . $sub_location_query . ')'     . ' as notDeletable'
         );
         $locations_query->from($db->quoteName('observer'));
         $locations_query->join(
@@ -104,14 +112,6 @@ class BramsAdminModelLocations extends ItemModel {
             . $db->quoteName('observer.id')
             . ' = '
             . $db->quoteName('location.observer_id')
-        );
-        $locations_query->join(
-            'LEFT',
-            $db->quoteName('system')
-            . ' ON '
-            . $db->quoteName('location.id')
-            . ' = '
-            . $db->quoteName('system.location_id')
         );
 
         $db->setQuery($locations_query);
@@ -321,17 +321,17 @@ class BramsAdminModelLocations extends ItemModel {
 
         // query to get the location information
         $location_query->select(
-            $db->quoteName('observer_id') . ', '
-            . $db->quoteName('location_code') . ', '
-            . $db->quoteName('name') . ', '
-            . $db->quoteName('status') . ', '
-            . $db->quoteName('transfer_type') . ', '
-            . $db->quoteName('country_code') . ', '
-            . $db->quoteName('longitude') . ', '
-            . $db->quoteName('latitude') . ', '
-            . $db->quoteName('comments') . ', '
-            . $db->quoteName('ftp_password') . ', '
-            . $db->quoteName('tv_id') . ', '
+            $db->quoteName('observer_id')       . ', '
+            . $db->quoteName('location_code')   . ', '
+            . $db->quoteName('name')            . ', '
+            . $db->quoteName('status')          . ', '
+            . $db->quoteName('transfer_type')   . ', '
+            . $db->quoteName('country_code')    . ', '
+            . $db->quoteName('longitude')       . ', '
+            . $db->quoteName('latitude')        . ', '
+            . $db->quoteName('comments')        . ', '
+            . $db->quoteName('ftp_password')    . ', '
+            . $db->quoteName('tv_id')           . ', '
             . $db->quoteName('tv_password')
         );
         $location_query->from($db->quoteName('location'));
@@ -390,17 +390,17 @@ class BramsAdminModelLocations extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($location_info['observer_id']) . ', '
-                . $db->quote($location_info['code']) . ', '
-                . $db->quote($location_info['name']) . ', '
-                . $db->quote($location_info['status']) . ', '
-                . $db->quote($location_info['transfer_type']) . ', '
-                . $db->quote($location_info['country']) . ', '
-                . $db->quote($location_info['longitude']) . ', '
-                . $db->quote($location_info['latitude']) . ', '
-                . $db->quote($location_info['comments']) . ', '
-                . $db->quote($location_info['ftp_pass']) . ', '
-                . $db->quote($location_info['tv_id']) . ', '
+                $db->quote($location_info['observer_id'])       . ', '
+                . $db->quote($location_info['code'])            . ', '
+                . $db->quote($location_info['name'])            . ', '
+                . $db->quote($location_info['status'])          . ', '
+                . $db->quote($location_info['transfer_type'])   . ', '
+                . $db->quote($location_info['country'])         . ', '
+                . $db->quote($location_info['longitude'])       . ', '
+                . $db->quote($location_info['latitude'])        . ', '
+                . $db->quote($location_info['comments'])        . ', '
+                . $db->quote($location_info['ftp_pass'])        . ', '
+                . $db->quote($location_info['tv_id'])           . ', '
                 . $db->quote($location_info['tv_pass'])
             );
 

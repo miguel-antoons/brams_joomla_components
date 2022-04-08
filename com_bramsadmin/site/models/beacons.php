@@ -81,26 +81,26 @@ class BramsAdminModelBeacons extends ItemModel {
             return -1;
         }
         $beacon_query = $db->getQuery(true);
+        $sub_beacon_query = $db->getQuery(true);
+
+        // query to check if there are any files for a given system
+        $sub_beacon_query->select($db->quoteName('beacon_id'));
+        $sub_beacon_query->from($db->quoteName('file'));
+        $sub_beacon_query->where(
+            $db->quoteName('beacon_id') . ' = ' . $db->quoteName('beacon.id') . ' limit 1'
+        );
 
         // SQL query to get all information about the multiple systems
         $beacon_query->select(
-            'distinct ' . $db->quoteName('beacon.id') . 'as id, '
-            . $db->quoteName('beacon.name') . 'as name, '
-            . $db->quoteName('latitude') . ', '
-            . $db->quoteName('longitude') . ', '
-            . $db->quoteName('frequency') . ', '
-            . $db->quoteName('power') . ', '
-            . $db->quoteName('beacon_id') . ' as not_deletable'
+            $db->quoteName('beacon.id')             . 'as id, '
+            . $db->quoteName('beacon.name')         . 'as name, '
+            . $db->quoteName('latitude')            . ', '
+            . $db->quoteName('longitude')           . ', '
+            . $db->quoteName('frequency')           . ', '
+            . $db->quoteName('power')               . ', '
+            . 'exists(' . $sub_beacon_query . ')'   . ' as notDeletable'
         );
         $beacon_query->from($db->quoteName('beacon'));
-        $beacon_query->join(
-            'LEFT',
-            $db->quoteName('file')
-            . ' ON '
-            . $db->quoteName('beacon.id')
-            . ' = '
-            . $db->quoteName('file.beacon_id')
-        );
 
         $db->setQuery($beacon_query);
 
@@ -309,15 +309,15 @@ class BramsAdminModelBeacons extends ItemModel {
 
         // query to get the location information
         $beacon_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')            . ', '
             . $db->quoteName('beacon_code') . ' as code, '
-            . $db->quoteName('name') . ', '
-            . $db->quoteName('longitude') . ', '
-            . $db->quoteName('latitude') . ', '
+            . $db->quoteName('name')        . ', '
+            . $db->quoteName('longitude')   . ', '
+            . $db->quoteName('latitude')    . ', '
             // ? uncomment the following line to add a comments field
-            // . $db->quoteName('comment') . ', '
-            . $db->quoteName('frequency') . ', '
-            . $db->quoteName('power') . ', '
+            // . $db->quoteName('comment')     . ', '
+            . $db->quoteName('frequency')   . ', '
+            . $db->quoteName('power')       . ', '
             . $db->quoteName('polarization')
         );
         $beacon_query->from($db->quoteName('beacon'));
@@ -373,12 +373,12 @@ class BramsAdminModelBeacons extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($beacon_info['code']) . ', '
-                . $db->quote($beacon_info['name']) . ', '
-                . $db->quote($beacon_info['latitude']) . ', '
-                . $db->quote($beacon_info['longitude']) . ', '
-                . $db->quote($beacon_info['frequency']) . ', '
-                . $db->quote($beacon_info['power']) . ', '
+                $db->quote($beacon_info['code'])            . ', '
+                . $db->quote($beacon_info['name'])          . ', '
+                . $db->quote($beacon_info['latitude'])      . ', '
+                . $db->quote($beacon_info['longitude'])     . ', '
+                . $db->quote($beacon_info['frequency'])     . ', '
+                . $db->quote($beacon_info['power'])         . ', '
                 . $db->quote($beacon_info['polarization']) // . ', '
                 // ? uncomment the following line(s) to add a comments field
                 // . $db->quote($beacon_info['comments'])

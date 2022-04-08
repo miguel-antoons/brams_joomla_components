@@ -1,0 +1,15 @@
+th, td {
+    width: calc(90% / 5) !important;
+}
+
+.actions {
+    width: 10% !important;
+}
+
+.delete, .edit {
+    width: 45%;
+}
+
+.edit {
+    margin-bottom: 1pt;
+}

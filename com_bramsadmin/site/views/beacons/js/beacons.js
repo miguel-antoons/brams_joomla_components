@@ -55,7 +55,7 @@ function generateTable() {
                                 "deleteBeacon(
                                     ${beacon.id},
                                     '${beacon.name}',
-                                    ${beacon.not_deletable}
+                                    ${beacon.notDeletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -75,13 +75,13 @@ function generateTable() {
  * Calls an api to delete the beacon with id equal to 'beaconId' argument.
  * If the beacon was successfully deleted, it updates the html table.
  *
- * @param {number}      beaconId     id of the beacon that has to be deleted
- * @param {string}      beaconName   name of the beacon to be deleted
- * @param {string|null} notDeletable determines if the beacon can be deleted or not
+ * @param {number}  beaconId     id of the beacon that has to be deleted
+ * @param {string}  beaconName   name of the beacon to be deleted
+ * @param {boolean} notDeletable determines if the beacon can be deleted or not
  */
 // eslint-disable-next-line no-unused-vars
 function deleteBeacon(beaconId, beaconName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             "Beacon can't be deleted as long as there are files referencing this beacon.\n"

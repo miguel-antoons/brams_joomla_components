@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_bramsdata
+ * @subpackage  com_bramscampaign
  */
 
 
@@ -14,24 +14,24 @@ use \Joomla\CMS\MVC\Model\ListModel;
 use \Joomla\CMS\Factory;
 
 /**
- * AvailabilityList Model
+ * Countings Model
  *
  * @since  0.0.1
  */
-class BramsDataModelAvailability extends ListModel {
+class BramsCampaignModelCountings extends ListModel {
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
 	 * @return      string  An SQL query
+	 * @since 0.0.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery() {
 		// Initialize variables.
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-        // query below is only temporarly and won't work since there is no availability table
+        // query below is only temporarily and won't work since there is no availability table
 		// $query->select('*')
         //         ->from($db->quoteName('#__availability'));
 

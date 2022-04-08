@@ -73,7 +73,7 @@ function generateTable() {
                             onclick="deleteLocation(
                                 ${location.id},
                                 '${location.location_code}',
-                                ${location.not_deletable}
+                                ${location.notDeletable}
                             )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -98,7 +98,7 @@ function generateTable() {
  */
 // eslint-disable-next-line no-unused-vars
 function deleteLocation(locationId, locationName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             "Location can't be deleted as long as there are systems referencing this location.\n"

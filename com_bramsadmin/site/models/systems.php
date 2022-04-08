@@ -86,16 +86,18 @@ class BramsAdminModelSystems extends ItemModel {
         // query to check if there are any files for a given system
         $sub_system_query->select($db->quoteName('system_id'));
         $sub_system_query->from($db->quoteName('file'));
-        $sub_system_query->where($db->quoteName('system_id') . ' = ' . $db->quoteName('system.id'));
+        $sub_system_query->where(
+            $db->quoteName('system_id') . ' = ' . $db->quoteName('system.id') . ' limit 1'
+        );
 
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
-			'distinct ' . $db->quoteName('system.id')   . ' as id, '
-			. $db->quoteName('system.name')             . ' as name, '
-			. $db->quoteName('location_code')           . ' as code, '
-			. $db->quoteName('system.start')            . ' as start, '
-			. $db->quoteName('system.end')              . ' as end, '
-            . 'exists(' . $sub_system_query . ')'       . ' as notDeletable'
+			$db->quoteName('system.id')             . ' as id, '
+			. $db->quoteName('system.name')         . ' as name, '
+			. $db->quoteName('location_code')       . ' as code, '
+			. $db->quoteName('system.start')        . ' as start, '
+			. $db->quoteName('system.end')          . ' as end, '
+            . 'exists(' . $sub_system_query . ')'   . ' as notDeletable'
 		);
         $system_query->from($db->quoteName('location'));
 		$system_query->join(

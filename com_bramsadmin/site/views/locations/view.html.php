@@ -19,7 +19,6 @@ use Joomla\CMS\Log\Log;
  * @since  0.4.1
  */
 class BramsAdminViewLocations extends HtmlView {
-    public $locations;
     public $message;
 
     /**

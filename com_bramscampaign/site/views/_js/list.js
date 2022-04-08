@@ -5,7 +5,7 @@
  * * This file contains function and variable that (almost) each list/table
  * * needs (delete api, sorting methods, ...).
  *
- * * Note that when a variable/comment is refering to 'element' this
+ * * Note that when a variable/comment is referring to 'element' this
  * * means the instance of a broader category. That category can be
  * * (among others) antennas, systems, locations, ...
  * * So, following the above examples, an element can be an antenna,
@@ -70,7 +70,7 @@ function deleteRow(elementId, displayName, viewName) {
         type: 'DELETE',
         url: `
             /index.php?
-            option=com_bramsadmin
+            option=com_bramscampaign
             &view=${viewName}
             &task=delete
             &format=json
