@@ -26,16 +26,16 @@ class BramsAdminModelBeacons extends ItemModel {
     public $beacon_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Beacon was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Beacon was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Beacon was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Beacon was successfully created',
+            ('css_class')   => 'success'
         )
     );
 

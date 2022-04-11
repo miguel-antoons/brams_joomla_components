@@ -52,7 +52,7 @@ function generateTable() {
                             onclick="deleteObserver(
                                 ${observer.id},
                                 '${observer.first_name} ${observer.last_name}',
-                                ${observer.not_deletable}
+                                ${observer.notDeletable}
                             )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -78,7 +78,7 @@ function generateTable() {
  */
 // eslint-disable-next-line no-unused-vars
 function deleteObserver(observerId, observerName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             "Observer can't be deleted as long as there are locations referencing this observer.\n"

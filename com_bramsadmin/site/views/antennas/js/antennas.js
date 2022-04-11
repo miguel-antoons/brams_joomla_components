@@ -48,7 +48,7 @@ function generateTable() {
                                 "deleteAntenna(
                                     ${antenna.id},
                                     '${antenna.brand} ${antenna.model}',
-                                    ${antenna.not_deletable}
+                                    ${antenna.notDeletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -74,7 +74,7 @@ function generateTable() {
  */
 // eslint-disable-next-line no-unused-vars
 function deleteAntenna(antennaId, antennaName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             'Antenna can\'t be deleted as long as there are systems (radsys_system) '

@@ -26,16 +26,16 @@ class BramsAdminModelSoftwares extends ItemModel {
     public $software_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Software was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Software was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Software was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Software was successfully created',
+            ('css_class')   => 'success'
         )
     );
 
@@ -80,24 +80,24 @@ class BramsAdminModelSoftwares extends ItemModel {
             return -1;
         }
         $software_query = $db->getQuery(true);
+        $sub_software_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given software
+        $sub_software_query->select($db->quoteName('software_id'));
+        $sub_software_query->from($db->quoteName('radsys_system'));
+        $sub_software_query->where(
+            $db->quoteName('software_id') . ' = ' . $db->quoteName('radsys_software.id') . ' limit 1'
+        );
 
         // SQL query to get all information about the multiple software
         $software_query->select(
-            'distinct ' . $db->quoteName('radsys_software.id') . ' as id, '
-            . $db->quoteName('radsys_software.name') . ', '
-            . $db->quoteName('software_code') . ' as code, '
-            . $db->quoteName('radsys_software.version') . ' as version, '
-            . $db->quoteName('software_id') . ' as not_deletable'
+            'distinct ' . $db->quoteName('id')      . ', '
+            . $db->quoteName('name')                . ', '
+            . $db->quoteName('software_code')       . ' as code, '
+            . $db->quoteName('version')             . ', '
+            . 'exists(' . $sub_software_query . ')' . ' as notDeletable'
         );
         $software_query->from($db->quoteName('radsys_software'));
-        $software_query->join(
-            'LEFT',
-            $db->quoteName('radsys_system')
-            . ' ON '
-            . $db->quoteName('radsys_software.id')
-            . ' = '
-            . $db->quoteName('radsys_system.software_id')
-        );
 
         $db->setQuery($software_query);
 
@@ -167,7 +167,7 @@ class BramsAdminModelSoftwares extends ItemModel {
 
         // query to get all the software codes and id's
         $software_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')                . ', '
             . $db->quoteName('software_code')
         );
         $software_query->from($db->quoteName('radsys_software'));
@@ -227,8 +227,8 @@ class BramsAdminModelSoftwares extends ItemModel {
         // query to get the software information
         $software_query->select(
             $db->quoteName('software_code') . ' as code, '
-            . $db->quoteName('name') . ', '
-            . $db->quoteName('version') . ', '
+            . $db->quoteName('name')        . ', '
+            . $db->quoteName('version')     . ', '
             . $db->quoteName('comments')
         );
         $software_query->from($db->quoteName('radsys_software'));
@@ -279,8 +279,8 @@ class BramsAdminModelSoftwares extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($software_info['code']) . ', '
-                . $db->quote($software_info['name']) . ', '
+                $db->quote($software_info['code'])      . ', '
+                . $db->quote($software_info['name'])    . ', '
                 . $db->quote($software_info['version']) . ', '
                 . $db->quote($software_info['comments'])
             );

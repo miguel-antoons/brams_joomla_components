@@ -26,16 +26,16 @@ class BramsAdminModelDigitizers extends ItemModel {
     public $digitizer_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Digitizer was successfully updated.',
-            ('css_class') => 'success'
+            ('message')     => 'Digitizer was successfully updated.',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Digitizer was successfully created.',
-            ('css_class') => 'success'
+            ('message')     => 'Digitizer was successfully created.',
+            ('css_class')   => 'success'
         )
     );
 
@@ -80,25 +80,25 @@ class BramsAdminModelDigitizers extends ItemModel {
             return -1;
         }
         $digitizer_query = $db->getQuery(true);
+        $sub_digitizer_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given digitizer
+        $sub_digitizer_query->select($db->quoteName('digitizer_id'));
+        $sub_digitizer_query->from($db->quoteName('radsys_system'));
+        $sub_digitizer_query->where(
+            $db->quoteName('digitizer_id') . ' = ' . $db->quoteName('radsys_digitizer.id') . ' limit 1'
+        );
 
         // SQL query to get all information about the multiple systems
         $digitizer_query->select(
-            'distinct ' . $db->quoteName('radsys_digitizer.id') . ' as id, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('model') . ', '
-            . $db->quoteName('digitizer_code') . ' as code, '
-            . $db->quoteName('radsys_digitizer.comments') . ' as comments, '
-            . $db->quoteName('digitizer_id') . ' as not_deletable'
+            'distinct ' . $db->quoteName('id')          . ', '
+            . $db->quoteName('brand')                   . ', '
+            . $db->quoteName('model')                   . ', '
+            . $db->quoteName('digitizer_code')          . ' as code, '
+            . $db->quoteName('comments')                . ', '
+            . 'exists(' . $sub_digitizer_query . ')'    . ' as notDeletable'
         );
         $digitizer_query->from($db->quoteName('radsys_digitizer'));
-        $digitizer_query->join(
-            'LEFT',
-            $db->quoteName('radsys_system')
-            . ' ON '
-            . $db->quoteName('radsys_digitizer.id')
-            . ' = '
-            . $db->quoteName('digitizer_id')
-        );
 
         $db->setQuery($digitizer_query);
 
@@ -168,7 +168,7 @@ class BramsAdminModelDigitizers extends ItemModel {
 
         // query to get all the location codes and ids
         $digitizer_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')                . ', '
             . $db->quoteName('digitizer_code')
         );
         $digitizer_query->from($db->quoteName('radsys_digitizer'));
@@ -227,9 +227,9 @@ class BramsAdminModelDigitizers extends ItemModel {
 
         // query to get the digitizer information
         $digitizer_query->select(
-            $db->quoteName('digitizer_code') . ' as code, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('model') . ', '
+            $db->quoteName('digitizer_code')    . ' as code, '
+            . $db->quoteName('brand')           . ', '
+            . $db->quoteName('model')           . ', '
             . $db->quoteName('comments')
         );
         $digitizer_query->from($db->quoteName('radsys_digitizer'));
@@ -280,9 +280,9 @@ class BramsAdminModelDigitizers extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($digitizer_info['code']) . ', '
-                . $db->quote($digitizer_info['brand']) . ', '
-                . $db->quote($digitizer_info['model']) . ', '
+                $db->quote($digitizer_info['code'])     . ', '
+                . $db->quote($digitizer_info['brand'])  . ', '
+                . $db->quote($digitizer_info['model'])  . ', '
                 . $db->quote($digitizer_info['comments'])
             );
 

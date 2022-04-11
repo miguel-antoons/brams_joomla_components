@@ -26,16 +26,16 @@ class BramsAdminModelAntennas extends ItemModel {
     public $antenna_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Antenna was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Antenna was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Antenna was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Antenna was successfully created',
+            ('css_class')   => 'success'
         )
     );
 
@@ -80,24 +80,24 @@ class BramsAdminModelAntennas extends ItemModel {
             return -1;
         }
         $antenna_query = $db->getQuery(true);
+        $sub_receiver_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given antenna
+        $sub_receiver_query->select($db->quoteName('antenna_id'));
+        $sub_receiver_query->from($db->quoteName('radsys_system'));
+        $sub_receiver_query->where(
+            $db->quoteName('antenna_id') . ' = ' . $db->quoteName('radsys_antenna.id') . ' limit 1'
+        );
 
         // SQL query to get all information about the multiple antennas
         $antenna_query->select(
-            'distinct ' . $db->quoteName('radsys_antenna.id') . 'as id, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('antenna_code') . 'as code, '
-            . $db->quoteName('model') . ', '
-            . $db->quoteName('antenna_id') . ' as not_deletable'
+            'distinct ' . $db->quoteName('id')      . ', '
+            . $db->quoteName('brand')               . ', '
+            . $db->quoteName('antenna_code')        . 'as code, '
+            . $db->quoteName('model')               . ', '
+            . 'exists(' . $sub_receiver_query . ')' . ' as notDeletable'
         );
         $antenna_query->from($db->quoteName('radsys_antenna'));
-        $antenna_query->join(
-            'LEFT',
-            $db->quoteName('radsys_system')
-            . ' ON '
-            . $db->quoteName('radsys_antenna.id')
-            . ' = '
-            . $db->quoteName('radsys_system.antenna_id')
-        );
 
         $db->setQuery($antenna_query);
 
@@ -167,7 +167,7 @@ class BramsAdminModelAntennas extends ItemModel {
 
         // query to get all the antenna codes and ids
         $antenna_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')                . ', '
             . $db->quoteName('antenna_code')
         );
         $antenna_query->from($db->quoteName('radsys_antenna'));
@@ -226,9 +226,9 @@ class BramsAdminModelAntennas extends ItemModel {
 
         // query to get the antenna information
         $antenna_query->select(
-            $db->quoteName('antenna_code') . ' as code, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('model') . ', '
+            $db->quoteName('antenna_code')  . ' as code, '
+            . $db->quoteName('brand')       . ', '
+            . $db->quoteName('model')       . ', '
             . $db->quoteName('comments')
         );
         $antenna_query->from($db->quoteName('radsys_antenna'));
@@ -279,9 +279,9 @@ class BramsAdminModelAntennas extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($antenna_info['code']) . ', '
-                . $db->quote($antenna_info['brand']) . ', '
-                . $db->quote($antenna_info['model']) . ', '
+                $db->quote($antenna_info['code'])       . ', '
+                . $db->quote($antenna_info['brand'])    . ', '
+                . $db->quote($antenna_info['model'])    . ', '
                 . $db->quote($antenna_info['comments'])
             );
 

@@ -48,7 +48,7 @@ function generateTable() {
                                 "deleteSoftware(
                                     ${software.id},
                                     '${software.code}',
-                                    ${software.not_deletable}
+                                    ${software.notDeletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -70,11 +70,11 @@ function generateTable() {
  *
  * @param {number}      softwareId   id of the software that has to be deleted
  * @param {string}      softwareName name of the software to be deleted
- * @param {string|null} notDeletable determines if the software can be deleted or not
+ * @param {boolean}     notDeletable determines if the software can be deleted or not
  */
 // eslint-disable-next-line no-unused-vars
 function deleteSoftware(softwareId, softwareName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             'Software can\'t be deleted as long as there are systems (radsys_system) '

@@ -71,15 +71,17 @@ class BramsDataModelAvailability extends ItemModel {
 
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') . ', '
-			. $db->quoteName('system.name') . ', '
-			. $db->quoteName('transfer_type') . ', '
+			$db->quoteName('system.id') 		. ', '
+			. $db->quoteName('system.name') 	. ', '
+			. $db->quoteName('transfer_type') 	. ', '
 			. $db->quoteName('status') . ', '
 			. $db->quote('') . 'as checked'
 			);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
+		$system_query->where(
+			$db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id')
+		);
 
 		$db->setQuery($system_query);
 
@@ -137,9 +139,9 @@ class BramsDataModelAvailability extends ItemModel {
 			Log::add($e, Log::ERROR, 'error');
 			return -1;
 		}
-		$time_difference = $start_date->diff($end_date);				// get the time difference between $start_date and $end_date
-		$start_date = $start_date->format('Y-m-d H:i:s');
-		$end_date = $end_date->format('Y-m-d H:i:s');
+		$time_difference 	= $start_date->diff($end_date);				// get the time difference between $start_date and $end_date
+		$start_date 		= $start_date->format('Y-m-d H:i:s');
+		$end_date 			= $end_date->format('Y-m-d H:i:s');
 
 		// if the time difference is greater than 14 days
 		if ($time_difference->days > 14) {
@@ -181,7 +183,13 @@ class BramsDataModelAvailability extends ItemModel {
 	 *
 	 * @since 0.0.2
 	 */
-	private function get_availability_general($db_function_to_use, $function_to_use, $start_date, $end_date, $selected_stations) {
+	private function get_availability_general(
+		$db_function_to_use,
+		$function_to_use,
+		$start_date,
+		$end_date,
+		$selected_stations
+	) {
 		// contains all the raw availability information coming from the database
 		if (($db_availability = $db_function_to_use($start_date, $end_date, $selected_stations)) === -1) {
 			return -1;
@@ -202,7 +210,13 @@ class BramsDataModelAvailability extends ItemModel {
 			);
 
 			// launch the structure function
-			$function_to_use($specific_station_availability, $final_availability_array, $expected_start, $station, $end_date);
+			$function_to_use(
+				$specific_station_availability,
+				$final_availability_array,
+				$expected_start,
+				$station,
+				$end_date
+			);
 
 			$last_object                          = new stdClass();									// create a new object
 			$last_object->start                   = $end_date;								// add the end date as DateTime object to the newly created object
@@ -355,9 +369,9 @@ class BramsDataModelAvailability extends ItemModel {
 
 				// if files are missing, set default value for that time (default value = no data found)
 				if ($availability_info->date !== $expected_start) {
-					$temp_object = $this->change_category($change, $previous_available, 1);
-					$temp_object->start = $expected_start;
-					$final_availability_array[$station][] = $temp_object;
+					$temp_object 							= $this->change_category($change, $previous_available, 1);
+					$temp_object->start 					= $expected_start;
+					$final_availability_array[$station][]	= $temp_object;
 					$change = false;
 				}
 
@@ -398,16 +412,16 @@ class BramsDataModelAvailability extends ItemModel {
 			// if the last date found in the database data is not the expected date
 			if ($specific_station_availability[$station_availability_length - 1]->date !== $expected_start) {
 				// add an object to the final array indicating that files are missing at the end
-				$temp_object = $this->change_category($change, $previous_available, 1);
+				$temp_object 		= $this->change_category($change, $previous_available, 1);
 				$temp_object->start = $this->add_time_to_string(
 					$specific_station_availability[$station_availability_length - 1]->date, 'Y-m-d', 'P1D'
 				);
 				$final_availability_array[$station][] = $temp_object;
 			}
 		} else {
-			$temp_object = $this->change_category($change, $previous_available, 1);
-			$temp_object->start = $expected_start;
-			$final_availability_array[$station][] = $temp_object;
+			$temp_object 							= $this->change_category($change, $previous_available, 1);
+			$temp_object->start 					= $expected_start;
+			$final_availability_array[$station][] 	= $temp_object;
 		}
 	}
 
@@ -426,11 +440,11 @@ class BramsDataModelAvailability extends ItemModel {
 		// if the previously added category and the current category are different
 		if ($previous_available !== $category) {
 			// set the $change flag to true since later changes have to be performed
-			$change = true;
+			$change 			= true;
 			$previous_available = $category;
 
 			// prepare and return a new object for the final array
-			$temp_object = new stdClass();
+			$temp_object 			= new stdClass();
 			$temp_object->available = $this->custom_categories_array[$category - 1];
 
 			return $temp_object;
@@ -482,7 +496,7 @@ class BramsDataModelAvailability extends ItemModel {
 		// generate a database query
 		$availability_query->select(
 			$db->quoteName('system_id') . ', '
-			. $db->quoteName('rate') . ', '
+			. $db->quoteName('rate') 	. ', '
 			. $db->quoteName('date')
 		);
 		$availability_query->from($db->quoteName('file_availability'));

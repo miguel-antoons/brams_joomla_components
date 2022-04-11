@@ -48,7 +48,7 @@ function generateTable() {
                                 "deleteReceiver(
                                     ${receiver.id},
                                     '${receiver.code}',
-                                    ${receiver.not_deletable}
+                                    ${receiver.notDeletable}
                                 )"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -70,11 +70,11 @@ function generateTable() {
  *
  * @param {number}      receiverId   id of the receiver that has to be deleted
  * @param {string}      receiverName name of the receiver to be deleted
- * @param {string|null} notDeletable determines if the receiver can be deleted or not
+ * @param {boolean}     notDeletable determines if the receiver can be deleted or not
  */
 // eslint-disable-next-line no-unused-vars
 function deleteReceiver(receiverId, receiverName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             'Receiver can\'t be deleted as long as there are systems (radsys_system) '

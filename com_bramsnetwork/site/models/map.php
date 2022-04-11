@@ -73,20 +73,20 @@ class BramsNetworkModelMap extends ItemModel {
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
 			'distinct '
-			. $db->quoteName('location.name') . ', '
-			. $db->quoteName('country_code') . ', '
-			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('longitude') . ', '
-			. $db->quoteName('latitude') . ', '
+			. $db->quoteName('location.name') 	. ', '
+			. $db->quoteName('country_code') 	. ', '
+			. $db->quoteName('transfer_type') 	. ', '
+			. $db->quoteName('longitude') 		. ', '
+			. $db->quoteName('latitude') 		. ', '
 			. $db->quoteName('rate')
 		);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('file_availability'));
 		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('system.id') . ' = ' . $db->quoteName('file_availability.system_id'));
-		$system_query->where($db->quoteName('date') . ' = ' . $db->quote($selected_date));
-		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('system.location_id') 		. ' = ' . $db->quoteName('location.id'));
+		$system_query->where($db->quoteName('system.id') 				. ' = ' . $db->quoteName('file_availability.system_id'));
+		$system_query->where($db->quoteName('date') 					. ' = ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('location.time_created') 	. ' < ' . $db->quote($selected_date));
 
 		$db->setQuery($system_query);
 
@@ -114,16 +114,16 @@ class BramsNetworkModelMap extends ItemModel {
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
 			'distinct '
-			. $db->quoteName('location.name') . ', '
-			. $db->quoteName('country_code') . ', '
-			. $db->quoteName('transfer_type') . ', '
-			. $db->quoteName('longitude') . ', '
-			. $db->quoteName('latitude') . ', 0 as rate'
+			. $db->quoteName('location.name') 	. ', '
+			. $db->quoteName('country_code') 	. ', '
+			. $db->quoteName('transfer_type') 	. ', '
+			. $db->quoteName('longitude') 		. ', '
+			. $db->quoteName('latitude') 		. ', 0 as rate'
 		);
 		$system_query->from($db->quoteName('system'));
 		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('location.time_created') . ' < ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('system.location_id') 		. ' = ' . $db->quoteName('location.id'));
+		$system_query->where($db->quoteName('location.time_created') 	. ' < ' . $db->quote($selected_date));
 		$system_query->where(
 			$db->quoteName('system.id') . ' not in (
 				select system_id 
@@ -156,10 +156,10 @@ class BramsNetworkModelMap extends ItemModel {
 		$system_query->select(
 			$db->quoteName('name')
 			. ', left(' . $db->quoteName('beacon_code') . ', 2) as country_code, '
-			. $db->quote('None') . ' as transfer_type, '
-			. $db->quoteName('longitude') . ', '
-			. $db->quoteName('latitude') . ', '
-			. $db->quote('None') . ' as rate'
+			. $db->quote('None') 						. ' as transfer_type, '
+			. $db->quoteName('longitude') 				. ', '
+			. $db->quoteName('latitude') 				. ', '
+			. $db->quote('None') 						. ' as rate'
 		);
 		$system_query->from($db->quoteName('beacon'));
 		// remove following line if Ieper beacon has to be shown on the map

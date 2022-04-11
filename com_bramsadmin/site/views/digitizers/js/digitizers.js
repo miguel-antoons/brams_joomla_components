@@ -50,7 +50,7 @@ function generateTable() {
                             onclick="deleteDigitizer(
                                 ${digitizer.id},
                                 '${digitizer.code}',
-                                ${digitizer.not_deletable})"
+                                ${digitizer.notDeletable})"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
@@ -75,7 +75,7 @@ function generateTable() {
  */
 // eslint-disable-next-line no-unused-vars
 function deleteDigitizer(digitizerId, digitizerName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             'Digitizer can\'t be deleted as long as there are systems (radsys_system) '

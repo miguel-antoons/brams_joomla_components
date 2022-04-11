@@ -27,16 +27,16 @@ class BramsAdminModelObservers extends ItemModel
     public $observer_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Observer was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Observer was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Observer was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Observer was successfully created',
+            ('css_class')   => 'success'
         )
     );
 
@@ -85,25 +85,25 @@ class BramsAdminModelObservers extends ItemModel
             return -1;
         }
         $observer_query = $db->getQuery(true);
+        $sub_receiver_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given receiver
+        $sub_receiver_query->select($db->quoteName('observer_id'));
+        $sub_receiver_query->from($db->quoteName('location'));
+        $sub_receiver_query->where(
+            $db->quoteName('observer_id') . ' = ' . $db->quoteName('observer.id') . ' limit 1'
+        );
 
         // SQL query to get all the observers and their attributes
         $observer_query->select(
-            'distinct ' . $db->quoteName('observer.id') . ' as id, '
-            . $db->quoteName('first_name') . ', '
-            . $db->quoteName('last_name') . ', '
-            . $db->quoteName('email') . ', '
-            . $db->quoteName('observer_code') . ' as code, '
-            . $db->quoteName('location.observer_id') . ' as not_deletable'
+            'distinct ' . $db->quoteName('id')      . ', '
+            . $db->quoteName('first_name')          . ', '
+            . $db->quoteName('last_name')           . ', '
+            . $db->quoteName('email')               . ', '
+            . $db->quoteName('observer_code')       . ' as code, '
+            . 'exists(' . $sub_receiver_query . ')' . ' as notDeletable'
         );
         $observer_query->from($db->quoteName('observer'));
-        $observer_query->join(
-            'LEFT',
-            $db->quoteName('location')
-            . ' ON '
-            . $db->quoteName('observer.id')
-            . ' = '
-            . $db->quoteName('location.observer_id')
-        );
 
         $db->setQuery($observer_query);
 
@@ -138,8 +138,8 @@ class BramsAdminModelObservers extends ItemModel
         // query to get all the available countries and their code
         $observer_query->select(
             $db->quoteName('id') . ', '
-            . 'concat(' . $db->quoteName('first_name') . ', \' \', '
-            . $db->quoteName('last_name') . ') as name'
+            . 'concat(' . $db->quoteName('first_name')  . ', \' \', '
+            . $db->quoteName('last_name')               . ') as name'
         );
         $observer_query->from($db->quoteName('observer'));
         $observer_query->order($db->quoteName('name'));
@@ -259,7 +259,7 @@ class BramsAdminModelObservers extends ItemModel
 
         // query to get all the location codes and ids
         $observer_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')                . ', '
             . $db->quoteName('observer_code')
         );
         $observer_query->from($db->quoteName('observer'));
@@ -319,9 +319,9 @@ class BramsAdminModelObservers extends ItemModel
         // query to get the location information
         $observer_query->select(
             $db->quoteName('observer_code') . ', '
-            . $db->quoteName('first_name') . ', '
-            . $db->quoteName('last_name') . ', '
-            . $db->quoteName('email') . ', '
+            . $db->quoteName('first_name')  . ', '
+            . $db->quoteName('last_name')   . ', '
+            . $db->quoteName('email')       . ', '
             . $db->quoteName('country_code')
         );
         $observer_query->from($db->quoteName('observer'));
@@ -373,10 +373,10 @@ class BramsAdminModelObservers extends ItemModel
                 )
             )
             ->values(
-                $db->quote($observer_info['code']) . ', '
-                . $db->quote($observer_info['first_name']) . ', '
-                . $db->quote($observer_info['last_name']) . ', '
-                . $db->quote($observer_info['country']) . ', '
+                $db->quote($observer_info['code'])          . ', '
+                . $db->quote($observer_info['first_name'])  . ', '
+                . $db->quote($observer_info['last_name'])   . ', '
+                . $db->quote($observer_info['country'])     . ', '
                 . $db->quote($observer_info['email'])
             );
 

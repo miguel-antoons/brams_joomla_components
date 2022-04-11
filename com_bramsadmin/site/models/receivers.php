@@ -26,16 +26,16 @@ class BramsAdminModelReceivers extends ItemModel {
     public $receiver_messages = array(
         // default message (0) is empty
         (0) => array(
-            ('message') => '',
-            ('css_class') => ''
+            ('message')     => '',
+            ('css_class')   => ''
         ),
         (1) => array(
-            ('message') => 'Receiver was successfully updated',
-            ('css_class') => 'success'
+            ('message')     => 'Receiver was successfully updated',
+            ('css_class')   => 'success'
         ),
         (2) => array(
-            ('message') => 'Receiver was successfully created',
-            ('css_class') => 'success'
+            ('message')     => 'Receiver was successfully created',
+            ('css_class')   => 'success'
         )
     );
 
@@ -80,24 +80,24 @@ class BramsAdminModelReceivers extends ItemModel {
             return -1;
         }
         $receiver_query = $db->getQuery(true);
+        $sub_receiver_query = $db->getQuery(true);
+
+        // query to check if there are any systems for a given receiver
+        $sub_receiver_query->select($db->quoteName('receiver_id'));
+        $sub_receiver_query->from($db->quoteName('radsys_system'));
+        $sub_receiver_query->where(
+            $db->quoteName('receiver_id') . ' = ' . $db->quoteName('radsys_receiver.id') . ' limit 1'
+        );
 
         // SQL query to get all information about the multiple receivers
         $receiver_query->select(
-            'distinct ' . $db->quoteName('radsys_receiver.id') . 'as id, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('receiver_code') . 'as code, '
-            . $db->quoteName('model') . ', '
-            . $db->quoteName('receiver_id') . ' as not_deletable'
+            'distinct ' . $db->quoteName('id')      . ', '
+            . $db->quoteName('brand')               . ', '
+            . $db->quoteName('receiver_code')       . 'as code, '
+            . $db->quoteName('model')               . ', '
+            . 'exists(' . $sub_receiver_query . ')' . ' as notDeletable'
         );
         $receiver_query->from($db->quoteName('radsys_receiver'));
-        $receiver_query->join(
-            'LEFT',
-            $db->quoteName('radsys_system')
-            . ' ON '
-            . $db->quoteName('radsys_receiver.id')
-            . ' = '
-            . $db->quoteName('radsys_system.receiver_id')
-        );
 
         $db->setQuery($receiver_query);
 
@@ -167,7 +167,7 @@ class BramsAdminModelReceivers extends ItemModel {
 
         // query to get all the receiver codes and ids
         $receiver_query->select(
-            $db->quoteName('id') . ', '
+            $db->quoteName('id')                . ', '
             . $db->quoteName('receiver_code')
         );
         $receiver_query->from($db->quoteName('radsys_receiver'));
@@ -227,8 +227,8 @@ class BramsAdminModelReceivers extends ItemModel {
         // query to get the receiver information
         $receiver_query->select(
             $db->quoteName('receiver_code') . ' as code, '
-            . $db->quoteName('brand') . ', '
-            . $db->quoteName('model') . ', '
+            . $db->quoteName('brand')       . ', '
+            . $db->quoteName('model')       . ', '
             . $db->quoteName('comments')
         );
         $receiver_query->from($db->quoteName('radsys_receiver'));
@@ -279,9 +279,9 @@ class BramsAdminModelReceivers extends ItemModel {
                 )
             )
             ->values(
-                $db->quote($receiver_info['code']) . ', '
-                . $db->quote($receiver_info['brand']) . ', '
-                . $db->quote($receiver_info['model']) . ', '
+                $db->quote($receiver_info['code'])      . ', '
+                . $db->quote($receiver_info['brand'])   . ', '
+                . $db->quote($receiver_info['model'])   . ', '
                 . $db->quote($receiver_info['comments'])
             );
 

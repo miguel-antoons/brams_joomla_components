@@ -61,10 +61,10 @@ class BramsNetworkModelObservers extends ItemModel {
 
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
-			$db->quoteName('observer.id') . ' as id, '
-			. $db->quoteName('first_name') . ', '
-			. $db->quoteName('last_name') . ', '
-			. $db->quoteName('name') . ' as location_name'
+			$db->quoteName('observer.id') 	. ' as id, '
+			. $db->quoteName('first_name') 	. ', '
+			. $db->quoteName('last_name') 	. ', '
+			. $db->quoteName('name') 		. ' as location_name'
 		);
 		$system_query->from($db->quoteName('observer'));
 		$system_query->from($db->quoteName('location'));
@@ -100,10 +100,10 @@ class BramsNetworkModelObservers extends ItemModel {
 				$new_observer_array[$observer->id]->locations .= ', ' . $observer->location_name;
 			} else {
 				// create a new object and set first_name, last_name and temporary locations attributes
-				$new_observer_array[$observer->id] = new stdClass();
-				$new_observer_array[$observer->id]->first_name = $observer->first_name;
-				$new_observer_array[$observer->id]->last_name = $observer->last_name;
-				$new_observer_array[$observer->id]->locations = $observer->location_name;
+				$new_observer_array[$observer->id] 				= new stdClass();
+				$new_observer_array[$observer->id]->first_name 	= $observer->first_name;
+				$new_observer_array[$observer->id]->last_name 	= $observer->last_name;
+				$new_observer_array[$observer->id]->locations 	= $observer->location_name;
 			}
 		}
 
