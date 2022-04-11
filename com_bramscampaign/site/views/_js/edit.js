@@ -5,7 +5,7 @@
  * * This file contains function and variable that (almost) each form
  * * needs (update api, create api, ...).
  *
- * * Note that when a variable/comment is refering to 'element' this
+ * * Note that when a variable/comment is referring to 'element' this
  * * means the instance of a broader category. That category can be
  * * (among others) antennas, systems, locations, ...
  * * So, following the above examples, an element can be an antenna,
@@ -41,7 +41,7 @@ function newElement(data, apiView, redirectView) {
         type: 'POST',
         url: `
             /index.php?
-            option=com_bramsadmin
+            option=com_bramscampaign
             &task=create
             &view=${apiView}
             &format=json
@@ -51,7 +51,7 @@ function newElement(data, apiView, redirectView) {
         success: () => {
             // on success return to the antennas page
             window.location.href = `
-                /index.php?option=com_bramsadmin&view=${redirectView}&message=2`;
+                /index.php?option=option=com_bramscampaign&view=${redirectView}&message=2`;
         },
         error: (response) => {
             // on fail, show an error message
@@ -76,7 +76,7 @@ function updateElement(data, apiView, redirectView) {
         type: 'POST',
         url: `
             /index.php?
-            option=com_bramsadmin
+            option=com_bramscampaign
             &task=update
             &view=${apiView}
             &format=json
@@ -86,7 +86,7 @@ function updateElement(data, apiView, redirectView) {
         success: () => {
             // on success return to the antennas page
             window.location.href = `
-                /index.php?option=com_bramsadmin&view=${redirectView}&message=1`;
+                /index.php?option=com_bramscampaign&view=${redirectView}&message=1`;
         },
         error: (response) => {
             // on fail, show an error message
@@ -109,7 +109,7 @@ function getCodes(apiView) {
         type: 'GET',
         url: `
             /index.php?
-            option=com_bramsadmin
+            option=com_bramscampaign
             &task=getCodes
             &view=${apiView}
             &format=json

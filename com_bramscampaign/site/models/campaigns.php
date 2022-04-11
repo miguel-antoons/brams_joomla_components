@@ -25,16 +25,16 @@ class BramsCampaignModelCampaigns extends ItemModel {
 	public $campaign_messages = array(
 		// default message (0) is empty
 		(0) => array(
-			('message') => '',
-			('css_class') => ''
+			('message') 	=> '',
+			('css_class') 	=> ''
 		),
 		(1) => array(
-			('message') => 'Campaign was successfully updated',
-			('css_class') => 'success'
+			('message') 	=> 'Campaign was successfully updated',
+			('css_class') 	=> 'success'
 		),
 		(2) => array(
-			('message') => 'Campaign was successfully created',
-			('css_class') => 'success'
+			('message') 	=> 'Campaign was successfully created',
+			('css_class') 	=> 'success'
 		)
 	);
 
@@ -90,14 +90,14 @@ class BramsCampaignModelCampaigns extends ItemModel {
 
 		// SQL query to get all the campaigns and their information
 		$campaigns_query->select(
-			$db->quoteName('m_camp.id') . ' as id, '
-			. $db->quoteName('m_camp.name') . ' as name, '
-			. $db->quoteName('m_type.name') . ' as type, '
-			. $db->quoteName('m_camp.start') . ' as start, '
-			. $db->quoteName('m_camp.end') . ' as end, '
-			. $db->quoteName('system_id') . ' as sysId, '
-			. $db->quoteName('system.name') . ' as station, '
-			. 'exists(' . $sub_campaign_query . ')'   . ' as notDeletable'
+			$db->quoteName('m_camp.id') 			. ' as id, '
+			. $db->quoteName('m_camp.name') 		. ' as name, '
+			. $db->quoteName('m_type.name') 		. ' as type, '
+			. $db->quoteName('m_camp.start') 		. ' as start, '
+			. $db->quoteName('m_camp.end') 			. ' as end, '
+			. $db->quoteName('system_id') 			. ' as sysId, '
+			. $db->quoteName('system.name') 		. ' as station, '
+			. 'exists(' . $sub_campaign_query . ')' . ' as notDeletable'
 		);
 		$campaigns_query->from($db->quoteName('manual_counting_campaign_type') . ' as m_type');
 		$campaigns_query->join(
@@ -176,7 +176,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 	 *
 	 * @since 0.0.1
 	 */
-	public function getLocationCodes($id = -1) {
+	public function getCampaignNames($id = -1) {
 		// if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
@@ -244,15 +244,15 @@ class BramsCampaignModelCampaigns extends ItemModel {
 
 		// query to get the campaign information
 		$campaign_query->select(
-			$db->quoteName('name') . ', '
-			. $db->quoteName('system_id') . ' as system, '
-			. $db->quoteName('type_id') . ' as type, '
-			. $db->quoteName('start') . ', '
-			. $db->quoteName('end') . ', '
-			. $db->quoteName('fft') . ', '
-			. $db->quoteName('overlap') . ', '
-			. $db->quoteName('color_min') . ' as colorMin, '
-			. $db->quoteName('color_max') . ' as colorMax, '
+			$db->quoteName('name') 			. ', '
+			. $db->quoteName('system_id') 	. ' as system, '
+			. $db->quoteName('type_id') 	. ' as type, '
+			. $db->quoteName('start') 		. ', '
+			. $db->quoteName('end') 		. ', '
+			. $db->quoteName('fft') 		. ', '
+			. $db->quoteName('overlap') 	. ', '
+			. $db->quoteName('color_min') 	. ' as colorMin, '
+			. $db->quoteName('color_max') 	. ' as colorMax, '
 			. $db->quoteName('comments')
 		);
 		$campaign_query->from($db->quoteName('manual_counting_campaign'));
@@ -282,7 +282,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 	 *
 	 * @since 0.0.1
 	 */
-	public function newCampaign($campaign_info) {
+	public function insertCampaign($campaign_info) {
 		// if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
@@ -309,15 +309,15 @@ class BramsCampaignModelCampaigns extends ItemModel {
 				)
 			)
 			->values(
-				$db->quote($campaign_info['name']) . ', '
-				. $db->quote($campaign_info['system']) . ', '
-				. $db->quote($campaign_info['type']) . ', '
-				. $db->quote($campaign_info['start']) . ', '
-				. $db->quote($campaign_info['end']) . ', '
-				. $db->quote($campaign_info['fft']) . ', '
-				. $db->quote($campaign_info['overlap']) . ', '
-				. $db->quote($campaign_info['colorMin']) . ', '
-				. $db->quote($campaign_info['colorMax']) . ', '
+				$db->quote($campaign_info['name']) 			. ', '
+				. $db->quote($campaign_info['system']) 		. ', '
+				. $db->quote($campaign_info['type']) 		. ', '
+				. $db->quote($campaign_info['start']) 		. ', '
+				. $db->quote($campaign_info['end']) 		. ', '
+				. $db->quote($campaign_info['fft']) 		. ', '
+				. $db->quote($campaign_info['overlap']) 	. ', '
+				. $db->quote($campaign_info['colorMin']) 	. ', '
+				. $db->quote($campaign_info['colorMax']) 	. ', '
 				. $db->quote($campaign_info['comments'])
 			);
 
@@ -370,7 +370,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 
 		// update query
 		$campaign_query
-			->update($db->quoteName('location'))
+			->update($db->quoteName('manual_counting_campaign'))
 			->set($fields)
 			->where($conditions);
 
@@ -379,6 +379,100 @@ class BramsCampaignModelCampaigns extends ItemModel {
 		// trying to execute the query and return the result
 		try {
 			return $db->execute();
+		} catch (RuntimeException $e) {
+			// on fail, log the error and return false
+			echo new JResponseJson(array(('message') => $e));
+			Log::add($e, Log::ERROR, 'error');
+			return -1;
+		}
+	}
+
+	/**
+	 * Function gets all system names and ids except for the system which id is given as argument.
+	 * The data requested for each system is the following : (system.name, system.id).
+	 *
+	 * @param $id   int         the id of the system not to take data from. Defaults to -1
+	 * @return      int|array   -1 on fail, database results on success
+	 *
+	 * @since 0.0.2
+	 */
+	public function getSystemNames($id = -1) {
+		// if database connection fails, return false
+		if (!$db = $this->connectToDatabase()) {
+			return -1;
+		}
+		$system_query = $db->getQuery(true);
+
+		// query to get the system names
+		$system_query->select(
+			$db->quoteName('name') . ', '
+			. $db->quoteName('id')
+		);
+		$system_query->from($db->quoteName('system'));
+
+		$db->setQuery($system_query);
+
+		// try to execute the query and return its results
+		try {
+			return $this->structureElements($db->loadObjectList(), $id);
+		} catch (RuntimeException $e) {
+			// on fail, log the error and return false
+			echo new JResponseJson(array(('message') => $e));
+			Log::add($e, Log::ERROR, 'error');
+			return -1;
+		}
+	}
+
+	/**
+	 * @param $database_data    array       elements array coming from the database request
+	 * @param $id               int|string  id of the element to set the selected flag to 1
+	 *
+	 * @return array array with the structured elements and their valid attributes
+	 *
+	 * @since 0.0.2
+	 */
+	private function structureElements($database_data, $id = -1) {
+		$final_array = array();
+
+		// for each element we got from the database
+		foreach ($database_data as $element) {
+			// if the id is the same as the one received as argument
+			if ($element->id === $id) {
+				// set the selected attribute to one
+				$selected = 'selected';
+			} else {
+				$selected = '';
+			}
+			// add all the attributes to an array
+			$final_array[] = array(
+				('id')          => $element->id,
+				('name')        => $element->name,
+				('selected')    => $selected
+			);
+		}
+
+		return $final_array;
+	}
+
+	public function getCampaignTypes($id = -1) {
+		// if database connection fails, return false
+		if (!$db = $this->connectToDatabase()) {
+			return -1;
+		}
+		$type_query = $db->getQuery(true);
+
+		// query to get the system names
+		$type_query->select(
+			$db->quoteName('name') . ', '
+			. $db->quoteName('id')
+		);
+		$type_query->from($db->quoteName('manual_counting_campaign_type'));
+
+		$db->setQuery($type_query);
+
+		// try to execute the query and return its results
+		try {
+			return $this->structureElements($db->loadObjectList(), $id);
 		} catch (RuntimeException $e) {
 			// on fail, log the error and return false
 			echo new JResponseJson(array(('message') => $e));

@@ -27,7 +27,7 @@ function generateTable() {
                     onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramscampaign'
-                        + '&view=camapignEdit'
+                        + '&view=campaignEdit'
                         + '&id=${campaign.id}';"
                 >
                     <td>${campaign.name}</td>
@@ -78,7 +78,7 @@ function generateTable() {
  */
 // eslint-disable-next-line no-unused-vars
 function deleteCampaign(campaignId, campaignName, notDeletable) {
-    if (notDeletable !== null) {
+    if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
             "Campaign can't be deleted as long as there are campaign countings referencing this campaign.\n"

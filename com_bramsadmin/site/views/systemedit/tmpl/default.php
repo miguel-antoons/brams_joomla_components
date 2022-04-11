@@ -70,6 +70,7 @@ defined('_JEXEC') or die('Restricted access');
                     class='form-control'
                     type='text'
                     id='systemComments'
+                    maxlength='255'
                 >
 
                 <button

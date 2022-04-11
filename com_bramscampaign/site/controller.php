@@ -232,4 +232,48 @@ class BramsCampaignController extends BaseController {
 			echo new JResponseJson(array(('message') => false));
 		}
 	}
+
+	/**
+	 * API - GET
+	 * Function executes the view getTypes method. THis function is called when
+	 * front-end needs all the campaign types.
+	 *
+	 * @since 0.0.2
+	 */
+	public function getTypes() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+				return;
+			}
+			$view->getTypes();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
+
+	/**
+	 * API - GET
+	 * Function executes the view getSystems method. THis function is called when
+	 * front-end needs all the systems.
+	 *
+	 * @since 0.0.2
+	 */
+	public function getSystems() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+				return;
+			}
+			$view->getSystems();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
 }
