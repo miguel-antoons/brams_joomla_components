@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * Availability Model
@@ -21,7 +21,7 @@ use Joomla\CMS\MVC\Model\ItemModel;
  *
  * @since  0.0.1
  */
-class BramsDataModelAvailability extends ItemModel {
+class BramsDataModelAvailability extends BaseDatabaseModel {
 	// below contains all the availability categories
 	protected $custom_categories_array = array(
 		'0%', '100%', '0.1 - 20%', '20.1 - 40%', '40.1 - 60%', '60.1 - 80%', '80.1 - 99.9%'
@@ -202,11 +202,13 @@ class BramsDataModelAvailability extends ItemModel {
 
 			// filter the array coming from the database in order to keep the info
 			// from the station stored in the '$station' variable
-			$specific_station_availability = array_filter(
-				$db_availability,
-				function($availability_info) use ($station) {
-					return $availability_info->system_id === $station;
-				}
+			$specific_station_availability = array_values(
+				array_filter(
+					$db_availability,
+					function($availability_info) use ($station) {
+						return ((int) $availability_info->system_id) === ((int) $station);
+					}
+				)
 			);
 
 			// launch the structure function
@@ -218,8 +220,8 @@ class BramsDataModelAvailability extends ItemModel {
 				$end_date
 			);
 
-			$last_object                          = new stdClass();									// create a new object
-			$last_object->start                   = $end_date;								// add the end date as DateTime object to the newly created object
+			$last_object                          = new stdClass();	// create a new object
+			$last_object->start                   = $end_date;      // add the end date as DateTime object to the newly created object
 			$final_availability_array[$station][] = $last_object;	// add the newly created object to the final array
 		}
 

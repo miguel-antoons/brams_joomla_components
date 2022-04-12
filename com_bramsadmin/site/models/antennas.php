@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -21,7 +21,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  0.7.1
  */
-class BramsAdminModelAntennas extends ItemModel {
+class BramsAdminModelAntennas extends BaseDatabaseModel {
     // array contains various antenna messages (could be moved to database if a lot of messages are required)
     public $antenna_messages = array(
         // default message (0) is empty

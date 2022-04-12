@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\Input\Input;
 
 /**
  * HTML View class for the BramsData Component
@@ -29,7 +30,7 @@ class BramsDataViewAvailability extends HtmlView {
 	 * Function makes sure to get the application input. If it fails, it
 	 * will return false
 	 *
-	 * @return boolean|JInput
+	 * @return Input|boolean
 	 * @since 0.2.5
 	 */
 	private function getAppInput() {
