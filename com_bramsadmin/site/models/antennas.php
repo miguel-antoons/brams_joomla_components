@@ -9,7 +9,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
@@ -58,7 +57,7 @@ class BramsAdminModelAntennas extends BaseDatabaseModel {
             below line is for connecting to default joomla database
             WARNING : this line should be commented/removed for production
             */
-            return Factory::getDbo();
+            return $this->getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
             echo new JResponseJson(array(('message') => $e));

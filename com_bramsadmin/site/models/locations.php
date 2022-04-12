@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -21,7 +21,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  0.0.2
  */
-class BramsAdminModelLocations extends ItemModel {
+class BramsAdminModelLocations extends BaseDatabaseModel {
     public $location_messages = array(
         // default message (0) is empty
         (0) => array(
@@ -57,7 +57,7 @@ class BramsAdminModelLocations extends ItemModel {
             below line is for connecting to default joomla database
             WARNING : this line should be commented/removed for production
             */
-            return Factory::getDbo();
+            return $this->getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
             echo new JResponseJson(array(('message') => $e));

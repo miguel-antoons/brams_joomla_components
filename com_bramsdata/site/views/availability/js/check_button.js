@@ -189,9 +189,11 @@ function getSelectedCheckboxes() {
  * sites back-end. It then (re)creates the availability graph.
  */
 function getAvailability() {
+    document.getElementById('spinner').style.display = 'inline';
     // check which checkboxes are checked
     const checkboxValues = getSelectedCheckboxes();
     if (!checkboxValues) {
+        document.getElementById('spinner').style.display = 'none';
         return;
     }
     const token = $('#token').attr('name');
@@ -215,6 +217,7 @@ function getAvailability() {
             } else {
                 chart = visavail.generate(options, response.data);
             }
+            document.getElementById('spinner').style.display = 'none';
         },
         error: (response) => {
             // on fail, show an error message
@@ -224,6 +227,7 @@ function getAvailability() {
             );
             // store the server response in the log variable
             log = response;
+            document.getElementById('spinner').style.display = 'none';
         },
     });
 }

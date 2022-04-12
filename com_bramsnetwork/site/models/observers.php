@@ -9,9 +9,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * Observers Model
@@ -22,7 +21,7 @@ use Joomla\CMS\MVC\Model\ItemModel;
  *
  * @since  0.2.1
  */
-class BramsNetworkModelObservers extends ItemModel {
+class BramsNetworkModelObservers extends BaseDatabaseModel {
 	// function connects to the database and returns the database object
 	private function connectToDatabase() {
         try {
@@ -42,7 +41,7 @@ class BramsNetworkModelObservers extends ItemModel {
             below line is for connecting to default joomla database
             WARNING : this line should be commented/removed for production
             */
-            return Factory::getDbo();
+            return $this->getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
             echo new JResponseJson(array(('message') => $e));

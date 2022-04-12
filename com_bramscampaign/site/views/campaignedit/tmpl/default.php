@@ -119,15 +119,18 @@ defined('_JEXEC') or die('Restricted access');
                     maxlength="255"
 				>
 
-				<button
-					name='submit'
-					class='customBtn save'
-					id='submit'
-					onclick="formProcess(document.getElementById('inputContainer').children)"
-				>
-					<i class="fa fa-floppy-o" aria-hidden="true"></i>
-					Save
-				</button>
+                <div id="buttonContainer">
+                    <button
+                        name='submit'
+                        class='customBtn save'
+                        id='submit'
+                        onclick="formProcess(document.getElementById('inputContainer').children)"
+                    >
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Save
+                    </button>
+                    <span id="spinner" class="spinner-border text-success"></span>
+                </div>
 			</div>
 		</div>
 	</div>

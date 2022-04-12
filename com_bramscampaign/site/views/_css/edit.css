@@ -8,6 +8,7 @@
 
 label {
     text-align: left;
+    width: 100%;
 }
 
 .customBtn {
@@ -99,4 +100,14 @@ label {
 .right {
     float: right;
     margin: 5px;
+}
+
+#buttonContainer {
+    display: flex;
+    align-items: center;
+}
+
+#spinner {
+    display: none;
+    vertical-align: middle;
 }

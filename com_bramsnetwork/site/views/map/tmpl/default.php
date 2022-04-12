@@ -45,15 +45,18 @@ defined('_JEXEC') or die('Restricted access');
                     value='<?php echo $this->today ?>'
                     required
                 />
-                <button
-                    type='submit'
-                    id='submit'
-                    class='customBtn submit'
-                    onclick="getStations()"
-                >
-                    <i class="fa fa-check-square" aria-hidden="true"></i>
-                    Submit
-                </button>
+                <div id="buttonContainer">
+                    <button
+                        type='submit'
+                        id='submit'
+                        class='customBtn submit'
+                        onclick="getStations()"
+                    >
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                        Submit
+                    </button>
+                    <span id="spinner" class="spinner-border text-success"></span>
+            </div>
             </div>
             <div class='col'>
                 <input

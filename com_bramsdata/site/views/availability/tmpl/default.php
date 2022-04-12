@@ -57,8 +57,22 @@ defined('_JEXEC') or die('Restricted access');
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class='row'>
-            <div class='col custom_col'>
+        <div class='row customRow'>
+            <div class="col-2 custom_col">
+                <div id="buttonContainer">
+                    <button
+                            name='submit'
+                            class='customBtn save'
+                            id='submit'
+                            onclick="getAvailability()"
+                    >
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                        Submit
+                    </button>
+                    <span id="spinner" class="spinner-border text-success"></span>
+                </div>
+            </div>
+            <div class='col-5 custom_col'>
                 <label for='startDate'>From </label>
                 <input
                     type='date'
@@ -70,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
                     required
                 />
             </div>
-            <div class='col custom_col'>
+            <div class='col-5 custom_col'>
                 <label for='endDate'>To </label>
                 <input
                     type='date'
@@ -83,15 +97,6 @@ defined('_JEXEC') or die('Restricted access');
                 />
             </div>
         </div>
-        <button
-                name='submit'
-                class='customBtn save'
-                id='submit'
-                onclick="getAvailability()"
-        >
-            <i class="fa fa-check-square" aria-hidden="true"></i>
-            Submit
-        </button>
     </div>
 </div>
 <div class="container custom_container">

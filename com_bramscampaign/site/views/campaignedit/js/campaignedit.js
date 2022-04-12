@@ -280,6 +280,9 @@ function verifyValues(
  * @param {HTMLDivElement} form div element that contains all the inputs
  */
 function newCampaign(form) {
+    // * uncomment below line if you want a spinner
+    // document.getElementById('spinner').style.display = 'inline';
+
     // get all the values
     const camName = form.campaignName.value;
     const camType = form.campaignType.value;
@@ -312,12 +315,14 @@ function newCampaign(form) {
                 end: camEnd,
                 fft: camFFT,
                 overlap: camOverlap,
-                color_min: camColorMin,
-                color_max: camColorMax,
+                colorMin: camColorMin,
+                colorMax: camColorMax,
                 comments: form.campaignComments.value,
             },
         };
         newElement(data, currentView, redirectView);
+    } else {
+        document.getElementById('spinner').style.display = 'none';
     }
 }
 
@@ -327,6 +332,8 @@ function newCampaign(form) {
  * @param {HTMLDivElement} form div element that contains all the inputs
  */
 function updateCampaign(form) {
+    // * uncomment below line if you want a spinner
+    // document.getElementById('spinner').style.display = 'inline';
     // get all the values
     const camName = form.campaignName.value;
     const camType = form.campaignType.value;
@@ -366,6 +373,9 @@ function updateCampaign(form) {
             },
         };
         updateElement(data, currentView, redirectView);
+        return;
+    } else {
+        document.getElementById('spinner').style.display = 'none';
     }
 }
 
@@ -401,7 +411,7 @@ function getSystems(id = -1) {
         `,
         success: (response) => {
             let HTMLString = '';
-            console.log(response);
+
             response.data.forEach((system) => {
                 HTMLString += `
                     <option value=${system.id} ${system.selected}>

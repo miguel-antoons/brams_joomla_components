@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -21,7 +21,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  0.0.2
  */
-class BramsAdminModelSystems extends ItemModel {
+class BramsAdminModelSystems extends BaseDatabaseModel {
     // array contains various system messages (could be moved to database if a lot of messages are required)
 	public $system_messages = array(
         // default message (0) is empty
@@ -58,7 +58,7 @@ class BramsAdminModelSystems extends ItemModel {
 			below line is for connecting to default joomla database
 			WARNING : this line should be commented/removed for production
 			*/
-			return Factory::getDbo();
+			return $this->getDbo();
 		} catch (Exception $e) {
             // if an error occurs, log the error and return false
             echo new JResponseJson(array(('message') => $e));
@@ -267,7 +267,9 @@ class BramsAdminModelSystems extends ItemModel {
             'LEFT',
             $db->quoteName('system')
             . ' ON '
-            . $db->quoteName('location_id') . ' = ' . $db->quoteName('location.id'));
+            . $db->quoteName('location_id') . ' = ' . $db->quoteName('location.id')
+        );
+        $locations_query->order($db->quoteName('name') . ' ASC');
 
 		$db->setQuery($locations_query);
 

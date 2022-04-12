@@ -9,9 +9,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use \Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Factory;
-use \Joomla\CMS\Log\Log;
+use Joomla\CMS\Log\Log;
 
 try {
     // Get an instance of the controller prefixed by BramsAdmin

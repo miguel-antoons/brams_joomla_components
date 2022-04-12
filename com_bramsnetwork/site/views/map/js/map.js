@@ -196,6 +196,8 @@ function getStations() {
     const token = $('#token').attr('name');
     const date = document.getElementById('startDate').value;
 
+    document.getElementById('spinner').style.display = 'inline';
+
     $.ajax({
         type: 'GET',
         url: `/index.php?option=com_bramsnetwork&view=map&task=getstations&format=json&${token}=1&date=${date}`,
@@ -203,6 +205,7 @@ function getStations() {
             allStations = response.data;
             document.getElementById('selectedDate').innerHTML = date;
             showStationsEntry();
+            document.getElementById('spinner').style.display = 'none';
         },
         error: (response) => {
             // on fail, show an error message
@@ -212,6 +215,7 @@ function getStations() {
             );
             // store the server response in the log variable
             log = response;
+            document.getElementById('spinner').style.display = 'none';
         },
     });
 }

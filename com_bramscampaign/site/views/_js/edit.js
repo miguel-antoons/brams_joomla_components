@@ -51,13 +51,15 @@ function newElement(data, apiView, redirectView) {
         success: () => {
             // on success return to the antennas page
             window.location.href = `
-                /index.php?option=option=com_bramscampaign&view=${redirectView}&message=2`;
+                /index.php?option=com_bramscampaign&view=${redirectView}&message=2`;
+                document.getElementById('spinner').style.display = 'none';
         },
         error: (response) => {
             // on fail, show an error message
             document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
+            document.getElementById('spinner').style.display = 'none';
         },
     });
 }
@@ -87,12 +89,14 @@ function updateElement(data, apiView, redirectView) {
             // on success return to the antennas page
             window.location.href = `
                 /index.php?option=com_bramscampaign&view=${redirectView}&message=1`;
+                document.getElementById('spinner').style.display = 'none';
         },
         error: (response) => {
             // on fail, show an error message
             document.getElementById('error').innerHTML = apiFailMessg;
             // store the server response in the log variable
             log = response;
+            document.getElementById('spinner').style.display = 'none';
         },
     });
 }

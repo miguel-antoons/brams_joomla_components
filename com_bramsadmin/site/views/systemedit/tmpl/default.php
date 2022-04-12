@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 
             </p>
             <div id='inputContainer'>
-                <label class='form-label' for='systemName'>Name</label>
+                <label class='form-label required' id="name" for='systemName'>Name</label>
                 <input
                     type='text'
                     class='form-control'
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
                     required
                 >
 
-                <label for='systemLocation'>Location</label>
+                <label class='form-label required' id="location" for='systemLocation'>Location</label>
                 <select
                     name='locations'
                     class='form-control'
@@ -43,10 +43,10 @@ defined('_JEXEC') or die('Restricted access');
                     onChange='setAntenna()'
                     required
                 >
-
+                    <!-- location options will come here -->
                 </select>
 
-                <label for='systemAntenna'>Antenna</label>
+                <label class='form-label required' id="antenna" for='systemAntenna'>Antenna</label>
                 <input
                     class='form-control'
                     type='number'
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
                     required
                 >
 
-                <label for='systemStart'>Start</label>
+                <label class='form-label required' for='systemStart'>Start</label>
                 <input
                     class='form-control'
                     type='datetime-local'

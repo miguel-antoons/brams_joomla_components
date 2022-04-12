@@ -9,8 +9,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -21,7 +20,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  0.0.1
  */
-class BramsCampaignModelCampaigns extends ItemModel {
+class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 	public $campaign_messages = array(
 		// default message (0) is empty
 		(0) => array(
@@ -57,7 +56,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 			below line is for connecting to default joomla database
 			WARNING : this line should be commented/removed for production
 			*/
-			return Factory::getDbo();
+			return $this->getDbo();
 		} catch (Exception $e) {
 			// if an error occurs, log the error and return false
 			echo new JResponseJson(array(('message') => $e));
@@ -283,6 +282,8 @@ class BramsCampaignModelCampaigns extends ItemModel {
 	 * @since 0.0.1
 	 */
 	public function insertCampaign($campaign_info) {
+        $time_created = date('Y-m-d H:i:s');
+        $time_updated = $time_created;
 		// if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
@@ -304,21 +305,25 @@ class BramsCampaignModelCampaigns extends ItemModel {
 						'overlap',
 						'color_min',
 						'color_max',
-						'comments'
+						'comments',
+                        'time_created',
+                        'time_updated'
 					)
 				)
 			)
 			->values(
-				$db->quote($campaign_info['name']) 			. ', '
-				. $db->quote($campaign_info['system']) 		. ', '
-				. $db->quote($campaign_info['type']) 		. ', '
-				. $db->quote($campaign_info['start']) 		. ', '
-				. $db->quote($campaign_info['end']) 		. ', '
-				. $db->quote($campaign_info['fft']) 		. ', '
-				. $db->quote($campaign_info['overlap']) 	. ', '
-				. $db->quote($campaign_info['colorMin']) 	. ', '
-				. $db->quote($campaign_info['colorMax']) 	. ', '
-				. $db->quote($campaign_info['comments'])
+				$db->quote($campaign_info['name']) 			                    . ', '
+				. $db->quote($campaign_info['system']) 		                    . ', '
+				. $db->quote($campaign_info['type']) 		                    . ', '
+				. $db->quote($campaign_info['start']) 		                    . ', '
+				. $db->quote($campaign_info['end']) 		                    . ', '
+				. 'nullif(' . $db->quote($campaign_info['fft']) . ', \'\')' 	. ', '
+                . 'nullif(' . $db->quote($campaign_info['overlap']) . ', \'\')' . ', '
+                . 'nullif(' . $db->quote($campaign_info['colorMin']) . ', \'\')'. ', '
+                . 'nullif(' . $db->quote($campaign_info['colorMax']) . ', \'\')'. ', '
+                . $db->quote($campaign_info['comments'])                        . ', '
+                . $db->quote($time_created)                                     . ', '
+                . $db->quote($time_updated)
 			);
 
 		$db->setQuery($campaign_query);
@@ -326,7 +331,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 		// try to execute the query and return the result
 		try {
 			return $db->execute();
-		} catch (RuntimeException $e) {
+		} catch (Exception $e) {
 			// on fail, log the error and return false
 			echo new JResponseJson(array(('message') => $e));
 			Log::add($e, Log::ERROR, 'error');
@@ -344,6 +349,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 	 * @since 0.0.1
 	 */
 	public function updateCampaign($campaign_info) {
+        $time_updated = date('Y-m-d H:i:s');
 		// if database connection fails, return false
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
@@ -351,16 +357,17 @@ class BramsCampaignModelCampaigns extends ItemModel {
 		$campaign_query = $db->getQuery(true);
 		// attributes to update with their new values
 		$fields = array(
-			$db->quoteName('name')      . ' = ' . $db->quote($campaign_info['name']),
-			$db->quoteName('system_id') . ' = ' . $db->quote($campaign_info['system']),
-			$db->quoteName('type_id')   . ' = ' . $db->quote($campaign_info['type']),
-			$db->quoteName('start')     . ' = ' . $db->quote($campaign_info['start']),
-			$db->quoteName('end')       . ' = ' . $db->quote($campaign_info['end']),
-			$db->quoteName('fft')       . ' = ' . $db->quote($campaign_info['fft']),
-			$db->quoteName('overlap')   . ' = ' . $db->quote($campaign_info['overlap']),
-			$db->quoteName('color_min') . ' = ' . $db->quote($campaign_info['colorMin']),
-			$db->quoteName('color_max') . ' = ' . $db->quote($campaign_info['colorMax']),
-			$db->quoteName('comments')  . ' = ' . $db->quote($campaign_info['comments'])
+			$db->quoteName('name')          . ' = ' . $db->quote($campaign_info['name']),
+			$db->quoteName('system_id')     . ' = ' . $db->quote($campaign_info['system']),
+			$db->quoteName('type_id')       . ' = ' . $db->quote($campaign_info['type']),
+			$db->quoteName('start')         . ' = ' . $db->quote($campaign_info['start']),
+			$db->quoteName('end')           . ' = ' . $db->quote($campaign_info['end']),
+			$db->quoteName('fft')           . ' = ' . 'nullif(' . $db->quote($campaign_info['fft']) . ', \'\')',
+			$db->quoteName('overlap')       . ' = ' . 'nullif(' . $db->quote($campaign_info['overlap']) . ', \'\')',
+			$db->quoteName('color_min')     . ' = ' . 'nullif(' . $db->quote($campaign_info['colorMin']) . ', \'\')',
+			$db->quoteName('color_max')     . ' = ' . 'nullif(' . $db->quote($campaign_info['colorMax']) . ', \'\')',
+			$db->quoteName('comments')      . ' = ' . $db->quote($campaign_info['comments']),
+            $db->quoteName('time_updated')  . ' = ' . $db->quote($time_updated)
 		);
 
 		// location to be updated
@@ -409,6 +416,7 @@ class BramsCampaignModelCampaigns extends ItemModel {
 			. $db->quoteName('id')
 		);
 		$system_query->from($db->quoteName('system'));
+        $system_query->order($db->quoteName('name') . ' ASC');
 
 		$db->setQuery($system_query);
 

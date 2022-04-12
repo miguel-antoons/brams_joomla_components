@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -21,8 +21,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  0.5.1
  */
-class BramsAdminModelObservers extends ItemModel
-{
+class BramsAdminModelObservers extends BaseDatabaseModel {
     // array contains various system messages (could be moved to database if a lot of messages are required)
     public $observer_messages = array(
         // default message (0) is empty

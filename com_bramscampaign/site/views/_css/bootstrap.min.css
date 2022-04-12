@@ -1,9 +1,17 @@
-/*!
+/**
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+table {
+    border: 0 !important;
+}
+
+thead tr th {
+    border-top: 0 !important;
+}
+
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -1798,7 +1806,7 @@ pre code {
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6
+    border-bottom: 2px solid #c0c3c6 !important;
 }
 
 .table tbody+tbody {
@@ -9007,7 +9015,7 @@ a.text-dark:focus, a.text-dark:hover {
     }
 
     abbr[title]::after {
-        content: " ("attr(title) ")"
+        content: " (" attr(title) ")"
     }
 
     pre {

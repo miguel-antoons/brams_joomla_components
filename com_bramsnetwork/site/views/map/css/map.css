@@ -80,3 +80,13 @@ label {
     min-width: 593px !important;
     min-height: 516px !important;
 }
+
+#spinner {
+    display: none;
+    vertical-align: middle;
+}
+
+#buttonContainer {
+    display: flex;
+    align-items: center;
+}

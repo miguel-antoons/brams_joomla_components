@@ -46,7 +46,7 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
 			below line is for connecting to default joomla database
 			WARNING : this line should be commented/removed for production
 			*/
-			return Factory::getDbo();
+			return $this->getDbo();
 		} catch (Exception $e) {
 			// if an error occurs, log the error and return false
 			echo new JResponseJson(array(('message') => $e));
@@ -71,10 +71,10 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
 
 		// SQL query to get all information about the multiple systems
 		$system_query->select(
-			$db->quoteName('system.id') 		. ', '
-			. $db->quoteName('system.name') 	. ', '
-			. $db->quoteName('transfer_type') 	. ', '
-			. $db->quoteName('status') . ', '
+			$db->quoteName('system.id')         . ', '
+			. $db->quoteName('system.name')     . ', '
+			. $db->quoteName('transfer_type')   . ', '
+			. $db->quoteName('status')          . ', '
 			. $db->quote('') . 'as checked'
 			);
 		$system_query->from($db->quoteName('system'));
@@ -82,6 +82,7 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
 		$system_query->where(
 			$db->quoteName('system.location_id') . ' = ' . $db->quoteName('location.id')
 		);
+		$system_query->order($db->quoteName('system.name'). ' ASC');
 
 		$db->setQuery($system_query);
 

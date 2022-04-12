@@ -8,6 +8,16 @@ const systemNames = [];             // array with all taken system names
 const defLocationAntenna = {};      // object with current location and antenna combo
 let locationAntennas = {};          // object with all antennas grouped by location
 
+function sortAsc(first, second, noSpace = false) {
+    if (first === null) return 1;
+    if (second === null) return -1;
+    // eslint-disable-next-line no-param-reassign
+    if (noSpace) { first = first.replace(/\s/g, ''); second = second.replace(/\s/g, ''); }
+    if (first > second) return 1;
+    if (first < second) return -1;
+    return 0;
+}
+
 /**
  * Function verifies if all the required inputs for the system are available
  * and if they contain valid values.
@@ -26,8 +36,20 @@ function verifyValues(
     systemName,
     systemStart,
 ) {
+    // remove all the icons inside the labels
+    const icons = document.querySelectorAll('label .fa');
+    icons.forEach((icon) => icon.remove());
+
     // one of the input values is empty
     if (!antennaValue || !locationId || !systemName || !systemStart) {
+        // add an exclamation circle to the required inputs
+        const requiredInputs = document.getElementsByClassName('required');
+        Array.from(requiredInputs).forEach(
+            (input) => {
+                input.innerHTML
+                    += '<i class="fa fa-exclamation-circle orange right" aria-hidden="true"></i>';
+            },
+        );
         document.getElementById('error').innerHTML = `
             Please fill all required inputs before submitting the form. 
             Required inputs are Name, Location, Antenna and Start.
@@ -38,6 +60,8 @@ function verifyValues(
 
     // if the system name is already taken
     if (systemNames.includes(systemName)) {
+        document.getElementById('name').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         document.getElementById('error').innerHTML = `
             Entered system name is already taken. Please enter a free system name.
         `;
@@ -47,6 +71,10 @@ function verifyValues(
 
     // if the location_id - antenna number combo is already taken
     if (locationAntennas[locationId].antennas.includes(Number(antennaValue))) {
+        document.getElementById('location').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
+        document.getElementById('antenna').innerHTML += ''
+            + '<i class="fa fa-exclamation-circle red right" aria-hidden="true"></i>';
         document.getElementById('error').innerHTML = `
             Antenna - location combo ${antennaValue} - ${locationId} (
             ${locationSelect.options[locationSelect.selectedIndex].label}) 
@@ -177,7 +205,10 @@ function getLocations() {
             let HTMLString = '';
             locationAntennas = response.data;
 
-            Object.keys(locationAntennas).forEach((key) => {
+            sortedObjectKeys = Object.keys(locationAntennas).sort(
+                (first, second) => sortAsc(locationAntennas[first].name, locationAntennas[second].name)
+            );
+            sortedObjectKeys.forEach((key) => {
                 HTMLString += `
                     <option value=${locationAntennas[key].id} ${locationAntennas[key].selected}>
                         ${locationAntennas[key].name}
