@@ -89,13 +89,13 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 
 		// SQL query to get all the campaigns and their information
 		$campaigns_query->select(
-			$db->quoteName('m_camp.id') 			. ' as id, '
-			. $db->quoteName('m_camp.name') 		. ' as name, '
-			. $db->quoteName('m_type.name') 		. ' as type, '
-			. $db->quoteName('m_camp.start') 		. ' as start, '
-			. $db->quoteName('m_camp.end') 			. ' as end, '
-			. $db->quoteName('system_id') 			. ' as sysId, '
-			. $db->quoteName('system.name') 		. ' as station, '
+			$db->quoteName('m_camp.id')             . ' as id, '
+			. $db->quoteName('m_camp.name')         . ' as name, '
+			. $db->quoteName('m_type.name')         . ' as type, '
+			. $db->quoteName('m_camp.start')        . ' as start, '
+			. $db->quoteName('m_camp.end')          . ' as end, '
+			. $db->quoteName('system_id')           . ' as sysId, '
+			. $db->quoteName('system.name')         . ' as station, '
 			. 'exists(' . $sub_campaign_query . ')' . ' as notDeletable'
 		);
 		$campaigns_query->from($db->quoteName('manual_counting_campaign_type') . ' as m_type');
@@ -243,15 +243,15 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 
 		// query to get the campaign information
 		$campaign_query->select(
-			$db->quoteName('name') 			. ', '
-			. $db->quoteName('system_id') 	. ' as system, '
-			. $db->quoteName('type_id') 	. ' as type, '
-			. $db->quoteName('start') 		. ', '
-			. $db->quoteName('end') 		. ', '
-			. $db->quoteName('fft') 		. ', '
-			. $db->quoteName('overlap') 	. ', '
-			. $db->quoteName('color_min') 	. ' as colorMin, '
-			. $db->quoteName('color_max') 	. ' as colorMax, '
+			$db->quoteName('name')          . ', '
+			. $db->quoteName('system_id')   . ' as system, '
+			. $db->quoteName('type_id')     . ' as type, '
+			. $db->quoteName('start')       . ', '
+			. $db->quoteName('end')         . ', '
+			. $db->quoteName('fft')         . ', '
+			. $db->quoteName('overlap')     . ', '
+			. $db->quoteName('color_min')   . ' as colorMin, '
+			. $db->quoteName('color_max')   . ' as colorMax, '
 			. $db->quoteName('comments')
 		);
 		$campaign_query->from($db->quoteName('manual_counting_campaign'));

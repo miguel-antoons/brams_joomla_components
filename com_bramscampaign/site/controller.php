@@ -9,9 +9,11 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Cache\Controller\ViewController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\View\ViewInterface;
 
 /**
  * BramsCampaign Component Controller
@@ -35,21 +37,25 @@ class BramsCampaignController extends BaseController {
      * @param boolean $cacheable If true, the view output will be cached
      * @param array $url_params An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
      *
-     * @return BramsCampaignController|JViewLegacy
+     * @return BramsCampaignController|ViewInterface
      *
      * @throws Exception
      * @since   0.0.1
      */
     public function display($cacheable = false, $url_params = array(), $block_display = false) {
-        $document = Factory::getDocument();
+	    $document = $this->app->getDocument();
         $viewType = $document->getType();
         $viewName = $this->input->get('view', $this->default_view);
+		$modelName = $this->input->get('model');
         $viewLayout = $this->input->get('layout', 'default', 'string');
 
         $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 
         // Get/Create the model
-        if ($model = $this->getModel($viewName)) {
+	    if ($model = $this->getModel($modelName)) {
+		    // Push the model into the view (as default)
+		    $view->setModel($model, true);
+	    } elseif ($model = $this->getModel($viewName)) {
             // Push the model into the view (as default)
             $view->setModel($model, true);
         } elseif ($model = $this->getModel(substr($viewName, 0, -4) . 's')) {
@@ -60,28 +66,28 @@ class BramsCampaignController extends BaseController {
         $view->document = $document;
 
         // Display the view
-        if ($cacheable && $viewType !== 'feed' && JFactory::getConfig()->get('caching') >= 1) {
+        if ($cacheable && $viewType !== 'feed' && Factory::getApplication()->get('caching') >= 1) {
             $option = $this->input->get('option');
 
             if (is_array($url_params)) {
-                $app = JFactory::getApplication();
+                $this->app = Factory::getApplication();
 
-                if (!empty($app->registeredurlparams)) {
-                    $registeredurlparams = $app->registeredurlparams;
+                if (!empty($this->app->registeredurlparams)) {
+                    $registered_url_params = $this->app->registeredurlparams;
                 } else {
-                    $registeredurlparams = new \stdClass;
+                    $registered_url_params = new \stdClass;
                 }
 
                 foreach ($url_params as $key => $value) {
                     // Add your safe URL parameters with variable type as value {@see \JFilterInput::clean()}.
-                    $registeredurlparams->$key = $value;
+                    $registered_url_params->$key = $value;
                 }
 
-                $app->registeredurlparams = $registeredurlparams;
+                $this->app->registeredurlparams = $registered_url_params;
             }
 
-            /** @var JCacheControllerView $cache */
-            $cache = Factory::getCache($option, 'view');
+	        /** @var ViewController $cache */
+	        $cache = Factory::getCache($option, 'view');
             $cache->get($view);
 
         } elseif($block_display) {
@@ -272,6 +278,28 @@ class BramsCampaignController extends BaseController {
 				return;
 			}
 			$view->getSystems();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
+
+	/**
+	 * API - POST
+	 * Function executes the view getSystems method. THis function is called when
+	 * front-end needs all the systems.
+	 * ! this function will probably be removed in the near future
+	 * @since 0.1.1
+	 */
+	public function linkCampaign() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+				return;
+			}
+			$view->linkCampaign();
 		} else {
 			echo new JResponseJson(array(('message') => false));
 		}

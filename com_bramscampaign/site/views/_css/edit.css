@@ -111,3 +111,7 @@ label {
     display: none;
     vertical-align: middle;
 }
+
+#buttonContainer button {
+    margin: 1% auto 1% auto;
+}

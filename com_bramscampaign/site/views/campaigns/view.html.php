@@ -27,6 +27,7 @@ class BramsCampaignViewCampaigns extends HtmlView {
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 * @since 0.0.1
 	 */
 	function display($tpl = null) {
@@ -47,7 +48,9 @@ class BramsCampaignViewCampaigns extends HtmlView {
 		// get the message id
 		$message_id = (int) $input->get('message');
 
-		$this->message = $model->campaign_messages[$message_id];
+		if (!empty($model->campaign_messages[$message_id])) {
+			$this->message = $model->campaign_messages[$message_id];
+		}
 
 		// Display the view
 		parent::display($tpl);
@@ -56,15 +59,22 @@ class BramsCampaignViewCampaigns extends HtmlView {
 		$this->setDocument();
 	}
 
-	// function adds needed javascript and css files to the view
+	/**
+	 * function adds needed javascript and css files to the view
+	 *
+	 * @throws Exception
+	 * @since 0.1.1
+	 */
 	private function setDocument() {
-		$document = Factory::getDocument();
-		$document->addStyleSheet('/components/com_bramscampaign/views/campaigns/css/campaigns.css');
-		$document->addStyleSheet('/components/com_bramscampaign/views/_css/list.css');
-		$document->addStyleSheet('/components/com_bramscampaign/views/_css/bootstrap.min.css');
-		$document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
-		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
-		$document->addScript('/components/com_bramscampaign/views/_js/list.js');
-		$document->addScript('/components/com_bramscampaign/views/campaigns/js/campaigns.js');
+		$wam = $this->document->getWebAssetManager();
+		// add stylesheets
+		$wam->registerAndUseStyle('listStyle',      'components/com_bramscampaign/views/_css/list.css');
+		$wam->registerAndUseStyle('pageSpecific',   'components/com_bramscampaign/views/campaigns/css/campaigns.css');
+		$wam->registerAndUseStyle('boostrap4',      'components/com_bramscampaign/views/_css/bootstrap.min.css');
+		$wam->registerAndUseStyle('icons',          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+		// add javascript
+		$wam->registerAndUseScript('ajax',          'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
+		$wam->registerAndUseScript('listFunctions', 'components/com_bramscampaign/views/_js/list.js');
+		$wam->registerAndUseScript('pageSpecific',  'components/com_bramscampaign/views/campaigns/js/campaigns.js');
 	}
 }
