@@ -81,9 +81,9 @@ function deleteCampaign(campaignId, campaignName, notDeletable) {
     if (notDeletable) {
         // eslint-disable-next-line no-alert
         alert(
-            "Campaign can't be deleted as long as there are campaign countings referencing this campaign.\n"
-            + 'Please remove the countings referencing this campaign in order to remove the '
-            + 'campaign.',
+            "Campaign can't be deleted as long as there are campaign countings referencing this "
+            + 'campaign.\nPlease remove the countings referencing this campaign in order to remove'
+            + ' the campaign.',
         );
         return;
     }

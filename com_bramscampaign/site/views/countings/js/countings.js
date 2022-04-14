@@ -11,6 +11,42 @@ const sortDescFlags = {
     type: false,    // next sort method for the type table header (true = desc, false = asc)
 };
 
+function createCounting(id, start, system_id) {
+    // get the token
+    const token = $('#token').attr('name');
+console.log(start);
+    $.ajax({
+        type: 'POST',
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=create
+            &view=countings
+            &format=json
+            &${token}=1
+        `,
+        data: {
+            counting_info: {
+                campaign_id: id,
+                start_date: start,
+                system_id: system_id,
+            },
+        },
+        success: (response) => {
+            console.log(response);
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('message').innerHTML = (
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
+
 /**
  * Function generates the campaign table from the elements array.
  * It then renders the table on inside the #campaigns element.
@@ -31,7 +67,7 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn add'
-                            onclick="console.log('hello')"
+                            onclick="createCounting(${campaign.id}, '${campaign.start}', ${campaign.sysId})"
                         >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Add Campaign
@@ -60,7 +96,7 @@ function getCampaigns() {
             /index.php?
             option=com_bramscampaign
             &task=getAll
-            &view=campaignParticipation
+            &view=countings
             &model=campaigns
             &format=json
             &${token}=1

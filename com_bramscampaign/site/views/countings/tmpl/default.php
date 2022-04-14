@@ -18,9 +18,9 @@ defined('_JEXEC') or die('Restricted access');
 			<p id='message'>
 
 			</p>
-			<h1>Add Campaigns</h1>
+			<h1>Countings</h1>
 			<p>
-				Click one the button in the right column to add a campaign to your list of countings.
+				Click one the button in the right column to add meteors to the counting.
 			</p>
 		</div>
 	</div>

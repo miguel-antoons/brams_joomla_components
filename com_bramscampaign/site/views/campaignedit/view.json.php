@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\Input\Input;
 
 /**
  * Class inserts or updates a campaign and generates
@@ -23,7 +24,7 @@ class BramsCampaignViewCampaignEdit extends HtmlView {
 	 * Function makes sure to get the application input. If it fails, it
 	 * will return false
 	 *
-	 * @return boolean|JInput
+	 * @return boolean|Input
 	 * @since 0.2.5
 	 */
 	private function getAppInput() {
