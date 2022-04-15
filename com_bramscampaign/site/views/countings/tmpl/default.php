@@ -11,7 +11,32 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div class="container custom_container container_margin">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Download Spectrograms</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Choose whether to download the original spectrograms or the spectrograms with the highlighted
+                meteors.
+            </div>
+            <div class="modal-footer">
+                <button id="downloadOriginal" type="button" class="customBtn down1" data-dismiss="modal">
+                    <i class="fa fa-download" aria-hidden="true"></i> Download Original
+                </button>
+                <button id="downloadAnnotated" type="button" class="customBtn down2" data-dismiss="modal">
+                    <i class="fa fa-download" aria-hidden="true"></i> Download Modified
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DOMContainer" class="container custom_container container_margin">
 	<?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
 	<div class='row'>
 		<div class='col custom_col'>
@@ -42,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 					<th class='headerCol' onclick="sortTable(this, 'end')">
 						End
 					</th>
-					<th class='headerCol'>
+					<th class='headerCol' onclick="sortTable(this, 'hasParticipated')">
 						Actions
 					</th>
 				</tr>

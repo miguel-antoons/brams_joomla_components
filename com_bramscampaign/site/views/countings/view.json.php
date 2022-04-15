@@ -41,11 +41,19 @@ class BramsCampaignViewCountings extends HtmlView {
 		}
 	}
 
-	// function returns all the campaigns in a JSON array
+	/**
+	 * Function is the entrypoint to get all the campaigns
+	 * for the countings page. It uses the campaigns model instead
+	 * of the countings model.
+	 * It returns all the campaigns in a JSON array
+	 *
+	 * @throws Exception
+	 * @since 0.1.1
+	 */
 	public function getAll() {
 		$model = $this->getModel();
 		// if an error occurred in the model
-		if (($campaigns = $model->getCampaigns()) === -1) return;
+		if (($campaigns = $model->getCampaigns(Factory::getApplication()->getIdentity()->id)) === -1) return;
 
 		echo new JResponseJson($campaigns);
 	}
@@ -61,17 +69,14 @@ class BramsCampaignViewCountings extends HtmlView {
 	 */
 	public function create() {
 		// if an error occurred when getting the app input, stop the function
-		if (!$input = $this->getAppInput()) {
-			return;
-		}
+		if (!$input = $this->getAppInput()) return;
+
 		// get all the info needed for a new counting creation
 		$counting_info = $input->get('counting_info', array(), 'ARRAY');
 		$model = $this->getModel();
 
 		// try to create the new counting, return empty if an error occurs
-		if ($model->createCounting($counting_info) === -1) {
-			return;
-		}
+		if ($model->createCounting($counting_info) === -1) return;
 
 		// if everything goes as planned, return a confirmation message
 		echo new JResponseJson(

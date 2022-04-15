@@ -113,9 +113,9 @@ function setSortIcon(headerElement) {
 function sortTable(headerElement, attribute, noSpace = false) {
     // reset all the sorting methods for all the other table headers
     Object.keys(sortDescFlags).forEach((key) => {
-        if (key !== attribute) {
-            sortDescFlags[key] = false;
-        }
+        let defaultValue = false;
+        if (key === 'hasParticipated') defaultValue = true;
+        if (key !== attribute) sortDescFlags[key] = defaultValue;
     });
 
     // if sorting method is set to desc

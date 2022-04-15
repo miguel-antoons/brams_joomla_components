@@ -75,7 +75,7 @@ class BramsCampaignController extends BaseController {
                 if (!empty($this->app->registeredurlparams)) {
                     $registered_url_params = $this->app->registeredurlparams;
                 } else {
-                    $registered_url_params = new \stdClass;
+                    $registered_url_params = new stdClass;
                 }
 
                 foreach ($url_params as $key => $value) {
@@ -300,6 +300,22 @@ class BramsCampaignController extends BaseController {
 				return;
 			}
 			$view->linkCampaign();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
+
+	public function getOriginal() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+				return;
+			}
+
+			$view->getOriginal();
 		} else {
 			echo new JResponseJson(array(('message') => false));
 		}

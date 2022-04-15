@@ -158,7 +158,7 @@ class BramsCampaignModelCountings extends BaseDatabaseModel {
 				. $db->quote($current_datetime). ', '
 				. $db->quote($current_datetime)
 			);
-echo $counting_query;
+
 		$db->setQuery($counting_query);
 
 		// try to execute the query and return the result

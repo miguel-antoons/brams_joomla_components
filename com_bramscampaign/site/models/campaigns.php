@@ -9,6 +9,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
@@ -69,20 +70,33 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 	 * Function gets all the campaigns and their information from the database. If no
 	 * error occurs, it returns all the received information from the database.
 	 *
+	 * @param   bool|int  $specific_user    defaults to false if none provided, else it is the current user's id
+	 *
 	 * @return int|array -1 if an error occurs, the array with all the campaigns on success
+	 * @throws Exception
 	 * @since 0.0.1
 	 */
-	public function getCampaigns() {
+	public function getCampaigns($specific_user = false) {
 		// if the connection to the database failed, return false
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
 		}
+		$sub_query_attribute = ' as notDeletable';      // attribute name of the subquery result
 		$campaigns_query = $db->getQuery(true);
 		$sub_campaign_query = $db->getQuery(true);
 
 		// query to check if there are any countings for a given campaign
 		$sub_campaign_query->select($db->quoteName('campaign_id'));
 		$sub_campaign_query->from($db->quoteName('manual_counting'));
+
+		// if it is for a specific user, also add an attribute saying if the user already participated
+		// at a campaign
+		if ($specific_user) {
+			$sub_campaign_query->where(
+				$db->quoteName('user_id') . ' = ' . $db->quote($specific_user)
+			);
+			$sub_query_attribute = ' as hasParticipated';
+		}
 		$sub_campaign_query->where(
 			$db->quoteName('campaign_id') . ' = ' . $db->quoteName('m_camp.id') . ' limit 1'
 		);
@@ -96,7 +110,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 			. $db->quoteName('m_camp.end')          . ' as end, '
 			. $db->quoteName('system_id')           . ' as sysId, '
 			. $db->quoteName('system.name')         . ' as station, '
-			. 'exists(' . $sub_campaign_query . ')' . ' as notDeletable'
+			. 'exists(' . $sub_campaign_query . ')' . $sub_query_attribute
 		);
 		$campaigns_query->from($db->quoteName('manual_counting_campaign_type') . ' as m_type');
 		$campaigns_query->join(
