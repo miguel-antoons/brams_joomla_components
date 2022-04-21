@@ -68,8 +68,8 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
     // get the token
     const token = $('#token').attr('name');
     let task;
-    if (annotatedSpectrograms) task = 'getAnnotated';
-    else task = 'getOriginal';
+    if (annotatedSpectrograms) task = 'getCSV';
+    else task = 'getSpectrograms';
 
     location.href = `
         /index.php?

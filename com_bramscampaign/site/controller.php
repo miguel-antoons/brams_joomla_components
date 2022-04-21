@@ -313,7 +313,7 @@ class BramsCampaignController extends BaseController {
 		}
 	}
 
-	public function getOriginal() {
+	public function getSpectrograms() {
 		if (Jsession::checkToken('get')) {
 			try {
 				$view = $this->display(false, array(), true);
@@ -322,8 +322,7 @@ class BramsCampaignController extends BaseController {
 				Log::add($e, Log::ERROR, 'error');
 				return;
 			}
-
-			$view->getOriginal();
+			$view->getSpectrograms();
 		} else {
 			echo new JResponseJson(array(('message') => false));
 		}

@@ -41,7 +41,7 @@ class BramsCampaignViewCountings extends HtmlView {
 		}
 	}
 
-	public function getOriginal() {
+	public function getSpectrograms() {
 		// if an error occurred when getting the app input, stop the function
 		if (!$input = $this->getAppInput()) return -1;
 		$config = new JConfig();
