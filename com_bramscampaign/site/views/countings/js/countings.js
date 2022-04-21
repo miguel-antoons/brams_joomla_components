@@ -195,7 +195,6 @@ function getCampaigns() {
             &${token}=1
         `,
         success: (response) => {
-            console.log(response);
             elements = response.data;
             elements.sort((first, second) => sortAsc(first.name, second.name));
             generateTable();
