@@ -42,11 +42,35 @@ class BramsCampaignViewCountings extends HtmlView {
 	}
 
 	public function getOriginal() {
-		$file = "C:\Users\Miguel\Documents\TFE2022\\recordings\BEHAAC\New Compressed (zipped) Folder.zip";
-		if (file_exists($file)) {
-			header("Content-Disposition: attachment; filename=New Compressed (zipped) Folder.zip");
-			header("Content-Type: application/zip");
-			readfile($file);
+		// if an error occurred when getting the app input, stop the function
+		if (!$input = $this->getAppInput()) return -1;
+		$config = new JConfig();
+
+		// get the id of the counting to get files from
+		$campaign_id        = $input->get('id');
+		// initialise the models
+		$spectrogram_model  = $this->getModel('spectrogram');
+		$campaign_model     = $this->getModel('campaigns');
+
+		// get all the needed data
+		if (($campaign = $campaign_model->getCampaign($campaign_id)) === -1)         return -1;
+		if (($spectrograms = $spectrogram_model->getSpectrograms($campaign[0])) === -1) return -1;
+
+		// create the zip file
+		$file_name = $config->tmp_path . '/original_spectrograms.zip';
+		$zip = new ZipArchive();
+
+		// add all the spectrograms to the zip file
+		if ($zip->open($file_name, ZipArchive::CREATE)) {
+			foreach ($spectrograms as $spectrogram) {
+				$zip->addFile(JPATH_ROOT.'/ProjectDir'.$spectrogram->url, $spectrogram->url);
+			}
 		}
+
+		$zip->close();
+		// send the zip file so the user can download it
+		header("Content-Disposition: attachment; filename=original_spectrograms.zip");
+		header("Content-Type: application/zip");
+		readfile($file_name);
 	}
 }

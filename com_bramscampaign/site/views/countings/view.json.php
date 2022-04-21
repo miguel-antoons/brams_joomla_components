@@ -51,7 +51,7 @@ class BramsCampaignViewCountings extends HtmlView {
 	 * @since 0.1.1
 	 */
 	public function getAll() {
-		$model = $this->getModel();
+		$model = $this->getModel('campaigns');
 		// if an error occurred in the model
 		if (($campaigns = $model->getCampaigns(Factory::getApplication()->getIdentity()->id)) === -1) return;
 

@@ -76,7 +76,9 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
         option=com_bramscampaign
         &task=${task}
         &view=countings
+        &model=spectrogram,campaigns
         &format=zip
+        &id=${camId}
         &${token}=1
     `;
 
@@ -193,6 +195,7 @@ function getCampaigns() {
             &${token}=1
         `,
         success: (response) => {
+            console.log(response);
             elements = response.data;
             elements.sort((first, second) => sortAsc(first.name, second.name));
             generateTable();

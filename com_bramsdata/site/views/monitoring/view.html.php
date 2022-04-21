@@ -15,22 +15,22 @@ use Joomla\CMS\MVC\View\HtmlView;
 /**
  * HTML View class for the BramsData Component
  *
- * @since  0.0.1
+ * @since  0.4.0
  */
-class BramsDataViewAvailability extends HtmlView {
+class BramsDataViewMonitoring extends HtmlView {
 	public $stations;
 	public $today;
 	public $start_date;
 	public $column_length;
 
 	/**
-	 * Display the Availability view
+	 * Display the monitoring view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
 	 * @throws Exception
-	 * @since 0.0.2
+	 * @since 0.4.0
 	 */
 	function display($tpl = null) {
 		// get all the stations from the model
@@ -60,15 +60,9 @@ class BramsDataViewAvailability extends HtmlView {
 	// function adds needed javascript and css files to the view
 	private function setDocument() {
 		$document = Factory::getDocument();
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/availability.css');
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/visavail.css');
-		$document->addStyleSheet('/components/com_bramsdata/views/availability/css/bootstrap.min.css');
-		$document->addStyleSheet('https://use.fontawesome.com/releases/v5.0.12/css/all.css');
-		$document->addScript('/components/com_bramsdata/views/availability/js/d3.min.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/moment-with-locales.min.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
-		$document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
+		$document->addStyleSheet('/components/com_bramsdata/views/monitoring/css/monitoring.css');
+		$document->addStyleSheet('/components/com_bramsdata/views/monitoring/css/bootstrap.min.css');
+		$document->addScript('/components/com_bramsdata/views/monitoring/js/monitoring.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
-		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
 	}
 }

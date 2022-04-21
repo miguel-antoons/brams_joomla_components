@@ -707,3 +707,4 @@ node_modules/
 .eslintrc.json
 .env
 .idea
+spectrograms

@@ -46,22 +46,30 @@ class BramsCampaignController extends BaseController {
 	    $document = $this->app->getDocument();
         $viewType = $document->getType();
         $viewName = $this->input->get('view', $this->default_view);
-		$modelName = $this->input->get('model');
+		$modelNames = explode(',', $this->input->get('model', '', 'string'));
         $viewLayout = $this->input->get('layout', 'default', 'string');
+		$add_def_model = true;
 
         $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 
         // Get/Create the model
-	    if ($model = $this->getModel($modelName)) {
-		    // Push the model into the view (as default)
-		    $view->setModel($model, true);
-	    } elseif ($model = $this->getModel($viewName)) {
+	    if ($model = $this->getModel($viewName)) {
             // Push the model into the view (as default)
             $view->setModel($model, true);
+			$add_def_model = false;
         } elseif ($model = $this->getModel(substr($viewName, 0, -4) . 's')) {
              // Push the model into the view (as default)
              $view->setModel($model, true);
+			 $add_def_model = false;
         }
+
+		foreach ($modelNames as $modelName) {
+			if ($model = $this->getModel($modelName)) {
+				// Push the model into the view (as default)
+				$view->setModel($model, $add_def_model);
+				$add_def_model = false;
+			}
+		}
 
         $view->document = $document;
 

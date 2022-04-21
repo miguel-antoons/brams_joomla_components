@@ -342,10 +342,9 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 
 		$db->setQuery($campaign_query);
 
-		return $db->execute();
 		// try to execute the query and return the result
 		try {
-
+			return $db->execute();
 		} catch (Exception $e) {
 			// on fail, log the error and return false
 			echo new JResponseJson(array(('message') => $e));
