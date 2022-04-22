@@ -63,7 +63,7 @@ class BramsCampaignViewCountings extends HtmlView {
 		// add all the spectrograms to the zip file
 		if ($zip->open($file_name, ZipArchive::CREATE)) {
 			foreach ($spectrograms as $spectrogram) {
-				$zip->addFile(JPATH_ROOT.'/ProjectDir'.$spectrogram->url, $spectrogram->url);
+				$zip->addFile(JPATH_ROOT.'/ProjectDir'.$spectrogram['url'], $spectrogram['filename']);
 			}
 		}
 

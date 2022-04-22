@@ -91,6 +91,22 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		}
 	}
 
+	public function getPSD() {
+		if (!$db = $this->connectToDatabase()) {
+			return -1;
+		}
+		$psd_query = $db->getQuery(true);
+
+		// SQL query to get all the non null psd values for given stations
+		// and in between a certain time range
+		$psd_query->select(
+			$db->quoteName('system_id') . ', '
+			. $db->quoteName('psd')
+		);
+		$psd_query->from($db->quoteName('file'));
+		$psd_query->where()
+	}
+
 	// get today's date in yyy-mm-dd format
 	public function getToday() {
 		return date('Y-m-d');

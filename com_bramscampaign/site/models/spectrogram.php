@@ -9,7 +9,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
@@ -82,7 +81,8 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 		Log::add($system_code, Log::ERROR, 'error');
 		foreach ($files as $file) {
 			$archive = new Archive(true);
-			$spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
+            $spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
+            if (count($spectrogram_info) === 0 || $spectrogram_info === -1) $spectrogram_info = false;
 			$spectrogram = $archive->getSpectrogram(new DateTime($file->start), $system_code, $options);
 
 			if ($spectrogram_info && $spectrogram)  $spectrograms[] = $spectrogram_info[0];
