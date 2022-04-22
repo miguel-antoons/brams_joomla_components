@@ -64,5 +64,6 @@ class BramsDataViewMonitoring extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsdata/views/monitoring/css/bootstrap.min.css');
 		$document->addScript('/components/com_bramsdata/views/monitoring/js/monitoring.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
+        $document->addScript('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js');
 	}
 }

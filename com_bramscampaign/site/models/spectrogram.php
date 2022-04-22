@@ -77,21 +77,15 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 		);
 
 		$files = $this->getFileIDs($campaign->system, $campaign->start, $campaign->end);
+		if (($system_code = $this->getSystemCode($campaign->system)) === -1) return -1;
 		foreach ($files as $file) {
 			$archive = new Archive(true);
-			if (($system_code = $this->getSystemCode($campaign[0]->id)) === -1) return -1;
 			$spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
 			$spectrogram = $archive->getSpectrogram(new DateTime($file->start), $system_code, $options);
 
-			if ($spectrogram_info) {
-				if ($spectrogram) {
-					$spectrograms[] = $spectrogram_info[0];
-				} else {
-					$spectrograms[] = $this->spectrogram_not_found;
-				}
-			} else {
-				$spectrograms[] = $spectrogram;
-			}
+			if ($spectrogram_info && $spectrogram)  $spectrograms[] = $spectrogram_info[0];
+			elseif ($spectrogram)                   $spectrograms[] = $spectrogram;
+			else                                    $spectrograms[] = $this->spectrogram_not_found;
 		}
 
 		return $spectrograms;
@@ -195,6 +189,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id')   . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id')            . ' = ' . $db->quote($system_id));
+		Log::add($system_query, Log::ERROR, 'error');
 
 		$db->setQuery($system_query);
 
