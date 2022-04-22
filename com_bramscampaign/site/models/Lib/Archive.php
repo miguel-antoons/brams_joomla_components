@@ -70,10 +70,15 @@ class Archive {
 				'task'      => 'makeSpectrograms',
 				'begin'     => $begin,
 				'end'       => $end,
-				'station'   => $system_code
+				'station'   => $system_code,
+				'raw'       => $options['raw'],
+				'fft'       => $options['fft'],
+				'overlap'   => $options['overlap'],
+				'color_min' => $options['color_min'],
+				'color_max' => $options['color_max']
 			);
 
-			$json = $this->get(array_merge($params, $options));
+			$json = $this->get($params);
 			if (!$json) {
 				return false;
 			}

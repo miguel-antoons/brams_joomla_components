@@ -79,6 +79,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 		$files = $this->getFileIDs($campaign->system, $campaign->start, $campaign->end);
 		if (($system_code = $this->getSystemCode($campaign->system)) === -1) return -1;
 		$system_code = $system_code[0]->system_code;
+		Log::add($system_code, Log::ERROR, 'error');
 		foreach ($files as $file) {
 			$archive = new Archive(true);
 			$spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
@@ -190,7 +191,6 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 		$system_query->from($db->quoteName('location'));
 		$system_query->where($db->quoteName('system.location_id')   . ' = ' . $db->quoteName('location.id'));
 		$system_query->where($db->quoteName('system.id')            . ' = ' . $db->quote($system_id));
-		Log::add($system_query, Log::ERROR, 'error');
 
 		$db->setQuery($system_query);
 
