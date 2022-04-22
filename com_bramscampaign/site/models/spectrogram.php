@@ -78,6 +78,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 
 		$files = $this->getFileIDs($campaign->system, $campaign->start, $campaign->end);
 		if (($system_code = $this->getSystemCode($campaign->system)) === -1) return -1;
+		$system_code = $system_code[0]->system_code;
 		foreach ($files as $file) {
 			$archive = new Archive(true);
 			$spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
