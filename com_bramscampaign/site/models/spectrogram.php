@@ -13,7 +13,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 
-require JPATH_ROOT.DS.'components/com_bramscampaign/Lib/Archive.php';
+require JPATH_ROOT.DS.'components/com_bramscampaign/models/Lib/Archive.php';
 /**
  * Spectrogram Model
  *
