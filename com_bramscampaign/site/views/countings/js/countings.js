@@ -142,7 +142,7 @@ function generateTable() {
                         >
                             <i class="fa fa-download" aria-hidden="true"></i>
                         </button>
-                        <span id="spinner${campaign.id}" class="spinner-border text-success"></span>
+                        <span id="spinner${campaign.id}" class="spinner-border text-success spinner"></span>
                     </td>
                 </tr>
             `;
