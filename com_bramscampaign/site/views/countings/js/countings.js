@@ -79,6 +79,7 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
         &model=spectrogram,campaigns
         &format=zip
         &id=${camId}
+        &annotated=1
         &${token}=1
     `;
 
