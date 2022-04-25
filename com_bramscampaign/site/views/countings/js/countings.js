@@ -65,6 +65,7 @@ function countingAction(camId, camStart, camSysId, camHasParticipated) {
 }
 
 function downloadSpectrogram(camId, annotatedSpectrograms = false) {
+    document.getElementById(`spinner${camId}`).style.display = 'inline-block';
     // get the token
     const token = $('#token').attr('name');
     let task;
@@ -82,10 +83,11 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
         &annotated=1
         &${token}=1
     `;
+
+    document.getElementById(`spinner${camId}`).style.display = 'none';
 }
 
 function setPopupTitle(camName, camId) {
-    document.getElementById(`spinner${camId}`).style.display = 'inline';
     document.getElementById('exampleModalLabel').innerHTML = `
         Download files from ${camName} counting`;
 
@@ -150,6 +152,7 @@ function generateTable() {
     );
 
     document.getElementById('campaigns').innerHTML = HTMLString;
+    stopSpinners();
     // stopPropagation();
 }
 
@@ -185,5 +188,19 @@ function getCampaigns() {
         },
     });
 }
+
+function stopSpinners() {
+    const spinners = document.getElementsByClassName('spinner');
+    for (let spinner of spinners) {
+        spinner.style.display = 'none';
+    }
+}
+
+document.addEventListener('readystatechange', event => {
+    // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
+    if (event.target.readyState === "complete") {
+        stopSpinners();
+    }
+});
 
 window.onload = getCampaigns;

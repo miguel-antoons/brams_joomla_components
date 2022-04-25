@@ -11,8 +11,3 @@ tr {
     color: rgb(235, 235, 235);
     background-color: green;
 }
-
-.spinner {
-    display: none;
-    vertical-align: middle;
-}
