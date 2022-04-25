@@ -86,6 +86,19 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
     // setTimeout(`getDownloadStatus('${camId}')`, 500);
 }
 
+function generateCSV(csvData) {
+    const csvContent = "data:text/csv;charset=utf-8,"
+        + csvData.map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my_data.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click();
+}
+
 function getCSV(camId) {
     // get the token
     const token = $('#token').attr('name');
@@ -103,7 +116,7 @@ function getCSV(camId) {
             &${token}=1
         `,
         success: (response) => {
-            console.log(response);
+            generateCSV(response.data['csv_data']);
         },
         error: (response) => {
             console.log(response);

@@ -110,6 +110,7 @@ class BramsCampaignViewCountings extends HtmlView {
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) return -1;
         $response = array();
+        $response[] = $this->csv_headers;
 
         // get the id of the counting to get files from
         $campaign_id        = $input->get('id');
