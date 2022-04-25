@@ -114,7 +114,7 @@ class BramsCampaignViewCountings extends HtmlView {
                 $contents = ob_get_contents();
                 ob_end_clean();
 
-                imagecolorallocate($image, $red_color);
+                imagecolordeallocate($image, $red_color);
                 imagedestroy($image);
                 $zip->addFromString($spectrogram->filename, $contents);
             }

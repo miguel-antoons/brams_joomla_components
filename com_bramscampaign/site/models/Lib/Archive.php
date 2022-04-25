@@ -65,8 +65,8 @@ class Archive {
         $filename .= '.png';
         $len = $len - strlen($filename);
 
-        $path = $this->_cachePath.$filename;
-        $url = $this->_cacheURL.$filename;
+        $path   = $this->_cachePath.$filename;
+        $url    = $this->_cacheURL.$filename;
 
         $begin = $dateTime->format(Archive::DATE_TIME_FORMAT);
         $dateTime->modify('+5 minute');

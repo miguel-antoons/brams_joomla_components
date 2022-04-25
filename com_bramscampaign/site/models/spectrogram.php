@@ -83,6 +83,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
             $archive = new Archive(true);
             $spectrogram_info = $this->getSingleSpectrogram($file->id, $options);
             if (count($spectrogram_info) === 0 || $spectrogram_info === -1) $spectrogram_info = false;
+            else $spectrogram_info[0]->filename = basename($spectrogram_info[0]->url);
             $spectrogram = $archive->getSpectrogram(new DateTime($file->start), $system_code, $options);
 
             if ($spectrogram_info && $spectrogram)  $spectrograms[] = (object) $spectrogram_info[0];
