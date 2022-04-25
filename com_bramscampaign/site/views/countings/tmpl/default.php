@@ -26,10 +26,10 @@ defined('_JEXEC') or die('Restricted access');
             </div>
             <div class="modal-footer">
                 <button id="downloadOriginal" type="button" class="customBtn down1" data-dismiss="modal">
-                    <i class="fa fa-download" aria-hidden="true"></i> Download Original
+                    <i class="fa fa-download" aria-hidden="true"></i> Download Spectrogram
                 </button>
                 <button id="downloadAnnotated" type="button" class="customBtn down2" data-dismiss="modal">
-                    <i class="fa fa-download" aria-hidden="true"></i> Download Modified
+                    <i class="fa fa-download" aria-hidden="true"></i> Download CSV
                 </button>
             </div>
         </div>
@@ -37,45 +37,45 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <div id="DOMContainer" class="container custom_container container_margin">
-	<?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
-	<div class='row'>
-		<div class='col custom_col'>
-			<p id='message'>
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
+    <div class='row'>
+        <div class='col custom_col'>
+            <p id='message'>
 
-			</p>
-			<h1>Countings</h1>
-			<p>
-				Click one the button in the right column to add meteors to the counting.
-			</p>
-		</div>
-	</div>
+            </p>
+            <h1>Countings</h1>
+            <p>
+                Click one the button in the right column to add meteors to the counting.
+            </p>
+        </div>
+    </div>
 
-	<div class='row'>
-		<div class='col'>
-			<table class='table'>
-				<thead>
-				<tr>
-					<th class='headerCol' onclick="sortTable(this, 'name')">
-						Name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
-					</th>
-					<th class='headerCol' onclick="sortTable(this, 'station')">
-						Station
-					</th>
-					<th class='headerCol' onclick="sortTable(this, 'start')">
-						Start
-					</th>
-					<th class='headerCol' onclick="sortTable(this, 'end')">
-						End
-					</th>
-					<th class='headerCol' onclick="sortTable(this, 'hasParticipated')">
-						Actions
-					</th>
-				</tr>
-				</thead>
-				<tbody id='campaigns'>
+    <div class='row'>
+        <div class='col'>
+            <table class='table'>
+                <thead>
+                <tr>
+                    <th class='headerCol' onclick="sortTable(this, 'name')">
+                        Name <i id='sortIcon' class="fa fa-sort" aria-hidden="true"></i>
+                    </th>
+                    <th class='headerCol' onclick="sortTable(this, 'station')">
+                        Station
+                    </th>
+                    <th class='headerCol' onclick="sortTable(this, 'start')">
+                        Start
+                    </th>
+                    <th class='headerCol' onclick="sortTable(this, 'end')">
+                        End
+                    </th>
+                    <th class='headerCol' onclick="sortTable(this, 'hasParticipated')">
+                        Actions
+                    </th>
+                </tr>
+                </thead>
+                <tbody id='campaigns'>
 
-				</tbody>
-			</table>
-		</div>
-	</div>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

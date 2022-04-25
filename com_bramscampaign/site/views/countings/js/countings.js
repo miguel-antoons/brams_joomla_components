@@ -68,8 +68,8 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
     // get the token
     const token = $('#token').attr('name');
     let task;
-    if (annotatedSpectrograms) task = 'getCSV';
-    else task = 'getSpectrograms';
+    if (annotatedSpectrograms) task = 'getSpectrograms';
+    else task = 'getCSV';
 
     location.href = `
         /index.php?
@@ -82,38 +82,14 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
         &annotated=1
         &${token}=1
     `;
-
-    // $.ajax({
-    //     type: 'GET',
-    //     url: `
-    //         /index.php?
-    //         option=com_bramscampaign
-    //         &task=${task}
-    //         &view=countings
-    //         &format=zip
-    //         &${token}=1
-    //     `,
-    //     success: (response, text, xhr) => {
-    //         console.log('hello');
-    //         // console.log(response, text, xhr);
-    //     },
-    //     error: (response) => {
-    //         // on fail, show an error message
-    //         document.getElementById('message').innerHTML = (
-    //             'API call failed, please read the \'log\' variable in '
-    //             + 'developer console for more information about the problem.'
-    //         );
-    //         // store the server response in the log variable
-    //         log = response;
-    //     },
-    // });
 }
 
 function setPopupTitle(camName, camId) {
+    document.getElementById(`spinner${camId}`).style.display = 'inline';
     document.getElementById('exampleModalLabel').innerHTML = `
-        Download Spectrograms from ${camName} counting`;
+        Download files from ${camName} counting`;
 
-    document.getElementById('downloadOriginal').onclick = () => downloadSpectrogram(camId);
+    document.getElementById('downloadOriginal').onclick = () => downloadSpectrogram(camId, true);
 }
 
 /**
@@ -166,6 +142,7 @@ function generateTable() {
                         >
                             <i class="fa fa-download" aria-hidden="true"></i>
                         </button>
+                        <span id="spinner${campaign.id}" class="spinner-border text-success"></span>
                     </td>
                 </tr>
             `;

@@ -60,8 +60,8 @@ class BramsCampaignViewCountings extends HtmlView {
         // create the zip file
         $file_name = $config->tmp_path . '/original_spectrograms.zip';
 
-        if ($annotated === 1)   $this->getOriginalSpectrograms($spectrograms, $file_name);
-        else                    $this->getAnnotatedSpectrograms($spectrogram_model, $spectrograms, $file_name);
+        if ($annotated === 1)   $this->getAnnotatedSpectrograms($spectrogram_model, $spectrograms, $file_name);
+        else                    $this->getOriginalSpectrograms($spectrograms, $file_name);
 
         // send the zip file so the user can download it
         header("Content-Disposition: attachment; filename=original_spectrograms.zip");
