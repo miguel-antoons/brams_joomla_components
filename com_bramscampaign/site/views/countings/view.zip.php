@@ -61,7 +61,7 @@ class BramsCampaignViewCountings extends HtmlView {
         $file_name = $config->tmp_path . '/original_spectrograms.zip';
 
         if ($annotated === 1)   $this->getOriginalSpectrograms($spectrograms, $file_name);
-        else                    $this->getAnnotatedSpectrograms();
+        else                    $this->getAnnotatedSpectrograms($spectrogram_model, $spectrograms, $file_name);
 
         // send the zip file so the user can download it
         header("Content-Disposition: attachment; filename=original_spectrograms.zip");
@@ -77,7 +77,7 @@ class BramsCampaignViewCountings extends HtmlView {
         // add all the spectrograms to the zip file
         if ($zip->open($file_name, ZipArchive::CREATE|ZipArchive::OVERWRITE)) {
             foreach ($spectrograms as $spectrogram) {
-                $zip->addFile(JPATH_ROOT.'/ProjectDir'.$spectrogram['url'], $spectrogram['filename']);
+                $zip->addFile(JPATH_ROOT.'/ProjectDir'.$spectrogram->url, $spectrogram->filename);
             }
         }
 
@@ -90,14 +90,14 @@ class BramsCampaignViewCountings extends HtmlView {
         // add all the spectrograms to the zip file
         if ($zip->open($file_name, ZipArchive::CREATE|ZipArchive::OVERWRITE)) {
             foreach ($spectrograms as $spectrogram) {
-                $image_path = JPATH_ROOT.'/ProjectDir'.$spectrogram['url'];
+                $image_path = JPATH_ROOT.'/ProjectDir'.$spectrogram->url;
 
                 // generate the image and the rectangle color
                 $image      = imagecreatefrompng($image_path);
                 $red_color  = imagecolorallocate($image, 255, 0, 0);
 
                 // get all the meteor coordinates
-                $meteors = $spectrogram_model->getMeteors($spectrogram['id']);
+                $meteors = $spectrogram_model->getMeteors($spectrogram->id);
 
                 // add meteor rectangles one by one
                 foreach ($meteors as $meteor) {
@@ -116,7 +116,7 @@ class BramsCampaignViewCountings extends HtmlView {
 
                 imagecolorallocate($image, $red_color);
                 imagedestroy($image);
-                $zip->addFromString($spectrogram['filename'], $contents);
+                $zip->addFromString($spectrogram->filename, $contents);
             }
         }
 
