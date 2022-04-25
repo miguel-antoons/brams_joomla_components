@@ -25,10 +25,10 @@ defined('_JEXEC') or die('Restricted access');
                 meteors.
             </div>
             <div class="modal-footer">
-                <button id="downloadOriginal" type="button" class="customBtn down1" data-dismiss="modal">
+                <button id="downloadAnnotated" type="button" class="customBtn down1" data-dismiss="modal">
                     <i class="fa fa-download" aria-hidden="true"></i> Download Spectrogram
                 </button>
-                <button id="downloadAnnotated" type="button" class="customBtn down2" data-dismiss="modal">
+                <button id="downloadCsv" type="button" class="customBtn down2" data-dismiss="modal">
                     <i class="fa fa-download" aria-hidden="true"></i> Download CSV
                 </button>
             </div>

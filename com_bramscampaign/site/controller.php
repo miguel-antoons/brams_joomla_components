@@ -314,7 +314,7 @@ class BramsCampaignController extends BaseController {
     }
 
     public function getSpectrograms() {
-        $_SESSION['downloadStatus'] = array('status' => 'pending');
+        // $_SESSION['downloadStatus'] = array('status' => 'pending');
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -329,7 +329,7 @@ class BramsCampaignController extends BaseController {
         }
     }
 
-    public function getDownloadStatus() {
+    public function getCSV() {
         if (Jsession::checkToken('get')) {
             try {
                 $view = $this->display(false, array(), true);
@@ -338,10 +338,25 @@ class BramsCampaignController extends BaseController {
                 Log::add($e, Log::ERROR, 'error');
                 return;
             }
-            echo new JResponseJson($_SESSION['downloadStatus']);
-            return;
+            $view->getCSV();
         } else {
             echo new JResponseJson(array(('message') => false));
         }
     }
+
+//    public function getDownloadStatus() {
+//        if (Jsession::checkToken('get')) {
+//            try {
+//                $view = $this->display(false, array(), true);
+//            } catch (Exception $e) {
+//                echo new JResponseJson(array(('message') => $e));
+//                Log::add($e, Log::ERROR, 'error');
+//                return;
+//            }
+//            echo new JResponseJson($_SESSION['downloadStatus']);
+//            return;
+//        } else {
+//            echo new JResponseJson(array(('message') => false));
+//        }
+//    }
 }

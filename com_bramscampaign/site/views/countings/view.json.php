@@ -22,6 +22,24 @@ use Joomla\Input\Input;
  * @since  0.0.1
  */
 class BramsCampaignViewCountings extends HtmlView {
+    private $csv_headers = array(
+        'filename',
+        'file_start',
+        'start (s)',
+        'end (s)',
+        'frequency_min (Hz)',
+        'frequency_max (Hz)',
+        'type',
+        'top (px)',
+        'left (px)',
+        'bottom (px)',
+        'right (px)',
+        'sample_rate (Hz)',
+        'fft',
+        'overlap',
+        'color_min',
+        'color_max'
+    );
     /**
      * Function makes sure to get the application input. If it fails, it
      * will return false
@@ -85,6 +103,84 @@ class BramsCampaignViewCountings extends HtmlView {
                     . Factory::getApplication()->getIdentity()->id
                     . ' and for campaign ' . $counting_info['campaign_id']
             )
+        );
+    }
+
+    public function getCSV() {
+        // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) return -1;
+        $response = array();
+
+        // get the id of the counting to get files from
+        $campaign_id        = $input->get('id');
+
+        // initialise the models
+        $spectrogram_model  = $this->getModel('spectrogram');
+        $campaign_model     = $this->getModel('campaigns');
+
+        // get all the needed data
+        if (($campaign = $campaign_model->getCampaign($campaign_id)) === -1)                return -1;
+        if (($spectrograms = $spectrogram_model->getSpectrogramsDB($campaign[0])) === -1)   return -1;
+
+        foreach ($spectrograms as $spectrogram) {
+            $response[] = $this->_csv_meteor($spectrogram);
+        }
+
+        echo new JResponseJson(array(
+            ('csv_header')  => $this->csv_headers,
+            ('csv_data')    => $response
+        ));
+    }
+
+    private function _csv_meteor($spectrogram) {
+        date_default_timezone_set('UTC');
+
+        $sample_rate    = (float)   $spectrogram->sample_rate;
+        $fft            = (int)     $spectrogram->fft;
+        $overlap        = (int)     $spectrogram->overlap;
+        $top            = (int)     $spectrogram->top;
+        $bottom         = (int)     $spectrogram->bottom;
+        $left           = (int)     $spectrogram->left;
+        $right          = (int)     $spectrogram->right;
+        $freq_0         = (float)   $spectrogram->frequency_min;
+        $height         = (int)     $spectrogram->height;
+        $precise_start  = (int)     $spectrogram->precise_start;
+
+        $nonOverlap = $fft - $overlap;
+        $half       = $fft / 2.0;
+        $df         = $sample_rate / $fft;
+
+        $top        = $height - $top;
+        $bottom     = $height - $bottom;
+
+        $start      = ($nonOverlap * $left + $half) / $sample_rate;
+        $end        = ($nonOverlap * $right + $half) / $sample_rate;
+        $freq_min   = $freq_0 + $df * $bottom;
+        $freq_max   = $freq_0 + $df * $top;
+
+        $file_start = str_replace(
+            array('-', ' ', ':'),
+            array('', '_', ''),
+            substr($spectrogram->start, 0, 16)
+        );
+
+        return array(
+            substr_replace(basename($spectrogram->path, '.tar') . '.wav', $file_start, 11, 13),
+            date("Y-m-d\TH:i:s", $precise_start / 1000000) . sprintf('.%06d', $precise_start % 1000000),
+            $start,
+            $end,
+            $freq_min,
+            $freq_max,
+            $spectrogram->type,
+            $top,
+            $left,
+            $bottom,
+            $right,
+            $sample_rate,
+            $fft,
+            $overlap,
+            $spectrogram->color_min,
+            $spectrogram->color_max
         );
     }
 }

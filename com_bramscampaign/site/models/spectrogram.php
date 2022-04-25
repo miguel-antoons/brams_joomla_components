@@ -94,6 +94,75 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
         return $spectrograms;
     }
 
+    public function getSpectrogramsDB($campaign) {
+        // if the connection to the database failed, return false
+        if (!$db = $this->connectToDatabase()) {
+            return -1;
+        }
+        $files = $this->getFileIDs($campaign->system, $campaign->start, $campaign->end);
+        $file_ids = '(';
+
+        foreach ($files as $file) {
+            $file_ids .= '\'' . $file->id . '\', ';
+        }
+        $file_ids = substr($file_ids, 0, -2);
+        $file_ids .= ')';
+
+        $spectrogram_query = $db->getQuery(true);
+
+        // query to get the spectrogram row with data equal to the provided options
+        $spectrogram_query->select(
+            $db->quoteName('file.path')                         . ' as path, '
+            . $db->quoteName('file.start')                      . ' as start, '
+            . $db->quoteName('file.precise_start')              . ' as precise_start, '
+            . $db->quoteName('file.sample_rate')                . ' as sample_rate, '
+            . $db->quoteName('manual_counting_meteor.top')      . ' as top, '
+            . $db->quoteName('manual_counting_meteor.left')     . ' as \'left\', '
+            . $db->quoteName('manual_counting_meteor.right')    . ' as \'right\', '
+            . $db->quoteName('manual_counting_meteor.bottom')   . ' as bottom, '
+            . $db->quoteName('manual_counting_meteor.type')     . ' as type, '
+            . $db->quoteName('spectrogram.height')              . ' as height, '
+            . $db->quoteName('spectrogram.fft')                 . ' as fft, '
+            . $db->quoteName('spectrogram.overlap')             . ' as overlap, '
+            . $db->quoteName('spectrogram.color_min')           . ' as color_min, '
+            . $db->quoteName('spectrogram.color_max')           . ' as color_max, '
+            . $db->quoteName('spectrogram.frequency_min')       . ' as frequency_min'
+        );
+        $spectrogram_query->from($db->quoteName('manual_counting_meteor'));
+        $spectrogram_query->join(
+            'INNER',
+            $db->quoteName('spectrogram')
+            . ' ON '
+            . $db->quoteName('manual_counting_meteor.spectrogram_id')
+            . ' = '
+            . $db->quoteName('spectrogram.id')
+        );
+        $spectrogram_query->join(
+            'INNER',
+            $db->quoteName('file')
+            . ' ON '
+            . $db->quoteName('spectrogram.file_id')
+            . ' = '
+            . $db->quoteName('file.id')
+        );
+        $spectrogram_query->where($db->quoteName('spectrogram.file_id') . ' in ' . $file_ids);
+        $spectrogram_query->order($db->quoteName('manual_counting_meteor.id'));
+
+        Log::add($spectrogram_query, Log::ERROR, 'error');
+
+        $db->setQuery($spectrogram_query);
+
+        // try to execute the query and return the result
+        try {
+            return $db->loadObjectList();
+        } catch (Exception $e) {
+            // if it fails, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
     /**
      * Function returns all the file ids for a given system_id, start date and
      * end date.

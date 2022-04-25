@@ -65,33 +65,65 @@ function countingAction(camId, camStart, camSysId, camHasParticipated) {
 }
 
 function downloadSpectrogram(camId, annotatedSpectrograms = false) {
-    document.getElementById(`spinner${camId}`).style.display = 'inline-block';
+    // document.getElementById(`spinner${camId}`).style.display = 'inline-block';
     // get the token
     const token = $('#token').attr('name');
-    let task;
-    if (annotatedSpectrograms) task = 'getSpectrograms';
-    else task = 'getCSV';
 
-    location.href = `
-        /index.php?
-        option=com_bramscampaign
-        &task=${task}
-        &view=countings
-        &model=spectrogram,campaigns
-        &format=zip
-        &id=${camId}
-        &annotated=1
-        &${token}=1
-    `;
+    if (annotatedSpectrograms) {
+        location.href = `
+            /index.php?
+            option=com_bramscampaign
+            &task=getSpectrograms
+            &view=countings
+            &model=spectrogram,campaigns
+            &format=zip
+            &id=${camId}
+            &annotated=1
+            &${token}=1
+        `;
+    } else getCSV(camId, token);
 
-    setTimeout(`getDownloadStatus('${camId}')`, 500);
+    // setTimeout(`getDownloadStatus('${camId}')`, 500);
+}
+
+function getCSV(camId) {
+    // get the token
+    const token = $('#token').attr('name');
+
+    $.ajax({
+        type: 'GET',
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=getCSV
+            &view=countings
+            &model=spectrogram,campaigns
+            &format=json
+            &id=${camId}
+            &${token}=1
+        `,
+        success: (response) => {
+            console.log(response);
+        },
+        error: (response) => {
+            console.log(response);
+            // on fail, show an error message
+            document.getElementById('message').innerHTML = (
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
 }
 
 function setPopupTitle(camName, camId) {
     document.getElementById('exampleModalLabel').innerHTML = `
         Download files from ${camName} counting`;
 
-    document.getElementById('downloadOriginal').onclick = () => downloadSpectrogram(camId, true);
+    document.getElementById('downloadAnnotated').onclick = () => downloadSpectrogram(camId, true);
+    document.getElementById('downloadCsv').onclick = () => getCSV(camId);
 }
 
 /**
@@ -196,36 +228,36 @@ function stopSpinners() {
     }
 }
 
-function getDownloadStatus(camId) {
-    // get the token
-    const token = $('#token').attr('name');
-
-    $.ajax({
-        url: `
-            /index.php?
-            option=com_bramscampaign
-            &task=getDownloadStatus
-            &view=countings
-            &format=json
-            &${token}=1
-        `,
-        type: 'GET',
-        dataType: 'json',
-        success: (response) => {
-            console.log(response);
-            if(response.status === "pending") {
-                setTimeout('getDownloadStatus(camId)', 500);
-            } else {
-                document.getElementById(`spinner${camId}`).style.display = 'none';
-            }
-        },
-        error: (response) => {
-            // on fail, show an error message
-            document.getElementById('message').innerHTML = apiFailMessg;
-            // store the server response in the log variable
-            log = response;
-        },
-    });
-}
+// function getDownloadStatus(camId) {
+//     // get the token
+//     const token = $('#token').attr('name');
+//
+//     $.ajax({
+//         url: `
+//             /index.php?
+//             option=com_bramscampaign
+//             &task=getDownloadStatus
+//             &view=countings
+//             &format=json
+//             &${token}=1
+//         `,
+//         type: 'GET',
+//         dataType: 'json',
+//         success: (response) => {
+//             console.log(response);
+//             if(response.status === "pending") {
+//                 setTimeout('getDownloadStatus(camId)', 500);
+//             } else {
+//                 document.getElementById(`spinner${camId}`).style.display = 'none';
+//             }
+//         },
+//         error: (response) => {
+//             // on fail, show an error message
+//             document.getElementById('message').innerHTML = apiFailMessg;
+//             // store the server response in the log variable
+//             log = response;
+//         },
+//     });
+// }
 
 window.onload = getCampaigns;
