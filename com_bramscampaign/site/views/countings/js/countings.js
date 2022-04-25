@@ -153,6 +153,7 @@ function generateTable() {
 
     document.getElementById('campaigns').innerHTML = HTMLString;
     stopSpinners();
+    setLoad();
     // stopPropagation();
 }
 
@@ -196,11 +197,9 @@ function stopSpinners() {
     }
 }
 
-document.addEventListener('readystatechange', event => {
-    // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
-    if (event.target.readyState === "complete") {
-        stopSpinners();
-    }
-});
+function setLoad() {
+    document.addEventListener('load', stopSpinners);
+}
+
 
 window.onload = getCampaigns;
