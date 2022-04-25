@@ -68,6 +68,7 @@ class BramsCampaignViewCountings extends HtmlView {
         header("Content-Type: application/zip");
         readfile($file_name);
 
+        $_SESSION['downloadStatus'] = array('status' => 'finished');
         return 1;
     }
 

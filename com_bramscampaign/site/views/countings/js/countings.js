@@ -84,7 +84,7 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
         &${token}=1
     `;
 
-    document.getElementById(`spinner${camId}`).style.display = 'none';
+    setTimeout(`getDownloadStatus('${camId}')`, 500);
 }
 
 function setPopupTitle(camName, camId) {
@@ -153,7 +153,6 @@ function generateTable() {
 
     document.getElementById('campaigns').innerHTML = HTMLString;
     stopSpinners();
-    setLoad();
     // stopPropagation();
 }
 
@@ -197,9 +196,36 @@ function stopSpinners() {
     }
 }
 
-function setLoad() {
-    document.addEventListener('load', stopSpinners);
-}
+function getDownloadStatus(camId) {
+    // get the token
+    const token = $('#token').attr('name');
 
+    $.ajax({
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=getDownloadStatus
+            &view=countings
+            &format=json
+            &${token}=1
+        `,
+        type: 'GET',
+        dataType: 'json',
+        success: (response) => {
+            console.log(response);
+            if(response.status === "pending") {
+                setTimeout('getDownloadStatus(camId)', 500);
+            } else {
+                document.getElementById(`spinner${camId}`).style.display = 'none';
+            }
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('message').innerHTML = apiFailMessg;
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
 
 window.onload = getCampaigns;
