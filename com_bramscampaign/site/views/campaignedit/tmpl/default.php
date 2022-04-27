@@ -2,7 +2,7 @@
 /**
  * @author      Antoons Miguel
  * @package     Joomla.Administrator
- * @subpackage  com_bramsadmin
+ * @subpackage  com_bramscampaign
  */
 
 // No direct access to this file

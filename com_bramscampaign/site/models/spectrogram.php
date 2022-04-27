@@ -148,8 +148,6 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
         $spectrogram_query->where($db->quoteName('spectrogram.file_id') . ' in ' . $file_ids);
         $spectrogram_query->order($db->quoteName('manual_counting_meteor.id'));
 
-        Log::add($spectrogram_query, Log::ERROR, 'error');
-
         $db->setQuery($spectrogram_query);
 
         // try to execute the query and return the result
