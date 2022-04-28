@@ -21,16 +21,16 @@ let meteors = [];
 
 function setCanvasDim() {
     const mcCounting = document.getElementById('mc_counting');
-    mcCounting.style.width = `${spectrograms[0]['width']}px`;
-    mcCounting.style.height = `${spectrograms[0]['height']}px`;
+    mcCounting.width = spectrograms[0]['width'];
+    mcCounting.height = spectrograms[0]['height'];
 
     const mcBackground = document.getElementById('mc_background');
-    mcBackground.style.width = `${spectrograms[0]['width']}px`;
-    mcBackground.style.height = `${spectrograms[0]['height']}px`;
+    mcBackground.width = spectrograms[0]['width'];
+    mcBackground.height = spectrograms[0]['height'];
 
     const mcCanvas = document.getElementById('mc_canvas');
-    mcCanvas.style.width = `${spectrograms[0]['width']}px`;
-    mcCanvas.style.height = `${spectrograms[0]['height']}px`;
+    mcCanvas.width = spectrograms[0]['width'];
+    mcCanvas.height = spectrograms[0]['height'];
 }
 
 
