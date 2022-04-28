@@ -40,6 +40,16 @@ defined('_JEXEC') or die('Restricted access');
     </div>
 
     <div id="mc_container">
+        <canvas id="mc_counting">
+            <p>You need a browser with HTML5 support to see this page.</p>
+        </canvas>
 
+        <canvas id="mc_background">
+            <p>You need a browser with HTML5 support to see this page.</p>
+        </canvas>
+
+        <canvas id="mc_canvas">
+            <p>You need a browser with HTML5 support to see this page.</p>
+        </canvas>
     </div>
 </div>

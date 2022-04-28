@@ -189,6 +189,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
         $file_query->where($db->quoteName('system_id')  . ' = '     . $db->quote($system_id));
         $file_query->where($db->quoteName('start')      . ' >= '    . $db->quote($start));
         $file_query->where($db->quoteName('start')      . ' < '     . $db->quote($end));
+        $file_query->order($db->quoteName('start'));
 
         $db->setQuery($file_query);
 
