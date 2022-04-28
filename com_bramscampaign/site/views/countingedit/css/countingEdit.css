@@ -54,8 +54,8 @@
 
 #mc_counting {
     position: relative;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 52px;
     z-index: 2;
     padding: 0;
     margin: 0;

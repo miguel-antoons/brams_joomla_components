@@ -53,10 +53,19 @@ class BramsCampaignViewCountingEdit extends HtmlView {
         if (($campaign = $campaign_model->getCampaign($campaign_id)) === -1)            return;
         if (($spectrograms = $spectrogram_model->getSpectrograms($campaign[0])) === -1) return;
 
+        $final_spectrograms = array();
+
         foreach ($spectrograms as $spectrogram) {
-            $spectrogram->meteors = $spectrogram_model->getMeteors($spectrogram->id);
+            $new_spectrogram            = new stdClass();
+            $new_spectrogram->url       = $spectrogram->url;
+            $new_spectrogram->height    = $spectrogram->height;
+            $new_spectrogram->width     = $spectrogram->width;
+            $new_spectrogram->start     = $spectrogram->start;
+            $new_spectrogram->meteors   = $spectrogram_model->getMeteors($spectrogram->id);
+
+            $final_spectrograms[]       = $new_spectrogram;
         }
 
-        echo new JResponseJson($spectrograms);
+        echo new JResponseJson($final_spectrograms);
     }
 }

@@ -86,9 +86,13 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
             else $spectrogram_info[0]->filename = basename($spectrogram_info[0]->url);
             $spectrogram = $archive->getSpectrogram(new DateTime($file->start), $system_code, $options);
 
-            if ($spectrogram_info && $spectrogram)  $spectrograms[] = (object) $spectrogram_info[0];
-            elseif ($spectrogram)                   $spectrograms[] = (object) $spectrogram;
-            else                                    $spectrograms[] = (object) $this->spectrogram_not_found;
+            if ($spectrogram_info && $spectrogram)  $spectrogram = (object) $spectrogram_info[0];
+            elseif ($spectrogram)                   $spectrogram = (object) $spectrogram;
+            else                                    $spectrogram = (object) $this->spectrogram_not_found;
+
+            $spectrogram->file_id   = $file->id;
+            $spectrogram->start     = $file->start;
+            $spectrograms[]         = $spectrogram;
         }
 
         return $spectrograms;
@@ -288,7 +292,8 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
             . $db->quoteName('left')    . ', '
             . $db->quoteName('bottom')  . ', '
             . $db->quoteName('right')   . ', '
-            . $db->quoteName('type')
+            . $db->quoteName('type')    . ', '
+            . $db->quoteName('id')
         );
         $meteor_query->from($db->quoteName('manual_counting_meteor'));
         $meteor_query->where($db->quoteName('spectrogram_id') . ' = ' . $db->quote($spectrogram_id));
