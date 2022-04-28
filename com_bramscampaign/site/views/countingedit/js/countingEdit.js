@@ -6,6 +6,7 @@ const currentView = 'countingEdit';
 const redirectView = 'countings';
 let spectrograms;
 let mc_meteor_type;
+let meteors = [];
 
 
 // function removeRectangle(event) {
@@ -30,6 +31,17 @@ function setCanvasDim() {
     const mcCanvas = document.getElementById('mc_canvas');
     mcCanvas.style.width = spectrograms[0]['width'];
     mcCanvas.style.height = spectrograms[0]['height'];
+}
+
+
+function setMeteors() {
+    meteors.forEach(
+        (meteor) => {
+            meteors.push(
+                new Meteor(meteor['left'], meteor['top'], meteor['right'], meteor['bottom'], meteor['type'])
+            );
+        }
+    );
 }
 
 
@@ -166,12 +178,12 @@ function initializeMeteorCounting() {
         addListener(img, 'load', () => {
             backgroundContext.drawImage(img, 0, 0);
         });
-        img.src = `/ProjectDir/${spectrograms[0]['url']}`;
+        img.src = `/ProjectDir${spectrograms[0]['url']}`;
     }
 
     // Draw initial meteors.
-    for (let i = 0; i < spectrograms[0]['meteors'].length; ++i) {
-        spectrograms[0]['meteors'][i].draw(counting);
+    for (let i = 0; i < meteors.length; ++i) {
+        meteors[i].draw(counting);
     }
 
     // Select initial meteor type.
@@ -242,7 +254,7 @@ function initializeMeteorCounting() {
                     // Draws the meteor on the #mc_counting canvas, after which
                     // #mc_canvas is cleared.
                     m.draw(counting);
-                    spectrograms[0]['meteors'].push(m);
+                    meteors.push(m);
                 }
             }
         };
@@ -265,9 +277,9 @@ function initializeMeteorCounting() {
         // counting.
         let index = -1;
         let distance = Number.POSITIVE_INFINITY;
-        for (var i = 0; i < spectrograms[0]['meteors'].length; ++i) {
-            if (spectrograms[0]['meteors'][i].inside(x, y)) {
-                const d = spectrograms[0]['meteors'][i].distance(x, y);
+        for (let i = 0; i < meteors.length; ++i) {
+            if (meteors[i].inside(x, y)) {
+                const d = meteors[i].distance(x, y);
                 if (d < distance) {
                     distance = d;
                     index = i;
@@ -277,12 +289,12 @@ function initializeMeteorCounting() {
 
         if (index != -1) {
             // Remove the nearest rectangle from the results.
-            spectrograms[0]['meteors'].splice(index, 1);
+            meteors.splice(index, 1);
 
             // Remove the nearest rectangle from the counting canvas.
             countingContext.clearRect(0, 0, counting.width, counting.height);
-            for (var i = 0; i < spectrograms[0]['meteors'].length; ++i) {
-                spectrograms[0]['meteors'][i].draw(counting);
+            for (let i = 0; i < meteors.length; ++i) {
+                meteors[i].draw(counting);
             }
         }
 
@@ -313,12 +325,12 @@ function submitMeteors(form) {
         return input;
     };
 
-    for (var i = 0; i < spectrograms[0]['meteors'].length; ++i) {
-        form.appendChild(meteorInput('top', spectrograms[0]['meteors'][i].top));
-        form.appendChild(meteorInput('left', spectrograms[0]['meteors'][i].left));
-        form.appendChild(meteorInput('bottom', spectrograms[0]['meteors'][i].bottom));
-        form.appendChild(meteorInput('right', spectrograms[0]['meteors'][i].right));
-        form.appendChild(meteorInput('type', spectrograms[0]['meteors'][i].type));
+    for (let i = 0; i < meteors.length; ++i) {
+        form.appendChild(meteorInput('top', meteors[i].top));
+        form.appendChild(meteorInput('left', meteors[i].left));
+        form.appendChild(meteorInput('bottom', meteors[i].bottom));
+        form.appendChild(meteorInput('right', meteors[i].right));
+        form.appendChild(meteorInput('type', meteors[i].type));
     }
 
     if (mc_meteor_type) {
@@ -412,7 +424,7 @@ function Meteor(x0, y0, x1, y1, type) {
 }
 
 function createCanvas() {
-    canvas = document.createElement('canvas');
+    let canvas = document.createElement('canvas');
     if (!canvas) {
         alert('Error: creating a new canvas element failed!');
         return false;

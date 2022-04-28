@@ -287,7 +287,8 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
             $db->quoteName('top')       . ', '
             . $db->quoteName('left')    . ', '
             . $db->quoteName('bottom')  . ', '
-            . $db->quoteName('right')
+            . $db->quoteName('right')   . ', '
+            . $db->quoteName('type')
         );
         $meteor_query->from($db->quoteName('manual_counting_meteor'));
         $meteor_query->where($db->quoteName('spectrogram_id') . ' = ' . $db->quote($spectrogram_id));
