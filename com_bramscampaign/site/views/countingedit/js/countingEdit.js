@@ -19,6 +19,92 @@ let meteors = [];
 // }
 //
 
+function newMeteor(meteor) {
+    const token = $('#token').attr('name');
+    $.ajax({
+        type: 'POST',
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=addMeteor
+            &model=spectrogram
+            &view=${currentView}
+            &format=json
+            &${token}=1
+        `,
+        data: {
+            newMeteor: {
+                'left': meteor.left,
+                'top': meteor.top,
+                'right': meteor.right,
+                'bottom': meteor.bottom,
+                'type': meteor.type,
+                'mcId': elementId,
+                'spectrogramId': spectrograms[0]['id'],
+            },
+        },
+        success: (response) => {
+            console.log(response);
+            meteor.id = response.data.newId;
+            // Draws the meteor on the #mc_counting canvas, after which
+            // #mc_canvas is cleared.
+            meteor.draw(counting);
+            meteors.push(meteor);
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('error').innerHTML = (
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
+
+
+function deleteMeteor(meteorIndex, counting, countingContext) {
+    const token = $('#token').attr('name');
+
+    $.ajax({
+        type: 'DELETE',
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=deleteMeteor
+            &model=spectrogram
+            &view=${currentView}
+            &format=json
+            &id=${meteors[meteorIndex].id}
+            &${token}=1
+        `,
+        success: (response) => {
+            console.log(response);
+            if (response.data.success) {
+                // Remove the nearest rectangle from the results.
+                meteors.splice(meteorIndex, 1);
+
+                // Remove the nearest rectangle from the counting canvas.
+                countingContext.clearRect(0, 0, counting.width, counting.height);
+                for (let i = 0; i < meteors.length; ++i) {
+                    meteors[i].draw(counting);
+                }
+            }
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('error').innerHTML = (
+                'API call failed, please read the \'log\' variable in '
+                + 'developer console for more information about the problem.'
+            );
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
+
+
 function setCanvasDim() {
     const mcCounting = document.getElementById('mc_counting');
     mcCounting.width = spectrograms[0]['width'];
@@ -35,7 +121,7 @@ function setCanvasDim() {
 
 
 function setMeteors() {
-    meteors.forEach(
+    spectrograms[0]['meteors'].forEach(
         (meteor) => {
             meteors.push(
                 new Meteor(meteor['left'], meteor['top'], meteor['right'], meteor['bottom'], meteor['type'])
@@ -63,6 +149,7 @@ function getSpectrograms() {
         success: (response) => {
             spectrograms = response.data;
             setCanvasDim();
+            setMeteors();
             initializeMeteorCounting();
         },
         error: (response) => {
@@ -148,9 +235,9 @@ function initializeMeteorCounting() {
             c = ev.keyCode;
         }
 
-        if (c == 49 || c == 115 || c == 83) {
+        if (c === 49 || c === 115 || c === 83) {
             type = 'S';
-        } else if (c == 50 || c == 108 || c == 76) {
+        } else if (c === 50 || c === 108 || c === 76) {
             type = 'L';
         } else {
             return;
@@ -160,7 +247,7 @@ function initializeMeteorCounting() {
     }, false);
 
     // Get background canvas.
-    background = document.getElementById('mc_background');
+    let background = document.getElementById('mc_background');
     if (!background || !background.getContext) {
         alert('Error: no mc_background element!');
         return;
@@ -193,10 +280,10 @@ function initializeMeteorCounting() {
     const tool = new RectangleTool();
 
     function drawRectangle(ev) {
-        if (ev.layerX || ev.layerX == 0) { // Firefox
+        if (ev.layerX || ev.layerX === 0) { // Firefox
             ev._x = ev.layerX;
             ev._y = ev.layerY;
-        } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+        } else if (ev.offsetX || ev.offsetX === 0) { // Opera
             ev._x = ev.offsetX;
             ev._y = ev.offsetY;
         }
@@ -243,18 +330,16 @@ function initializeMeteorCounting() {
         };
 
         this.mouseup = function (ev) {
+            let m;
             if (tool.started) {
                 tool.mousemove(ev);
                 tool.started = false;
 
                 context.clearRect(0, 0, canvas.width, canvas.height);
 
-                if (tool.x0 != ev._x && tool.y0 != ev._y) {
-                    m = new Meteor(tool.x0, tool.y0, ev._x, ev._y, mc_meteor_type);
-                    // Draws the meteor on the #mc_counting canvas, after which
-                    // #mc_canvas is cleared.
-                    m.draw(counting);
-                    meteors.push(m);
+                if (tool.x0 !== ev._x && tool.y0 !== ev._y) {
+                    let m = new Meteor(tool.x0, tool.y0, ev._x, ev._y, mc_meteor_type, 0);
+                    newMeteor(m);
                 }
             }
         };
@@ -263,10 +348,10 @@ function initializeMeteorCounting() {
     function removeRectangle(ev) {
         let x; let
             y;
-        if (ev.layerX || ev.layerX == 0) { // Firefox
+        if (ev.layerX || ev.layerX === 0) { // Firefox
             x = ev.layerX;
             y = ev.layerY;
-        } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+        } else if (ev.offsetX || ev.offsetX === 0) { // Opera
             x = ev.offsetX;
             y = ev.offsetY;
         }
@@ -287,15 +372,8 @@ function initializeMeteorCounting() {
             }
         }
 
-        if (index != -1) {
-            // Remove the nearest rectangle from the results.
-            meteors.splice(index, 1);
-
-            // Remove the nearest rectangle from the counting canvas.
-            countingContext.clearRect(0, 0, counting.width, counting.height);
-            for (let i = 0; i < meteors.length; ++i) {
-                meteors[i].draw(counting);
-            }
+        if (index !== -1) {
+            deleteMeteor(index, counting, countingContext);
         }
 
         // The user clicked outside any rectangles.
@@ -309,7 +387,7 @@ function submitMeteors(form) {
     }
 
     let zoom = detectZoom.zoom();
-    if (zoom && zoom != 1) {
+    if (zoom && zoom !== 1) {
         zoom = Math.round(100 * zoom);
         alert(`The current zoom level of your browser is ${zoom}%. Please reset your zoom to 100%.`);
         return false;
@@ -347,7 +425,7 @@ function selectMeteorType(type) {
         // For zoo campaigns, the short and long icons do not exist.
         const img = document.getElementById(`mc_${types[i]}`);
         if (img) {
-            if (i == type && img.src.replace(/^.*[\/]/, '') == `${types[i]}_icon.png`) {
+            if (i === type && img.src.replace(/^.*[\/]/, '') === `${types[i]}_icon.png`) {
                 img.src = `/ProjectDir/img/${types[i]}_selected_icon.png`;
                 mc_meteor_type = i;
             } else {
@@ -358,8 +436,9 @@ function selectMeteorType(type) {
 }
 
 // This function creates a new Meteor object.
-function Meteor(x0, y0, x1, y1, type) {
+function Meteor(x0, y0, x1, y1, type, id) {
     const meteor = this;
+    meteor.id = id;
 
     if (x0 <= x1) {
         meteor.left = x0;
@@ -397,9 +476,9 @@ function Meteor(x0, y0, x1, y1, type) {
 
     // Draw a meteor on the given canvas.
     this.draw = function (canvas) {
-        context = canvas.getContext('2d');
+        let context = canvas.getContext('2d');
         if (!context) {
-            alert('Error: no canvascontext!');
+            alert('Error: no canvas-context!');
             return;
         }
 
@@ -421,25 +500,6 @@ function Meteor(x0, y0, x1, y1, type) {
 
         context.fillText(meteor.type, x, y);
     };
-}
-
-function createCanvas() {
-    let canvas = document.createElement('canvas');
-    if (!canvas) {
-        alert('Error: creating a new canvas element failed!');
-        return false;
-    }
-
-    if (!canvas.getContext && G_vmlCanvasManager) {
-        canvas = G_vmlCanvasManager.initElement(canvas);
-    }
-
-    if (!canvas.getContext) {
-        alert('Error: newly created canvas has no context!');
-        return false;
-    }
-
-    return canvas;
 }
 
 function addListener(el, ev, listener) {

@@ -295,7 +295,6 @@ class BramsCampaignController extends BaseController {
      * API - POST
      * Function executes the view getSystems method. THis function is called when
      * front-end needs all the systems.
-     * ! this function will probably be removed in the near future
      * @since 0.1.1
      */
     public function linkCampaign() {
@@ -339,6 +338,36 @@ class BramsCampaignController extends BaseController {
                 return;
             }
             $view->getCSV();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    public function addMeteor() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->addMeteor();
+        } else {
+            echo new JResponseJson(array(('message') => false));
+        }
+    }
+
+    public function deleteMeteor() {
+        if (Jsession::checkToken('get')) {
+            try {
+                $view = $this->display(false, array(), true);
+            } catch (Exception $e) {
+                echo new JResponseJson(array(('message') => $e));
+                Log::add($e, Log::ERROR, 'error');
+                return;
+            }
+            $view->deleteMeteor();
         } else {
             echo new JResponseJson(array(('message') => false));
         }

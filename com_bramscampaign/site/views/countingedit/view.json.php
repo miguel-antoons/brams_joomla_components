@@ -61,11 +61,38 @@ class BramsCampaignViewCountingEdit extends HtmlView {
             $new_spectrogram->height    = $spectrogram->height;
             $new_spectrogram->width     = $spectrogram->width;
             $new_spectrogram->start     = $spectrogram->start;
+            $new_spectrogram->id        = $spectrogram->id;
             $new_spectrogram->meteors   = $spectrogram_model->getMeteors($spectrogram->id);
 
             $final_spectrograms[]       = $new_spectrogram;
         }
 
         echo new JResponseJson($final_spectrograms);
+    }
+
+    public function addMeteor() {
+        // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) return;
+        $new_meteor = $input->get('newMeteor');
+        // get all needed models
+        $spectrogram_model  = $this->getModel('spectrogram');
+
+        // insert the new meteor
+        if (($new_id = $spectrogram_model->addMeteor($new_meteor)) === -1) return;
+
+        echo new JResponseJson(array('newId' => $new_id));
+    }
+
+    public function deleteMeteor() {
+        // if an error occurred when getting the app input, stop the function
+        if (!$input = $this->getAppInput()) return;
+        $delete_id = $input->get('id');
+        // get all needed models
+        $spectrogram_model  = $this->getModel('spectrogram');
+
+        // delete the meteor
+        if ($spectrogram_model->deleteMeteor($delete_id) === -1) return;
+
+        echo new JResponseJson(array('success' => true));
     }
 }

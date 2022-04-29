@@ -78,9 +78,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
      */
     public function getCampaigns($specific_user = false) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $sub_query_attribute = ' as notDeletable';      // attribute name of the subquery result
         $campaigns_query = $db->getQuery(true);
         $sub_campaign_query = $db->getQuery(true);
@@ -153,9 +151,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
      */
     public function deleteCampaign($id) {
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $campaign_query = $db->getQuery(true);
 
         // delete condition
@@ -191,9 +187,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
      */
     public function getCampaignNames($id = -1) {
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $campaign_query = $db->getQuery(true);
 
         // query to get all the campaign names and ids
@@ -250,9 +244,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
      */
     public function getCampaign($campaign_id) {
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $campaign_query = $db->getQuery(true);
 
         // query to get the campaign information
@@ -299,9 +291,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
         $time_created = date('Y-m-d H:i:s');
         $time_updated = $time_created;
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $campaign_query = $db->getQuery(true);
 
         // query to insert a new campaign with data being the $campaign_info arg
@@ -365,9 +355,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
     public function updateCampaign($campaign_info) {
         $time_updated = date('Y-m-d H:i:s');
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $campaign_query = $db->getQuery(true);
         // attributes to update with their new values
         $fields = array(
@@ -419,9 +407,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
      */
     public function getSystemNames($id = -1) {
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $system_query = $db->getQuery(true);
 
         // query to get the system names
@@ -478,9 +464,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
 
     public function getCampaignTypes($id = -1) {
         // if database connection fails, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $type_query = $db->getQuery(true);
 
         // query to get the system names

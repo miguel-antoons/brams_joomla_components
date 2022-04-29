@@ -100,9 +100,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 
     public function getSpectrogramsDB($campaign) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $files = $this->getFileIDs($campaign->system, $campaign->start, $campaign->end);
         $file_ids = '(';
 
@@ -179,9 +177,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
      */
     private function getFileIDs($system_id, $start, $end) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $file_query = $db->getQuery(true);
 
         // query to select all the file ids
@@ -210,9 +206,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 
     private function getSingleSpectrogram($file_id, $options = array()) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $spectrogram_query = $db->getQuery(true);
 
         // query to get the spectrogram row with data equal to the provided options
@@ -250,9 +244,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 
     private function getSystemCode($system_id) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $system_query = $db->getQuery(true);
 
         // query to get the system code
@@ -281,9 +273,7 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
 
     public function getMeteors($spectrogram_id, $campaign_id = null) {
         // if the connection to the database failed, return false
-        if (!$db = $this->connectToDatabase()) {
-            return -1;
-        }
+        if (!$db = $this->connectToDatabase()) return -1;
         $meteor_query = $db->getQuery(true);
 
         // query to get all the meteor coordinates
@@ -305,6 +295,78 @@ class BramsCampaignModelSpectrogram extends BaseDatabaseModel {
             return $db->loadObjectList();
         } catch (Exception $e) {
             // if it fails, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
+    public function addMeteor($new_meteor) {
+        // if the connection to the database failed, return false
+        if (!$db = $this->connectToDatabase()) return -1;
+        $meteor_query = $db->getQuery(true);
+
+        // query to insert a new meteor from the information received in the $new_meteor argument
+        $meteor_query
+            ->insert($db->quoteName('manual_counting_meteor'))
+            ->columns(
+                $db->quoteName(
+                    array(
+                        'manual_counting_id',
+                        'spectrogram_id',
+                        'type',
+                        'top',
+                        'left',
+                        'bottom',
+                        'right'
+                    )
+                )
+            )
+            ->values(
+                $db->quote($new_meteor['mcId'])             . ', '
+                . $db->quote($new_meteor['spectrogramId'])  . ', '
+                . $db->quote($new_meteor['type'])           . ', '
+                . $db->quote($new_meteor['top'])            . ', '
+                . $db->quote($new_meteor['left'])           . ', '
+                . $db->quote($new_meteor['bottom'])         . ', '
+                . $db->quote($new_meteor['right'])
+            );
+
+        $db->setQuery($meteor_query);
+
+        // try to execute the query and return the result
+        try {
+            if (!$db->execute()) return -1;
+            return $db->insertid();
+        } catch (Exception $e) {
+            // on fail, log the error and return false
+            echo new JResponseJson(array(('message') => $e));
+            Log::add($e, Log::ERROR, 'error');
+            return -1;
+        }
+    }
+
+    public function deleteMeteor($meteor_id) {
+        // if the connection to the database failed, return false
+        if (!$db = $this->connectToDatabase()) return -1;
+        $meteor_query = $db->getQuery(true);
+
+        // condition to delete the meteor
+        $condition = array(
+            $db->quoteName('id') . ' = ' . $db->quote($meteor_id)
+        );
+
+        // meteor delete query
+        $meteor_query->delete($db->quoteName('manual_counting_meteor'));
+        $meteor_query->where($condition);
+
+        $db->setQuery($meteor_query);
+
+        // trying to execute the query and return the results
+        try {
+            return $db->execute();
+        } catch (RuntimeException $e) {
+            // on fail, log the error and return false
             echo new JResponseJson(array(('message') => $e));
             Log::add($e, Log::ERROR, 'error');
             return -1;
