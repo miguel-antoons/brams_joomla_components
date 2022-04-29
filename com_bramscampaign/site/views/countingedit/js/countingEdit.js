@@ -1,7 +1,7 @@
 /* eslint-disable no-global-assign */
 // * cf. ../../_js/edit.js
 // eslint-disable-next-line no-unused-vars
-/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes */
+/* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes, detectZoom */
 const currentView = 'countingEdit';
 const redirectView = 'countings';
 let spectrograms;
@@ -19,7 +19,14 @@ let meteors = [];
 // }
 //
 
-function newMeteor(meteor) {
+function newMeteor(meteor, counting) {
+    let zoom = detectZoom.zoom();
+    if (zoom && zoom !== 1) {
+        zoom = Math.round(100 * zoom);
+        alert(`The current zoom level of your browser is ${zoom}%. Please reset your zoom to 100%.`);
+        return false;
+    }
+
     const token = $('#token').attr('name');
     $.ajax({
         type: 'POST',
@@ -124,7 +131,14 @@ function setMeteors() {
     spectrograms[0]['meteors'].forEach(
         (meteor) => {
             meteors.push(
-                new Meteor(meteor['left'], meteor['top'], meteor['right'], meteor['bottom'], meteor['type'])
+                new Meteor(
+                    meteor['left'],
+                    meteor['top'],
+                    meteor['right'],
+                    meteor['bottom'],
+                    meteor['type'],
+                    meteor['id']
+                )
             );
         }
     );
@@ -330,7 +344,6 @@ function initializeMeteorCounting() {
         };
 
         this.mouseup = function (ev) {
-            let m;
             if (tool.started) {
                 tool.mousemove(ev);
                 tool.started = false;
@@ -339,7 +352,7 @@ function initializeMeteorCounting() {
 
                 if (tool.x0 !== ev._x && tool.y0 !== ev._y) {
                     let m = new Meteor(tool.x0, tool.y0, ev._x, ev._y, mc_meteor_type, 0);
-                    newMeteor(m);
+                    newMeteor(m, counting);
                 }
             }
         };
@@ -386,12 +399,7 @@ function submitMeteors(form) {
         return false;
     }
 
-    let zoom = detectZoom.zoom();
-    if (zoom && zoom !== 1) {
-        zoom = Math.round(100 * zoom);
-        alert(`The current zoom level of your browser is ${zoom}%. Please reset your zoom to 100%.`);
-        return false;
-    }
+
 
     const prefix = 'data[ManualCountingMeteor]';
 

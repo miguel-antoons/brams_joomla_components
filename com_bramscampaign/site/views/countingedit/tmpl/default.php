@@ -28,11 +28,22 @@ defined('_JEXEC') or die('Restricted access');
             </div>
         </div>
         <div id="mc_right_icons">
-            <a href="#S" onclick="selectMeteorType('S')"><img id="mc_short" src="/ProjectDir/img/short_icon.png" alt="S"
-                                                              title="Press s or 1 to select/deselect short meteors."/></a>
-            <a href="#L" onclick="selectMeteorType('L')"><img id="mc_long" src="/ProjectDir/img/long_icon.png" alt="L"
-                                                              title="Press l or 2 to select/deselect long meteors."/></a>
-            <a href="/manual_countings/"><img src="/ProjectDir/img/white_cross_icon.png" alt="X" title="Close the window."/></a>
+            <button type="button" onclick="selectMeteorType('S')">
+                <img
+                    id="mc_short"
+                    src="/ProjectDir/img/short_icon.png"
+                    alt="S"
+                    title="Press s or 1 to select/deselect short meteors."
+                />
+            </button>
+            <button type="button" onclick="selectMeteorType('L')">
+                <img
+                    id="mc_long"
+                    src="/ProjectDir/img/long_icon.png"
+                    alt="L"
+                    title="Press l or 2 to select/deselect long meteors."
+                />
+            </button>
         </div>
         <div id="mc_title">
 

@@ -43,6 +43,7 @@ class BramsCampaignViewCountingEdit extends HtmlView {
         $document->addStyleSheet('/components/com_bramscampaign/views/countingedit/fancybox/jquery.fancybox.css');
         $document->addScript('/components/com_bramscampaign/views/_js/edit.js');
         $document->addScript('/components/com_bramscampaign/views/countingedit/js/countingEdit.js');
+        $document->addScript('/components/com_bramscampaign/views/countingedit/js/detect-zoom.js');
         $document->addScript('/components/com_bramscampaign/views/countingedit/fancybox/jquery.fancybox.pack.js');
         $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
     }
