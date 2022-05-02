@@ -7,6 +7,7 @@ const redirectView = 'countings';
 let spectrograms;
 let mc_meteor_type;
 let meteors = [];
+let currentIndex = 0;
 
 
 // function removeRectangle(event) {
@@ -18,6 +19,37 @@ let meteors = [];
 //     console.log('draw rectangle');
 // }
 //
+function goTo(index = undefined, subtract = false) {
+    if (index === undefined) {
+        currentIndex = index;
+    } else if (subtract && currentIndex > 0) {
+        currentIndex -= 1;
+    } else if (currentIndex < (spectrograms.length() - 1)) {
+        currentIndex += 1;
+    }
+
+    setCanvasDim();
+    setMeteors();
+    initializeMeteorCounting();
+}
+
+
+function setSpectrogramOptions() {
+    let HTMLString = '';
+
+    spectrograms.forEach(
+        (spectrogram, index) => {
+            HTMLString += `
+                <option value='${index}'>
+                    ${spectrogram['start']}
+                </option>
+            `;
+        }
+    );
+
+    document.getElementById('spectrogramNames').innerHTML = HTMLString;
+}
+
 
 function newMeteor(meteor, counting) {
     let zoom = detectZoom.zoom();
@@ -47,7 +79,7 @@ function newMeteor(meteor, counting) {
                 'bottom': meteor.bottom,
                 'type': meteor.type,
                 'mcId': elementId,
-                'spectrogramId': spectrograms[0]['id'],
+                'spectrogramId': spectrograms[currentIndex]['id'],
             },
         },
         success: (response) => {
@@ -114,21 +146,21 @@ function deleteMeteor(meteorIndex, counting, countingContext) {
 
 function setCanvasDim() {
     const mcCounting = document.getElementById('mc_counting');
-    mcCounting.width = spectrograms[0]['width'];
-    mcCounting.height = spectrograms[0]['height'];
+    mcCounting.width = spectrograms[currentIndex]['width'];
+    mcCounting.height = spectrograms[currentIndex]['height'];
 
     const mcBackground = document.getElementById('mc_background');
-    mcBackground.width = spectrograms[0]['width'];
-    mcBackground.height = spectrograms[0]['height'];
+    mcBackground.width = spectrograms[currentIndex]['width'];
+    mcBackground.height = spectrograms[currentIndex]['height'];
 
     const mcCanvas = document.getElementById('mc_canvas');
-    mcCanvas.width = spectrograms[0]['width'];
-    mcCanvas.height = spectrograms[0]['height'];
+    mcCanvas.width = spectrograms[currentIndex]['width'];
+    mcCanvas.height = spectrograms[currentIndex]['height'];
 }
 
 
 function setMeteors() {
-    spectrograms[0]['meteors'].forEach(
+    spectrograms[currentIndex]['meteors'].forEach(
         (meteor) => {
             meteors.push(
                 new Meteor(
@@ -200,8 +232,32 @@ window.onload = onLoad;
 
 function initializeMeteorCounting() {
     const FONT_SIZE = 12;
-    let canvas; let context; let counting; let
-        countingContext;
+    let canvas;
+    let context;
+    let counting;
+    let countingContext;
+
+    // Get background canvas.
+    let background = document.getElementById('mc_background');
+    if (!background || !background.getContext) {
+        alert('Error: no mc_background element!');
+        return;
+    }
+
+    // Add background image.
+    const backgroundContext = background.getContext('2d');
+    if (!backgroundContext || !backgroundContext.drawImage) {
+        alert('Error: no content.drawImage!');
+        return;
+    }
+
+    if (typeof spectrograms !== 'undefined') {
+        const img = new Image();
+        addListener(img, 'load', () => {
+            backgroundContext.drawImage(img, 0, 0);
+        });
+        img.src = `/ProjectDir${spectrograms[currentIndex]['url']}`;
+    }
 
     // Get canvas element.
     counting = document.getElementById('mc_counting');
@@ -259,28 +315,6 @@ function initializeMeteorCounting() {
 
         selectMeteorType(type);
     }, false);
-
-    // Get background canvas.
-    let background = document.getElementById('mc_background');
-    if (!background || !background.getContext) {
-        alert('Error: no mc_background element!');
-        return;
-    }
-
-    // Add background image.
-    const backgroundContext = background.getContext('2d');
-    if (!backgroundContext || !backgroundContext.drawImage) {
-        alert('Error: no content.drawImage!');
-        return;
-    }
-
-    if (typeof spectrograms !== 'undefined') {
-        const img = new Image();
-        addListener(img, 'load', () => {
-            backgroundContext.drawImage(img, 0, 0);
-        });
-        img.src = `/ProjectDir${spectrograms[0]['url']}`;
-    }
 
     // Draw initial meteors.
     for (let i = 0; i < meteors.length; ++i) {

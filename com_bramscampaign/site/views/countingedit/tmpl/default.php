@@ -8,10 +8,63 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div class="container custom_container container_margin">
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
+    <div class="row">
+        <div class="col custom_col">
+            <button
+                type='button'
+                class='customBtn return'
+                onclick='window.location.href="/index.php?option=com_bramscampaign&view=countings"'
+            >
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                Return
+            </button>
+        </div>
+        <h1 id="title"></h1>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button
+                type="button"
+                name="previous"
+                class="customBtn navigation"
+                id="previous"
+                onclick="goTo(subtract=true)"
+            >
+                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                Previous
+            </button>
+        </div>
+        <div class="col">
+            <label class="form-label required" for="spectrogramNames">Spectrograms</label>
+            <select
+                name="spectrogram"
+                class="form-control"
+                id="spectrogramNames"
+                onchange="goTo(this.value)"
+            >
+                <!-- different spectrograms of the counting come here -->
+            </select>
+        </div>
+        <div class="col">
+            <button
+                type="button"
+                name="next"
+                class="customBtn navigation"
+                id="next"
+                onclick="goTo()"
+            >
+                Next
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
 <div id="mc_content">
     <p id="error"></p>
-    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div id="mc_header">
         <div id="mc_left_icons">
             <a class="fancybox" id="mc_help_icon" href="#mc_help"><img src="/ProjectDir/img/help_icon.png" alt="" title="Show help."/></a>
