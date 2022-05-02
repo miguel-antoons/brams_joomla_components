@@ -306,8 +306,11 @@ window.onload = onLoad;
 
 
 function MeteorCounting() {
-    let context;
-    let counting;
+    const canvas = document.getElementById('mc_canvas');
+    const context = canvas.getContext('2d');
+    const counting = document.getElementById('mc_counting');
+    // Get the 2D canvas context.
+    const countingContext = counting.getContext('2d');
 
     // Get background canvas.
     let background = document.getElementById('mc_background');
@@ -330,9 +333,6 @@ function MeteorCounting() {
         });
         img.src = `/ProjectDir${spectrograms[currentIndex]['url']}`;
     }
-
-    // Get canvas element.
-    counting = document.getElementById('mc_counting');
 
     // Draw initial meteors.
     for (let i = 0; i < meteors.length; ++i) {
