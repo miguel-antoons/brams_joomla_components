@@ -197,26 +197,9 @@ function setMeteors() {
 
 
 function setupPage() {
-    const FONT_SIZE = 12;
     // Get drawing canvas.
     const canvas = document.getElementById('mc_canvas');
-    const context = canvas.getContext('2d');
-    // Get canvas element.
-    const counting = document.getElementById('mc_counting');
-    // Get the 2D canvas context.
-    const countingContext = counting.getContext('2d');
     canvasClass = new MeteorCounting();
-
-    if (!canvas || !canvas.getContext) {
-        alert('Error: no mc_canvas element!');
-        return;
-    }
-
-    // Set style on canvas.
-    context.font = countingContext.font = `bold ${FONT_SIZE}px sans-serif`;
-    context.fillStyle = countingContext.fillStyle = 'red';
-    context.strokeStyle = countingContext.strokeStyle = 'red';
-    context.lineWidth = countingContext.lineWidth = 2;
 
     // Attach the mousedown, mousemove and mouseup event listeners to the drawing canvas.
     addListener(canvas, 'mousedown', canvasClass.drawRectangle);
@@ -306,6 +289,7 @@ window.onload = onLoad;
 
 
 function MeteorCounting() {
+    const FONT_SIZE = 12;
     const canvas = document.getElementById('mc_canvas');
     const context = canvas.getContext('2d');
     const counting = document.getElementById('mc_counting');
@@ -325,6 +309,12 @@ function MeteorCounting() {
         alert('Error: no content.drawImage!');
         return;
     }
+
+    // Set style on canvas.
+    context.font = countingContext.font = `bold ${FONT_SIZE}px sans-serif`;
+    context.fillStyle = countingContext.fillStyle = 'red';
+    context.strokeStyle = countingContext.strokeStyle = 'red';
+    context.lineWidth = countingContext.lineWidth = 2;
 
     if (typeof spectrograms !== 'undefined') {
         const img = new Image();
