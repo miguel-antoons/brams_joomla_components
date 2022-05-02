@@ -197,6 +197,7 @@ function getSpectrograms() {
             setCanvasDim();
             setMeteors();
             initializeMeteorCounting();
+            setSpectrogramOptions();
         },
         error: (response) => {
             // on fail, show an error message

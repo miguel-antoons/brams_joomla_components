@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
                 onclick="goTo()"
             >
                 Next
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
             </button>
         </div>
     </div>

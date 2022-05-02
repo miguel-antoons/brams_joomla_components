@@ -256,10 +256,10 @@
         else if ('orientation' in window && typeof document.body.style.webkitMarquee === 'string') {
             func = webkitMobile;
         }
-        //WebKit
-        else if (typeof document.body.style.webkitMarquee === 'string') {
-            func = webkit;
-        }
+        // //WebKit
+        // else if (typeof document.body.style.webkitMarquee === 'string') {
+        //     func = webkit;
+        // }
         //Opera
         else if (navigator.userAgent.indexOf('Opera') >= 0) {
             func = opera11;
