@@ -19,18 +19,19 @@ let currentIndex = 0;
 //     console.log('draw rectangle');
 // }
 //
-function goTo(index = undefined, subtract = false) {
-    if (index === undefined) {
+function goTo(subtract = false, index = undefined) {
+    if (index !== undefined) {
         currentIndex = index;
     } else if (subtract && currentIndex > 0) {
         currentIndex -= 1;
-    } else if (currentIndex < (spectrograms.length() - 1)) {
+    } else if (currentIndex < (spectrograms.length - 1)) {
         currentIndex += 1;
     }
 
     setCanvasDim();
     setMeteors();
     initializeMeteorCounting();
+    document.getElementById('spectrogramNames').value = currentIndex;
 }
 
 

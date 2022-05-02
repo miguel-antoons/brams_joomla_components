@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
                 name="previous"
                 class="customBtn navigation"
                 id="previous"
-                onclick="goTo(subtract=true)"
+                onclick="goTo(true, undefined)"
             >
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                 Previous
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
                 name="spectrogram"
                 class="form-control"
                 id="spectrogramNames"
-                onchange="goTo(this.value)"
+                onchange="goTo(false, this.value)"
             >
                 <!-- different spectrograms of the counting come here -->
             </select>
@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
                 name="next"
                 class="customBtn navigation"
                 id="next"
-                onclick="goTo()"
+                onclick="goTo(false, undefined)"
             >
                 Next
                 <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
