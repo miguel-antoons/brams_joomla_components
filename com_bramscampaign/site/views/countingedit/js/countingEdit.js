@@ -5,9 +5,10 @@
 const currentView = 'countingEdit';
 const redirectView = 'countings';
 let spectrograms;
-let mc_meteor_type;
+let mc_meteor_type = 'S';
 let meteors = [];
 let currentIndex = 0;
+let canvasClass;
 
 
 // function removeRectangle(event) {
@@ -19,18 +20,35 @@ let currentIndex = 0;
 //     console.log('draw rectangle');
 // }
 //
+function spectrogramChange() {
+    const canvas = document.getElementById('mc_canvas');
+    canvas.removeEventListener('mousedown', canvasClass.drawRectangle);
+    canvas.removeEventListener('mousemove', canvasClass.drawRectangle);
+    canvas.removeEventListener('mouseup', canvasClass.drawRectangle);
+    canvas.removeEventListener('dblclick', canvasClass.removeRectangle);
+
+    canvasClass = new MeteorCounting();
+    // Attach the mousedown, mousemove and mouseup event listeners to the drawing canvas.
+    addListener(canvas, 'mousedown', canvasClass.drawRectangle);
+    addListener(canvas, 'mousemove', canvasClass.drawRectangle);
+    addListener(canvas, 'mouseup', canvasClass.drawRectangle);
+    addListener(canvas, 'dblclick', canvasClass.removeRectangle);
+}
+
+
 function goTo(subtract = false, index = undefined) {
     if (index !== undefined) {
         currentIndex = index;
     } else if (subtract && currentIndex > 0) {
         currentIndex -= 1;
-    } else if (currentIndex < (spectrograms.length - 1)) {
+    } else if (currentIndex < (spectrograms.length - 1) && !subtract) {
         currentIndex += 1;
-    }
+    } else return;
 
     setCanvasDim();
+    meteors = [];
     setMeteors();
-    initializeMeteorCounting();
+    spectrogramChange();
     document.getElementById('spectrogramNames').value = currentIndex;
 }
 
@@ -178,6 +196,61 @@ function setMeteors() {
 }
 
 
+function setupPage() {
+    const FONT_SIZE = 12;
+    // Get drawing canvas.
+    const canvas = document.getElementById('mc_canvas');
+    const context = canvas.getContext('2d');
+    // Get canvas element.
+    const counting = document.getElementById('mc_counting');
+    // Get the 2D canvas context.
+    const countingContext = counting.getContext('2d');
+    canvasClass = new MeteorCounting();
+
+    if (!canvas || !canvas.getContext) {
+        alert('Error: no mc_canvas element!');
+        return;
+    }
+
+    // Set style on canvas.
+    context.font = countingContext.font = `bold ${FONT_SIZE}px sans-serif`;
+    context.fillStyle = countingContext.fillStyle = 'red';
+    context.strokeStyle = countingContext.strokeStyle = 'red';
+    context.lineWidth = countingContext.lineWidth = 2;
+
+    // Attach the mousedown, mousemove and mouseup event listeners to the drawing canvas.
+    addListener(canvas, 'mousedown', canvasClass.drawRectangle);
+    addListener(canvas, 'mousemove', canvasClass.drawRectangle);
+    addListener(canvas, 'mouseup', canvasClass.drawRectangle);
+    addListener(canvas, 'dblclick', canvasClass.removeRectangle);
+
+    // Attach the keypress even listener to the document.
+    addListener(document, 'keypress', (ev) => {
+        let type; let
+            c = 0;
+
+        if (ev.charCode) {
+            c = ev.charCode;
+        } else if (ev.keyCode) {
+            c = ev.keyCode;
+        }
+
+        if (c === 49 || c === 115 || c === 83) {
+            type = 'S';
+        } else if (c === 50 || c === 108 || c === 76) {
+            type = 'L';
+        } else {
+            return;
+        }
+
+        selectMeteorType(type);
+    }, false);
+
+    // Select initial meteor type.
+    selectMeteorType(mc_meteor_type);
+}
+
+
 function getSpectrograms() {
     const token = $('#token').attr('name');
 
@@ -197,7 +270,7 @@ function getSpectrograms() {
             spectrograms = response.data;
             setCanvasDim();
             setMeteors();
-            initializeMeteorCounting();
+            setupPage();
             setSpectrogramOptions();
         },
         error: (response) => {
@@ -232,12 +305,9 @@ window.onload = onLoad;
 // Author: Mihai Sucan
 
 
-function initializeMeteorCounting() {
-    const FONT_SIZE = 12;
-    let canvas;
+function MeteorCounting() {
     let context;
     let counting;
-    let countingContext;
 
     // Get background canvas.
     let background = document.getElementById('mc_background');
@@ -263,73 +333,16 @@ function initializeMeteorCounting() {
 
     // Get canvas element.
     counting = document.getElementById('mc_counting');
-    if (!counting || !counting.getContext) {
-        alert('Error: no mc_counting element!');
-        return;
-    }
-
-    // Get the 2D canvas context.
-    countingContext = counting.getContext('2d');
-    if (!countingContext) {
-        alert('Error: no counting context!');
-        return;
-    }
-
-    // Get drawing canvas.
-    canvas = document.getElementById('mc_canvas');
-    if (!canvas || !canvas.getContext) {
-        alert('Error: no mc_canvas element!');
-        return;
-    }
-
-    context = canvas.getContext('2d');
-
-    // Set style on canvas.
-    context.font = countingContext.font = `bold ${FONT_SIZE}px sans-serif`;
-    context.fillStyle = countingContext.fillStyle = 'red';
-    context.strokeStyle = countingContext.strokeStyle = 'red';
-    context.lineWidth = countingContext.lineWidth = 2;
-
-    // Attach the mousedown, mousemove and mouseup event listeners to the drawing canvas.
-    addListener(canvas, 'mousedown', drawRectangle);
-    addListener(canvas, 'mousemove', drawRectangle);
-    addListener(canvas, 'mouseup', drawRectangle);
-    addListener(canvas, 'dblclick', removeRectangle);
-
-    // Attach the keypress even listener to the document.
-    addListener(document, 'keypress', (ev) => {
-        let type; let
-            c = 0;
-
-        if (ev.charCode) {
-            c = ev.charCode;
-        } else if (ev.keyCode) {
-            c = ev.keyCode;
-        }
-
-        if (c === 49 || c === 115 || c === 83) {
-            type = 'S';
-        } else if (c === 50 || c === 108 || c === 76) {
-            type = 'L';
-        } else {
-            return;
-        }
-
-        selectMeteorType(type);
-    }, false);
 
     // Draw initial meteors.
     for (let i = 0; i < meteors.length; ++i) {
         meteors[i].draw(counting);
     }
 
-    // Select initial meteor type.
-    selectMeteorType(mc_meteor_type);
-
     // Create the rectangle drawing tool.
     const tool = new RectangleTool();
 
-    function drawRectangle(ev) {
+    this.drawRectangle = (ev) => {
         if (ev.layerX || ev.layerX === 0) { // Firefox
             ev._x = ev.layerX;
             ev._y = ev.layerY;
@@ -394,7 +407,7 @@ function initializeMeteorCounting() {
         };
     }
 
-    function removeRectangle(ev) {
+    this.removeRectangle = (ev) => {
         let x; let
             y;
         if (ev.layerX || ev.layerX === 0) { // Firefox
@@ -427,38 +440,6 @@ function initializeMeteorCounting() {
 
         // The user clicked outside any rectangles.
     }
-}
-
-function submitMeteors(form) {
-    if (!form) {
-        alert('Error: no form element!');
-        return false;
-    }
-
-
-
-    const prefix = 'data[ManualCountingMeteor]';
-
-    const meteorInput = function (name, value) {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', `${prefix}[${i}][${name}]`);
-        input.setAttribute('value', value);
-        return input;
-    };
-
-    for (let i = 0; i < meteors.length; ++i) {
-        form.appendChild(meteorInput('top', meteors[i].top));
-        form.appendChild(meteorInput('left', meteors[i].left));
-        form.appendChild(meteorInput('bottom', meteors[i].bottom));
-        form.appendChild(meteorInput('right', meteors[i].right));
-        form.appendChild(meteorInput('type', meteors[i].type));
-    }
-
-    if (mc_meteor_type) {
-        form.action += `/${mc_meteor_type}`;
-    }
-    return true;
 }
 
 function selectMeteorType(type) {
