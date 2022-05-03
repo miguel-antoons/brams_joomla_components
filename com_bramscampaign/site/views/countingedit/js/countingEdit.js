@@ -3,23 +3,12 @@
 // eslint-disable-next-line no-unused-vars
 /* global $, elementId, codes, log, apiFailMessg, newElement, updateElement, getCodes, detectZoom */
 const currentView = 'countingEdit';
-const redirectView = 'countings';
 let spectrograms;
-let mc_meteor_type = 'S';
 let meteors = [];
 let currentIndex = 0;
 let canvasClass;
 
 
-// function removeRectangle(event) {
-//     console.log('remove rectangle');
-// }
-//
-//
-// function drawRectangle(event) {
-//     console.log('draw rectangle');
-// }
-//
 function spectrogramChange() {
     const canvas = document.getElementById('mc_canvas');
     canvas.removeEventListener('mousedown', canvasClass.drawRectangle);
@@ -102,7 +91,6 @@ function newMeteor(meteor, counting) {
             },
         },
         success: (response) => {
-            console.log(response);
             meteor.id = response.data.newId;
             // Draws the meteor on the #mc_counting canvas, after which
             // #mc_canvas is cleared.
@@ -138,7 +126,6 @@ function deleteMeteor(meteorIndex, counting, countingContext) {
             &${token}=1
         `,
         success: (response) => {
-            console.log(response);
             if (response.data.success) {
                 // Remove the nearest rectangle from the results.
                 meteors.splice(meteorIndex, 1);
@@ -353,7 +340,7 @@ function MeteorCounting() {
                 return;
             }
 
-            const m = new Meteor(x, y, x + w, y + h, mc_meteor_type);
+            const m = new Meteor(x, y, x + w, y + h, '');
             m.draw(canvas);
         };
 
@@ -428,11 +415,7 @@ function Meteor(x0, y0, x1, y1, type, id) {
         meteor.bottom = y0;
     }
 
-    if (typeof (type) === 'undefined') {
-        meteor.type = '';
-    } else {
-        meteor.type = type;
-    }
+    meteor.type = '';
 
     // This function returns true if the (x,y) point is inside the meteor.
     this.inside = function (x, y) {

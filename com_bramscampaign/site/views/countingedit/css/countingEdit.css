@@ -44,10 +44,12 @@
 }
 
 .navigation {
-    width: 50px;
-    background-color: rgb(235, 235, 235);
+    display: flex !important;
+    width: 150px;
+    background-color: rgb(235, 235, 235) !important;
     line-height: 1.2 !important;
-    color: darkslategray;
+    color: darkslategray !important;
+    align-self: flex-end;
 }
 
 .navigation:hover {
@@ -67,5 +69,9 @@ select {
 
 label {
     margin: auto;
+    text-align: center;
+}
+
+option {
     text-align: center;
 }
