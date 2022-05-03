@@ -44,22 +44,16 @@
 }
 
 .navigation {
-    display: flex !important;
-    width: 150px;
+    width: 110px;
     background-color: rgb(235, 235, 235) !important;
-    line-height: 1.2 !important;
+    line-height: 1.5 !important;
     color: darkslategray !important;
-    align-self: flex-end;
+    float: right;
 }
 
 .navigation:hover {
-    color: rgb(235, 235, 235);
-    background-color: darkslategray;
-}
-
-.align-right {
-    margin-right: 0;
-    margin-left: auto;
+    color: rgb(235, 235, 235) !important;
+    background-color: darkslategray !important;
 }
 
 select {
