@@ -20,11 +20,11 @@ defined('_JEXEC') or die('Restricted access');
         </div>
         <div class='col custom_col'>
             <input type='checkbox' onclick='checkRPIBoxes(this)' id='checkRPI' name='checkRPI' />
-            <label class='master_checkbox' for='checkRPI'>Check New</label>
+            <label class='master_checkbox' for='checkRPI'>RSP 2</label>
         </div>
         <div class='col custom_col'>
             <input type='checkbox' onclick='checkFTPBoxes(this)' id='checkFTP' name='checkFTP' />
-            <label class='master_checkbox' for='checkFTP'>Check Old</label>
+            <label class='master_checkbox' for='checkFTP'>ICOM</label>
         </div>
         <div class='col custom_col'></div>
         <div class='col custom_col'></div>

@@ -204,7 +204,12 @@ function getAvailability() {
     $.ajax({
         type: 'GET',
         url: `
-            /index.php?option=com_bramsdata&view=availability&task=getAvailability&format=json&${token}=1
+            /index.php?
+            option=com_bramsdata
+            &view=availability
+            &task=getAvailability
+            &format=json
+            &${token}=1
         `,
         data: {
             ids: checkboxValues,

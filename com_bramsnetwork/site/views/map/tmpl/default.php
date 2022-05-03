@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
                     checked
                 />
                 <label class='checkbox_label' for='showActive'>
-                    Show Active
+                    Show Available
                 </label>
                 <br>
                 <input
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
                     id='showInactive'
                 />
                 <label class='checkbox_label' for='showInactive'>
-                    Show Inactive
+                    Show Unavailable
                 </label>
             </div>
             <div class='col'>

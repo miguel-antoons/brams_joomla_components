@@ -62,19 +62,15 @@ class BramsDataViewAvailability extends HtmlView {
 		$this->end_date = $input->get('end');      // get the end date from the request
 
 		// get the availability
-		if ($this->getFileAvailability() === -1) {
-			return;
-		}
+		if ($this->getFileAvailability() === -1) return;
 		// get all the stations
-		if (($this->stations = $this->get('Stations')) === -1) {
-			return;
-		}
+		if (($this->stations = $this->get('Stations')) === -1) return;
 
 		$dataset = array();
-		$data = array();
 
 		// construct the dataset from database data
 		foreach ($this->selected_stations as $station) {
+			$data = array();
 			for ($index = 0 ; $index < count($this->availability[$station]) - 1 ; $index++) {
 				// add time stamps and file availability to the dataset
 				$data[] = array(

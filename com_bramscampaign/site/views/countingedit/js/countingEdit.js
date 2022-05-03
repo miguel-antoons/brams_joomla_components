@@ -352,7 +352,7 @@ function MeteorCounting() {
                 context.clearRect(0, 0, canvas.width, canvas.height);
 
                 if (tool.x0 !== ev._x && tool.y0 !== ev._y) {
-                    let m = new Meteor(tool.x0, tool.y0, ev._x, ev._y, mc_meteor_type, 0);
+                    let m = new Meteor(tool.x0, tool.y0, ev._x, ev._y, '', 0);
                     newMeteor(m, counting);
                 }
             }

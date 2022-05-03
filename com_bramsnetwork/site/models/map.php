@@ -22,7 +22,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @since  0.0.1
  */
 class BramsNetworkModelMap extends BaseDatabaseModel {
-	// function connects to the database and returns the database object
+    // function connects to the database and returns the database object
     private function connectToDatabase() {
         try {
             /* Below lines are for connecting to production database later on */
@@ -50,9 +50,9 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
         }
     }
 
-	// get all active stations and their name from the database
-	// for a given input date ($selected_date)
-	// Function returns an array of active stations
+    // get all active stations and their name from the database
+    // for a given input date ($selected_date)
+    // Function returns an array of active stations
     /**
      * get all active stations and their name from the database
      * for a given input date ($selected_date)
@@ -62,32 +62,33 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
      * @return int|array returns -1 on fail, or the array with results on success
      * @since 0.2.0
      */
-	public function getActiveStationInfo($selected_date) {
+    public function getActiveStationInfo($selected_date) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-		$system_query = $db->getQuery(true);
+        $system_query = $db->getQuery(true);
 
-		// SQL query to get all information about the multiple systems
-		$system_query->select(
-			'distinct '
-			. $db->quoteName('location.name') 	. ', '
-			. $db->quoteName('country_code') 	. ', '
-			. $db->quoteName('transfer_type') 	. ', '
-			. $db->quoteName('longitude') 		. ', '
-			. $db->quoteName('latitude') 		. ', '
-			. $db->quoteName('rate')
-		);
-		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('file_availability'));
-		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') 		. ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('system.id') 				. ' = ' . $db->quoteName('file_availability.system_id'));
-		$system_query->where($db->quoteName('date') 					. ' = ' . $db->quote($selected_date));
-		$system_query->where($db->quoteName('location.time_created') 	. ' < ' . $db->quote($selected_date));
+        // SQL query to get all information about the multiple systems
+        $system_query->select(
+            'distinct '
+            . $db->quoteName('location.name')   . ', '
+            . $db->quoteName('country_code')    . ', '
+            . $db->quoteName('transfer_type')   . ', '
+            . $db->quoteName('longitude')       . ', '
+            . $db->quoteName('latitude')        . ', '
+            . $db->quoteName('rate')
+        );
+        $system_query->from($db->quoteName('system'));
+        $system_query->from($db->quoteName('file_availability'));
+        $system_query->from($db->quoteName('location'));
+        $system_query->where($db->quoteName('system.location_id')       . ' = ' . $db->quoteName('location.id'));
+        $system_query->where($db->quoteName('system.id')                . ' = ' . $db->quoteName('file_availability.system_id'));
+        $system_query->where($db->quoteName('date')                     . ' = ' . $db->quote($selected_date));
+        $system_query->where($db->quoteName('location.time_created')    . ' < ' . $db->quote($selected_date));
+		$system_query->where($db->quoteName('location.status')          . ' = ' . $db->quote('A'));
 
-		$db->setQuery($system_query);
+        $db->setQuery($system_query);
 
         // try to execute the query and return the result
         try {
@@ -98,39 +99,40 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
             Log::add($e, Log::ERROR, 'error');
             return -1;
         }
-	}
+    }
 
-	// get all inactive stations and their name from the database
-	// for a given input date ($selected_date)
-	// Function returns an array of inactive stations
-	public function getinActiveStationInfo($selected_date) {
+    // get all inactive stations and their name from the database
+    // for a given input date ($selected_date)
+    // Function returns an array of inactive stations
+    public function getinActiveStationInfo($selected_date) {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-		$system_query = $db->getQuery(true);
+        $system_query = $db->getQuery(true);
 
-		// SQL query to get all information about the multiple systems
-		$system_query->select(
-			'distinct '
-			. $db->quoteName('location.name') 	. ', '
-			. $db->quoteName('country_code') 	. ', '
-			. $db->quoteName('transfer_type') 	. ', '
-			. $db->quoteName('longitude') 		. ', '
-			. $db->quoteName('latitude') 		. ', 0 as rate'
-		);
-		$system_query->from($db->quoteName('system'));
-		$system_query->from($db->quoteName('location'));
-		$system_query->where($db->quoteName('system.location_id') 		. ' = ' . $db->quoteName('location.id'));
-		$system_query->where($db->quoteName('location.time_created') 	. ' < ' . $db->quote($selected_date));
-		$system_query->where(
-			$db->quoteName('system.id') . ' not in (
-				select system_id 
-				from file_availability 
-				where date = ' . $db->quote($selected_date) . ')'
-		);
+        // SQL query to get all information about the multiple systems
+        $system_query->select(
+            'distinct '
+            . $db->quoteName('location.name')   . ', '
+            . $db->quoteName('country_code')    . ', '
+            . $db->quoteName('transfer_type')   . ', '
+            . $db->quoteName('longitude')       . ', '
+            . $db->quoteName('latitude')        . ', 0 as rate'
+        );
+        $system_query->from($db->quoteName('system'));
+        $system_query->from($db->quoteName('location'));
+        $system_query->where($db->quoteName('system.location_id')       . ' = ' . $db->quoteName('location.id'));
+        $system_query->where($db->quoteName('location.time_created')    . ' < ' . $db->quote($selected_date));
+	    $system_query->where($db->quoteName('location.status')          . ' = ' . $db->quote('A'));
+        $system_query->where(
+            $db->quoteName('system.id') . ' not in (
+                select system_id 
+                from file_availability 
+                where date = ' . $db->quote($selected_date) . ')'
+        );
 
-		$db->setQuery($system_query);
+        $db->setQuery($system_query);
 
         // try to execute the query and return the result
         try {
@@ -141,30 +143,30 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
             Log::add($e, Log::ERROR, 'error');
             return -1;
         }
-	}
+    }
 
-	// get beacons from database
-	public function getBeacons() {
+    // get beacons from database
+    public function getBeacons() {
         // if database connection fails, return false
         if (!$db = $this->connectToDatabase()) {
             return -1;
         }
-		$system_query = $db->getQuery(true);
+        $system_query = $db->getQuery(true);
 
-		// SQL query to get all information about the multiple systems
-		$system_query->select(
-			$db->quoteName('name')
-			. ', left(' . $db->quoteName('beacon_code') . ', 2) as country_code, '
-			. $db->quote('None') 						. ' as transfer_type, '
-			. $db->quoteName('longitude') 				. ', '
-			. $db->quoteName('latitude') 				. ', '
-			. $db->quote('None') 						. ' as rate'
-		);
-		$system_query->from($db->quoteName('beacon'));
-		// remove following line if Ieper beacon has to be shown on the map
-		$system_query->where($db->quoteName('name') . ' not like ' . $db->quote('Ieper Beacon'));
+        // SQL query to get all information about the multiple systems
+        $system_query->select(
+            $db->quoteName('name')
+            . ', left(' . $db->quoteName('beacon_code') . ', 2) as country_code, '
+            . $db->quote('None') 						. ' as transfer_type, '
+            . $db->quoteName('longitude') 				. ', '
+            . $db->quoteName('latitude') 				. ', '
+            . $db->quote('None') 						. ' as rate'
+        );
+        $system_query->from($db->quoteName('beacon'));
+        // remove following line if Ieper beacon has to be shown on the map
+        $system_query->where($db->quoteName('name') . ' not like ' . $db->quote('Ieper Beacon'));
 
-		$db->setQuery($system_query);
+        $db->setQuery($system_query);
 
         // try to execute the query and return the result
         try {
@@ -175,10 +177,10 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
             Log::add($e, Log::ERROR, 'error');
             return -1;
         }
-	}
+    }
 
-	// get today's date in yyy-mm-dd format
-	public function getToday() {
-		return date('Y-m-d');
-	}
+    // get today's date in yyy-mm-dd format
+    public function getToday() {
+        return date('Y-m-d');
+    }
 }
