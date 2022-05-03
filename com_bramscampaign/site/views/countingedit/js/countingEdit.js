@@ -38,7 +38,7 @@ function spectrogramChange() {
 
 function goTo(subtract = false, index = undefined) {
     if (index !== undefined) {
-        currentIndex = index;
+        currentIndex = Number(index);
     } else if (subtract && currentIndex > 0) {
         currentIndex -= 1;
     } else if (currentIndex < (spectrograms.length - 1) && !subtract) {
@@ -206,31 +206,6 @@ function setupPage() {
     addListener(canvas, 'mousemove', canvasClass.drawRectangle);
     addListener(canvas, 'mouseup', canvasClass.drawRectangle);
     addListener(canvas, 'dblclick', canvasClass.removeRectangle);
-
-    // Attach the keypress even listener to the document.
-    addListener(document, 'keypress', (ev) => {
-        let type; let
-            c = 0;
-
-        if (ev.charCode) {
-            c = ev.charCode;
-        } else if (ev.keyCode) {
-            c = ev.keyCode;
-        }
-
-        if (c === 49 || c === 115 || c === 83) {
-            type = 'S';
-        } else if (c === 50 || c === 108 || c === 76) {
-            type = 'L';
-        } else {
-            return;
-        }
-
-        selectMeteorType(type);
-    }, false);
-
-    // Select initial meteor type.
-    selectMeteorType(mc_meteor_type);
 }
 
 
@@ -429,24 +404,6 @@ function MeteorCounting() {
         }
 
         // The user clicked outside any rectangles.
-    }
-}
-
-function selectMeteorType(type) {
-    const types = { S: 'short', L: 'long' };
-
-    mc_meteor_type = '';
-    for (const i in types) {
-        // For zoo campaigns, the short and long icons do not exist.
-        const img = document.getElementById(`mc_${types[i]}`);
-        if (img) {
-            if (i === type && img.src.replace(/^.*[\/]/, '') === `${types[i]}_icon.png`) {
-                img.src = `/ProjectDir/img/${types[i]}_selected_icon.png`;
-                mc_meteor_type = i;
-            } else {
-                img.src = `/ProjectDir/img/${types[i]}_icon.png`;
-            }
-        }
     }
 }
 
