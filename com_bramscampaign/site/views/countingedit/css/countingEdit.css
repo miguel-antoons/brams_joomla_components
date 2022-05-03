@@ -5,6 +5,7 @@
 }
 
 #mc_container {
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -17,7 +18,7 @@
 #mc_counting {
     position: relative;
     top: 0;
-    left: 52px;
+    left: 0;
     z-index: 2;
     padding: 0;
     margin: 0;
@@ -26,7 +27,7 @@
 #mc_background {
     position: absolute;
     top: 0;
-    left: 52px;
+    left: 0;
     z-index: 1;
     padding: 0;
     margin: 0;
@@ -35,7 +36,7 @@
 #mc_canvas {
     position: absolute;
     top: 0;
-    left: 52px;
+    left: 0;
     z-index: 3;
     padding: 0;
     margin: 0;

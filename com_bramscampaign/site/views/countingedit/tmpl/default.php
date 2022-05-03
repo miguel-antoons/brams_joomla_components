@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
             <button
                 type="button"
                 name="next"
-                class="customBtn navigation"
+                class="customBtn navigation floatRight"
                 id="next"
                 onclick="goTo(false, undefined)"
             >
