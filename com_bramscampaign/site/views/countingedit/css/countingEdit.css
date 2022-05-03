@@ -9,7 +9,6 @@
     margin-right: auto;
     position: relative;
     top: 0;
-    left: 0;
     z-index: 0;
     padding: 0;
     clear: both;
@@ -48,12 +47,15 @@
     background-color: rgb(235, 235, 235) !important;
     line-height: 1.5 !important;
     color: darkslategray !important;
-    float: right;
 }
 
 .navigation:hover {
     color: rgb(235, 235, 235) !important;
     background-color: darkslategray !important;
+}
+
+.floatRight {
+    float: right;
 }
 
 select {
