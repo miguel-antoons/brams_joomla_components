@@ -47,28 +47,28 @@ defined('_JEXEC') or die('Restricted access');
 
                 <label class='form-label required' for='campaignStation'>Station</label>
                 <select
-                        name='stations'
-                        class='form-control'
-                        id="campaignStation"
-                        required
+                    name='stations'
+                    class='form-control'
+                    id="campaignStation"
+                    required
                 >
                     <!-- station options will come here -->
                 </select>
 
                 <label class='form-label required' id="start" for='campaignStart'>Start</label>
                 <input
-                        class='form-control'
-                        type='datetime-local'
-                        id='campaignStart'
-                        required
+                    class='form-control'
+                    type='datetime-local'
+                    id='campaignStart'
+                    required
                 >
 
                 <label class='form-label required' id="end" for='campaignEnd'>End</label>
                 <input
-                        class='form-control'
-                        type='datetime-local'
-                        id="campaignEnd"
-                        required
+                    class='form-control'
+                    type='datetime-local'
+                    id="campaignEnd"
+                    required
                 >
 
 				<label class='form-label' id="FFT" for='campaignFFT'>FFT</label>

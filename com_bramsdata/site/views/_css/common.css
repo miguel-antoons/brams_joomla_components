@@ -1,0 +1,96 @@
+.checkbox_label {
+    display: inline-block !important;
+    line-height: 1.2;
+}
+
+.master_checkbox {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.custom_col {
+    padding-top: 1%;
+    padding-left: 0 !important;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+.custom_container {
+    padding: 0 !important;
+}
+
+label {
+    margin-bottom: 0 !important;
+}
+
+.container_margin {
+    margin-bottom: 1%;
+}
+
+.customBtn {
+    border-radius: 20px;
+    display: inline-block !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    border: 1px solid transparent !important;
+    padding: .375rem .75rem !important;
+    font-size: 1rem !important;
+    line-height: 1 !important;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !important
+}
+
+.customBtn:focus, .customBtn:hover {
+    text-decoration: none !important
+}
+
+.customBtn.focus, .customBtn:focus {
+    outline: 0 !important;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
+}
+
+.customBtn.disabled, .customBtn:disabled {
+    opacity: .65 !important
+}
+
+.customBtn:not(:disabled):not(.disabled) {
+    cursor: pointer !important
+}
+
+.customBtn:not(:disabled):not(.disabled).active, .customBtn:not(:disabled):not(.disabled):active {
+    background-image: none
+}
+
+.save {
+    vertical-align: middle;
+    margin: 3%;
+    height: 94%;
+    color: darkslategray;
+    line-height: 1.5 !important;
+    background-color: rgb(235, 235, 235);
+}
+
+.save:hover {
+    color: rgb(235, 235, 235);
+    background-color: darkslategrey;
+}
+
+.customRow {
+    margin-bottom: 1% !important;
+}
+
+#buttonContainer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#spinner {
+    display: none;
+    vertical-align: middle;
+}

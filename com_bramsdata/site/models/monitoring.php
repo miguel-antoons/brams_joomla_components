@@ -104,7 +104,8 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 			. $db->quoteName('psd')
 		);
 		$psd_query->from($db->quoteName('file'));
-		$psd_query->where()
+		// ! TODO
+		$psd_query->where();
 	}
 
 	// get today's date in yyy-mm-dd format

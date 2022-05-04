@@ -9,9 +9,11 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Cache\Controller\ViewController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\View\ViewInterface;
 
 /**
  * BramsData Component Controller
@@ -20,8 +22,14 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 class BramsDataController extends BaseController {
 	/**
-	 * CHANGES : if $block_display is set to true, the function
-	 *  will NOT call the views display method and returns the view instead.
+	 * * CHANGES :
+	 * *      - if $block_display is set to true, the function
+	 * *        will NOT call the views display method and returns the view instead.
+	 * *      - if no model is found for the view name, the function will search a
+	 * *        model that has a name matching the requested view name without the last
+	 * *        4 letters.
+	 * *      - if there are models specified in the url, the display function will
+	 * *        initialise and add the models to the view in order to use them.
 	 *
 	 * Typical view method for MVC based architecture
 	 *
@@ -31,16 +39,18 @@ class BramsDataController extends BaseController {
 	 * @param boolean $cacheable If true, the view output will be cached
 	 * @param array $url_params An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
 	 *
-	 * @return BramsDataController|JViewLegacy
+	 * @return BramsDataController|ViewInterface
 	 *
 	 * @throws Exception
-	 * @since   3.0
+	 * @since   0.0.1
 	 */
 	public function display($cacheable = false, $url_params = array(), $block_display = false) {
-		$document = JFactory::getDocument();
+		$document = $this->app->getDocument();
 		$viewType = $document->getType();
 		$viewName = $this->input->get('view', $this->default_view);
+		$modelNames = explode(',', $this->input->get('model', '', 'string'));
 		$viewLayout = $this->input->get('layout', 'default', 'string');
+		$add_def_model = true;
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 
@@ -48,32 +58,45 @@ class BramsDataController extends BaseController {
 		if ($model = $this->getModel($viewName)) {
 			// Push the model into the view (as default)
 			$view->setModel($model, true);
+			$add_def_model = false;
+		} elseif ($model = $this->getModel(substr($viewName, 0, -4) . 's')) {
+			// Push the model into the view (as default)
+			$view->setModel($model, true);
+			$add_def_model = false;
+		}
+
+		foreach ($modelNames as $modelName) {
+			if ($model = $this->getModel($modelName)) {
+				// Push the model into the view (as default)
+				$view->setModel($model, $add_def_model);
+				$add_def_model = false;
+			}
 		}
 
 		$view->document = $document;
 
 		// Display the view
-		if ($cacheable && $viewType !== 'feed' && JFactory::getConfig()->get('caching') >= 1) {
+		if ($cacheable && $viewType !== 'feed' && Factory::getApplication()->get('caching') >= 1) {
 			$option = $this->input->get('option');
 
 			if (is_array($url_params)) {
-				$app = JFactory::getApplication();
+				$this->app = Factory::getApplication();
 
-				if (!empty($app->registeredurlparams)) {
-					$registeredurlparams = $app->registeredurlparams;
+				if (!empty($this->app->registeredurlparams)) {
+					$registered_url_params = $this->app->registeredurlparams;
 				} else {
-					$registeredurlparams = new \stdClass;
+					$registered_url_params = new stdClass;
 				}
 
 				foreach ($url_params as $key => $value) {
 					// Add your safe URL parameters with variable type as value {@see \JFilterInput::clean()}.
-					$registeredurlparams->$key = $value;
+					$registered_url_params->$key = $value;
 				}
 
-				$app->registeredurlparams = $registeredurlparams;
+				$this->app->registeredurlparams = $registered_url_params;
 			}
 
-			/** @var JCacheControllerView $cache */
+			/** @var ViewController $cache */
 			$cache = Factory::getCache($option, 'view');
 			$cache->get($view);
 
