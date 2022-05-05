@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 						name='submit'
 						class='customBtn save'
 						id='submit'
-						onclick="getSpectrograms()"
+						onclick="showSpectrograms()"
 					>
 						<i class="fa fa-check-square" aria-hidden="true"></i>
 						Submit

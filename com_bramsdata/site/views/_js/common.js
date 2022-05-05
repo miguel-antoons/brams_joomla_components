@@ -129,9 +129,9 @@ function getSelectedCheckboxes() {
         return false;
     }
     // store their values only
-    let checkboxValues = [];
+    const checkboxValues = [];
     checkedCheckboxes.forEach((checkbox) => {
         checkboxValues.push(checkbox.value);
-    })
+    });
     return checkboxValues;
 }
