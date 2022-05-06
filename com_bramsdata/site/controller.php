@@ -131,4 +131,20 @@ class BramsDataController extends BaseController {
 			echo new JResponseJson(array(('message') => false));
 		}
 	}
+
+	public function makeImages() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+
+				return;
+			}
+			$view->makeImages();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
 }

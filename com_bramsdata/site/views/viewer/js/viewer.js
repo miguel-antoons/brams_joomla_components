@@ -29,10 +29,12 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate) {
             &station=${stationId}
             &start=${dateString(startDate)}
             &end=${dateString(endDate)}
+            &fmin=${intFMin}
+            &fmax=${intFMax}
             &${token}=1
         `,
-        success: (response) => {
-            console.log(response);
+        success: (data) => {
+            console.log(data);
         },
         error: (response) => {
             // on fail, show an error message

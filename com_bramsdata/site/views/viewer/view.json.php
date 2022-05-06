@@ -14,6 +14,8 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\Input\Input;
 
+require JPATH_ROOT.DS.'components/com_bramsdata/models/Lib/Archive.php';
+
 /**
  * HTML View class for the BramsData Component
  *
@@ -35,5 +37,19 @@ class BramsDataViewViewer extends HtmlView {
 			Log::add($e, Log::ERROR, 'error');
 			return false;
 		}
+	}
+
+	public function makeImages() {
+		$input          = $this->getAppInput();
+		$needed_params  = array('start', 'end', 'station', 'fmin', 'fmax');
+		$params         = $input->getArray($needed_params);
+
+		header('MIME-Version: 1.0');
+		header('Content-Type: text/plain');
+
+		$archive        = new Archive();
+		$params['task'] = 'makeImages';
+
+		echo $archive->get($params);
 	}
 }
