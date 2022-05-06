@@ -55,5 +55,6 @@ class BramsDataViewViewer extends HtmlView {
 		header('Content-Type: image/png');
 
 		echo $archive->get($params);
+		die();
 	}
 }

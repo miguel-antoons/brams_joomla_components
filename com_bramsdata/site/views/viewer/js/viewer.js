@@ -36,7 +36,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
                     option=com_bramsdata
                     &task=getImage
                     &view=viewer
-                    &format=raw
+                    &format=png
                     &image=${imageName}
                     ${fParams}
                     &${token}=1
