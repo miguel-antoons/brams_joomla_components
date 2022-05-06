@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 						onclick='changeCheckBox()'
 						class='custom_checkbox <?php echo $station->transfer_type ?> <?php echo $station->status ?>'
 						name='station'
-						value='<?php echo $station->id ?>'
+						value='<?php echo $station->location_code . '_' . $station->alias ?>'
 						id='station<?php echo $station->id ?>'
 						<?php echo $station->checked ?>
 					/>

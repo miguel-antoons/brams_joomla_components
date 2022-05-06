@@ -22,34 +22,37 @@ require JPATH_ROOT.DS.'components/com_bramsdata/models/Lib/Archive.php';
  * @since  0.4.0
  */
 class BramsDataViewViewer extends HtmlView {
-	/**
-	 * Function makes sure to get the application input. If it fails, it
-	 * will return false
-	 *
-	 * @return Input|boolean
-	 * @since 0.2.5
-	 */
-	private function getAppInput() {
-		try {
-			return Factory::getApplication()->input;
-		} catch (Exception $e) {
-			// log the exception
-			Log::add($e, Log::ERROR, 'error');
-			return false;
-		}
-	}
+    /**
+     * Function makes sure to get the application input. If it fails, it
+     * will return false
+     *
+     * @return Input|boolean
+     * @since 0.2.5
+     */
+    private function getAppInput() {
+        try {
+            return Factory::getApplication()->input;
+        } catch (Exception $e) {
+            // log the exception
+            Log::add($e, Log::ERROR, 'error');
+            return false;
+        }
+    }
 
-	public function makeImages() {
-		$input          = $this->getAppInput();
-		$needed_params  = array('start', 'end', 'station', 'fmin', 'fmax');
-		$params         = $input->getArray($needed_params);
+    public function makeImages() {
+        $input          = $this->getAppInput();
+        $params         = array(
+            'task'      => 'makeImages',
+            'begin'     => $input->get('begin'),
+            'end'       => $input->get('end'),
+            'station'   => $input->get('station'),
+        );
 
-		header('MIME-Version: 1.0');
-		header('Content-Type: text/plain');
+	    if ($fmin = $input->get('fmin', false)) $params['fmin'] = $fmin;
+	    if ($fmax = $input->get('fmax', false)) $params['fmax'] = $fmax;
 
-		$archive        = new Archive();
-		$params['task'] = 'makeImages';
+        $archive        = new Archive();
 
-		echo $archive->get($params);
-	}
+        echo new JResponseJson(array($archive->get($params)));
+    }
 }
