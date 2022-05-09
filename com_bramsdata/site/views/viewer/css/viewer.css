@@ -1,3 +1,41 @@
 .finput {
     width: 98% !important;
 }
+
+.spectrogram {
+    width: 500px;
+    height: 400px;
+    display: inline-block;
+    margin: 0;
+}
+
+.scrollable {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.outer {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+#spectrogramContainer {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.g-container {
+    width: 83% !important;
+}

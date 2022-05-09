@@ -1,3 +1,5 @@
+let stationURLs = [];
+
 function dateString(d) {
     const pad = (n) => { return n < 10 ? `0${n}` : n; }
     return `${d.getFullYear()}-${
@@ -16,35 +18,37 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
     let hour;
     let minute;
     let imageName;
-    let HTMLString = '<div class="row"><div class="col">'
+    let HTMLString = '<div class="row outer"><div class="col scrollable">'
     for (
         const loopDate = new Date(startDate);
         loopDate < endDate;
         loopDate.setTime(loopDate.getTime() + (5 * 60 * 1000))
     ) {
         year = loopDate.getFullYear();
-        month = `0${loopDate.getMonth()}`.slice(-2);
+        month = `0${loopDate.getMonth() + 1}`.slice(-2);
         day = `0${loopDate.getDate()}`.slice(-2);
         hour = `0${loopDate.getHours()}`.slice(-2);
         minute = `0${loopDate.getMinutes()}`.slice(-2);
         imageName = `RAD_BEDOUR_${year}${month}${day}_${hour}${minute}_${stationId}`;
+        const imageUrl = `
+            /index.php?
+            option=com_bramsdata
+            &task=getImage
+            &view=viewer
+            &format=png
+            &image=${imageName}
+            ${fParams}
+            &${token}=1
+        `;
+        stationURLs[stationURLs.length - 1].push(imageUrl);
         HTMLString += `
             <img
                 class="spectrogram"
-                src="
-                    /index.php?
-                    option=com_bramsdata
-                    &task=getImage
-                    &view=viewer
-                    &format=png
-                    &image=${imageName}
-                    ${fParams}
-                    &${token}=1
-                "
+                src="${imageUrl}"
                 alt="${imageName}"
                 onerror="this.onerror=null;this.src='/ProjectDir/img/brams_viewer/no_data.jpg';"
-            >
-        `;
+                onclick="showLightBox(this, ${stationURLs.length - 1}, ${stationURLs[stationURLs.length - 1].length - 1})"
+            >`;
     }
     HTMLString += '</div></div>';
 
@@ -109,6 +113,7 @@ function showSpectrograms() {
     document.getElementById('spectrogramContainer').innerHTML = '';
     selectedStations.forEach(
         (station) => {
+            stationURLs.push([]);
             getSpectrograms(station, fMin, fMax, startDate, endDate);
         }
     );

@@ -64,6 +64,7 @@ class BramsDataModelViewer extends BaseDatabaseModel {
         // SQL query to get all information about the multiple systems
         $system_query->select(
             $db->quoteName('alias')             . ', '
+            . $db->quoteName('system.id')       . ', '
             . $db->quoteName('location_code')   . ', '
             . $db->quoteName('system.name')     . ', '
             . $db->quoteName('transfer_type')   . ', '

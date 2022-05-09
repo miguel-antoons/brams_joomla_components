@@ -43,13 +43,14 @@ class BramsDataViewViewer extends HtmlView {
         $input          = $this->getAppInput();
         $params         = array(
             'task'      => 'makeImages',
-            'begin'     => $input->get('begin'),
-            'end'       => $input->get('end'),
-            'station'   => $input->get('station'),
+            'begin'     => trim($input->get('begin', '', 'string')),
+            'end'       => trim($input->get('end', '', 'string')),
+            'station'   => $input->get('station')
         );
+        Log::add($input->get('begin', '', 'string'), Log::ERROR, 'error');
 
-	    if ($fmin = $input->get('fmin', false)) $params['fmin'] = $fmin;
-	    if ($fmax = $input->get('fmax', false)) $params['fmax'] = $fmax;
+        if ($fMin = $input->get('fmin', false)) $params['fmin'] = $fMin;
+        if ($fMax = $input->get('fmax', false)) $params['fmax'] = $fMax;
 
         $archive        = new Archive();
 
