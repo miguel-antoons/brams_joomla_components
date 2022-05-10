@@ -62,11 +62,13 @@ class BramsDataViewViewer extends HtmlView {
 		$document = Factory::getDocument();
 		$document->addStyleSheet('/components/com_bramsdata/views/_css/common.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/viewer/css/viewer.css');
+		$document->addStyleSheet('/components/com_bramsdata/views/viewer/css/photoswipe.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/_css/bootstrap.min.css');
 		$document->addStyleSheet('https://use.fontawesome.com/releases/v5.0.12/css/all.css');
 		$document->addScript('/components/com_bramsdata/views/_js/common.js');
 		$document->addScript('/components/com_bramsdata/views/viewer/js/viewer.js');
+		$document->addScript('/components/com_bramsdata/views/viewer/js/photoswipe.esm.js');
+		$document->addScript('/components/com_bramsdata/views/viewer/js/photoswipe-lightbox.esm.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
-		// $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
 	}
 }

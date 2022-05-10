@@ -1,4 +1,7 @@
+import PhotoSwipeLightbox from "./photoswipe-lightbox.esm";
+
 let stationURLs = [];
+let lightBoxes = [];
 
 function dateString(d) {
     const pad = (n) => { return n < 10 ? `0${n}` : n; }
@@ -18,12 +21,18 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
     let hour;
     let minute;
     let imageName;
-    let HTMLString = '<div class="row outer"><div class="col scrollable">'
+    let HTMLString = `<div class="row outer"><div id="${stationId}" class="col scrollable">`;
     for (
         const loopDate = new Date(startDate);
         loopDate < endDate;
         loopDate.setTime(loopDate.getTime() + (5 * 60 * 1000))
     ) {
+        const newImage = document.createElement('IMG');
+        newImage.setAttribute('onload',
+            "this.parentElement.setAttribute('data-pswp-width', this.naturalWidth);" +
+            "this.parentElement.setAttribute('data-pswp-height', this.naturalHeight);"
+        );
+        newImage.setAttribute('class', 'spectrogram');
         year = loopDate.getFullYear();
         month = `0${loopDate.getMonth() + 1}`.slice(-2);
         day = `0${loopDate.getDate()}`.slice(-2);
@@ -40,19 +49,31 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
             ${fParams}
             &${token}=1
         `;
+        newImage.setAttribute('src', imageUrl);
+        newImage.setAttribute('alt', imageName);
+        newImage.setAttribute(
+            'onerror',
+            "this.onerror=null;this.src='/ProjectDir/img/brams_viewer/no_data.jpg';"
+        );
         stationURLs[stationURLs.length - 1].push(imageUrl);
         HTMLString += `
-            <img
-                class="spectrogram"
-                src="${imageUrl}"
-                alt="${imageName}"
-                onerror="this.onerror=null;this.src='/ProjectDir/img/brams_viewer/no_data.jpg';"
-                onclick="showLightBox(this, ${stationURLs.length - 1}, ${stationURLs[stationURLs.length - 1].length - 1})"
-            >`;
+            <a
+                href=${imageUrl}
+                target='_blank'
+            >
+                ${newImage}
+            </a>
+        `;
     }
     HTMLString += '</div></div>';
-
     document.getElementById('spectrogramContainer').innerHTML += HTMLString;
+    lightBoxes.push(new PhotoSwipeLightbox({
+        gallery: `#${stationId}`,
+        children: 'a',
+        pswpModule: () => import('photoswipe.esm.js'),
+    }));
+
+    lightBoxes[lightBoxes.length - 1].init();
 }
 
 
