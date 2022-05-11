@@ -64,24 +64,24 @@ function createGallery(parentElement, index) {
             up: {
                 show: true,
                 size: 'large',
-                click: () => {
-                    const id = parentElement.id;
+                click: (id = parentElement.id, colIndex = index) => {
+                    console.log(id);
                     const newIndex = stations.findIndex(id) - 1;
 
                     if (newIndex >= 0 && newIndex < stations.length) {
-                        createGallery(document.getElementById(stations[newIndex]), index);
+                        createGallery(document.getElementById(stations[newIndex]), colIndex);
                     }
                 },
             },
             down: {
                 show: true,
                 size: 'large',
-                click: () => {
-                    const id = parentElement.id;
+                click: (id = parentElement.id, colIndex = index) => {
+                    console.log(id);
                     const newIndex = stations.findIndex(id) + 1;
 
                     if (newIndex >= 0 && newIndex < stations.length) {
-                        createGallery(document.getElementById(stations[newIndex]), index);
+                        createGallery(document.getElementById(stations[newIndex]), colIndex);
                     }
                 },
             },
@@ -124,7 +124,6 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
             ${fParams}
             &${token}=1
         `;
-        stations[stations.length - 1].push(imageUrl);
         HTMLString += `
             <img
                 src="${imageUrl}"
