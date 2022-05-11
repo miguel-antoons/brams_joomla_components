@@ -8,22 +8,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
-<script type="module">
-    import PhotoSwipeLightbox from '/components/com_bramsdata/views/viewer/js/photoswipe-lightbox.esm.js';
-
-    let lightBoxes = [];
-    function addLightBox(containerId, childElement = 'a') {
-        lightBoxes.push(new PhotoSwipeLightbox({
-            gallery: `#${containerId}`,
-            children: childElement,
-            pswpModule: () => import('/components/com_bramsdata/views/viewer/js/photoswipe.esm.js')
-        }));
-
-        lightBoxes[lightBoxes.length - 1].init();
-    }
-
-    module.exports = addLightBox;
-</script>
 <p id="error">
 
 </p>

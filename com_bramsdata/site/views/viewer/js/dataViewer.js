@@ -1,5 +1,5 @@
 let stationURLs = [];
-let lightBoxes = [];
+let gallery;
 
 function dateString(d) {
     const pad = (n) => { return n < 10 ? `0${n}` : n; }
@@ -8,6 +8,12 @@ function dateString(d) {
         pad(d.getDate())}T${
         pad(d.getHours())}:${
         pad(d.getMinutes())}`;
+}
+
+
+function createGallery(parentElement, index) {
+    gallery = new Viewer(parentElement);
+    gallery.view(index);
 }
 
 
@@ -20,6 +26,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
     let minute;
     let imageName;
     let HTMLString = `<div class="row outer"><div id="${stationId}" class="col scrollable">`;
+    let index = 0;
     for (
         const loopDate = new Date(startDate);
         loopDate < endDate;
@@ -48,14 +55,15 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
             <img
                 src="${imageUrl}"
                 alt="${imageName}"
+                class="spectrogram ${stationId}"
                 onerror="this.onerror=null;this.src='/ProjectDir/img/brams_viewer/no_data.jpg';"
+                onclick="createGallery(this.parentElement, ${index})"
             >
         `;
+        index += 1;
     }
     HTMLString += '</div></div>';
     document.getElementById('spectrogramContainer').innerHTML += HTMLString;
-
-    lightBoxes.push(new Viewer(document.getElementById(stationId)));
 }
 
 
@@ -88,7 +96,6 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate) {
             &${token}=1
         `,
         success: (data) => {
-            lightBoxes = [];
             const station = data.data[0];
             loadSpectrogramsTable(station, fParams, startDate, endDate);
         },
@@ -115,6 +122,7 @@ function showSpectrograms() {
 
     const selectedStations = getSelectedCheckboxes();
     document.getElementById('spectrogramContainer').innerHTML = '';
+    lightBoxes = [];
     selectedStations.forEach(
         (station) => {
             stationURLs.push([]);
