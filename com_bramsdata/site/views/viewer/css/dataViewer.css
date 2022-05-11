@@ -42,11 +42,13 @@
 }
 
 .viewer-png, .viewer-wav, .viewer-up, .viewer-down {
-    color: #fff;
+    color: #ffffff;
     font-family: FontAwesome, sans-serif;
-    font-size: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
     line-height: 1.5rem;
     text-align: center;
+    vertical-align: center;
 }
 
 .viewer-png, .viewer-wav {
@@ -62,9 +64,9 @@
 }
 
 .viewer-up {
-    content: '\2191';
+    content: '\f01b';
 }
 
 .viewer-down {
-    content: '\2193';
+    content: '\f01a';
 }

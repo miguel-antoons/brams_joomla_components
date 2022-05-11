@@ -241,7 +241,7 @@
 }
 
 .viewer-toolbar > ul > li {
-    background-color: rgba(0, 0, 0, 50%);
+    background-color: #062c33;
     border-radius: 50%;
     cursor: pointer;
     float: left;
@@ -253,7 +253,7 @@
 
 .viewer-toolbar > ul > li:focus,
 .viewer-toolbar > ul > li:hover {
-    background-color: rgba(0, 0, 0, 80%);
+    background-color: #4e555b;
 }
 
 .viewer-toolbar > ul > li:focus {
@@ -290,7 +290,7 @@
 }
 
 .viewer-toolbar > ul > .viewer-large::before {
-    margin: 5px;
+    margin: 10px;
 }
 
 .viewer-tooltip {

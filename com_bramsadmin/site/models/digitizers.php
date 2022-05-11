@@ -42,22 +42,14 @@ class BramsAdminModelDigitizers extends BaseDatabaseModel {
     private function connectToDatabase() {
         try {
             /* Below lines are for connecting to production database later on */
-            // $database_options = array();
-
-            // $database_options['driver'] = $_ENV['DB_DRIVER'];
-            // $database_options['host'] = $_ENV['DB_HOST'];
-            // $database_options['user'] = $_ENV['DB_USER'];
-            // $database_options['password'] = $_ENV['DB_PASSWORD'];
-            // $database_options['database'] = $_ENV['DB_NAME'];
-            // $database_options['prefix'] = $_ENV['DB_PREFIX'];
-
-            // return JDatabaseDriver::getInstance($database_options);
+	        $database_options = getDatabaseInfo();
+	        return JDatabaseDriver::getInstance($database_options);
 
             /*
             below line is for connecting to default joomla database
             WARNING : this line should be commented/removed for production
             */
-            return $this->getDbo();
+            // return $this->getDbo();
         } catch (Exception $e) {
             // if an error occurs, log the error and return false
             echo new JResponseJson(array(('message') => $e));

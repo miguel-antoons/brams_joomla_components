@@ -47,7 +47,6 @@ class BramsDataViewViewer extends HtmlView {
             'end'       => trim($input->get('end', '', 'string')),
             'station'   => $input->get('station')
         );
-        Log::add($input->get('begin', '', 'string'), Log::ERROR, 'error');
 
         if ($fMin = $input->get('fmin', false)) $params['fmin'] = $fMin;
         if ($fMax = $input->get('fmax', false)) $params['fmax'] = $fMax;

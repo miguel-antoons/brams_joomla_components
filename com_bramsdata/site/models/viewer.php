@@ -91,7 +91,7 @@ class BramsDataModelViewer extends BaseDatabaseModel {
 		$file_query->select($db->quoteName('status'));
 		$file_query->from($db->quoteName('file'));
 		$file_query->where(
-			$db->quoteName('system_id') . ' = ' . $db->quote($sysId)
+			'CHARINDEX(' . $db->quote($sysId) . ', ' . $db->quoteName('path') . ')'
 		);
 		$file_query->where(
 			$db->quoteName('start') . ' = ' . $db->quote($file_start)

@@ -12,6 +12,9 @@ function dateString(d) {
 
 
 function createGallery(parentElement, index) {
+    if (gallery !== undefined) {
+        gallery.destroy();
+    }
     gallery = new Viewer(parentElement, {
         toolbar: {
             zoomIn: {
@@ -40,7 +43,7 @@ function createGallery(parentElement, index) {
                 click: () => {
                     const a = document.createElement('a');
 
-                    a.href = gallery.image.src.replace('makeImages', 'saveImage');
+                    a.href = gallery.image.src.replace('getImage', 'saveImage');
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -53,8 +56,8 @@ function createGallery(parentElement, index) {
                     const a = document.createElement('a');
 
                     a.href = `
-                        ${gallery.image.src.replace('showImage', 'saveWav')}
-                        &sysId=${parentElement.id.replace('station', '')}
+                        ${gallery.image.src.replace('getImage', 'saveWav')}
+                        &sysId=${parentElement.id}
                     `;
                     document.body.appendChild(a);
                     a.click();
@@ -64,24 +67,24 @@ function createGallery(parentElement, index) {
             up: {
                 show: true,
                 size: 'large',
-                click: (id = parentElement.id, colIndex = index) => {
-                    console.log(id);
-                    const newIndex = stations.findIndex(id) - 1;
+                click: () => {
+                    const newIndex = stations.findIndex((element) => element === parentElement.id) - 1;
 
                     if (newIndex >= 0 && newIndex < stations.length) {
-                        createGallery(document.getElementById(stations[newIndex]), colIndex);
+                        gallery.hide();
+                        createGallery(document.getElementById(stations[newIndex]), index);
                     }
                 },
             },
             down: {
                 show: true,
                 size: 'large',
-                click: (id = parentElement.id, colIndex = index) => {
-                    console.log(id);
-                    const newIndex = stations.findIndex(id) + 1;
+                click: () => {
+                    const newIndex = stations.findIndex((element) => element === parentElement.id) + 1;
 
                     if (newIndex >= 0 && newIndex < stations.length) {
-                        createGallery(document.getElementById(stations[newIndex]), colIndex);
+                        gallery.hide();
+                        createGallery(document.getElementById(stations[newIndex]), index);
                     }
                 },
             },
@@ -137,6 +140,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
     }
     HTMLString += '</div></div>';
     document.getElementById('spectrogramContainer').innerHTML += HTMLString;
+    stations.push(stationId);
 }
 
 
@@ -198,7 +202,6 @@ function showSpectrograms() {
     lightBoxes = [];
     selectedStations.forEach(
         (station) => {
-            stations.push(station);
             getSpectrograms(station, fMin, fMax, startDate, endDate);
         }
     );
