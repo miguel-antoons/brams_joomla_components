@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+require JPATH_ROOT.DIRECTORY_SEPARATOR.'env.php';
 
 /**
  * Map Model

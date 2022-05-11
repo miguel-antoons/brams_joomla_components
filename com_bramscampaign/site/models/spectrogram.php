@@ -11,8 +11,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
-
+require JPATH_ROOT.DIRECTORY_SEPARATOR.'env.php';
 require JPATH_ROOT.DS.'components/com_bramscampaign/models/Lib/Archive.php';
+
 /**
  * Spectrogram Model
  *

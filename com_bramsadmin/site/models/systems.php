@@ -9,9 +9,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+require JPATH_ROOT.DIRECTORY_SEPARATOR.'env.php';
 
 /**
  * Systems Model
