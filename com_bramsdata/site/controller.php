@@ -163,4 +163,36 @@ class BramsDataController extends BaseController {
 			echo new JResponseJson(array(('message') => false));
 		}
 	}
+
+	public function saveImage() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+
+				return;
+			}
+			$view->saveImage();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
+
+	public function saveWav() {
+		if (Jsession::checkToken('get')) {
+			try {
+				$view = $this->display(false, array(), true);
+			} catch (Exception $e) {
+				echo new JResponseJson(array(('message') => $e));
+				Log::add($e, Log::ERROR, 'error');
+
+				return;
+			}
+			$view->saveWav();
+		} else {
+			echo new JResponseJson(array(('message') => false));
+		}
+	}
 }

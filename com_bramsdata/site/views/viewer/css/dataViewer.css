@@ -3,8 +3,8 @@
 }
 
 .spectrogram {
-    width: 500px;
-    height: 400px;
+    width: 375px;
+    height: 275px;
     display: inline-block;
     margin: 0;
     cursor: pointer;
@@ -39,4 +39,32 @@
 
 .g-container {
     width: 83% !important;
+}
+
+.viewer-png, .viewer-wav, .viewer-up, .viewer-down {
+    color: #fff;
+    font-family: FontAwesome, sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.5rem;
+    text-align: center;
+}
+
+.viewer-png, .viewer-wav {
+    width: 50px !important;
+}
+
+.viewer-wav::before {
+    content: "wav";
+}
+
+.viewer-png::before {
+    content: "png";
+}
+
+.viewer-up {
+    content: '\2191';
+}
+
+.viewer-down {
+    content: '\2193';
 }

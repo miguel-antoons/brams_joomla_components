@@ -49,7 +49,7 @@ class BramsCampaignViewCountings extends HtmlView {
         // get the id of the counting to get files from
         $campaign_id        = $input->get('id');
         $annotated          = (int) $input->get('annotated');
-        // initialise the models
+        // initialize the models
         $spectrogram_model  = $this->getModel('spectrogram');
         $campaign_model     = $this->getModel('campaigns');
 
@@ -64,12 +64,11 @@ class BramsCampaignViewCountings extends HtmlView {
         else                    $this->getOriginalSpectrograms($spectrograms, $file_name);
 
         // send the zip file so the user can download it
+        $this->document->setMimeEncoding("application/zip");
         header("Content-Disposition: attachment; filename=original_spectrograms.zip");
-        header("Content-Type: application/zip");
         readfile($file_name);
 
         // $_SESSION['downloadStatus'] = array('status' => 'finished');
-        return 1;
     }
 
     private function getOriginalSpectrograms($spectrograms, $file_name) {

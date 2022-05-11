@@ -54,4 +54,41 @@ class BramsDataViewViewer extends HtmlView {
 
         echo $archive->get($params);
     }
+
+	public function saveImage() {
+		$input = $this->getAppInput();
+		$params = array(
+			'task'  => 'saveImage',
+			'image' => $input->get('image'),
+		);
+
+		$archive = new Archive();
+
+		$this->document->setMimeEncoding('image/png');
+		header('Content-Disposition: attachment; filename=' . $input->get('image') . '.png');
+
+		echo $archive->get($params);
+	}
+
+	public function saveWav() {
+		$model              = $this->getModel();
+		$input              = $this->getAppInput();
+		$image              = $input->get('image');
+		$split_image_name   = explode('_', $image);
+
+		$file_start = DateTime::createFromFormat('YmdHi', $split_image_name[2].$split_image_name[3]);
+
+		if ($model->getFileStatus($input->get('sysId'), $file_start->format('Y-m-d H:i'))) {
+			$this->document->setMimeEncoding('application/octet-stream');
+			header('Content-Disposition: attachment; filename=' . $image . '.png');
+
+			$archive = new Archive;
+			$params = array(
+				'task'  => 'saveWave',
+				'image' => $image,
+			);
+
+			echo $archive->get($params);
+		}
+	}
 }

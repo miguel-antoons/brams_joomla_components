@@ -1,4 +1,4 @@
-let stationURLs = [];
+let stations = [];
 let gallery;
 
 function dateString(d) {
@@ -12,7 +12,81 @@ function dateString(d) {
 
 
 function createGallery(parentElement, index) {
-    gallery = new Viewer(parentElement);
+    gallery = new Viewer(parentElement, {
+        toolbar: {
+            zoomIn: {
+                show: true,
+                size: 'large',
+            },
+            zoomOut: {
+                show: true,
+                size: 'large',
+            },
+            oneToOne: {
+                show: true,
+                size: 'large',
+            },
+            prev: {
+                show: true,
+                size: 'large',
+            },
+            next: {
+                show: true,
+                size: 'large',
+            },
+            png: {
+                show: true,
+                size: 'large',
+                click: () => {
+                    const a = document.createElement('a');
+
+                    a.href = gallery.image.src.replace('makeImages', 'saveImage');
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                },
+            },
+            wav: {
+                show: true,
+                size: 'large',
+                click: () => {
+                    const a = document.createElement('a');
+
+                    a.href = `
+                        ${gallery.image.src.replace('showImage', 'saveWav')}
+                        &sysId=${parentElement.id.replace('station', '')}
+                    `;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                },
+            },
+            up: {
+                show: true,
+                size: 'large',
+                click: () => {
+                    const id = parentElement.id;
+                    const newIndex = stations.findIndex(id) - 1;
+
+                    if (newIndex >= 0 && newIndex < stations.length) {
+                        createGallery(document.getElementById(stations[newIndex]), index);
+                    }
+                },
+            },
+            down: {
+                show: true,
+                size: 'large',
+                click: () => {
+                    const id = parentElement.id;
+                    const newIndex = stations.findIndex(id) + 1;
+
+                    if (newIndex >= 0 && newIndex < stations.length) {
+                        createGallery(document.getElementById(stations[newIndex]), index);
+                    }
+                },
+            },
+        },
+    });
     gallery.view(index);
 }
 
@@ -50,7 +124,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
             ${fParams}
             &${token}=1
         `;
-        stationURLs[stationURLs.length - 1].push(imageUrl);
+        stations[stations.length - 1].push(imageUrl);
         HTMLString += `
             <img
                 src="${imageUrl}"
@@ -125,7 +199,7 @@ function showSpectrograms() {
     lightBoxes = [];
     selectedStations.forEach(
         (station) => {
-            stationURLs.push([]);
+            stations.push(station);
             getSpectrograms(station, fMin, fMax, startDate, endDate);
         }
     );

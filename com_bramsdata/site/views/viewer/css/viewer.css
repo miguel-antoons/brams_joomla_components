@@ -283,10 +283,10 @@
 }
 
 .viewer-toolbar > ul > .viewer-large {
-    height: 30px;
+    height: 40px;
     margin-bottom: -3px;
     margin-top: -3px;
-    width: 30px
+    width: 40px
 }
 
 .viewer-toolbar > ul > .viewer-large::before {

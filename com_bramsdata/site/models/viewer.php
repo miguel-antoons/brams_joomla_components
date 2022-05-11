@@ -90,6 +90,32 @@ class BramsDataModelViewer extends BaseDatabaseModel {
         }
     }
 
+	public function getFileStatus($file_start, $sysId) {
+		if (!$db = $this->connectToDatabase()) return -1;
+		$file_query = $db->getQuery(true);
+
+		// get the status of the requested file
+		$file_query->select($db->quoteName('status'));
+		$file_query->from($db->quoteName('file'));
+		$file_query->where(
+			$db->quoteName('system_id') . ' = ' . $db->quote($sysId)
+		);
+		$file_query->where(
+			$db->quoteName('start') . ' = ' . $db->quote($file_start)
+		);
+
+		$db->setQuery($file_query);
+
+		// try to execute the query and return the result
+		try {
+			return $db->loadObjectList()[0]->status;
+		} catch (RuntimeException $e) {
+			// if it fails, log the error and return false
+			Log::add($e, Log::ERROR, 'error');
+			return -1;
+		}
+	}
+
     // get today's date in yyy-mm-dd format
     public function getToday() {
         return date('Y-m-d') . 'T00:00';
