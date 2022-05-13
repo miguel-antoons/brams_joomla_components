@@ -42,6 +42,7 @@ class BramsCampaignViewCountings extends HtmlView {
     }
 
     public function getSpectrograms() {
+        $_SESSION['downloadStatus'] = array('status' => 'pending');
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) return -1;
         $config = new JConfig();
@@ -49,6 +50,7 @@ class BramsCampaignViewCountings extends HtmlView {
         // get the id of the counting to get files from
         $campaign_id        = $input->get('id');
         $annotated          = (int) $input->get('annotated');
+        $campaign_name      = $input->get('name');
         // initialize the models
         $spectrogram_model  = $this->getModel('spectrogram');
         $campaign_model     = $this->getModel('campaigns');
@@ -67,11 +69,12 @@ class BramsCampaignViewCountings extends HtmlView {
         $this->document->setMimeEncoding("application/zip");
         header("Cache-Control: public");
         header("Content-Transfer-Encoding: Binary");
-        header("Content-Disposition: attachment; filename=original_spectrograms.zip");
+        header("Content-Disposition: attachment; filename=".$campaign_name.".zip");
         header("Content-Length:".filesize($file_name));
         readfile($file_name);
 
-        // $_SESSION['downloadStatus'] = array('status' => 'finished');
+        $_SESSION['downloadStatus'] = array('status' => 'finished');
+        die();
     }
 
     private function getOriginalSpectrograms($spectrograms, $file_name) {

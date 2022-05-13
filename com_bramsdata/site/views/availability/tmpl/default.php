@@ -11,8 +11,8 @@ defined('_JEXEC') or die('Restricted access');
 <p id="error">
 
 </p>
-<div class="container custom_container container_margin">
-	<?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
+<div class="container custom_container container_margin menu">
+    <?php echo '<input id="token" type="hidden" name="' . JSession::getFormToken() . '" value="1" />'; ?>
     <div class='row'>
         <div class='col custom_col'>
             <input type='checkbox' onclick="checkAllBoxes(this)" id='checkAll' name='checkAll' />
@@ -32,14 +32,14 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <div id="form">
-    <div class="container custom_container">
+    <div class="container custom_container menu">
         <div class='row'>
             <div class='col custom_col'>
                 <?php $index = 0 ?>
                 <?php foreach ($this->stations as $station) : ?>
                     <?php
-                        if(!($index % $this->column_length) && $index) { echo "</div><div class='col custom_col'>"; }
-                        $index++;
+                    if(!($index % $this->column_length) && $index) { echo "</div><div class='col custom_col'>"; }
+                    $index++;
                     ?>
                     <input
                         type='checkbox'
@@ -58,13 +58,39 @@ defined('_JEXEC') or die('Restricted access');
             </div>
         </div>
         <div class='row customRow'>
+            <div class='col-5 custom_col'>
+                <label for='startDate' class="form-label">From </label>
+                <input
+                    type='date'
+                    name='startDate'
+                    id='startDate'
+                    min='2011-01-01'
+                    class="form-control"
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->start_date ?>'
+                    required
+                />
+            </div>
+            <div class='col-5 custom_col'>
+                <label for='endDate' class="form-label">To </label>
+                <input
+                    type='date'
+                    name='endDate'
+                    id='endDate'
+                    min='2011-01-01'
+                    class="form-control"
+                    max='<?php echo $this->today ?>'
+                    value='<?php echo $this->today ?>'
+                    required
+                />
+            </div>
             <div class="col-2 custom_col">
                 <div id="buttonContainer">
                     <button
-                            name='submit'
-                            class='customBtn save'
-                            id='submit'
-                            onclick="getAvailability()"
+                        name='submit'
+                        class='customBtn save'
+                        id='submit'
+                        onclick="getAvailability()"
                     >
                         <i class="fa fa-check-square" aria-hidden="true"></i>
                         Submit
@@ -72,43 +98,19 @@ defined('_JEXEC') or die('Restricted access');
                     <span id="spinner" class="spinner-border text-success"></span>
                 </div>
             </div>
-            <div class='col-5 custom_col'>
-                <label for='startDate'>From </label>
-                <input
-                    type='date'
-                    name='startDate'
-                    id='startDate'
-                    min='2011-01-01'
-                    max='<?php echo $this->today ?>'
-                    value='<?php echo $this->start_date ?>'
-                    required
-                />
-            </div>
-            <div class='col-5 custom_col'>
-                <label for='endDate'>To </label>
-                <input
-                    type='date'
-                    name='endDate'
-                    id='endDate'
-                    min='2011-01-01'
-                    max='<?php echo $this->today ?>'
-                    value='<?php echo $this->today ?>'
-                    required
-                />
-            </div>
+        </div>
+        <div class="row">
+            <div class='col legend'><span class="a"></span>  100%</div>
+            <div class='col legend'><span class="b"></span>  80.1 - 99.9%</div>
+            <div class='col legend'><span class="c"></span>  60.1 - 80%</div>
+            <div class='col legend'><span class="d"></span>  40.1 - 60%</div>
+            <div class='col legend'><span class="e"></span>  20.1 - 40%</div>
+            <div class='col legend'><span class="f"></span>  0.1 - 20%</div>
+            <div class='col legend'><span class="g"></span>  0%</div>
         </div>
     </div>
 </div>
-<div class="container custom_container">
-    <div class="row">
-        <div class='col legend'><span class="a"></span>  100%</div>
-        <div class='col legend'><span class="b"></span>  80.1 - 99.9%</div>
-        <div class='col legend'><span class="c"></span>  60.1 - 80%</div>
-        <div class='col legend'><span class="d"></span>  40.1 - 60%</div>
-        <div class='col legend'><span class="e"></span>  20.1 - 40%</div>
-        <div class='col legend'><span class="f"></span>  0.1 - 20%</div>
-        <div class='col legend'><span class="g"></span>  0%</div>
-    </div>
+<div id="content" class="container custom_container">
     <div class='row'>
         <div class='col'>
             <div style="overflow: hidden;" class="visavail" id="visavail_container">

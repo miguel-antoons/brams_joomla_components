@@ -52,3 +52,20 @@
 .legend .c { background-color: #3cbfc8; }
 .legend .b { background-color: #3cc877; }
 .legend .a { background-color: #6dc83c; }
+
+.site-grid {
+    display: block !important;
+    width: 80% !important;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.menu {
+    width: 1100px !important;
+    margin: auto;
+}
+
+#content {
+    max-width: 100% !important;
+    width: 100% !important;
+}

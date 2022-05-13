@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\Input\Input;
 
@@ -106,6 +105,7 @@ class BramsCampaignViewCountings extends HtmlView {
     }
 
     public function getCSV() {
+        $_SESSION['downloadStatus'] = array('status' => 'pending');
         // if an error occurred when getting the app input, stop the function
         if (!$input = $this->getAppInput()) return -1;
         $response = array();

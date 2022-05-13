@@ -14,7 +14,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\Input\Input;
 
-require JPATH_ROOT.DS.'components/com_bramsdata/models/Lib/Archive.php';
+require JPATH_ROOT.DIRECTORY_SEPARATOR.'components/com_bramsdata/models/Lib/Archive.php';
 
 /**
  * HTML View class for the BramsData Component

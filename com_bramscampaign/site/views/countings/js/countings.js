@@ -64,8 +64,8 @@ function countingAction(camId, camStart, camSysId, camHasParticipated) {
     return createCounting(camId, camStart, camSysId);
 }
 
-function downloadSpectrogram(camId, annotatedSpectrograms = false) {
-    // document.getElementById(`spinner${camId}`).style.display = 'inline-block';
+function downloadSpectrogram(camId, annotatedSpectrograms = false, camName) {
+    document.getElementById(`spinner${camId}`).style.display = 'inline-block';
     // get the token
     const token = $('#token').attr('name');
 
@@ -79,27 +79,28 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false) {
             &format=zip
             &id=${camId}
             &annotated=1
+            &name=${camName}
             &${token}=1
         `;
-    } else getCSV(camId, token);
+    } else getCSV(camId, camName);
 
-    // setTimeout(`getDownloadStatus('${camId}')`, 500);
+    setTimeout(`getDownloadStatus('${camId}')`, 500);
 }
 
-function generateCSV(csvData) {
+function generateCSV(csvData, camName) {
     const csvContent = "data:text/csv;charset=utf-8,"
         + csvData.map(e => e.join(",")).join("\n");
 
     const encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "my_data.csv");
+    link.setAttribute("download", `${camName}.csv`);
     document.body.appendChild(link); // Required for FF
 
     link.click();
 }
 
-function getCSV(camId) {
+function getCSV(camId, camName) {
     // get the token
     const token = $('#token').attr('name');
 
@@ -116,7 +117,7 @@ function getCSV(camId) {
             &${token}=1
         `,
         success: (response) => {
-            generateCSV(response.data['csv_data']);
+            generateCSV(response.data['csv_data'], camName);
         },
         error: (response) => {
             console.log(response);
@@ -135,8 +136,8 @@ function setPopupTitle(camName, camId) {
     document.getElementById('exampleModalLabel').innerHTML = `
         Download files from ${camName} counting`;
 
-    document.getElementById('downloadAnnotated').onclick = () => downloadSpectrogram(camId, true);
-    document.getElementById('downloadCsv').onclick = () => getCSV(camId);
+    document.getElementById('downloadAnnotated').onclick = () => downloadSpectrogram(camId, true, camName);
+    document.getElementById('downloadCsv').onclick = () => downloadSpectrogram(camId, false, camName);
 }
 
 /**
@@ -162,7 +163,7 @@ function generateTable() {
             }
 
             HTMLString += `
-                <tr class="tableRow">
+                <tr class="tableRow" onclick="editCounting(${campaign.id})">
                     <td>${campaign.name}</td>
                     <td>${campaign.station}</td>
                     <td>${campaign.start.slice(0, -3)}</td>
@@ -241,36 +242,36 @@ function stopSpinners() {
     }
 }
 
-// function getDownloadStatus(camId) {
-//     // get the token
-//     const token = $('#token').attr('name');
-//
-//     $.ajax({
-//         url: `
-//             /index.php?
-//             option=com_bramscampaign
-//             &task=getDownloadStatus
-//             &view=countings
-//             &format=json
-//             &${token}=1
-//         `,
-//         type: 'GET',
-//         dataType: 'json',
-//         success: (response) => {
-//             console.log(response);
-//             if(response.status === "pending") {
-//                 setTimeout('getDownloadStatus(camId)', 500);
-//             } else {
-//                 document.getElementById(`spinner${camId}`).style.display = 'none';
-//             }
-//         },
-//         error: (response) => {
-//             // on fail, show an error message
-//             document.getElementById('message').innerHTML = apiFailMessg;
-//             // store the server response in the log variable
-//             log = response;
-//         },
-//     });
-// }
+function getDownloadStatus(camId) {
+    // get the token
+    const token = $('#token').attr('name');
+
+    $.ajax({
+        url: `
+            /index.php?
+            option=com_bramscampaign
+            &task=getDownloadStatus
+            &view=countings
+            &format=json
+            &${token}=1
+        `,
+        type: 'GET',
+        dataType: 'json',
+        success: (response) => {
+            console.log(response);
+            if(response.status === "pending") {
+                setTimeout('getDownloadStatus(camId)', 500);
+            } else {
+                document.getElementById(`spinner${camId}`).style.display = 'none';
+            }
+        },
+        error: (response) => {
+            // on fail, show an error message
+            document.getElementById('message').innerHTML = apiFailMessg;
+            // store the server response in the log variable
+            log = response;
+        },
+    });
+}
 
 window.onload = getCampaigns;
