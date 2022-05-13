@@ -65,7 +65,10 @@ class BramsCampaignViewCountings extends HtmlView {
 
         // send the zip file so the user can download it
         $this->document->setMimeEncoding("application/zip");
+        header("Cache-Control: public");
+        header("Content-Transfer-Encoding: Binary");
         header("Content-Disposition: attachment; filename=original_spectrograms.zip");
+        header("Content-Length:".filesize($file_name));
         readfile($file_name);
 
         // $_SESSION['downloadStatus'] = array('status' => 'finished');

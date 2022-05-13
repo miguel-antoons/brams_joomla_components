@@ -94,7 +94,7 @@ function createGallery(parentElement, index) {
 }
 
 
-function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
+function loadSpectrogramsRow(stationId, fParams, startDate, endDate, imageOnload) {
     const token = $('#token').attr('name');
     let year;
     let month;
@@ -134,6 +134,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
                 class="spectrogram ${stationId}"
                 onerror="this.onerror=null;this.src='/ProjectDir/img/brams_viewer/no_data.jpg';"
                 onclick="createGallery(this.parentElement, ${index})"
+                onload="${imageOnload}"
             >
         `;
         index += 1;
@@ -144,7 +145,7 @@ function loadSpectrogramsTable(stationId, fParams, startDate, endDate) {
 }
 
 
-function getSpectrograms(stationId, fMin, fMax, startDate, endDate) {
+function getSpectrograms(stationId, fMin, fMax, startDate, endDate, imageOnload) {
     const token = $('#token').attr('name');
     let intFMin;
     let intFMax;
@@ -174,7 +175,7 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate) {
         `,
         success: (data) => {
             const station = data.data[0];
-            loadSpectrogramsTable(station, fParams, startDate, endDate);
+            loadSpectrogramsRow(station, fParams, startDate, endDate, imageOnload);
         },
         error: (response) => {
             // on fail, show an error message
@@ -189,6 +190,7 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate) {
 }
 
 function showSpectrograms() {
+    document.getElementById('spinner').style.display = 'inline';
     const fMin = document.getElementById('fMin').value;
     const fMax = document.getElementById('fMax').value;
     const startDate = new Date(Date.parse(document.getElementById('startDate').value));
@@ -198,11 +200,16 @@ function showSpectrograms() {
     endDate.setMinutes(startDate.getMinutes() + 65);
 
     const selectedStations = getSelectedCheckboxes();
+    if (selectedStations.length === 0) {
+        document.getElementById('spinner').style.display = 'none';
+    }
     document.getElementById('spectrogramContainer').innerHTML = '';
-    lightBoxes = [];
+    stations = [];
     selectedStations.forEach(
-        (station) => {
-            getSpectrograms(station, fMin, fMax, startDate, endDate);
+        (station, index) => {
+            let imageOnload = '';
+            if (index === selectedStations.length - 1) imageOnload = "document.getElementById('spinner').style.display = 'none';";
+            getSpectrograms(station, fMin, fMax, startDate, endDate, imageOnload);
         }
     );
 }

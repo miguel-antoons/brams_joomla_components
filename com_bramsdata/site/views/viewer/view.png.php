@@ -80,7 +80,7 @@ class BramsDataViewViewer extends HtmlView {
 
 		if ($model->getFileStatus($input->get('sysId'), $file_start->format('Y-m-d H:i'))) {
 			$this->document->setMimeEncoding('application/octet-stream');
-			header('Content-Disposition: attachment; filename=' . $image . '.png');
+			header('Content-Disposition: attachment; filename=' . $image . '.wav');
 
 			$archive = new Archive;
 			$params = array(

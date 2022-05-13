@@ -9,10 +9,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
-require JPATH_ROOT.DIRECTORY_SEPARATOR.'env.php';
 
 /**
  * Campaigns Model
@@ -43,7 +41,7 @@ class BramsCampaignModelCampaigns extends BaseDatabaseModel {
     private function connectToDatabase() {
         try {
             /* Below lines are for connecting to production database later on */
-            $database_options = getDatabaseInfo();
+            $database_options = parse_ini_file(JPATH_ROOT.DIRECTORY_SEPARATOR.'env.ini');
             return JDatabaseDriver::getInstance($database_options);
 
             /*

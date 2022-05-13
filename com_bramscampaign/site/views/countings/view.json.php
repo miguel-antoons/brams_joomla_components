@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\Input\Input;
 
@@ -75,8 +76,6 @@ class BramsCampaignViewCountings extends HtmlView {
 
         echo new JResponseJson($campaigns);
     }
-
-    // ! below function will probably be removed in the near future
 
     /**
      * Function is the entrypoint to create a new counting.

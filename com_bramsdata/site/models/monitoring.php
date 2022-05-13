@@ -12,7 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-require JPATH_ROOT.DIRECTORY_SEPARATOR.'env.php';
 
 /**
  * Monitoring Model
@@ -27,7 +26,7 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 	private function connectToDatabase() {
 		try {
 			/* Below lines are for connecting to production database later on */
-			$database_options = getDatabaseInfo();
+			$database_options = parse_ini_file(JPATH_ROOT.DIRECTORY_SEPARATOR.'env.ini');
 			return JDatabaseDriver::getInstance($database_options);
 
 			/*

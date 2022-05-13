@@ -29,7 +29,7 @@ class BramsCampaignController extends BaseController {
      * *        model that has a name matching the requested view name without the last
      * *        4 letters.
      * *      - if there are models specified in the url, the display function will
-	 * *        initialise and add the models to the view in order to use them.
+     * *        initialize and add the models to the view in order to use them.
      *
      * Typical view method for MVC based architecture
      *
@@ -39,7 +39,7 @@ class BramsCampaignController extends BaseController {
      * @param boolean $cacheable If true, the view output will be cached
      * @param array $url_params An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
      *
-     * @return BramsCampaignController|ViewInterface
+     * @return BramsDataController|ViewInterface
      *
      * @throws Exception
      * @since   0.0.1
@@ -60,9 +60,9 @@ class BramsCampaignController extends BaseController {
             $view->setModel($model, true);
             $add_def_model = false;
         } elseif ($model = $this->getModel(substr($viewName, 0, -4) . 's')) {
-             // Push the model into the view (as default)
-             $view->setModel($model, true);
-             $add_def_model = false;
+            // Push the model into the view (as default)
+            $view->setModel($model, true);
+            $add_def_model = false;
         }
 
         foreach ($modelNames as $modelName) {

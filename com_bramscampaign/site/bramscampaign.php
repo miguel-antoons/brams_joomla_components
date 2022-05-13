@@ -14,6 +14,24 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
 try {
+    $app = Factory::getApplication();
+} catch (Exception $e) {
+    echo '
+        Something went wrong. 
+        Activate Joomla debug and view log messages for more information.
+    ';
+    Log::add($e, Log::ERROR, 'error');
+    return;
+}
+
+$user = $app->getIdentity();
+if ($user === null || $user->id <= 0) {
+    echo 'Unauthorized access';
+    Log::add('An unauthorized access has been performed.', Log::NOTICE, 'error');
+    return;
+}
+
+try {
     // Get an instance of the controller prefixed by BramsCampaign
     $controller = BaseController::getInstance('BramsCampaign');
 } catch (Exception $e) {
@@ -27,7 +45,7 @@ try {
 
 try {
     // get the application input from the request
-    $input = Factory::getApplication()->input;
+    $input = $app->input;
 } catch (Exception $e) {
     echo '
         Something went wrong. 

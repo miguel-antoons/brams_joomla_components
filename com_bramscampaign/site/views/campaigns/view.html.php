@@ -70,7 +70,7 @@ class BramsCampaignViewCampaigns extends HtmlView {
 		// add stylesheets
 		$wam->registerAndUseStyle('listStyle',      'components/com_bramscampaign/views/_css/list.css');
 		$wam->registerAndUseStyle('pageSpecific',   'components/com_bramscampaign/views/campaigns/css/campaigns.css');
-		$wam->registerAndUseStyle('boostrap4',      'components/com_bramscampaign/views/_css/bootstrap.min.css');
+		$wam->registerAndUseStyle('bootstrap4',     'components/com_bramscampaign/views/_css/bootstrap.min.css');
 		$wam->registerAndUseStyle('icons',          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 		// add javascript
 		$wam->registerAndUseScript('ajax',          'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
