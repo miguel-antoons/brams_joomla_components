@@ -190,10 +190,14 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate, imageOnload)
 }
 
 function showSpectrograms() {
+    const startDate = new Date(Date.parse(document.getElementById('startDate').value));
+    if (isNaN(startDate)) {
+        return;
+    }
+
     document.getElementById('spinner').style.display = 'inline';
     const fMin = document.getElementById('fMin').value;
     const fMax = document.getElementById('fMax').value;
-    const startDate = new Date(Date.parse(document.getElementById('startDate').value));
     // set minutes to be a multiple of 5
     startDate.setMinutes(startDate.getMinutes() - (startDate.getMinutes() % 5))
     const endDate = new Date(startDate);
@@ -205,6 +209,7 @@ function showSpectrograms() {
     }
     document.getElementById('spectrogramContainer').innerHTML = '';
     stations = [];
+
     selectedStations.forEach(
         (station, index) => {
             let imageOnload = '';

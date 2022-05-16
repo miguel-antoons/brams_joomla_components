@@ -55,20 +55,20 @@
     width: 50px !important;
 }
 
-.viewer-wav::before {
+.viewer-wav:before {
     content: "wav";
 }
 
-.viewer-png::before {
+.viewer-png:before {
     content: "png";
 }
 
-.viewer-up {
-    content: '\f01b';
+.viewer-up:before {
+    content: url("/components/com_bramsdata/views/viewer/css/icons/arrow-up.svg");
 }
 
-.viewer-down {
-    content: '\f01a';
+.viewer-down:before {
+    content: url("/components/com_bramsdata/views/viewer/css/icons/arrow-down.svg");
 }
 
 .site-grid {
