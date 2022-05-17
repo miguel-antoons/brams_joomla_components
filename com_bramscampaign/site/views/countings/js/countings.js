@@ -34,7 +34,12 @@ function createCounting(id, start, systemId) {
             },
         },
         success: (response) => {
-            console.log(response);
+            if (response.continue) {
+                const button = document.getElementById(id);
+                button.classList.add('edit');
+                button.classList.remove('add');
+                button.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i> Edit';
+            }
         },
         error: (response) => {
             // on fail, show an error message
@@ -64,7 +69,7 @@ function countingAction(camId, camStart, camSysId, camHasParticipated) {
     return createCounting(camId, camStart, camSysId);
 }
 
-function downloadSpectrogram(camId, annotatedSpectrograms = false, camName) {
+function downloadSpectrogram(camId, camName, annotatedSpectrograms = false) {
     document.getElementById(`spinner${camId}`).style.display = 'inline-block';
     // get the token
     const token = $('#token').attr('name');
@@ -88,13 +93,13 @@ function downloadSpectrogram(camId, annotatedSpectrograms = false, camName) {
 }
 
 function generateCSV(csvData, camName) {
-    const csvContent = "data:text/csv;charset=utf-8,"
-        + csvData.map(e => e.join(",")).join("\n");
+    const csvContent = `data:text/csv;charset=utf-8,${
+        csvData.map((e) => e.join(',')).join('\n')}`;
 
     const encodedUri = encodeURI(csvContent);
-    let link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${camName}.csv`);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `${camName}.csv`);
     document.body.appendChild(link); // Required for FF
 
     link.click();
@@ -117,10 +122,9 @@ function getCSV(camId, camName) {
             &${token}=1
         `,
         success: (response) => {
-            generateCSV(response.data['csv_data'], camName);
+            generateCSV(response.data.csv_data, camName);
         },
         error: (response) => {
-            console.log(response);
             // on fail, show an error message
             document.getElementById('message').innerHTML = (
                 'API call failed, please read the \'log\' variable in '
@@ -136,8 +140,19 @@ function setPopupTitle(camName, camId) {
     document.getElementById('exampleModalLabel').innerHTML = `
         Download files from ${camName} counting`;
 
-    document.getElementById('downloadAnnotated').onclick = () => downloadSpectrogram(camId, true, camName);
-    document.getElementById('downloadCsv').onclick = () => downloadSpectrogram(camId, false, camName);
+    document.getElementById('downloadAnnotated').onclick = () => {
+        downloadSpectrogram(camId, camName, true);
+    };
+    document.getElementById('downloadCsv').onclick = () => {
+        downloadSpectrogram(camId, camName, true);
+    };
+}
+
+function stopSpinners() {
+    const spinners = document.getElementsByClassName('spinner');
+    spinners.forEach((spinner) => {
+        spinner.style.display = 'none';
+    });
 }
 
 /**
@@ -150,26 +165,55 @@ function generateTable() {
     // generate a row for each campaign
     elements.forEach(
         (campaign) => {
+            campaign.hasParticipated = Number(campaign.hasParticipated);
             let buttonText;
             let addClass;
 
             if (campaign.hasParticipated) {
                 buttonText = '<i class="fa fa-pencil-square" aria-hidden="true"></i> Edit';
                 addClass = 'edit';
-
             } else {
                 buttonText = '<i class="fa fa-plus-square" aria-hidden="true"></i> Add';
                 addClass = 'add';
             }
 
             HTMLString += `
-                <tr class="tableRow" onclick="editCounting(${campaign.id})">
-                    <td>${campaign.name}</td>
-                    <td>${campaign.station}</td>
-                    <td>${campaign.start.slice(0, -3)}</td>
-                    <td>${campaign.end.slice(0, -3)}</td>
+                <tr class="tableRow">
+                    <td onclick="
+                        countingAction(
+                            ${campaign.id},
+                            '${campaign.start}',
+                            ${campaign.sysId},
+                            ${campaign.hasParticipated}
+                        )"
+                     >${campaign.name}</td>
+                    <td onclick="
+                        countingAction(
+                            ${campaign.id},
+                            '${campaign.start}',
+                            ${campaign.sysId},
+                            ${campaign.hasParticipated}
+                        )"
+                     >${campaign.station}</td>
+                    <td onclick="
+                        countingAction(
+                            ${campaign.id},
+                            '${campaign.start}',
+                            ${campaign.sysId},
+                            ${campaign.hasParticipated}
+                        )"
+                     >${campaign.start.slice(0, -3)}</td>
+                    <td onclick="
+                        countingAction(
+                            ${campaign.id},
+                            '${campaign.start}',
+                            ${campaign.sysId},
+                            ${campaign.hasParticipated}
+                        )"
+                     >${campaign.end.slice(0, -3)}</td>
                     <td>
                         <button
+                            id="${campaign.id}"
                             type='button'
                             class='customBtn ${addClass}'
                             onclick="countingAction(
@@ -190,7 +234,10 @@ function generateTable() {
                         >
                             <i class="fa fa-download" aria-hidden="true"></i>
                         </button>
-                        <span id="spinner${campaign.id}" class="spinner-border text-success spinner"></span>
+                        <span
+                            id="spinner${campaign.id}"
+                            class="spinner-border text-success spinner">
+                        </span>
                     </td>
                 </tr>
             `;
@@ -199,7 +246,6 @@ function generateTable() {
 
     document.getElementById('campaigns').innerHTML = HTMLString;
     stopSpinners();
-    // stopPropagation();
 }
 
 /**
@@ -235,13 +281,6 @@ function getCampaigns() {
     });
 }
 
-function stopSpinners() {
-    const spinners = document.getElementsByClassName('spinner');
-    for (let spinner of spinners) {
-        spinner.style.display = 'none';
-    }
-}
-
 function getDownloadStatus(camId) {
     // get the token
     const token = $('#token').attr('name');
@@ -258,8 +297,7 @@ function getDownloadStatus(camId) {
         type: 'GET',
         dataType: 'json',
         success: (response) => {
-            console.log(response);
-            if(response.status === "pending") {
+            if (response.status === 'pending') {
                 setTimeout('getDownloadStatus(camId)', 500);
             } else {
                 document.getElementById(`spinner${camId}`).style.display = 'none';

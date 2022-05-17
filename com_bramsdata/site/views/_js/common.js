@@ -125,7 +125,7 @@ function getSelectedCheckboxes() {
     const checkedCheckboxes = document.querySelectorAll('input[name=station]:checked');
     // check if there are any checked checkboxes
     if (!checkedCheckboxes.length) {
-        alert("You must check at least one checkbox.");
+        $('#myModal').modal();
         return false;
     }
     // store their values only

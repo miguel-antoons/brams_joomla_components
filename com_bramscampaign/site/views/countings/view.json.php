@@ -97,9 +97,10 @@ class BramsCampaignViewCountings extends HtmlView {
         // if everything goes as planned, return a confirmation message
         echo new JResponseJson(
             array(
-                ('message') => 'Counting has created for user '
+                ('message') => 'Counting was created for user '
                     . Factory::getApplication()->getIdentity()->id
-                    . ' and for campaign ' . $counting_info['campaign_id']
+                    . ' and for campaign ' . $counting_info['campaign_id'],
+                ('continue') => true
             )
         );
     }

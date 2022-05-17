@@ -4,7 +4,6 @@
  * @package     Joomla.Administrator
  * @subpackage  com_bramscampaign
  *
- * ! NOTE that this file and its content will probably be deleted in the near future
  */
 
 // No direct access to this file

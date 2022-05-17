@@ -8,6 +8,27 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Make sure to select at least one station before continuing.
+            </div>
+            <div class="modal-footer">
+                <button id="downloadCsv" type="button" class="customBtn down2" data-dismiss="modal">
+                    <i class="fa fa-download" aria-hidden="true"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <p id="error">
 
 </p>
