@@ -94,3 +94,15 @@ label {
     display: none;
     vertical-align: middle;
 }
+
+.down1 {
+    color: #005cbf;
+    background-color: rgb(235, 235, 235);
+    width: 20%;
+    font-weight: bold;
+}
+
+.down1:hover {
+    color: rgb(235, 235, 235);
+    background-color: #005cbf;
+}

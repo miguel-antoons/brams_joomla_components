@@ -93,3 +93,23 @@ tbody tr:hover {
     color: rgb(235, 235, 235);
     background-color: darkcyan;
 }
+
+.down1 {
+    color: #005cbf;
+    background-color: rgb(235, 235, 235);
+}
+
+.down1:hover {
+    color: rgb(235, 235, 235);
+    background-color: #005cbf;
+}
+
+.down2 {
+    color: red;
+    background-color: rgb(235, 235, 235);
+}
+
+.down2:hover {
+    color: rgb(235, 235, 235);
+    background-color: red;
+}

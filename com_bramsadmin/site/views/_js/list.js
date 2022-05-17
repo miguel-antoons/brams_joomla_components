@@ -57,13 +57,10 @@ function sortDesc(first, second, noSpace = false) {
  * Function deletes an element that has an id equal to 'elementId'.
  *
  * @param {number} elementId id of the element to delete
- * @param {string} displayName name to refer to in messages (i.e. a pop-up)
  * @param {string} viewName name of the specific delete api to call
  * @returns void
  */
-function deleteRow(elementId, displayName, viewName) {
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm(`Are you sure you want to delete ${displayName}`)) return;
+function deleteRow(elementId, viewName) {
     const token = $('#token').attr('name');
 
     $.ajax({
@@ -91,6 +88,19 @@ function deleteRow(elementId, displayName, viewName) {
             log = response;
         },
     });
+}
+
+function setPopup(elementId, displayName, viewName) {
+    const delButton = document.getElementById('delete');
+    document.getElementById('exitButton').innerHTML = '<i class="fa fa-times-circle" aria-hidden="true"></i> No';
+    delButton.style.display = 'block';
+    document.getElementById('exampleModalLabel').innerHTML = `
+        Are you sure you want to delete ${displayName}
+    `;
+    document.getElementById('modal-body').innerHTML = 'This action is irreversible.';
+    delButton.onclick = () => {
+        deleteRow(elementId, viewName);
+    };
 }
 
 /**

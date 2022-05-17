@@ -21,18 +21,31 @@ function generateTable() {
     elements.forEach(
         (observer) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramsadmin'
                         + '&view=observerEdit'
                         + '&id=${observer.id}';"
-                >
-                    <td>${observer.code}</td>
-                    <td>${observer.first_name}</td>
-                    <td>${observer.last_name}</td>
-                    <td>${observer.email}</td>
+                    >${observer.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=observerEdit'
+                        + '&id=${observer.id}';"
+                    >${observer.first_name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=observerEdit'
+                        + '&id=${observer.id}';"
+                    >${observer.last_name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=observerEdit'
+                        + '&id=${observer.id}';"
+                    >${observer.email}</td>
                     <td>
                         <button
                             type='button'
@@ -65,7 +78,7 @@ function generateTable() {
     );
 
     document.getElementById('observers').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -79,16 +92,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteObserver(observerId, observerName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
-            "Observer can't be deleted as long as there are locations referencing this observer.\n"
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
+            "Observer can't be deleted as long as there are locations referencing this observer. "
             + 'Please remove the locations referencing this observer in order to remove the'
-            + ' observer.',
-        );
+            + ' observer.';
         return;
     }
 
-    deleteRow(observerId, observerName, 'observers');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

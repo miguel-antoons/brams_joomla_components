@@ -20,14 +20,16 @@ function generateTable() {
     elements.forEach(
         (receiver) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?option=com_bramsadmin&view=receiverEdit&id=${receiver.id}';"
-                >
-                    <td>${receiver.code}</td>
-                    <td>${receiver.brand}</td>
-                    <td>${receiver.model}</td>
+                    >${receiver.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=receiverEdit&id=${receiver.id}';"
+                    >${receiver.brand}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=receiverEdit&id=${receiver.id}';"
+                    >${receiver.model}</td>
                     <td>
                         <button
                             type='button'
@@ -61,7 +63,7 @@ function generateTable() {
     );
 
     document.getElementById('receivers').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -75,16 +77,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteReceiver(receiverId, receiverName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             'Receiver can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this receiver.\nPlease remove the systems referencing this'
-            + ' receiver in order to remove the receiver.',
-        );
+            + ' receiver in order to remove the receiver.';
         return;
     }
 
-    deleteRow(receiverId, receiverName, 'receivers');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

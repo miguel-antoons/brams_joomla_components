@@ -69,5 +69,7 @@ class BramsDataViewViewer extends HtmlView {
 		$document->addScript('/components/com_bramsdata/views/viewer/js/dataViewer.js');
 		$document->addScript('/components/com_bramsdata/views/viewer/js/viewer.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
+		$document->addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+		$document->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
 	}
 }

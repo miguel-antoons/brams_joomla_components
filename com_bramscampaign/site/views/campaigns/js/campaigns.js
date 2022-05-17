@@ -22,19 +22,42 @@ function generateTable() {
     elements.forEach(
         (campaign) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
-                        '/index.php?'
-                        + 'option=com_bramscampaign'
-                        + '&view=campaignEdit'
-                        + '&id=${campaign.id}';"
-                >
-                    <td>${campaign.name}</td>
-                    <td>${campaign.type}</td>
-                    <td>${campaign.station}</td>
-                    <td>${campaign.start}</td>
-                    <td>${campaign.end}</td>
+                <tr class="tableRow">
+                    <td
+                        onclick="window.location.href=
+                            '/index.php?'
+                            + 'option=com_bramscampaign'
+                            + '&view=campaignEdit'
+                            + '&id=${campaign.id}';"
+                    >${campaign.name}</td>
+                    <td
+                        onclick="window.location.href=
+                            '/index.php?'
+                            + 'option=com_bramscampaign'
+                            + '&view=campaignEdit'
+                            + '&id=${campaign.id}';"
+                    >${campaign.type}</td>
+                    <td
+                        onclick="window.location.href=
+                            '/index.php?'
+                            + 'option=com_bramscampaign'
+                            + '&view=campaignEdit'
+                            + '&id=${campaign.id}';"
+                    >${campaign.station}</td>
+                    <td
+                        onclick="window.location.href=
+                            '/index.php?'
+                            + 'option=com_bramscampaign'
+                            + '&view=campaignEdit'
+                            + '&id=${campaign.id}';"
+                    >${campaign.start}</td>
+                    <td
+                        onclick="window.location.href=
+                            '/index.php?'
+                            + 'option=com_bramscampaign'
+                            + '&view=campaignEdit'
+                            + '&id=${campaign.id}';"
+                    >${campaign.end}</td>
                     <td>
                         <button
                             type='button'
@@ -50,6 +73,8 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
+                            data-toggle="modal"
+                            data-target="#myModal"
                             onclick="deleteCampaign(
                                 ${campaign.id},
                                 '${campaign.name}',
@@ -65,7 +90,7 @@ function generateTable() {
     );
 
     document.getElementById('campaigns').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -79,16 +104,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteCampaign(campaignId, campaignName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             "Campaign can't be deleted as long as there are campaign countings referencing this "
             + 'campaign.\nPlease remove the countings referencing this campaign in order to remove'
-            + ' the campaign.',
-        );
+            + ' the campaign.';
         return;
     }
 
-    deleteRow(campaignId, campaignName, 'campaigns');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

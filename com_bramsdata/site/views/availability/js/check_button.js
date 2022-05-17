@@ -80,11 +80,16 @@ function getAvailability() {
             end: document.getElementById('endDate').value,
         },
         success: (response) => {
-            if (chart) {
-                chart.updateGraph(options, response.data);
-            } else {
-                chart = visavail.generate(options, response.data);
+            try {
+                if (chart) {
+                    chart.updateGraph(options, response.data);
+                } else {
+                    chart = visavail.generate(options, response.data);
+                }
+            } catch (e) {
+                log = e;
             }
+
             document.getElementById('spinner').style.display = 'none';
         },
         error: (response) => {

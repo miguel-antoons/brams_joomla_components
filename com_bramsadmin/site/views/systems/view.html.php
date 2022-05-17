@@ -66,5 +66,7 @@ class BramsAdminViewSystems extends HtmlView {
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 		$document->addScript('/components/com_bramsadmin/views/_js/list.js');
 		$document->addScript('/components/com_bramsadmin/views/systems/js/systems.js');
+		$document->addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+		$document->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
 	}
 }

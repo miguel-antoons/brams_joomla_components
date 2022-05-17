@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
             </div>
             <div class="modal-footer">
                 <button id="downloadCsv" type="button" class="customBtn down2" data-dismiss="modal">
-                    <i class="fa fa-download" aria-hidden="true"></i> Ok
+                    <i class="fa fa-check-square" aria-hidden="true"></i> Ok
                 </button>
             </div>
         </div>

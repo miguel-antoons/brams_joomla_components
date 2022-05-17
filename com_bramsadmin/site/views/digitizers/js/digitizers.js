@@ -20,17 +20,25 @@ function generateTable() {
     elements.forEach(
         (digitizer) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramsadmin'
                         + '&view=digitizerEdit'
                         + '&id=${digitizer.id}';"
-                >
-                    <td>${digitizer.code}</td>
-                    <td>${digitizer.brand}</td>
-                    <td>${digitizer.model}</td>
+                    >${digitizer.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=digitizerEdit'
+                        + '&id=${digitizer.id}';"
+                    >${digitizer.brand}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=digitizerEdit'
+                        + '&id=${digitizer.id}';"
+                    >${digitizer.model}</td>
                     <td>
                         <button
                             type='button'
@@ -62,7 +70,7 @@ function generateTable() {
     );
 
     document.getElementById('digitizers').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -76,16 +84,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteDigitizer(digitizerId, digitizerName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             'Digitizer can\'t be deleted as long as there are systems (radsys_system) '
-            + 'referencing this digitizer.\nPlease remove the systems referencing this'
-            + ' digitizer in order to remove the digitizer.',
-        );
+            + 'referencing this digitizer. Please remove the systems referencing this'
+            + ' digitizer in order to remove the digitizer.';
         return;
     }
 
-    deleteRow(digitizerId, digitizerName, 'digitizers');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

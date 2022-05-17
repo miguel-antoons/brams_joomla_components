@@ -20,14 +20,16 @@ function generateTable() {
     elements.forEach(
         (antenna) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
-                >
-                    <td>${antenna.code}</td>
-                    <td>${antenna.brand}</td>
-                    <td>${antenna.model}</td>
+                    >${antenna.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
+                    >${antenna.brand}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=antennaEdit&id=${antenna.id}';"
+                    >${antenna.model}</td>
                     <td>
                         <button
                             type='button'
@@ -61,7 +63,7 @@ function generateTable() {
     );
 
     document.getElementById('antennas').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -75,16 +77,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteAntenna(antennaId, antennaName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             'Antenna can\'t be deleted as long as there are systems (radsys_system) '
-            + 'referencing this antenna.\nPlease remove the systems referencing this'
-            + ' antenna in order to remove the antenna.',
-        );
+            + 'referencing this antenna. Please remove the systems referencing this'
+            + ' antenna in order to remove the antenna.';
         return;
     }
 
-    deleteRow(antennaId, antennaName, 'antennas');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

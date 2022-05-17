@@ -38,23 +38,61 @@ function generateTable() {
             ) tvPassword = location.tv_password;
 
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramsadmin'
                         + '&view=locationEdit'
                         + '&id=${location.id}';"
-                >
-                    <td>${location.location_code}</td>
-                    <td>${location.name}</td>
-                    <td>${location.latitude}</td>
-                    <td>${location.longitude}</td>
-                    <td>${location.transfer_type}</td>
-                    <td>${location.obs_name}</td>
-                    <td>${ftpPassword}</td>
-                    <td>${tvId}</td>
-                    <td>${tvPassword}</td>
+                    >${location.location_code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${location.name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${location.latitude}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${location.longitude}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${location.transfer_type}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${location.obs_name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${ftpPassword}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${tvId}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=locationEdit'
+                        + '&id=${location.id}';"
+                    >${tvPassword}</td>
                     <td>
                         <button
                             type='button'
@@ -85,7 +123,7 @@ function generateTable() {
     );
 
     document.getElementById('locations').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -99,16 +137,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteLocation(locationId, locationName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
-            "Location can't be deleted as long as there are systems referencing this location.\n"
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
+            "Location can't be deleted as long as there are systems referencing this location. "
             + 'Please remove the systems referencing this location in order to remove the '
-            + 'location.',
-        );
+            + 'location.';
         return;
     }
 
-    deleteRow(locationId, locationName, 'locations');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

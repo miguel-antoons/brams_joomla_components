@@ -115,11 +115,11 @@ tbody tr:hover {
 }
 
 .down2 {
-    color: darkgoldenrod;
+    color: red;
     background-color: rgb(235, 235, 235);
 }
 
 .down2:hover {
     color: rgb(235, 235, 235);
-    background-color: darkgoldenrod;
+    background-color: red;
 }

@@ -20,14 +20,16 @@ function generateTable() {
     elements.forEach(
         (software) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?option=com_bramsadmin&view=softwareEdit&id=${software.id}';"
-                >
-                    <td>${software.code}</td>
-                    <td>${software.name}</td>
-                    <td>${software.version}</td>
+                    >${software.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=softwareEdit&id=${software.id}';"
+                    >${software.name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?option=com_bramsadmin&view=softwareEdit&id=${software.id}';"
+                    >${software.version}</td>
                     <td>
                         <button
                             type='button'
@@ -61,7 +63,7 @@ function generateTable() {
     );
 
     document.getElementById('softwares').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -75,16 +77,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteSoftware(softwareId, softwareName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             'Software can\'t be deleted as long as there are systems (radsys_system) '
-            + 'referencing this software.\nPlease remove the systems referencing this'
-            + ' software in order to remove the software.',
-        );
+            + 'referencing this software. Please remove the systems referencing this'
+            + ' software in order to remove the software.';
         return;
     }
 
-    deleteRow(softwareId, softwareName, 'softwares');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

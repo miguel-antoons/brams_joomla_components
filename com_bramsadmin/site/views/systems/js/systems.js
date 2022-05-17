@@ -21,18 +21,31 @@ function generateTable() {
     elements.forEach(
         (system) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramsadmin'
                         + '&view=systemEdit'
                         + '&id=${system.id}';"
-                >
-                    <td>${system.code}</td>
-                    <td>${system.name}</td>
-                    <td>${system.start}</td>
-                    <td>${system.end}</td>
+                    >${system.code}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=systemEdit'
+                        + '&id=${system.id}';"
+                    >${system.name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=systemEdit'
+                        + '&id=${system.id}';"
+                    >${system.start}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=systemEdit'
+                        + '&id=${system.id}';"
+                    >${system.end}</td>
                     <td>
                         <button
                             type='button'
@@ -64,7 +77,7 @@ function generateTable() {
     );
 
     document.getElementById('systems').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -78,16 +91,17 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteSystem(systemId, locationName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
             'System can\'t be deleted as long as there are files '
-            + 'referencing this system.\nPlease remove the files referencing this'
-            + ' system in order to remove the system.',
-        );
+            + 'referencing this system. Please remove the files referencing this'
+            + ' system in order to remove the system.';
         return;
     }
 
-    deleteRow(systemId, locationName, 'systems');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

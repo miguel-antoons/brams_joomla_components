@@ -22,19 +22,37 @@ function generateTable() {
     elements.forEach(
         (beacon) => {
             HTMLString += `
-                <tr
-                    class="tableRow"
-                    onclick="window.location.href=
+                <tr class="tableRow">
+                    <td onclick="window.location.href=
                         '/index.php?'
                         + 'option=com_bramsadmin'
                         + '&view=beaconEdit'
                         + '&id=${beacon.id}';"
-                >
-                    <td>${beacon.name}</td>
-                    <td>${beacon.latitude}</td>
-                    <td>${beacon.longitude}</td>
-                    <td>${beacon.frequency}</td>
-                    <td>${beacon.power}</td>
+                    >${beacon.name}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=beaconEdit'
+                        + '&id=${beacon.id}';"
+                    >${beacon.latitude}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=beaconEdit'
+                        + '&id=${beacon.id}';"
+                    >${beacon.longitude}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=beaconEdit'
+                        + '&id=${beacon.id}';"
+                    >${beacon.frequency}</td>
+                    <td onclick="window.location.href=
+                        '/index.php?'
+                        + 'option=com_bramsadmin'
+                        + '&view=beaconEdit'
+                        + '&id=${beacon.id}';"
+                    >${beacon.power}</td>
                     <td class="actions">
                         <button
                             type='button'
@@ -68,7 +86,7 @@ function generateTable() {
     );
 
     document.getElementById('beacons').innerHTML = HTMLString;
-    stopPropagation();
+    // stopPropagation();
 }
 
 /**
@@ -82,15 +100,16 @@ function generateTable() {
 // eslint-disable-next-line no-unused-vars
 function deleteBeacon(beaconId, beaconName, notDeletable) {
     if (notDeletable) {
-        // eslint-disable-next-line no-alert
-        alert(
-            "Beacon can't be deleted as long as there are files referencing this beacon.\n"
-            + 'Please remove the files referencing this beacon in order to remove the beacon.',
-        );
+        document.getElementById('delete').style.setProperty('display', 'none', 'important');
+        document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('modal-body').innerHTML = '' +
+            "Beacon can't be deleted as long as there are files referencing this beacon. "
+            + 'Please remove the files referencing this beacon in order to remove the beacon.';
         return;
     }
 
-    deleteRow(beaconId, beaconName, 'beacons');
+    setPopup(campaignId, campaignName, 'campaigns');
 }
 
 /**

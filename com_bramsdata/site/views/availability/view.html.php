@@ -66,12 +66,13 @@ class BramsDataViewAvailability extends HtmlView {
         $document->addStyleSheet('/components/com_bramsdata/views/_css/bootstrap.min.css');
         $document->addStyleSheet('https://use.fontawesome.com/releases/v5.0.12/css/all.css');
         $document->addScript('/components/com_bramsdata/views/_js/common.js');
-	    $document->addScript('/components/com_bramsdata/views/_js/bootstrap.bundle.min.js');
         $document->addScript('/components/com_bramsdata/views/availability/js/d3.min.js');
         $document->addScript('/components/com_bramsdata/views/availability/js/moment-with-locales.min.js');
         $document->addScript('/components/com_bramsdata/views/availability/js/check_button.js');
         $document->addScript('/components/com_bramsdata/views/availability/js/visavail.js');
         $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
+	    $document->addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+	    $document->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
         // $document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
     }
 }
