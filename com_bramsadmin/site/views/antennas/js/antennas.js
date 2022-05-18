@@ -79,7 +79,7 @@ function deleteAntenna(antennaId, antennaName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${antennaName}`;
         document.getElementById('modal-body').innerHTML = '' +
             'Antenna can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this antenna. Please remove the systems referencing this'
@@ -87,7 +87,7 @@ function deleteAntenna(antennaId, antennaName, notDeletable) {
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(antennaId, antennaName, 'antennas');
 }
 
 /**

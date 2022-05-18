@@ -86,7 +86,7 @@ function deleteDigitizer(digitizerId, digitizerName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${digitizerName}`;
         document.getElementById('modal-body').innerHTML = '' +
             'Digitizer can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this digitizer. Please remove the systems referencing this'
@@ -94,7 +94,7 @@ function deleteDigitizer(digitizerId, digitizerName, notDeletable) {
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(digitizerId, digitizerName, 'digitizers');
 }
 
 /**

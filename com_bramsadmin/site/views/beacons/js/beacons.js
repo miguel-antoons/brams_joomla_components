@@ -102,14 +102,14 @@ function deleteBeacon(beaconId, beaconName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${beaconName}`;
         document.getElementById('modal-body').innerHTML = '' +
             "Beacon can't be deleted as long as there are files referencing this beacon. "
             + 'Please remove the files referencing this beacon in order to remove the beacon.';
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(beaconId, beaconName, 'beacons');
 }
 
 /**

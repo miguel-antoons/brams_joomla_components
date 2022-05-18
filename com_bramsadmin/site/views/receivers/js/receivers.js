@@ -79,7 +79,7 @@ function deleteReceiver(receiverId, receiverName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${receiverName}`;
         document.getElementById('modal-body').innerHTML = '' +
             'Receiver can\'t be deleted as long as there are systems (radsys_system) '
             + 'referencing this receiver.\nPlease remove the systems referencing this'
@@ -87,7 +87,7 @@ function deleteReceiver(receiverId, receiverName, notDeletable) {
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(receiverId, receiverName, 'receivers');
 }
 
 /**

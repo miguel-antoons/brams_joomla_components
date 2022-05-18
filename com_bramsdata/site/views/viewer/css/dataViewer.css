@@ -44,31 +44,42 @@
 .viewer-png, .viewer-wav, .viewer-up, .viewer-down {
     color: #ffffff;
     font-family: FontAwesome, sans-serif;
-    font-size: 1rem;
-    font-weight: bold;
-    line-height: 1.5rem;
     text-align: center;
     vertical-align: center;
+    font-weight: normal !important;
+}
+
+.viewer-up:before, .viewer-wav:before, .viewer-png:before, .viewer-down:before {
+    font-weight: normal !important;
+    margin: 10px !important;
+    background-position: -120px 0;
+}
+
+.viewer-down, .viewer-up {
+    font-size: 1.5rem;
+    line-height: 1.5;
 }
 
 .viewer-png, .viewer-wav {
     width: 50px !important;
+    font-size: 1rem;
+    line-height: 2.3;
 }
 
 .viewer-wav:before {
-    content: "wav";
+    content: "WAV";
 }
 
 .viewer-png:before {
-    content: "png";
+    content: "PNG";
 }
 
 .viewer-up:before {
-    content: url("/components/com_bramsdata/views/viewer/css/icons/arrow-up.svg");
+    content: '\f01b';
 }
 
 .viewer-down:before {
-    content: url("/components/com_bramsdata/views/viewer/css/icons/arrow-down.svg");
+    content: '\f01a';
 }
 
 .site-grid {

@@ -94,7 +94,7 @@ function deleteObserver(observerId, observerName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${observerName}`;
         document.getElementById('modal-body').innerHTML = '' +
             "Observer can't be deleted as long as there are locations referencing this observer. "
             + 'Please remove the locations referencing this observer in order to remove the'
@@ -102,7 +102,7 @@ function deleteObserver(observerId, observerName, notDeletable) {
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(observerId, observerName, 'observers');
 }
 
 /**

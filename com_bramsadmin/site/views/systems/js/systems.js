@@ -93,7 +93,7 @@ function deleteSystem(systemId, locationName, notDeletable) {
     if (notDeletable) {
         document.getElementById('delete').style.setProperty('display', 'none', 'important');
         document.getElementById('exitButton').innerHTML = '<i class="fa fa-check-square" aria-hidden="true"></i> Ok';
-        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${campaignName}`;
+        document.getElementById('exampleModalLabel').innerHTML = `Unable to delete ${locationName}`;
         document.getElementById('modal-body').innerHTML = '' +
             'System can\'t be deleted as long as there are files '
             + 'referencing this system. Please remove the files referencing this'
@@ -101,7 +101,7 @@ function deleteSystem(systemId, locationName, notDeletable) {
         return;
     }
 
-    setPopup(campaignId, campaignName, 'campaigns');
+    setPopup(systemId, locationName, 'systems');
 }
 
 /**

@@ -9,6 +9,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Input\Input;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -23,7 +24,7 @@ class BramsAdminViewSystemEdit extends HtmlView {
      * Function makes sure to get the application input. If it fails, it
      * will return false
      *
-     * @return boolean|JInput
+     * @return false|Input
      * @since 0.2.5
      */
     private function getAppInput() {
