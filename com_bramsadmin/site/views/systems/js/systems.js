@@ -50,6 +50,8 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn edit'
+                            data-toggle="modal"
+                            data-target="#myModal"
                             onclick="window.location.href=
                                 '/index.php?'
                                 + 'option=com_bramsadmin'

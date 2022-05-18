@@ -62,6 +62,8 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
+                            data-toggle="modal"
+                            data-target="#myModal"
                             onclick="deleteObserver(
                                 ${observer.id},
                                 '${observer.first_name} ${observer.last_name}',

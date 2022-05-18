@@ -55,6 +55,8 @@ function generateTable() {
                         <button
                             type='button'
                             class='customBtn delete'
+                            data-toggle="modal"
+                            data-target="#myModal"
                             onclick="deleteDigitizer(
                                 ${digitizer.id},
                                 '${digitizer.code}',
