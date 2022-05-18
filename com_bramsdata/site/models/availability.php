@@ -90,7 +90,7 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
 
     // get today's date in yyy-mm-dd format
     public function getToday() {
-        return date('Y-m-d');
+        return date('Y-m-d', strtotime("1 days"));
     }
 
     // get the date from 5 days ago in yyy-mm-dd format

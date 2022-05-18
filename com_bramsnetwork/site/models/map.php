@@ -173,6 +173,6 @@ class BramsNetworkModelMap extends BaseDatabaseModel {
 
     // get today's date in yyy-mm-dd format
     public function getToday() {
-        return date('Y-m-d');
+	    return date('Y-m-d', strtotime("-1 days"));
     }
 }

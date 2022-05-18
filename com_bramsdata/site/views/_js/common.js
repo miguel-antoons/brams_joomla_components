@@ -1,4 +1,5 @@
 let log = 'Nothing to show';    // contains debug information if needed
+let excludeSome = true;
 
 // verify if the 'check all' checkbox has to be checked
 function changeAllStatus() {
@@ -43,7 +44,14 @@ function checkFTPBoxes(source) {
 
     // check/uncheck all older station checkboxes
     for (let i = 0; i < oldSystems.length; i += 1) {
-        if (activeSystems.includes(oldSystems[i])) {
+        if (
+            activeSystems.includes(oldSystems[i])
+            && (
+                // exclude Humain7 and Kampenhout
+                (oldSystems[i].value !== '17' && oldSystems[i].value !== '6')
+                || excludeSome
+            )
+        ) {
             oldSystems[i].checked = source.checked;
         }
     }
@@ -87,7 +95,15 @@ function changeOldStatus() {
 
     // iterate over all new checkboxes
     for (let i = 0; i < oldSystems.length && allOldChecked; i += 1) {
-        if (!oldSystems[i].checked && activeSystems.includes(oldSystems[i])) {
+        if (
+            !oldSystems[i].checked
+            && activeSystems.includes(oldSystems[i])
+            && (
+                // exclude Humain7 and Kampenhout
+                (oldSystems[i].value !== '17' && oldSystems[i].value !== '6')
+                || excludeSome
+            )
+        ) {
             allOldChecked = false;
         }
     }

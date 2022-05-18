@@ -104,3 +104,5 @@ function getAvailability() {
         },
     });
 }
+
+window.onload = () => excludeSome = false;
