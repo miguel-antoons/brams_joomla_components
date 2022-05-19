@@ -83,7 +83,7 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		}
 	}
 
-	public function getPSD() {
+	public function getPSD($start_date, $end_date) {
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
 		}
@@ -92,12 +92,25 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		// SQL query to get all the non null psd values for given stations
 		// and in between a certain time range
 		$psd_query->select(
-			$db->quoteName('system_id') . ', '
-			. $db->quoteName('psd')
+			$db->quoteName('system_id')     . ', '
+			. $db->quoteName('start')       . ', '
+			. $db->quoteName('noise')       . ', '
+			. $db->quoteName('calibrator')  . ', '
 		);
 		$psd_query->from($db->quoteName('file'));
-		// ! TODO
-		$psd_query->where();
+		$psd_query->where($db->quoteName('start') . ' >= '  . $db->quote($start_date));
+		$psd_query->where($db->quoteName('start') . ' < '   . $db->quote($end_date));
+
+		$db->setQuery($psd_query);
+
+		// try to execute the query and return the result
+		try {
+			return $db->loadObjectList();
+		} catch (RuntimeException $e) {
+			// if it fails, log the error and return false
+			Log::add($e, Log::ERROR, 'error');
+			return -1;
+		}
 	}
 
 	// get today's date in yyy-mm-dd format
@@ -128,7 +141,7 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 	 *
 	 * @since 0.0.2
 	 */
-	private function add_time_to_string($string_date, $format='Y-m-d H:i:s', $string_interval='PT5M', $invert=0) {
+	private function add_time_to_string($string_date, $string_interval='PT5M', $format='Y-m-d H:i:s', $invert=0) {
 		try {
 			$final_date = new DateTime($string_date);
 		} catch (Exception $e) {
@@ -145,5 +158,40 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		$interval_to_add->invert = $invert;
 		$final_date->add($interval_to_add);
 		return $final_date->format($format);
+	}
+
+	public function getLabels($start_date, $end_date, $interval) {
+		$interval           = 'PT'.$interval.'M';
+		$labels             = array();
+		$datetime_end       = new DateTime($end_date);
+		$current            = $start_date;
+		$datetime_current   = new DateTime($current);
+
+		while ($datetime_current < $datetime_end) {
+			$labels[]           = $current;
+			$current            = $this->add_time_to_string($current, $interval);
+			$datetime_current   = new DateTime($current);
+		}
+
+		return $labels;
+	}
+
+	public function verifyLabels($labels, $raw_data) {
+		$final_data = array(
+			'noise'         => array(),
+			'calibrator'    => array(),
+		);
+
+		foreach ($labels as $label) {
+			if ($index = array_search($label, array_column($raw_data, 'start'))) {
+				$final_data['noise'][]      = $raw_data[$index]->noise;
+				$final_data['calibrator'][] = $raw_data[$index]->calibrator;
+			} else {
+				$final_data['noise'][]      = null;
+				$final_data['calibrator'][] = null;
+			}
+		}
+
+		return $final_data;
 	}
 }

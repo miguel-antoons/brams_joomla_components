@@ -58,20 +58,6 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 		</div>
 		<div class='row customRow'>
-			<div class="col-2 custom_col">
-				<div id="buttonContainer">
-					<button
-						name='submit'
-						class='customBtn save'
-						id='submit'
-						onclick="getAvailability()"
-					>
-						<i class="fa fa-check-square" aria-hidden="true"></i>
-						Submit
-					</button>
-					<span id="spinner" class="spinner-border text-success"></span>
-				</div>
-			</div>
 			<div class='col-5 custom_col'>
 				<label for='startDate'>From </label>
 				<input
@@ -96,6 +82,20 @@ defined('_JEXEC') or die('Restricted access');
 					required
 				/>
 			</div>
+            <div class="col-2 custom_col">
+                <div id="buttonContainer">
+                    <button
+                            name='submit'
+                            class='customBtn save'
+                            id='submit'
+                            onclick="getAvailability()"
+                    >
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                        Submit
+                    </button>
+                    <span id="spinner" class="spinner-border text-success"></span>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>

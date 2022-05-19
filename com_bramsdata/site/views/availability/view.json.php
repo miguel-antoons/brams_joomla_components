@@ -57,9 +57,9 @@ class BramsDataViewAvailability extends HtmlView {
             return;
         }
         // get all the selected stations from the request
-        $this->selected_stations = $input->get('ids', array(), 'ARRAY');
-        $this->start_date = $input->get('start');  // get the start date from the request
-        $this->end_date = $input->get('end');      // get the end date from the request
+        $this->selected_stations    = $input->get('ids', array(), 'ARRAY');
+        $this->start_date           = $input->get('start');     // get the start date from the request
+        $this->end_date             = $input->get('end');       // get the end date from the request
 
         // get the availability
         if ($this->getFileAvailability() === -1) return;

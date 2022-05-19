@@ -31,8 +31,8 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
     private function connectToDatabase() {
         try {
             /* Below lines are for connecting to production database later on */
-	        $database_options = parse_ini_file(JPATH_ROOT.DIRECTORY_SEPARATOR.'env.ini');
-	        return JDatabaseDriver::getInstance($database_options);
+            $database_options = parse_ini_file(JPATH_ROOT.DIRECTORY_SEPARATOR.'env.ini');
+            return JDatabaseDriver::getInstance($database_options);
 
             /*
             below line is for connecting to default joomla database
@@ -364,10 +364,14 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
 
                 // if files are missing, set default value for that time (default value = no data found)
                 if ($availability_info->date !== $expected_start) {
-                    $temp_object 							= $this->change_category($change, $previous_available, 1);
-                    $temp_object->start 					= $expected_start;
-                    $final_availability_array[$station][]	= $temp_object;
-                    $change = false;
+	                $change             = false;
+                    $temp_object 		= $this->change_category($change, $previous_available, 1);
+                    $temp_object->start = $expected_start;
+
+                    if ($change) {
+                        $final_availability_array[$station][] = $temp_object;
+                        $change = false;
+                    }
                 }
 
                 // add an element ot the array according to the availability rate
@@ -411,7 +415,10 @@ class BramsDataModelAvailability extends BaseDatabaseModel {
                 $temp_object->start = $this->add_time_to_string(
                     $specific_station_availability[$station_availability_length - 1]->date, 'Y-m-d', 'P1D'
                 );
-                $final_availability_array[$station][] = $temp_object;
+
+				if ($change) {
+					$final_availability_array[$station][] = $temp_object;
+				}
             }
         } else {
             $temp_object 							= $this->change_category($change, $previous_available, 1);
