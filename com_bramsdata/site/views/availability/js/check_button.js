@@ -27,27 +27,6 @@ function zoomGraph(d, i) {
 }
 
 /**
- * Verify if the inputted dates are correct. If they aren't
- * set default values instead.
- */
-function verifyDates() {
-    let startDate = document.getElementById('startDate');
-    let endDate = document.getElementById('endDate');
-
-    // if the end date is smaller than the start date
-    if (endDate.value <= startDate.value) {
-        // set end date to today's date
-        const today = new Date();
-        endDate.value = yyyymmdd(today);
-
-        // set start date to yesterday's date
-        let yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-        startDate.value = yyyymmdd(yesterday);
-    }
-}
-
-/**
  * Function gets all the availability info via an api to the
  * sites back-end. It then (re)creates the availability graph.
  */

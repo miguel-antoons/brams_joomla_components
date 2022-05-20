@@ -83,11 +83,17 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		}
 	}
 
-	public function getPSD($start_date, $end_date) {
+	public function getPSD($start_date, $end_date, $system_ids) {
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
 		}
 		$psd_query = $db->getQuery(true);
+		$sys_id_string = '';
+
+		foreach ($system_ids as $id) {
+			$sys_id_string .= $db->quote(trim($id)) . ',';
+		}
+		$sys_id_string = substr($sys_id_string, 0, -1);
 
 		// SQL query to get all the non null psd values for given stations
 		// and in between a certain time range
@@ -95,11 +101,12 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 			$db->quoteName('system_id')     . ', '
 			. $db->quoteName('start')       . ', '
 			. $db->quoteName('noise')       . ', '
-			. $db->quoteName('calibrator')  . ', '
+			. $db->quoteName('calibrator')
 		);
 		$psd_query->from($db->quoteName('file'));
-		$psd_query->where($db->quoteName('start') . ' >= '  . $db->quote($start_date));
-		$psd_query->where($db->quoteName('start') . ' < '   . $db->quote($end_date));
+		$psd_query->where($db->quoteName('start')       . ' >= '  . $db->quote($start_date));
+		$psd_query->where($db->quoteName('start')       . ' < '   . $db->quote($end_date));
+		$psd_query->where($db->quoteName('system_id')   . ' in (' . $sys_id_string . ')');
 
 		$db->setQuery($psd_query);
 

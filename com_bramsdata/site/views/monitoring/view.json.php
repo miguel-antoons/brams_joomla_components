@@ -20,12 +20,6 @@ use Joomla\Input\Input;
  * @since  0.4.0
  */
 class BramsDataViewMonitoring extends HtmlView {
-	public $selected_stations;
-	public $start_date;
-	public $end_date;
-	public $stations;
-	public $availability;
-	public $interval;
 	/**
 	 * Function makes sure to get the application input. If it fails, it
 	 * will return false
@@ -45,15 +39,17 @@ class BramsDataViewMonitoring extends HtmlView {
 
 	public function getPSD() {
 		$input      = $this->getAppInput();
-		$start_date = $input->get('start');
-		$end_date   = $input->get('end');
+		$start_date = new DateTime($input->get('start'));
+		$start_date = $start_date->format('Y-m-d H:i:s');
+		$end_date   = new DateTime($input->get('end'));
+		$end_date   = $end_date->format('Y-m-d H:i:s');
 		$interval   = (int) $input->get('interval', 60);
-		$system_ids = $input->get('system_id');
+		$system_ids = explode(',', $input->get('ids', '', 'string'));
 		$model      = $this->getModel();
 
-		$labels     = $model->getLabels($start_date, $end_date, $interval);
-		$raw_data   = $model->getPSD($start_date, $end_date, $system_ids);
-		$data       = array();
+		if (($labels= $model->getLabels($start_date, $end_date, $interval)) === -1)     return;
+		if (($raw_data = $model->getPSD($start_date, $end_date, $system_ids)) === -1)   return;
+		$data = array();
 
 		foreach ($system_ids as $system_id) {
 			$specific_system_data = array_values(
@@ -67,9 +63,9 @@ class BramsDataViewMonitoring extends HtmlView {
 			$data[$system_id] = $model->verifyLabels($labels, $specific_system_data);
 		}
 
-		return array(
+		echo new JResponseJson(array(
 			'labels'    => $labels,
 			'data'      => $data,
-		);
+		));
 	}
 }
