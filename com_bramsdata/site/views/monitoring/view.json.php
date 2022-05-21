@@ -52,6 +52,7 @@ class BramsDataViewMonitoring extends HtmlView {
 		$data = array();
 
 		foreach ($system_ids as $system_id) {
+			$system_id = trim($system_id);
 			$specific_system_data = array_values(
 				array_filter(
 					$raw_data,

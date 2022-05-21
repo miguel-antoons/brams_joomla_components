@@ -1,4 +1,5 @@
-let charts = [];
+let charts = {};
+let contexts = {};
 
 function generateChart(data) {
     const chartContainer = document.getElementById('chartContainer');
@@ -6,23 +7,29 @@ function generateChart(data) {
 
     Object.keys(data['data']).forEach(
         (key) => {
-            console.log(key);
-            const noiseId = `noise${key}`;
-            const calibratorId = `calibrator${key}`;
+            var noiseCanvas = document.createElement('canvas');
+            var calibratorCanvas = document.createElement('canvas');
+            var noiseId = `noise${key}`;
+            var calibratorId = `calibrator${key}`;
+
+            noiseCanvas.id = noiseId;
+            calibratorCanvas.id = calibratorId;
 
             chartContainer.innerHTML += `
                 <div class="row outer">
-                    <div id="${key}" class="col scrollable">
-                        <canvas id="${noiseId}" width="400" height="400"></canvas>
-                        <canvas id="${calibratorId}" width="400" height="400"></canvas>
+                    <div id="container${key}" class="col scrollable">
+                        
                     </div>
                 </div>
             `;
 
-            const calibratorChart = document.getElementById(calibratorId).getContext('2d');
-            const noiseChart = document.getElementById(noiseId).getContext('2d');
+            document.getElementById(`container${key}`).appendChild(noiseCanvas);
+            document.getElementById(`container${key}`).appendChild(calibratorCanvas);
 
-            charts.push(new Chart(noiseChart, {
+            let noiseCtx = document.getElementById(noiseId).getContext('2d');
+            let calibratorCtx = document.getElementById(calibratorId).getContext('2d');
+
+            window[noiseId] = new Chart(noiseCtx, {
                 type: 'line',
                 data: {
                     labels: data['labels'],
@@ -34,15 +41,27 @@ function generateChart(data) {
                     }]
                 },
                 options: {
-                    fill: false,
-                    interaction: {
+                    title: {
+                        display: true,
+                        text: key
+                    },
+                    tooltips: {
+                        mode: 'index',
                         intersect: false
                     },
-                    radius: 0,
-                },
-            }));
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }
+                }
+            });
 
-            charts.push(new Chart(calibratorChart, {
+            window[calibratorId] = new Chart(calibratorCtx, {
                 type: 'line',
                 data: {
                     labels: data['labels'],
@@ -54,13 +73,25 @@ function generateChart(data) {
                     }]
                 },
                 options: {
-                    fill: false,
-                    interaction: {
+                    title: {
+                        display: true,
+                        text: key
+                    },
+                    tooltips: {
+                        mode: 'index',
                         intersect: false
                     },
-                    radius: 0,
-                },
-            }));
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }
+                }
+            });
         }
     )
     document.getElementById('spinner').style.display = 'none';
