@@ -105,6 +105,10 @@ class BramsCampaignViewCountings extends HtmlView {
         );
     }
 
+    /**
+     * Function gets all the rectangles coordinates and returns them in an array.
+     * This array can later be used to generate a CSV file.
+     */
     public function getCSV() {
         $_SESSION['downloadStatus'] = array('status' => 'pending');
         // if an error occurred when getting the app input, stop the function
@@ -115,7 +119,7 @@ class BramsCampaignViewCountings extends HtmlView {
         // get the id of the counting to get files from
         $campaign_id        = $input->get('id');
 
-        // initialise the models
+        // initialize the models
         $spectrogram_model  = $this->getModel('spectrogram');
         $campaign_model     = $this->getModel('campaigns');
 
@@ -133,6 +137,10 @@ class BramsCampaignViewCountings extends HtmlView {
         ));
     }
 
+    /**
+     * Function calculates all the attributes of one rectangle (meteor)
+     * and returns these attributes
+     */
     private function _csv_meteor($spectrogram) {
         date_default_timezone_set('UTC');
 

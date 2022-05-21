@@ -81,6 +81,10 @@ class BramsDataModelViewer extends BaseDatabaseModel {
         }
     }
 
+    /**
+     * Function gets the file status based on a start date and a system id.
+     * It gets the status from the file table and returns it.
+     */
 	public function getFileStatus($file_start, $sysId) {
 		if (!$db = $this->connectToDatabase()) return -1;
 		$file_query = $db->getQuery(true);

@@ -83,6 +83,10 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		}
 	}
 
+    /**
+     * Function gets the PSD data from the database and returns
+     * it in an array of stdclasses.
+     */
 	public function getPSD($start_date, $end_date, $system_ids) {
 		if (!$db = $this->connectToDatabase()) {
 			return -1;
@@ -90,6 +94,7 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		$psd_query = $db->getQuery(true);
 		$sys_id_string = '';
 
+        // get an array of system_ids for the db 'where' query
 		foreach ($system_ids as $id) {
 			$sys_id_string .= $db->quote(trim($id)) . ',';
 		}
@@ -167,6 +172,11 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		return $final_date->format($format);
 	}
 
+    /**
+     * Function generates datetimes form $start_date to $end_date.
+     * Each datetime is separated by $interval minutes.
+     * All the generated datetimes are returned in an array.
+     */
 	public function getLabels($start_date, $end_date, $interval) {
 		$interval           = 'PT'.$interval.'M';
 		$labels             = array();
@@ -183,6 +193,10 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		return $labels;
 	}
 
+    /**
+     * Function only returns the psd values (found in the $raw_data array)
+     * that have a corresponding label.
+     */
 	public function verifyLabels($labels, $raw_data) {
 		$final_data = array(
 			'noise'         => array(),

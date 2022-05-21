@@ -41,6 +41,9 @@ class BramsCampaignViewCountings extends HtmlView {
         }
     }
 
+    /**
+     * Entry function to get either annotated or original spectrograms in a zip.
+     */
     public function getSpectrograms() {
         $_SESSION['downloadStatus'] = array('status' => 'pending');
         // if an error occurred when getting the app input, stop the function
@@ -73,10 +76,14 @@ class BramsCampaignViewCountings extends HtmlView {
         header("Content-Length:".filesize($file_name));
         readfile($file_name);
 
+        // set this variable to finished to let the front-end know that the zip has been sent
         $_SESSION['downloadStatus'] = array('status' => 'finished');
         die();
     }
 
+    /**
+     * add all the original spectrograms to a zip.
+     */
     private function getOriginalSpectrograms($spectrograms, $file_name) {
         $zip = new ZipArchive();
 
@@ -90,6 +97,9 @@ class BramsCampaignViewCountings extends HtmlView {
         $zip->close();
     }
 
+    /**
+     * Get all the images, draw rectangles on it and store the images in a zip.
+     */
     private function getAnnotatedSpectrograms($spectrogram_model, $spectrograms, $file_name) {
         $zip = new ZipArchive();
 

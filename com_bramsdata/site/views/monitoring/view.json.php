@@ -37,7 +37,12 @@ class BramsDataViewMonitoring extends HtmlView {
 		}
 	}
 
+    /** 
+     * Function gets the labels and psd values for each
+     * station and returns all the data as a JSON object.
+     */
 	public function getPSD() {
+        // get all the url params
 		$input      = $this->getAppInput();
 		$start_date = new DateTime($input->get('start'));
 		$start_date = $start_date->format('Y-m-d H:i:s');
@@ -47,7 +52,9 @@ class BramsDataViewMonitoring extends HtmlView {
 		$system_ids = explode(',', $input->get('ids', '', 'string'));
 		$model      = $this->getModel();
 
+        // get the labels (dates) based on the interval
 		if (($labels= $model->getLabels($start_date, $end_date, $interval)) === -1)     return;
+        // get the actual PSD values
 		if (($raw_data = $model->getPSD($start_date, $end_date, $system_ids)) === -1)   return;
 		$data = array();
 
@@ -61,6 +68,7 @@ class BramsDataViewMonitoring extends HtmlView {
 					}
 				)
 			);
+            // get only the relevant data
 			$data[$system_id] = $model->verifyLabels($labels, $specific_system_data);
 		}
 

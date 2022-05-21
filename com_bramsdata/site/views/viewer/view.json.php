@@ -39,8 +39,14 @@ class BramsDataViewViewer extends HtmlView {
         }
     }
 
+    /**
+     * Function calls the makeImages task of the bramsproxy trough the Archive class.
+     * This function does not return images, it only calls the task to prepare the images.
+     */
     public function makeImages() {
         $input          = $this->getAppInput();
+
+        // set the params for the bramsproxy url
         $params         = array(
             'task'      => 'makeImages',
             'begin'     => trim($input->get('begin', '', 'string')),

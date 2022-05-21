@@ -132,6 +132,10 @@ class BramsDataController extends BaseController {
 		}
 	}
 
+    /**
+     * API
+     * Api to make the spectrogram images
+     */
 	public function makeImages() {
 		if (Jsession::checkToken('get')) {
 			try {
@@ -148,6 +152,10 @@ class BramsDataController extends BaseController {
 		}
 	}
 
+    /**
+     * API - GET
+     * Api to get all the spectrogram images in png form.
+     */
 	public function getImage() {
 		if (Jsession::checkToken('get')) {
 			try {
@@ -164,6 +172,10 @@ class BramsDataController extends BaseController {
 		}
 	}
 
+    /**
+     * API
+     * Api to get a spectrogram image as attachment
+     */
 	public function saveImage() {
 		if (Jsession::checkToken('get')) {
 			try {
@@ -180,6 +192,10 @@ class BramsDataController extends BaseController {
 		}
 	}
 
+    /**
+     * API
+     * Api to get a WAV file as attachment
+     */
 	public function saveWav() {
 		if (Jsession::checkToken('get')) {
 			try {
@@ -196,6 +212,10 @@ class BramsDataController extends BaseController {
 		}
 	}
 
+    /**
+     * API - GET
+     * Api to get PSD values and labels.
+     */
 	public function getPSD() {
 		if (Jsession::checkToken('get')) {
 			try {

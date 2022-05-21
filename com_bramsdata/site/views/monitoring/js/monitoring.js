@@ -1,12 +1,21 @@
 let charts = {};
 let contexts = {};
 
+/**
+ * ! Function is currently not working as it should
+ * Function generates 2 charts per station (one for the noise and one for the calibrator psd).
+ * It adds all the carts to the page.
+ * 
+ * @param {Object} data Labels and PSD data for each station, stored in an Object
+ */
 function generateChart(data) {
     const chartContainer = document.getElementById('chartContainer');
     console.log(data);
 
+    // for each station
     Object.keys(data['data']).forEach(
         (key) => {
+            // create a canvas
             var noiseCanvas = document.createElement('canvas');
             var calibratorCanvas = document.createElement('canvas');
             var noiseId = `noise${key}`;
@@ -15,6 +24,7 @@ function generateChart(data) {
             noiseCanvas.id = noiseId;
             calibratorCanvas.id = calibratorId;
 
+            // create a new scrollable div
             chartContainer.innerHTML += `
                 <div class="row outer">
                     <div id="container${key}" class="col scrollable">
@@ -29,6 +39,7 @@ function generateChart(data) {
             let noiseCtx = document.getElementById(noiseId).getContext('2d');
             let calibratorCtx = document.getElementById(calibratorId).getContext('2d');
 
+            // add new chart for noise
             window[noiseId] = new Chart(noiseCtx, {
                 type: 'line',
                 data: {
@@ -61,6 +72,7 @@ function generateChart(data) {
                 }
             });
 
+            // add new chart for calibrator
             window[calibratorId] = new Chart(calibratorCtx, {
                 type: 'line',
                 data: {
@@ -97,6 +109,15 @@ function generateChart(data) {
     document.getElementById('spinner').style.display = 'none';
 }
 
+/**
+ * Function calls an API to get all the psd values.
+ * Once it gets the data, it calls a function to create the charts.
+ * 
+ * @param {String} startDate string start date
+ * @param {String} endDate string end date
+ * @param {Number} interval interval value
+ * @param {Array} checkboxValues array with all the checkbox values (system ids)
+ */
 function getChartData(startDate, endDate, interval, checkboxValues) {
     const token = $('#token').attr('name');
 
@@ -139,6 +160,12 @@ function verifyInterval() {
     return intervalField.value;
 }
 
+/**
+ * Function is the entrypoint to generate the psd charts.
+ * It verifies all the input value and calls the api to get the psd.
+ * 
+ * @returns void
+ */
 function chartStart() {
     document.getElementById('spinner').style.display = 'inline';
     // get all the selected stations
