@@ -5,6 +5,7 @@
  * @subpackage  com_bramsdata
  */
 
+use Joomla\CMS\MVC\Controller\BaseController;
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');

@@ -2515,7 +2515,7 @@ select.form-control:focus::-ms-value {
     padding: .375rem .75rem !important;
     font-size: 1rem !important;
     line-height: 1.5 !important;
-    border-radius: .25rem !important;
+    border-radius: .25rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !important
 }
 

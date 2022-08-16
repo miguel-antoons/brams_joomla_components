@@ -29,7 +29,7 @@ class BramsDataController extends BaseController {
 	 * *        model that has a name matching the requested view name without the last
 	 * *        4 letters.
 	 * *      - if there are models specified in the url, the display function will
-	 * *        initialise and add the models to the view in order to use them.
+	 * *        initialize and add the models to the view in order to use them.
 	 *
 	 * Typical view method for MVC based architecture
 	 *

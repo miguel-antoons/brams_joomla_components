@@ -63,7 +63,9 @@ class BramsDataViewMonitoring extends HtmlView {
 		$document->addStyleSheet('/components/com_bramsdata/views/monitoring/css/monitoring.css');
 		$document->addStyleSheet('/components/com_bramsdata/views/monitoring/css/bootstrap.min.css');
 		$document->addScript('/components/com_bramsdata/views/monitoring/js/monitoring.js');
+        $document->addScript('/components/com_bramsdata/views/monitoring/js/hammer.min.js');
 		$document->addScript('/components/com_bramsdata/views/monitoring/js/chart.min.js');
+        $document->addScript('/components/com_bramsdata/views/monitoring/js/chartjs-plugin-zoom.js');
 		$document->addScript('/components/com_bramsdata/views/_js/common.js');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js');
 		$document->addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');

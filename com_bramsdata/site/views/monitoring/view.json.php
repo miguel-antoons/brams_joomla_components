@@ -48,12 +48,11 @@ class BramsDataViewMonitoring extends HtmlView {
 		$start_date = $start_date->format('Y-m-d H:i:s');
 		$end_date   = new DateTime($input->get('end'));
 		$end_date   = $end_date->format('Y-m-d H:i:s');
-		$interval   = (int) $input->get('interval', 60);
 		$system_ids = explode(',', $input->get('ids', '', 'string'));
 		$model      = $this->getModel();
 
         // get the labels (dates) based on the interval
-		if (($labels= $model->getLabels($start_date, $end_date, $interval)) === -1)     return;
+		if (($labels= $model->getLabels($start_date, $end_date)) === -1)                return;
         // get the actual PSD values
 		if (($raw_data = $model->getPSD($start_date, $end_date, $system_ids)) === -1)   return;
 		$data = array();

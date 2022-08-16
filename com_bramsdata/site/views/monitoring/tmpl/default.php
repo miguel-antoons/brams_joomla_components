@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 		</div>
 		<div class='row customRow'>
-			<div class='col-3 custom_col'>
+			<div class='col-5 custom_col'>
 				<label for='startDate' class="form-label">From </label>
 				<input
 					type='date'
@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 					required
 				/>
 			</div>
-			<div class='col-3 custom_col'>
+			<div class='col-5 custom_col'>
 				<label for='endDate' class="form-label">To </label>
 				<input
 					type='date'
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 					required
 				/>
 			</div>
-            <div class='col-3 custom_col'>
+            <!-- <div class='col-3 custom_col'>
                 <label for='interval' class="form-label">Interval (minutes) </label>
                 <input
                     type='number'
@@ -118,14 +118,14 @@ defined('_JEXEC') or die('Restricted access');
                     step="5"
                     required
                 />
-            </div>
-            <div class="col-3 custom_col">
+            </div> -->
+            <div class="col-2 custom_col">
                 <div id="buttonContainer">
                     <button
-                            name='submit'
-                            class='customBtn save'
-                            id='submit'
-                            onclick="chartStart()"
+                        name='submit'
+                        class='customBtn save'
+                        id='submit'
+                        onclick="chartStart()"
                     >
                         <i class="fa fa-check-square" aria-hidden="true"></i>
                         Submit
@@ -138,5 +138,9 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <div id="chartContainer" class="container custom_container">
+    <!-- <div class='row'>
+        <div id='chartTable' class='col scrollable'>
 
+        </div>
+    </div> -->
 </div>

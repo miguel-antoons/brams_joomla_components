@@ -112,6 +112,10 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
 		$psd_query->where($db->quoteName('start')       . ' >= '  . $db->quote($start_date));
 		$psd_query->where($db->quoteName('start')       . ' < '   . $db->quote($end_date));
 		$psd_query->where($db->quoteName('system_id')   . ' in (' . $sys_id_string . ')');
+        $psd_query->where(
+            $db->quoteName('calibrator')    . ' is not null or '
+            . $db->quoteName('noise')       . ' is not null'
+        );
 
 		$db->setQuery($psd_query);
 
@@ -177,8 +181,8 @@ class BramsDataModelMonitoring extends BaseDatabaseModel {
      * Each datetime is separated by $interval minutes.
      * All the generated datetimes are returned in an array.
      */
-	public function getLabels($start_date, $end_date, $interval) {
-		$interval           = 'PT'.$interval.'M';
+	public function getLabels($start_date, $end_date) {
+		$interval           = 'PT5M';
 		$labels             = array();
 		$datetime_end       = new DateTime($end_date);
 		$current            = $start_date;
