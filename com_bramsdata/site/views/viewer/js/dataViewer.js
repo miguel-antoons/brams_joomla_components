@@ -250,8 +250,6 @@ function getSpectrograms(stationId, fMin, fMax, startDate, endDate, imageOnload)
  * @returns void
  */
 function showSpectrograms() {
-    verifyDates();
-
     const startDate = new Date(Date.parse(document.getElementById('startDate').value));
     if (isNaN(startDate)) {
         return;
